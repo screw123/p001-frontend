@@ -9,7 +9,7 @@ export const Header = styled.div`
   font-size: 4rem;
   font-weight: bold;
   text-align: center;
-  height: 300px;
+  height: 450px;
   display: flex;
 	justify-content:center;
 	align-content:center;

@@ -2,18 +2,13 @@ import React from "react"
 import { I18n } from 'react-i18next'
 import styled from 'styled-components'
 import CheckBox from './CheckBox'
+import Radio from './Radio'
 import {TableHeader} from './TableHeaderStyles'
 
 const TableContainer = styled.div`
   box-shadow: 0 6px 12px 0 rgba(0,0,0,0.5);
   border-radius: 16px;
-  padding: 5% 10%;
-`
-const ItemContainer = styled.div`
-	display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 5%;
+  margin: 5% 10%;
 `
 const ItemContainerTitle = styled.h3`
 	color: #787F84;
@@ -23,11 +18,6 @@ const ItemContainerTitle = styled.h3`
 const ItemContainerLink = styled.a`
 	color: #E61D6E; 	
 	font-weight: bold;
-`
-const ItemContainerFilter = styled(ItemContainer)`
-	border: 2px solid #F0F0F0;
-  border-radius: 16px;
-  padding: 2% 5%;
 `
 const Table = styled.div`
   display: flex;
@@ -42,17 +32,15 @@ const TableRow = styled.div`
   padding: 1.5em 3em;
   width: calc(100% / 4);
 
-	@media all and (max-width: 767px) {
-	    width: calc(100% / 3);
-	}
-
-	@media all and (max-width: 430px) {
-    width: 100%;
+	@media all and (max-width: 550px) {
+    width: calc(100% / 2);
 }
-
 `
-const FilterPrice= styled.div`
-
+const FilterDate = styled(TableRow)`
+	border: 2px solid #F0F0F0;
+  border-radius: 16px;
+  padding: 0;
+  width: 100%;
 `
 
 class PricingTable extends React.Component {
@@ -62,45 +50,42 @@ class PricingTable extends React.Component {
     this.setState({ checked: event.target.checked })
   }
 
+
 	render = () => (
 		<React.Fragment>
 			<TableContainer>
 				<Table>
-					<ItemContainerFilter>
-						<FilterPrice>
-			        <label>
-								<input type="radio"/>
-		            <span style={{ marginLeft: 8 }}>By day</span>
-			        </label>
-						</FilterPrice>
-						<FilterPrice>
-		        	<label>
-								<input type="radio"/>
-		            <span style={{ marginLeft: 8 }}>By month</span>
-			        </label>
-						</FilterPrice>
-						<FilterPrice>
-		        	<label>
-								<input type="radio"/>
-		            <span style={{ marginLeft: 8 }}>By month</span>
-			        </label>
-						</FilterPrice>
-					</ItemContainerFilter>
-					<ItemContainer>
+					<TableRow>
+						<FilterDate>
+		           <Radio
+		            checked
+	             	text = {'By Day'}
+		         	 />
+ 		           <Radio
+		            checked
+	             	text = {'By Month'}
+		         	 />
+ 		           <Radio
+		            checked
+	             	text = {'By Year'}
+		         	 />
+						</FilterDate>
+					</TableRow>
+					<TableRow>
 						<img src="/images/ico-box.svg" alt=""/>
 						<ItemContainerTitle>Document Box</ItemContainerTitle>
 						<ItemContainerLink>View details</ItemContainerLink>
-					</ItemContainer>
-					<ItemContainer>
+					</TableRow>
+					<TableRow>
 						<img src="/images/ico-box.svg" alt=""/>
 						<ItemContainerTitle>Document Box</ItemContainerTitle>
 						<ItemContainerLink>View details</ItemContainerLink>
-					</ItemContainer>
-					<ItemContainer>
+					</TableRow>
+					<TableRow>
 						<img src="/images/ico-box.svg" alt=""/>
 						<ItemContainerTitle>Document Box</ItemContainerTitle>
 						<ItemContainerLink>View details</ItemContainerLink>
-					</ItemContainer>
+					</TableRow>
 				</Table>
 				<TableHeader>
 					Pricing

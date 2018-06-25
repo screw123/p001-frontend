@@ -157,4 +157,29 @@ export const getMyselfRelated = gql`{
     }
 }`
 
+export const getMyAccount = gql`{
+    getMyAccount {
+        _id
+        name
+        balance
+        isActive
+        defaultBillingAddress_id {
+            addressType
+            legalName
+            addressCountry
+            addressRegion
+            streetAddress
+            telephone
+        }
+        defaultShippingAddress_id {
+            addressType
+            legalName
+            addressCountry
+            addressRegion
+            streetAddress
+            telephone
+        }
+    }
+}`
+
 export default getMyselfRelated

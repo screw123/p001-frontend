@@ -3,37 +3,18 @@ import ApolloClient from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
 import { ApolloProvider } from 'react-apollo'
-import gql from "graphql-tag"
 import request from 'superagent'
 import { Provider, Subscribe, Container } from 'unstated'
 import LoginPage from './page/LoginPage.js'
+import IndexPage from './page/IndexPage.js'
+import DataPage from './page/DataPage.js'
+import { I18n } from 'react-i18next'
 
 const client = new ApolloClient({
     link: new HttpLink({ uri: "https://cd.nicecar.hk/graphql", credentials: 'include' }),
     cache: new InMemoryCache(),
     onError: (e) => { console.log("Apollo Client Error:", e) }
 })
-
-const getUser = gql`
-    query {
-        getUser{
-            _id
-            firstName
-            lastName
-            email
-            mobilePhone
-        }
-    }`
-
-const whs = gql`
-    query {
-        getWHS{
-            _id
-            name
-            description
-        }
-    }`
-
 
 class containerLogin extends Container {
     state={
@@ -56,27 +37,29 @@ class containerLogin extends Container {
             })*/
             console.log('fetch ok', f)
             this.setState({logined: true})
-            const d = await client.query({query: getUser})
-            this.setState({data: d})
+            //const d = await client.query({query: getUser})
+            //this.setState({data: d})
         } catch(e) { console.log('err', e.response) }
         
     }
-    
-    moreQuery= async (gql) => {
-        try {
-            const d = await client.query({query: gql})
-            this.setState({moredata: d})
-        } catch(e) { console.log('err', e.response) }
-    }
-    
 }
 
 class App extends Component {
     render() {
         return (
-            <ApolloProvider client={client}>
-                <LoginPage />
-            </ApolloProvider>
+            <I18n>
+            {(t, { i18n }) => (
+                <ApolloProvider client={client}>
+                    <div>
+                        <button onClick={() => { i18n.changeLanguage('en'); }}>EN</button>
+                        <button onClick={() => { i18n.changeLanguage('zh'); }}>中</button>
+                        <IndexPage />
+                        <LoginPage />
+                        <DataPage />
+                    </div>
+                </ApolloProvider>
+            )}
+            </I18n>
         )
     }
 }
@@ -92,7 +75,6 @@ class LoginButton extends Component {
                 <h1>XXX company</h1>
                 <p>This is first page!</p>
                 <button onClick={login.login}>{(login.state.logined ? 'Logined!':'Login?')}</button>
-                <button onClick={() => login.moreQuery(whs)}>More Data!</button>
                 <p>{JSON.stringify(login.state.data)}</p>
                 <p>{JSON.stringify(login.state.moredata)}</p>
             </div>

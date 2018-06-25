@@ -2,16 +2,23 @@
   "name": "p001-front",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://cd.nicecar.hk/app",
   "dependencies": {
-    "apollo-boost": "^0.1.7",
+    "apollo-cache-inmemory": "^1.2.4",
+    "apollo-client": "^2.3.4",
+    "apollo-link-http": "^1.5.4",
+    "final-form": "^4.8.2",
+    "formik": "^0.11.11",
     "graphql": "^0.13.2",
     "graphql-tag": "^2.9.2",
-    "node-fetch": "^2.1.2",
     "react": "^16.4.0",
+    "react-apollo": "^2.1.5",
     "react-dom": "^16.4.0",
     "react-scripts": "1.1.4",
-    "unstated": "^2.1.1"
+    "styled-components": "^3.3.3",
+    "superagent": "^3.8.3",
+    "unstated": "^2.1.1",
+    "validator": "^10.4.0",
+    "yup": "^0.25.1"
   },
   "scripts": {
     "start": "react-scripts start",

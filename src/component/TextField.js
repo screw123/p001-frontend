@@ -1,5 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
+import Input from './Input.js'
+
+import { I18n } from 'react-i18next'
 
 //A normal input field, with label, input and error span
 
@@ -8,22 +11,27 @@ const RedLabel = styled.label`
 `
 
 const TextField = ({
-    field: { name, ...fields }, // { name, value, onChange, onBlur }
+    field: { name, placeholder, ...fields }, // { name, value, onChange, onBlur }
     form: { touched, errors }, //also values, handleXXXX, dirty, isValid, status, etc.
     classNames,
     label,
     ...props
 }) => {
     return (
-        <div className={classNames}>
-            <label>{label}</label>
-            <input
-                name={name}
-                {...fields}
-                {...props}
-            />
-            {touched[name] && errors[name] && <RedLabel> { errors[name] } </RedLabel> }
-        </div>
+        <I18n>
+        {(t) => (
+            <div className={classNames}>
+                <label>{t(label)}</label>
+                <Input
+                    name={name}
+                    placeholder={t(placeholder)}
+                    {...fields}
+                    {...props}
+                />
+                {touched[name] && errors[name] && <RedLabel> { t(errors[name]) } </RedLabel> }
+            </div>
+        )}
+        </I18n>
     )
 }
 

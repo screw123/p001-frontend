@@ -1,14 +1,15 @@
-import React, { Component } from 'react'
+import React from 'react'
 import ApolloClient from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
 import { ApolloProvider } from 'react-apollo'
-import request from 'superagent'
-import { Provider, Subscribe, Container } from 'unstated'
-import LoginPage from './page/LoginPage.js'
-import IndexPage from './page/IndexPage.js'
-import DataPage from './page/DataPage.js'
-import { I18n } from 'react-i18next'
+//import { Provider, Subscribe, Container } from 'unstated'
+
+import { BrowserRouter, Route } from 'react-router-dom'
+import routes from './routes.js'
+
+import Navbar from './component/Navbar.js'
+
 
 const client = new ApolloClient({
     link: new HttpLink({ uri: "https://cd.nicecar.hk/graphql", credentials: 'include' }),
@@ -16,7 +17,7 @@ const client = new ApolloClient({
     onError: (e) => { console.log("Apollo Client Error:", e) }
 })
 
-class containerLogin extends Container {
+/*class containerLogin extends Container {
     state={
         email: '',
         pw: '',
@@ -28,13 +29,13 @@ class containerLogin extends Container {
     login= async () => {
         try {
             const f = await request.post('https://cd.nicecar.hk/l').set({'Access-Control-Allow-Origin': 'https://cd.nicecar.hk'}).withCredentials().type('form').query('email=ross@nicecar.hk').query('password=aaaaaaaa1')
-                /*
+            
     	        headers: { 
     	            'Access-Control-Allow-Origin': 'http://cd.nicecar.hk'
     	            //'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
     	        },
     	        withCredentials: true
-            })*/
+            })
             console.log('fetch ok', f)
             this.setState({logined: true})
             //const d = await client.query({query: getUser})
@@ -43,27 +44,41 @@ class containerLogin extends Container {
         
     }
 }
+*/
 
-class App extends Component {
+
+
+
+class App extends React.Component {
+    
+    genItems = (routes) => {
+        let c = []
+        for (var i = 0; i < routes.length; i++) {
+            c.push(<Route
+                component={routes[i].component}
+                exact={routes[i].exact}
+                path={routes[i].path}
+                key={i}
+            />)
+        }
+        return c
+    }
     render() {
         return (
-            <I18n>
-            {(t, { i18n }) => (
+            <BrowserRouter>
                 <ApolloProvider client={client}>
                     <div>
-                        <button onClick={() => { i18n.changeLanguage('en'); }}>EN</button>
-                        <button onClick={() => { i18n.changeLanguage('zh'); }}>中</button>
-                        <IndexPage />
-                        <LoginPage />
-                        <DataPage />
+                        <Navbar routes={routes} />
+                        {this.genItems(routes)}
                     </div>
                 </ApolloProvider>
-            )}
-            </I18n>
+            </BrowserRouter>
         )
     }
 }
 
+
+/*
 class LoginButton extends Component {
     
     render() {
@@ -83,5 +98,5 @@ class LoginButton extends Component {
     );
   }
 }
-
+*/
 export default App;

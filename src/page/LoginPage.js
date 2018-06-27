@@ -11,7 +11,6 @@ class LoginPage extends React.Component {
             {(t, { i18n }) => (
                 <div>
                     <h1>{t('Login Page')}</h1>
-                    <h3>Please type your info below:</h3>
                     <LoginForm />
                 </div>
             )}

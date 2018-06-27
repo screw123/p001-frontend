@@ -1,4 +1,17 @@
 {
-    "Login Page": "Login Pageen",
-    "Welcome to P001!": "Welcome to P001!"
+    "Login": "Login",
+    "Sign Up": "Sign Up",
+    "Dashboard": "Dashboard",
+    "Login Page": "Login Page",
+    "Welcome to P001": "Welcome to P001",
+    "Email/Phone": "Email or Mobile Phone Number",
+    "Password": "Password",
+    "Must be email or phone number": "Must be email or phone number",
+    "pw must be at least 6 characters": "Password must be at least 6 characters long",
+    "First Name": "First Name",
+    "Last Name": "Last Name",
+    "Email": "Email",
+    "Hong Kong Mobile Phone Number": "Hong Kong Mobile Phone Number",
+    "Password (6+ characters)": "Password (6+ characters)",
+    "Please type your password again": "Please type your password again"
 }

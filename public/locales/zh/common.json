@@ -11,8 +11,8 @@
     "First Name": "姓",
     "Last Name": "名",
     "Email": "電郵地址",
-    "Hong Kong Mobile Phone Number": "香港手機號碼",
-    "Password (6+ characters)": "密碼(需6位或以上)",
-    "Please type your password again": "請再次輸入密碼"
+    "Hong Kong Mobile Number": "香港手機號碼",
+    "Password (6+ characters)": "密碼(6位或以上)",
+    "Confirm Password": "再次輸入密碼"
     
 }

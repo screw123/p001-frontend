@@ -1,7 +1,7 @@
 import React from "react"
 import LoginForm from '../form/LoginForm.js'
 import { I18n } from 'react-i18next'
-
+import Background from '../component/Background.js'
 
 class LoginPage extends React.Component {
     
@@ -9,10 +9,10 @@ class LoginPage extends React.Component {
     render = () => (
         <I18n>
             {(t, { i18n }) => (
-                <div>
+                <Background>
                     <h1>{t('Login Page')}</h1>
                     <LoginForm />
-                </div>
+                </Background>
             )}
         </I18n>
 

@@ -2,7 +2,7 @@ import React from "react"
 import { I18n } from 'react-i18next'
 import { Query } from 'react-apollo'
 import { getMyAccount } from '../gql/query.js'
-
+import Background from '../component/Background.js'
 class DataPage extends React.Component {
     constructor(props) {
         super(props)
@@ -42,7 +42,7 @@ class DataPage extends React.Component {
             )
         }
         return (
-            <div>
+            <Background>
                 <Query query={getMyAccount}>
                     {({ client, loading, error, data, refetch }) => {
                         if (loading) return (<button onClick={() => {
@@ -74,7 +74,7 @@ class DataPage extends React.Component {
                         )
                     }}
                 </Query>
-            </div>
+            </Background>
         )
     }
 }

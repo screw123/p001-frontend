@@ -1,15 +1,16 @@
 import React from "react"
-import { Formik, Field, Form } from 'formik'
+import { Formik, Field } from 'formik'
 import * as yup from 'yup'
 import isMobilePhone from 'validator/lib/isMobilePhone'
 import isEmail from 'validator/lib/isEmail'
 
-import TextField from '../component/TextField'
-import Button from '../component/Button.js'
+import FormikForm, { TextField, FormButton } from '../component/FormikForm.js'
 
 import isEmpty from 'lodash/isEmpty'
 import { Query } from 'react-apollo'
 import { getMyselfRelated } from '../gql/query.js'
+
+import pickBy from 'lodash/pickBy'
 
 const SignUpForm = () => (
         <Formik
@@ -21,37 +22,23 @@ const SignUpForm = () => (
                 lastName: '',
                 mobilePhone: ''
             }}
-            validationSchema={yup.object().shape({
-                email: yup
-                        .string()
-                        .required()
-                        .test('isEmail', 'Must be valid email', (v) => {
-                            return isEmail(v)
-                        }),
-                password: yup.string().required().min(6),
-                pw_again: yup.string().required('Password confirm is required').oneOf([yup.ref('password'), null]),
-                firstName: yup.string().required().min(1),
-                lastName: yup.string().required().min(1),
-                mobilePhone: yup.string().required().test('isMobilePhone', 'Must be Hong Kong phone number', (v) => {
-                        return isMobilePhone(v, 'zh-HK')
-                }),
-            })}
+
             onSubmit={async (values, actions) => {
                 
                 actions.setSubmitting(false)
                 
             }}
         >
-        {({ errors, handleSubmit, handleChange, handleBlur, isSubmitting, dirty, touched, values }) => (
+        {({ errors, handleSubmit, isSubmitting, isValid, touched, values, dirty }) => (
             <div>
-                <Form>
+                <FormikForm>
                     <Field
                         name="firstName"
                         type="text"
                         component={TextField}
                         label="First Name"
                         value={values.firstName}
-                        onChange={handleChange} onBlur={handleBlur}
+                        validate={(v) => (v.length>0)? undefined : 'Please enter your First Name' }
                     />
                     <Field
                         name="lastName"
@@ -59,7 +46,7 @@ const SignUpForm = () => (
                         component={TextField}
                         label="Last Name"
                         value={values.lastName}
-                        onChange={handleChange} onBlur={handleBlur}
+                        validate={(v) => (v.length>0)? undefined : 'Please enter your Last Name' }
                     />
                     <Field
                         name="email"
@@ -67,15 +54,15 @@ const SignUpForm = () => (
                         component={TextField}
                         label="Email"
                         value={values.email}
-                        onChange={handleChange} onBlur={handleBlur}
+                        validate={(v) => isEmail(v)? undefined : 'Please enter valid email address' }
                     />
                     <Field
                         name="mobilePhone"
                         type="text"
                         component={TextField}
-                        label="Hong Kong Mobile Phone Number"
+                        label="Hong Kong Mobile Number"
                         value={values.mobilePhone}
-                        onChange={handleChange} onBlur={handleBlur}
+                        validate={(v) => isMobilePhone(v, 'zh-HK')? undefined : 'Please enter Hong Kong mobile phone number' }
                     />
                     <Field
                         name="password"
@@ -83,23 +70,32 @@ const SignUpForm = () => (
                         component={TextField}
                         label="Password (6+ characters)"
                         value={values.password}
-                        onChange={handleChange} onBlur={handleBlur}
+                        validate={(v) => {
+                            console.log(v, ((v.length>5)? undefined : 'Need at least 6 characters'))
+                            return ((v.length>5)? undefined : 'Need at least 6 characters')
+                        } }
                     />
                     <Field
                         name="pw_again"
                         type="password"
                         component={TextField}
-                        label="Please type your password again"
+                        label="Confirm Password"
                         value={values.pw_again}
-                        onChange={handleChange} onBlur={handleBlur}
+                        validate={(v) => {
+                            console.log('touched?=',isEmpty(pickBy(touched,v=> v===undefined)))
+                            console.log(touched)
+
+                            return ((v==values.password)? undefined : 'Password does not match')
+                            
+                        } }
                     />
-                    <Button
+                    <FormButton
                         type="submit"
-                        disabled={isSubmitting || !isEmpty(errors) || !dirty}
+                        disabled={isSubmitting || (isEmpty(pickBy(touched,v=> v===undefined)) & isEmpty(pickBy(errors)))}
                     >
                         Submit
-                    </Button>
-                </Form>
+                    </FormButton>
+                </FormikForm>
             </div>
         )}
         </Formik>

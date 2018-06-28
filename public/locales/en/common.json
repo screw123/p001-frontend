@@ -11,7 +11,7 @@
     "First Name": "First Name",
     "Last Name": "Last Name",
     "Email": "Email",
-    "Hong Kong Mobile Phone Number": "Hong Kong Mobile Phone Number",
+    "Hong Kong Mobile Number": "Hong Kong Mobile Number",
     "Password (6+ characters)": "Password (6+ characters)",
-    "Please type your password again": "Please type your password again"
+    "Confirm Password": "Confirm Password"
 }

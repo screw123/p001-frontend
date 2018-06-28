@@ -1,31 +1,46 @@
 html {
-	font-size: 16pt;
+	font-size: 1em;
 }
 
-@media screen and (max-width: 1680px) {
+@media screen and (max-width: 1024px) {
     html {
-    	font-size: 12pt;
+    	font-size: 1em;
     }
 }
 
-@media screen and (max-width: 736px) {
+@media screen and (max-width: 768px) {
 	html {
-		font-size: 11pt;
+		font-size: 1em;
 	}
 }
 
-@media screen and (max-width: 360px) {
+@media screen and (max-width: 480px) {
 	html {
-		font-size: 10pt;
+		font-size: 1em;
 	}
 }
+
+
 
 body, input, select, textarea {
-	font-family: "Roboto, Noto Sans TC", sans-serif;
-	font-weight: 300;
-	font-size: 1rem;
-	line-height: 1.65;
+	font-family: "Noto Sans", "Noto Sans CJK TC", sans-serif;
 	margin: 0;
+}
+
+input {
+    box-sizing:border-box;
+    border-radius: 0.25em;
+    border: 0.13em solid #999999;
+    background-color: transparent;
+    text-overflow: clip;
+    padding: 0.3em 0 0.3em 0.6em;
+    line-height: 1.5;
+}
+
+a {
+    text-decoration: none;
+    font-weight: 500;
+    color: Blue;
 }
 
 strong, b {
@@ -74,14 +89,4 @@ h5 {
 
 h6 {
 	font-size: 0.6rem;
-}
-
-label {
-	display: block;
-	font-size: 0.8rem;
-	font-weight: 300;
-	letter-spacing: 0.2rem;
-	line-height: 1.5;
-	margin: 0 0 1rem 0;
-	text-transform: uppercase;
 }

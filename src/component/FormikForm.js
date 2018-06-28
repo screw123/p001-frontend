@@ -74,13 +74,15 @@ export const TextField = ({
         <I18n>
         {(t) => (
             <FieldDiv className={classNames}>
-                <FieldLabel>{t(label)}</FieldLabel>
-                <Input
-                    name={name}
-                    placeholder={t(placeholder)}
-                    {...fields}
-                    {...props}
-                />
+                <FieldLabel>
+                    {t(label)}
+                    <Input
+                        name={name}
+                        placeholder={t(placeholder)}
+                        {...fields}
+                        {...props}
+                    />
+                </FieldLabel>
                 {touched[name] && errors[name] && <ErrorLabel>{t(errors[name])}</ErrorLabel> }
             </FieldDiv>
         )}

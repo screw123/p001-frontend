@@ -22,10 +22,32 @@ const SignUpForm = () => (
                 lastName: '',
                 mobilePhone: ''
             }}
-
+            validate={ (values) => {
+                const keyArr = Object.keys(validateForm)
+                let err = {}
+                for (let i=0; i<keyArr.length; i++) {
+                    const f = keyArr[i]
+                    const e = validateForm[f](values)
+                    if (e !== undefined) { err[f] = e }
+                }
+                return err
+            }}
             onSubmit={async (values, actions) => {
-                
-                actions.setSubmitting(false)
+                const keyArr = Object.keys(validateForm)
+                let haveErr = false
+                for (let i=0; i<keyArr.length; i++) {
+                    const f = keyArr[i]
+                    const e = validateForm[f](values[f])
+                    if (e !== undefined) {
+                        actions.setFieldError(f, e)
+                        haveErr = true
+                    }
+                }
+                if (haveErr) { actions.setSubmitting(false) }
+                else {
+                    //submit to server
+                    console.log('submit to server')
+                }
                 
             }}
         >
@@ -38,7 +60,6 @@ const SignUpForm = () => (
                         component={TextField}
                         label="First Name"
                         value={values.firstName}
-                        validate={(v) => (v.length>0)? undefined : 'Please enter your First Name' }
                     />
                     <Field
                         name="lastName"
@@ -46,7 +67,6 @@ const SignUpForm = () => (
                         component={TextField}
                         label="Last Name"
                         value={values.lastName}
-                        validate={(v) => (v.length>0)? undefined : 'Please enter your Last Name' }
                     />
                     <Field
                         name="email"
@@ -54,7 +74,6 @@ const SignUpForm = () => (
                         component={TextField}
                         label="Email"
                         value={values.email}
-                        validate={(v) => isEmail(v)? undefined : 'Please enter valid email address' }
                     />
                     <Field
                         name="mobilePhone"
@@ -62,7 +81,6 @@ const SignUpForm = () => (
                         component={TextField}
                         label="Hong Kong Mobile Number"
                         value={values.mobilePhone}
-                        validate={(v) => isMobilePhone(v, 'zh-HK')? undefined : 'Please enter Hong Kong mobile phone number' }
                     />
                     <Field
                         name="password"
@@ -70,10 +88,6 @@ const SignUpForm = () => (
                         component={TextField}
                         label="Password (6+ characters)"
                         value={values.password}
-                        validate={(v) => {
-                            console.log(v, ((v.length>5)? undefined : 'Need at least 6 characters'))
-                            return ((v.length>5)? undefined : 'Need at least 6 characters')
-                        } }
                     />
                     <Field
                         name="pw_again"
@@ -81,17 +95,10 @@ const SignUpForm = () => (
                         component={TextField}
                         label="Confirm Password"
                         value={values.pw_again}
-                        validate={(v) => {
-                            console.log('touched?=',isEmpty(pickBy(touched,v=> v===undefined)))
-                            console.log(touched)
-
-                            return ((v==values.password)? undefined : 'Password does not match')
-                            
-                        } }
                     />
                     <FormButton
                         type="submit"
-                        disabled={isSubmitting || (isEmpty(pickBy(touched,v=> v===undefined)) & isEmpty(pickBy(errors)))}
+                        disabled={isSubmitting || isEmpty(pickBy(errors)) }
                     >
                         Submit
                     </FormButton>
@@ -100,5 +107,15 @@ const SignUpForm = () => (
         )}
         </Formik>
     )
+
+const validateForm = {
+    firstName: ({firstName}) => (firstName.length>0)? undefined : 'Please enter your First Name',
+    lastName: ({lastName}) => (lastName.length>0)? undefined : 'Please enter your Last Name',
+    email: ({email}) => isEmail(email)? undefined : 'Please enter valid email address',
+    mobilePhone: ({mobilePhone}) => isMobilePhone(mobilePhone, 'zh-HK')? undefined : 'Please enter Hong Kong mobile phone number',
+    password: ({password}) => (password.length>5)? undefined : 'Need at least 6 characters',
+    pw_again: ({pw_again, password}) => (pw_again==password)? undefined : 'Password does not match'
+}
+
 
 export default SignUpForm

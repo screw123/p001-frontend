@@ -1,21 +1,76 @@
 import React from 'react'
-import ApolloClient from 'apollo-client'
-import { InMemoryCache } from 'apollo-cache-inmemory'
-import { HttpLink } from 'apollo-link-http'
-import { ApolloProvider } from 'react-apollo'
-//import { Provider, Subscribe, Container } from 'unstated'
 
 import { BrowserRouter, Route } from 'react-router-dom'
 import routes from './routes.js'
 
 import Navbar from './component/Navbar.js'
+import PrivateRoute from './component/PrivateRoute.js'
+
+import { GqlApiProvider } from './container/GqlApi.js'
+
+class App extends React.Component {
+    
+    genItems = (routes) => {
+        let c = []
+        for (var i = 0; i < routes.length; i++) {
+            if (routes[i].requireLogin) {
+                c.push(<PrivateRoute
+                    component={routes[i].component}
+                    exact={routes[i].exact}
+                    path={routes[i].path}
+                    key={i}
+                />)
+            }
+            else {
+                c.push(<Route
+                    component={routes[i].component}
+                    exact={routes[i].exact}
+                    path={routes[i].path}
+                    key={i}
+                />)
+            }
+        }
+        return c
+    }
+    render() {
+        return (
+            <BrowserRouter>
+                <GqlApiProvider>
+                    <div>
+                        <Navbar routes={routes} />
+                        {this.genItems(routes)}
+                    </div>
+                </GqlApiProvider>
+            </BrowserRouter>
+        )
+    }
+}
+
+export default App;
 
 
-const client = new ApolloClient({
-    link: new HttpLink({ uri: "https://cd.nicecar.hk/graphql", credentials: 'include' }),
-    cache: new InMemoryCache(),
-    onError: (e) => { console.log("Apollo Client Error:", e) }
-})
+/*
+class LoginButton extends Component {
+    
+    render() {
+    return (
+        <Subscribe to={[containerLogin]}>
+        {(login) => {
+            return (
+            <div>
+                <h1>XXX company</h1>
+                <p>This is first page!</p>
+                <button onClick={login.login}>{(login.state.logined ? 'Logined!':'Login?')}</button>
+                <p>{JSON.stringify(login.state.data)}</p>
+                <p>{JSON.stringify(login.state.moredata)}</p>
+            </div>
+        )}}
+        </Subscribe>
+    );
+  }
+}
+*/
+
 
 /*class containerLogin extends Container {
     state={
@@ -46,57 +101,3 @@ const client = new ApolloClient({
 }
 */
 
-
-
-
-class App extends React.Component {
-    
-    genItems = (routes) => {
-        let c = []
-        for (var i = 0; i < routes.length; i++) {
-            c.push(<Route
-                component={routes[i].component}
-                exact={routes[i].exact}
-                path={routes[i].path}
-                key={i}
-            />)
-        }
-        return c
-    }
-    render() {
-        return (
-            <BrowserRouter>
-                <ApolloProvider client={client}>
-                    <div>
-                        <Navbar routes={routes} />
-                        {this.genItems(routes)}
-                    </div>
-                </ApolloProvider>
-            </BrowserRouter>
-        )
-    }
-}
-
-
-/*
-class LoginButton extends Component {
-    
-    render() {
-    return (
-        <Subscribe to={[containerLogin]}>
-        {(login) => {
-            return (
-            <div>
-                <h1>XXX company</h1>
-                <p>This is first page!</p>
-                <button onClick={login.login}>{(login.state.logined ? 'Logined!':'Login?')}</button>
-                <p>{JSON.stringify(login.state.data)}</p>
-                <p>{JSON.stringify(login.state.moredata)}</p>
-            </div>
-        )}}
-        </Subscribe>
-    );
-  }
-}
-*/
-export default App;

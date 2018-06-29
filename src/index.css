@@ -2,24 +2,6 @@ html {
 	font-size: 1em;
 }
 
-@media screen and (max-width: 1024px) {
-    html {
-    	font-size: 1em;
-    }
-}
-
-@media screen and (max-width: 768px) {
-	html {
-		font-size: 1em;
-	}
-}
-
-@media screen and (max-width: 480px) {
-	html {
-		font-size: 1em;
-	}
-}
-
 
 
 body, input, select, textarea {
@@ -33,8 +15,26 @@ input {
     border: 0.13em solid #999999;
     background-color: transparent;
     text-overflow: clip;
-    padding: 0.3em 0 0.3em 0.6em;
+    padding: 0.5em 0 0.5em 0.6em;
     line-height: 1.5;
+}
+
+button {
+    box-sizing: border-box;
+    border-radius: 0.25em;
+    border: 0.13em solid white;
+    padding: 0.5em 2em;
+    max-width: 50%;
+    font-weight: 600;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease-out;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: rgba(255, 255, 255, 0.5);
 }
 
 a {

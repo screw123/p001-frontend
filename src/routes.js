@@ -18,7 +18,8 @@ const routes = [
     {
         path: "/dash",
         menuName: 'Dashboard',
-        component: DataPage
+        component: DataPage,
+        requireLogin: true
     },
     {
         path: "/",

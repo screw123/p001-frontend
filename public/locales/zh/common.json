@@ -7,12 +7,17 @@
     "Email/Phone": "電郵或香港手機號碼",
     "Password": "密碼",
     "Must be email or phone number": "必需為電郵或香港手機號碼",
-    "pw must be at least 6 characters": "密碼需最少6位",
+    "Need at least 6 characters": "密碼需最少6位",
     "First Name": "姓",
     "Last Name": "名",
     "Email": "電郵地址",
     "Hong Kong Mobile Number": "香港手機號碼",
     "Password (6+ characters)": "密碼(6位或以上)",
-    "Confirm Password": "再次輸入密碼"
-    
+    "Confirm Password": "再次輸入密碼",
+    "Please enter your First Name": "請輸入姓氏",
+    "Please enter your Last Name": "請輸入名字",
+    "Please enter valid email address": "請輸入正確電郵地址",
+    "Please enter Hong Kong mobile phone number": "請輸入香港手機號碼",
+    "Password does not match": "密碼不相等",
+    "Please Login First": "請先登入"
 }

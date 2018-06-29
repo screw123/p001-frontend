@@ -9,8 +9,8 @@ fullSize --> width: 100%
 
 const Button = styled.button`
     box-sizing: border-box;  
-    border-radius: 5px;
-    border: 2px solid ${props => props.disabled ? `rgba(128, 128, 128, 0.2)` : `White`};;
+    border-radius: 0.25em;
+    border: 0.13em solid ${props => props.disabled ? `rgba(128, 128, 128, 0.2)` : `White`};
 	display: flex;
 	flex: 0 0 auto;
 	align-self: center

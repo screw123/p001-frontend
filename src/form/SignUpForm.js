@@ -7,10 +7,12 @@ import isEmail from 'validator/lib/isEmail'
 import FormikForm, { TextField, FormButton } from '../component/FormikForm.js'
 
 import isEmpty from 'lodash/isEmpty'
+import pickBy from 'lodash/pickBy'
+
 import { Query } from 'react-apollo'
 import { getMyselfRelated } from '../gql/query.js'
 
-import pickBy from 'lodash/pickBy'
+
 
 const SignUpForm = () => (
         <Formik
@@ -98,7 +100,8 @@ const SignUpForm = () => (
                     />
                     <FormButton
                         type="submit"
-                        disabled={isSubmitting || isEmpty(pickBy(errors)) }
+                        disabled={isSubmitting || !isEmpty(pickBy(errors)) || !dirty }
+                        value="Submit"
                     >
                         Submit
                     </FormButton>

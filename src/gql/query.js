@@ -1,7 +1,8 @@
 import gql from 'graphql-tag'
 
-export const getMyselfRelated = gql`{
+export const getMyself = gql`{
     getMyself {
+        _id
         firstName
         lastName
         email
@@ -182,4 +183,4 @@ export const getMyAccount = gql`{
     }
 }`
 
-export default getMyselfRelated
+export default getMyself

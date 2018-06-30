@@ -12,9 +12,11 @@ import pickBy from 'lodash/pickBy'
 import { Query } from 'react-apollo'
 import { getMyselfRelated } from '../gql/query.js'
 
-
+import GqlApi,{ GqlApiSubscriber } from '../container/GqlApi.js'
 
 const SignUpForm = () => (
+        <GqlApiSubscriber>
+        {(c)=>(
         <Formik
             initialValues={{
                 email:'',
@@ -48,6 +50,8 @@ const SignUpForm = () => (
                 if (haveErr) { actions.setSubmitting(false) }
                 else {
                     //submit to server
+                    const d = await c.getGqlClientPublic().query({query: addUser})
+                    
                     console.log('submit to server')
                 }
                 
@@ -109,6 +113,8 @@ const SignUpForm = () => (
             </div>
         )}
         </Formik>
+        )}
+        </GqlApiSubscriber>
     )
 
 const validateForm = {

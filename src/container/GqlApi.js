@@ -41,7 +41,7 @@ class ApolloContainer extends Container {
     getGqlClientPublic() {
         if (isEmpty(this.state.gqlClientPublic)) {
             const gqlClientPublic = new ApolloClient({
-                link: new HttpLink({ uri: "https://cd.nicecar.hk/gqlPublic" }),
+                link: new HttpLink({ uri: "https://cd.nicecar.hk/gqlPublic"}),
                 cache: new InMemoryCache(),
                 onError: (e) => { console.log("Apollo Public Client Error:", e) }
             })

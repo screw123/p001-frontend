@@ -184,7 +184,7 @@ export const getMyAccount = gql`{
 }`
 
 export const addUser = gql`
-    mutation ($firstName: String, $lastName: String, $email: String, $mobilePhone: String, $password: String) {
+    mutation ($firstName: String!, $lastName: String!, $email: String!, $mobilePhone: String!, $password: String!) {
         addUser(
             firstName: $firstName,
             lastName: $lastName,

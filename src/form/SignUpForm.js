@@ -16,7 +16,7 @@ import GqlApi,{ GqlApiSubscriber } from '../container/GqlApi.js'
 
 const SignUpForm = () => (
     <ApolloProvider client={GqlApi.getGqlClientPublic()}>
-        <Mutation mutation={addUser}>
+        <Mutation mutation={addUser} errorPolicy="all">
         {(mutate, {loading, err})=>(
             <Formik
                 initialValues={{

@@ -198,4 +198,16 @@ export const addUser = gql`
     }
 `
 
+export const verifyUser = gql`
+    mutation ($_id: String!, $verificationPIN: String!) {
+        verifyUser(
+            _id: $_id,
+            verificationPIN: $verificationPIN
+        ) {
+            _id
+            isActive
+        }
+    }
+`
+
 export default getMyself

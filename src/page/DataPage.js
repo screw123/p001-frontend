@@ -3,8 +3,9 @@ import { I18n } from 'react-i18next'
 import { getMyself } from '../gql/query.js'
 import Background from '../component/Background.js'
 
-import GqlApi, { GqlApiSubscriber } from '../container/GqlApi.js'
+import GqlApi from '../container/GqlApi.js'
 import { ApolloProvider, Query } from "react-apollo"
+import {BigLoadingScreen} from '../component/Loading.js'
 
 
 class DataPage extends React.Component {
@@ -41,24 +42,14 @@ class DataPage extends React.Component {
         }
 
         return (
-            <ApolloProvider client={GqlApi.state.gqlClient}>
+            <ApolloProvider client={GqlApi.getGqlClient()}>
                 <Background>
                     <Query query={getMyself}>
                     {({ client, loading, error, data, refetch }) => {
-                        if (loading) return (<button onClick={() => {
-                            this.loadData()
-                            refetch()
-                            }}>Load data after login</button>)
-
-                        if (error) return (<p>Error :(<button onClick={() => {
-                            this.loadData()
-                            refetch()
-                            }}>Load data after login</button></p>)
-
-                        console.log('data=', data)
+                        if (loading) return (<BigLoadingScreen/>)
+                        if (error) return (<p>Error :(</p>)
                         
                         if (data.getMyself.length==0) return (<button onClick={() => {
-                            this.loadData()
                             refetch()
                             }}>Load data after login</button>)
 

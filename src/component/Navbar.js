@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import { I18n } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
+import GqlApi, {GqlApiSubscriber} from '../container/GqlApi.js'
+
 const StickyDiv = styled.div`
     position: sticky;
     top: 0;
@@ -31,9 +33,11 @@ class Navbar extends React.Component {
     genItems = (t) => {
         let c = []
         for (var i = 0; i < this.props.routes.length; i++) {
-            c.push(<NormalMenuItem to={this.props.routes[i].path} key={i}>
-                {t(this.props.routes[i].menuName)}
-            </NormalMenuItem>)
+            if (!(this.props.routes[i].showInNavBar===false)) {
+                c.push(<NormalMenuItem to={this.props.routes[i].path} key={i}>
+                    {t(this.props.routes[i].menuName)}
+                </NormalMenuItem>)
+            }
         }
         return c
     }
@@ -44,8 +48,16 @@ class Navbar extends React.Component {
             {(t, { i18n }) => (
                 <StickyDiv>
                     {this.genItems(t)}
-                    <RightSideMenuItem onClick={() => { i18n.changeLanguage('en'); }}>EN</RightSideMenuItem>
-                    <RightSideMenuItem onClick={() => { i18n.changeLanguage('zh'); }}>中</RightSideMenuItem>
+                    <RightSideMenuItem onClick={() => { i18n.changeLanguage('en'); }}>
+                        EN
+                    </RightSideMenuItem>
+                    <RightSideMenuItem onClick={() => { i18n.changeLanguage('zh'); }}>
+                        中
+                    </RightSideMenuItem>
+                    <RightSideMenuItem onClick={() => { }}>
+                        {(GqlApi.state.isLogined)? "Hello": "Not logined"}
+                    </RightSideMenuItem>
+                    
                 </StickyDiv>
             )}
             </I18n>

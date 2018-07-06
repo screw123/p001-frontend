@@ -8,9 +8,11 @@ import { Provider, Subscribe, Container } from "unstated";
 
 import isEmpty from 'lodash/isEmpty'
 
+import request from 'superagent'
+
 class ApolloContainer extends Container {
     constructor() {
-        super();
+        super()
         
         // The state will be available to any component we inject
         // the Container instance into
@@ -49,6 +51,18 @@ class ApolloContainer extends Container {
             return gqlClientPublic
         }
         else { return this.state.gqlClientPublic }
+    }
+    
+    async checkLogined() {
+        try {
+            const res = await request.get('https://cd.nicecar.hk/checkl').withCredentials()
+            console.log('res=',res)
+            if (res.statusCode===200) {
+                this.setLogined(true)
+            }
+        } catch(e) {
+            console.log(e)
+        }
     }
     
     setLogined(b) {

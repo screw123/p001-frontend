@@ -1,10 +1,10 @@
 import React from "react"
-import { Formik, Field, Form } from 'formik'
-import * as yup from 'yup'
+
+import { Formik, Field } from 'formik'
+import FormikForm, { TextField, FormButton, FormErr } from '../component/FormikForm.js'
+
 import isMobilePhone from 'validator/lib/isMobilePhone'
 import isEmail from 'validator/lib/isEmail'
-
-import FormikForm, { TextField, FormButton } from '../component/FormikForm.js'
 
 import request from 'superagent'
 
@@ -35,29 +35,28 @@ const LoginForm = () => (
                 }}
                 onSubmit={async (values, actions) => {
                     try {
+                        actions.setStatus('')
                         const res = await request.post('https://cd.nicecar.hk/l').withCredentials().type('form').query(values).ok(()=>true)
                         if (res.statusCode===200) {
                             console.log('login success')
-                            const d = await q.getGqlClient().query({query: getMyself})
-                            console.log(d)
                             q.setLogined(true)
-                            q.setUid(d.getMyseld._id)
                             return
                         }
                         else if (res.statusCode===401){
                             actions.setFieldError('password', 'Logined failed.  Either your username or password is wrong.')
                         }
                         else {
-                            actions.setFieldError('password', 'Something wrong with our system. ;(')
+                            actions.setStatus('Something wrong with our system. ;(')
                         }
                     } catch(e) {
-                        actions.setFieldError('password', 'Something wrong with our system. ;(')
+                    console.log(e)
+                        actions.setStatus('Something wrong with our system. ;(')
                     }
                     actions.setSubmitting(false)
                     
                 }}
             >
-            {({ errors, handleSubmit, isSubmitting, dirty, touched, values }) => (
+            {({ errors, handleSubmit, isSubmitting, dirty, touched, values, status }) => (
                 <FormikForm>
                     <Field
                         name="user"
@@ -72,15 +71,15 @@ const LoginForm = () => (
                         component={TextField}
                         label="Password"
                         value={values.password}
-                    />   
+                    />
+                    <FormErr>{status}</FormErr>
                     <FormButton
                         type="submit"
                         disabled={isSubmitting || !isEmpty(pickBy(errors)) || !dirty}
                     >
                         Submit
                     </FormButton>
-                    <button type="button" onClick={test.bind(this, errors)
-                    }>test</button>
+                    
                 </FormikForm>
             )}
             </Formik>

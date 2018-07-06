@@ -8,6 +8,8 @@ const FormikForm = styled(Form)`
     display: flex;
     flex-flow: row wrap;
     flex: 0 0 auto;
+    
+    
     @media (max-width: 480px) {
         width: 95%
     }
@@ -108,5 +110,13 @@ export const FormButton = ({children, ...props}) => (
         </FB>
     </FieldDiv>
 )
+
+const FE = styled.label`
+    color: Red;
+    display: block;
+    font-size: 1em;
+`
+
+export const FormErr = ({children, ...props}) => ( <FE {...props}>{children}</FE> )
 
 export default FormikForm

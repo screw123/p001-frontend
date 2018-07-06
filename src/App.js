@@ -6,9 +6,15 @@ import routes from './routes.js'
 import Navbar from './component/Navbar.js'
 import PrivateRoute from './component/PrivateRoute.js'
 
-import { GqlApiProvider } from './container/GqlApi.js'
+import GqlApi, { GqlApiProvider } from './container/GqlApi.js'
 
 class App extends React.Component {
+    constructor() {
+        super()
+        if (!GqlApi.state.isLogined) {
+            GqlApi.checkLogined()
+        }
+    }
     
     genItems = (routes) => {
         let c = []

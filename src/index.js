@@ -15,7 +15,6 @@ i18n
     .use(LngDetector)
     .use(reactI18nextModule)
     .init({
-        debug: true,
         fallbackLng: 'en',
         ns: ['common'],
         defaultNS: 'common',

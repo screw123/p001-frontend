@@ -2,6 +2,9 @@ import React from "react"
 import { I18n } from 'react-i18next'
 import styled from 'styled-components'
 
+import LoadingAnim, {BigLoadingScreen, LoadingIcon} from '../component/Loading.js'
+import Background from '../component/Background.js'
+
 const BigImg = styled.img`
     max-width: auto;
     height: 100%;
@@ -52,9 +55,14 @@ class IndexPage extends React.Component {
     
     
     render = () => (
-        <I18n>
+        <div>
+            <BigLoadingScreen/>
+            
+        
+        {false && <I18n>
             {(t) => (
                 <BasicParallaxDiv>
+                    
                     <ParallaxGroup>
                         <BackLayer>
                             <BigImg src="https://www.vivavhs.co.uk/wp-content/uploads/2013/02/8.jpg" />
@@ -100,8 +108,8 @@ Jodie Foster Answers the Web&#39;s Most Searched Questions</PA>
                     </ParallaxGroup>
                 </BasicParallaxDiv>
             )}
-        </I18n>
-
+        </I18n>}
+        </div>
     )
 }
 

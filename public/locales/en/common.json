@@ -31,5 +31,7 @@
     "Verify": "Verify",
     "ID": "ID",
     "Verification PIN": "Verification PIN",
-    "User Activation": "User Activation"
+    "User Activation": "User Activation",
+    "Email/Phone or password error.  Please check and try again.": "Email/Phone or password error.  Please check and try again.",
+    "System is currently busy, please wait for 1 minute and try again": "System is currently busy, please wait for 1 minute and try again"
 }

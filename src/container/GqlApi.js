@@ -65,8 +65,20 @@ class ApolloContainer extends Container {
         }
     }
     
-    setLogined(b) {
-        this.setState({isLogined: b})
+    async login(userPWObj) {
+        //userPWObj = {user: aaa, password: bbb}
+        try {
+            const res = await request.post('https://cd.nicecar.hk/l').withCredentials().type('form').query(userPWObj).ok(()=>true)
+            if (res.statusCode===200) {
+                this.setState({isLogined: true})
+                return true
+            }
+            else if (res.statusCode===401){ return 401 }
+            else { return 500 }
+        } catch(e) {
+            console.log(e)
+            return 500
+        }
     }
     
     setUid(id) {

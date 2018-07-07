@@ -28,6 +28,7 @@ const FormikForm = styled(Form)`
 
 const Input = styled.input`
     width: ${({cols}) => cols ? Math.floor(100/cols) + `%` : `100%`};
+    
 	display: block;
 `
 
@@ -97,7 +98,8 @@ export const FB = styled.button`
     border: 2px solid ${props => props.disabled ? `rgba(128, 128, 128, 0.2)` : `White`};;
 	display: flex;
 	flex: 0 0 auto;
-	align-self: stretch;
+    align-self: stretch;
+    font-size: 1em;
     font-weight: ${props => props.disabled ? `400` : `600`};
     color: ${props => props.disabled ? `rgba(128, 128, 128, 0.2)` : `Black`};
     ${props => props.fullSize && `width: 100%`}

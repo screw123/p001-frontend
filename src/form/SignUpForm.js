@@ -12,7 +12,8 @@ import pickBy from 'lodash/pickBy'
 import { ApolloProvider, Query, Mutation } from 'react-apollo'
 import { addUser } from '../gql/query.js'
 
-import GqlApi,{ GqlApiSubscriber } from '../container/GqlApi.js'
+import GqlApi from '../container/GqlApi.js'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import parseApolloErr from '../util/parseErr.js'
 
@@ -79,7 +80,7 @@ const SignUpForm = () => (
                         
                     }}
                 >
-                {({ errors, handleSubmit, isSubmitting, isValid, touched, values, dirty, status }) => (
+                {({ errors, isSubmitting, values, dirty, status, setStatus }) => (
                     <div>
                         <FormikForm>
                             <Field
@@ -109,13 +110,19 @@ const SignUpForm = () => (
                                 component={TextField}
                                 label="Hong Kong Mobile Number"
                                 value={values.mobilePhone}
+                                
                             />
                             <Field
                                 name="password"
-                                type="password"
+                                type={(status['password']['showPw'])? 'text': 'password'}
                                 component={TextField}
                                 label="Password (8 characters with uppercase and lowercase letters)"
                                 value={values.password}
+                                rightIcon={[<FontAwesomeIcon icon="eye-slash" onClick={()=> {
+                                    let s = status
+                                    s['password']['showPw'] = (s['password']['showPw']) ? false: true
+                                    setStatus(s)
+                                }}/>]}
                             />
                             <Field
                                 name="pw_again"
@@ -124,7 +131,7 @@ const SignUpForm = () => (
                                 label="Confirm Password"
                                 value={values.pw_again}
                             />
-                            <FormErr>{status}</FormErr>
+                            <FormErr>{status.form}</FormErr>
                             <FormButton
                                 type="submit"
                                 disabled={isSubmitting || !isEmpty(pickBy(errors)) || !dirty }
@@ -148,8 +155,7 @@ const validateForm = {
     lastName: ({lastName}) => (lastName.length>0)? undefined : 'Please enter your Last Name',
     email: ({email}) => isEmail(email)? undefined : 'Please enter valid email address',
     mobilePhone: ({mobilePhone}) => isMobilePhone(mobilePhone, 'zh-HK')? undefined : 'Please enter Hong Kong mobile phone number',
-    password: ({password}) => (password.length>5)? undefined : 'Need at least 6 characters',
-    pw_again: ({pw_again, password}) => (pw_again===password)? undefined : 'Password does not match'
+    password: ({password}) => (password.length>7)? undefined : 'Need at least 8 characters'
 }
 
 

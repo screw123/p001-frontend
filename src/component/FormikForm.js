@@ -28,8 +28,15 @@ const FormikForm = styled(Form)`
 
 const Input = styled.input`
     width: ${({cols}) => cols ? Math.floor(100/cols) + `%` : `100%`};
-    
-	display: block;
+    display: block;
+    border: none;
+    background: transparent;
+    font-size: 1em;
+`
+
+const RightIcon = styled.span`
+    float: right;
+    display: block;
 `
 
 const ErrorLabel = styled.label`
@@ -66,32 +73,55 @@ const FieldLabel = styled.label`
     font-size: 0.9em;
 `
 
+const InputRow = styled.div`
+    display: flex
+    box-sizing:border-box;
+    border-radius: 0.25em;
+    border: 0.13em solid #999999;
+    background-color: rgba(255, 255, 255, 0.1);
+    text-overflow: clip;
+    line-height: 1.5;
+    padding: 0.5em;
+`
+
 export const TextField = ({
     field: { name, placeholder, ...fields }, // { name, value, onChange, onBlur }
     form: { touched, errors }, //also values, handleXXXX, dirty, isValid, status, etc.
     classNames,
     label,
+    rightIcon,
     ...props
 }) => {
-
+    console.log(name, rightIcon)
     return (
         <I18n>
         {(t) => (
             <FieldDiv className={classNames}>
                 <FieldLabel>
                     {t(label)}
-                    <Input
-                        name={name}
-                        placeholder={t(placeholder)}
-                        {...fields}
-                        {...props}
-                    />
+                    <InputRow>
+                        <Input
+                            name={name}
+                            placeholder={t(placeholder)}
+                            {...fields}
+                            {...props}
+                        />
+                        {rightIcon && genRightIcon(rightIcon)}
+                    </InputRow>
                 </FieldLabel>
                 {touched[name] && errors[name] && <ErrorLabel>{t(errors[name])}</ErrorLabel> }
             </FieldDiv>
         )}
         </I18n>
     )
+}
+
+const genRightIcon = (iconArr) => {
+    let arr = []
+    for(let i=0; i<iconArr.length; i++) {
+        arr.push(iconArr[i])
+    }
+    return arr
 }
 
 export const FB = styled.button`

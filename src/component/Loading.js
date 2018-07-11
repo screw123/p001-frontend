@@ -1,19 +1,22 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
-import Background from './Background.js'
 
 //spin kit
 
 const SkFoldingCube = styled.div`
     margin: ${({size})=> (size>0) ? (size/10):0.1}em ${({size})=> (size>0) ? (size/2):0.5}em;
-    width: ${({size})=> (size>0) ? (size*0.7):0.7}em;
-    height: ${({size})=> (size>0) ? (size*0.7):0.7}em;
-    ${({fullSize}) => fullSize ? `position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    margin: auto`:'position: relative'};
+    width: ${({size})=> (size>0) ? (size*0.8):0.8}em;
+    height: ${({size})=> (size>0) ? (size*0.8):0.8}em;
+    ${({fullSize}) => fullSize ? 
+        `position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        margin: auto`
+        :
+        'position: relative'
+    };
     transform: rotateZ(45deg);`
 
 const skFoldCubeAngle = keyframes`
@@ -82,6 +85,7 @@ const FullHeightDiv = styled.div`
 
 const InlineDiv = styled.div`
     display: flex;
+    align-self: center;
     flex-flow: row wrap;
     box-sizing: border-box;
 `
@@ -101,9 +105,9 @@ export const BigLoadingScreen = () => (
     </FullHeightDiv>
 )
 
-export const LoadingIcon = () => (
-    <InlineDiv>hellp
-        <LoadingAnim size={1} />
+export const LoadingIcon = ({...props}) => (
+    <InlineDiv>
+        <LoadingAnim size={1} {...props}/>
     </InlineDiv>
 )
 

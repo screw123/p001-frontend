@@ -1,3 +1,6 @@
+import { Link } from "react-router-dom"
+import React from "react"
+
 const parseApolloErr = (err, t) => {
     let errStack = []
     if (err.graphQLErrors) {
@@ -7,7 +10,16 @@ const parseApolloErr = (err, t) => {
             errObj['key'] = Object.keys(err.graphQLErrors[i].data)[0]
             switch(errObj.type) {
                 case 'INVALID': 
-                    errObj['message'] = t(errObj['key']) + t('cannot be') + err.graphQLErrors[i].data[errObj['key']]
+                    errObj['message'] = t(errObj['key']) +' '+ t('cannot be') + ' '+ err.graphQLErrors[i].data[errObj['key']]
+                    break
+                case 'KEY_EXIST':
+                    errObj['message'] = t(errObj['key']) +' '+ err.graphQLErrors[i].data[errObj['key']] + ' ' + t('already exists')
+                    if (['email', 'mobilePhone'].includes(errObj['key'])) {
+                        errObj['message'] = errObj['message'] + ', ' + <Link to='/login' key='login'>{t('Do you want to login instead?')}</Link>
+                    }
+                    else {
+                        errObj['message'] = errObj['message'] + ', ' + t('please choose another combination')
+                    }
                     break
                 case 'USER_ALREADY_ACTIVATED':
                     errObj['message'] = t('Your user login is already activated, redirecting to login page...')
@@ -17,6 +29,9 @@ const parseApolloErr = (err, t) => {
                     break
                 case 'NOT_AUTHORIZED':
                     errObj['message'] = t('Not authorized')
+                    break
+                case 'PASSWORD_TOO_SIMPLE':
+                    errObj['message'] = t('Need at least 8 characters, with both uppercase and lowercase')
                     break
                 default:
                     errObj['message'] = t(errObj['key']) + t('cannot be') + err.graphQLErrors[i].data[errObj['key']]

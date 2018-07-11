@@ -1,14 +1,14 @@
 import React from 'react'
 import { Form } from 'formik'
 import styled from 'styled-components'
-import { I18n } from 'react-i18next'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const FormikForm = styled(Form)`
     padding: 1em;
     display: flex;
+    box-sizing:border-box;
     flex-flow: row wrap;
     flex: 0 0 auto;
-    
     
     @media (max-width: 480px) {
         width: 95%
@@ -32,11 +32,7 @@ const Input = styled.input`
     border: none;
     background: transparent;
     font-size: 1em;
-`
-
-const RightIcon = styled.span`
-    float: right;
-    display: block;
+    outline: none;
 `
 
 const ErrorLabel = styled.label`
@@ -80,41 +76,63 @@ const InputRow = styled.div`
     border: 0.13em solid #999999;
     background-color: rgba(255, 255, 255, 0.1);
     text-overflow: clip;
-    line-height: 1.5;
     padding: 0.5em;
+`
+
+const RBGroup = styled.div`
+    border-radius: 0.25em;
+    border: 0.13em solid #999999;
+    background-color: rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    display: inline-block;
+    box-sizing:border-box;
+`
+
+const RB = styled.div`
+    box-sizing:border-box;
+    padding: 0.5em;
+    display: inline-block;
+    overflow: hidden;
+`
+
+const RBInput = styled.input`
+    border: none;
+    background: transparent;
+    outline: none;
+    visibility: hidden;
+    display: none;
+`
+
+const RBLabel = styled.label`
+    display: inline-block;
+    font-size: 1em;
+    background: transparent;
+    width: 5em;
+    cursor: pointer;
+    ${props => (props.checked)? `background: rgba(255, 255, 255, 0.7);
+        transition: all 0.2s ease-out;`:''}
 `
 
 export const TextField = ({
     field: { name, placeholder, ...fields }, // { name, value, onChange, onBlur }
-    form: { touched, errors }, //also values, handleXXXX, dirty, isValid, status, etc.
-    classNames,
-    label,
-    rightIcon,
-    ...props
-}) => {
-    console.log(name, rightIcon)
-    return (
-        <I18n>
-        {(t) => (
-            <FieldDiv className={classNames}>
-                <FieldLabel>
-                    {t(label)}
-                    <InputRow>
-                        <Input
-                            name={name}
-                            placeholder={t(placeholder)}
-                            {...fields}
-                            {...props}
-                        />
-                        {rightIcon && genRightIcon(rightIcon)}
-                    </InputRow>
-                </FieldLabel>
-                {touched[name] && errors[name] && <ErrorLabel>{t(errors[name])}</ErrorLabel> }
-            </FieldDiv>
-        )}
-        </I18n>
-    )
-}
+    form: { touched }, //also values, handleXXXX, dirty, isValid, status, etc.
+    classNames, label, rightIcon, err, ...props }) => (
+    <FieldDiv className={classNames}>
+        <FieldLabel>
+            {label}
+            <InputRow>
+                <Input
+                    name={name}
+                    placeholder={placeholder}
+                    {...fields}
+                    {...props}
+                />
+                {rightIcon && genRightIcon(rightIcon)}
+            </InputRow>
+        </FieldLabel>
+        {touched[name] && err && <ErrorLabel>{err}</ErrorLabel> }
+    </FieldDiv>
+)
 
 const genRightIcon = (iconArr) => {
     let arr = []
@@ -125,7 +143,7 @@ const genRightIcon = (iconArr) => {
 }
 
 export const FB = styled.button`
-    border: 2px solid ${props => props.disabled ? `rgba(128, 128, 128, 0.2)` : `White`};;
+    border: 2px solid ${props => props.disabled ? `rgba(128, 128, 128, 0.2)` : `White`};
 	display: flex;
 	flex: 0 0 auto;
     align-self: stretch;
@@ -150,5 +168,73 @@ const FE = styled.label`
 `
 
 export const FormErr = ({children, ...props}) => ( <FE {...props}>{children}</FE> )
+
+const IconDiv = styled.div`
+    align-self: center;
+    padding: 0.15em;
+    cursor: pointer;
+`
+
+export const FormIcon = ({onClick, ...props}) => (
+    <IconDiv onClick={onClick}>
+        <FontAwesomeIcon {...props}/>
+    </IconDiv>
+)
+
+export const RadioButtonGroup = ({value, err, touched, label, className, children, name }) => (
+    <div>
+        <FieldLabel>{label}</FieldLabel>
+        <RBGroup>
+            {children}
+        </RBGroup>
+        {touched[name] && err && <ErrorLabel>{err}</ErrorLabel> }
+    </div>
+)
+
+export const RadioButton = ({
+    field: { name, value, ...fields },
+    label, className, checked, ...props }) => {
+    return (
+    <RB>
+        <RBLabel checked={checked}>
+            {label}
+            <RBInput
+                name={name}
+                type="radio"
+                value={value} 
+                checked={checked}
+                {...fields}
+                {...props}
+            />
+        </RBLabel>
+    </RB>
+)}
+
+const CB = styled.input`
+
+    
+`
+
+export const CheckBox = ({
+    field: { name, value, ...fields },
+    label, className, checked, ...props }) => {
+    return (
+        <div>
+            <FieldLabel>
+                <CB
+                    name={name}
+                    type="checkbox"
+                    value={value} 
+                    checked={checked}
+                    {...fields}
+                    {...props}
+                />
+                {label}
+            </FieldLabel>
+        </div>
+        
+    )
+}
+
 
 export default FormikForm

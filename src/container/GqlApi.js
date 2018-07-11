@@ -56,11 +56,11 @@ class ApolloContainer extends Container {
     async checkLogined() {
         try {
             const res = await request.get('https://cd.nicecar.hk/checkl').withCredentials()
-            console.log('res=',res)
             if (res.statusCode===200) {
-                this.setLogined(true)
+                this.setState({isLogined: true})
             }
-        } catch(e) {
+        }
+        catch(e) {
             console.log(e)
         }
     }
@@ -71,14 +71,20 @@ class ApolloContainer extends Container {
             const res = await request.post('https://cd.nicecar.hk/l').withCredentials().type('form').query(userPWObj).ok(()=>true)
             if (res.statusCode===200) {
                 this.setState({isLogined: true})
-                return true
+                return new Promise((resolve, reject) => resolve(true))
             }
-            else if (res.statusCode===401){ return 401 }
-            else { return 500 }
+            else if (res.statusCode===401){ return new Promise((resolve, reject) => resolve(401)) }
+            else { return new Promise((resolve, reject) => resolve(500)) }
         } catch(e) {
             console.log(e)
-            return 500
+            return new Promise((resolve, reject) => resolve(500))
         }
+    }
+    
+    async logout() {
+        this.setState({isLogined: false})
+        this.setState({gqlClient: {}})
+        this.setState({gqlClientPublic: {}})
     }
     
     setUid(id) {

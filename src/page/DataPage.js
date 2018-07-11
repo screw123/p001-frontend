@@ -56,7 +56,7 @@ class DataPage extends React.Component {
                         return(
                             <div>
                             <button onClick={() => {
-                                client.resetStore()
+                                GqlApi.logout()
                                 }}>Logout</button>
                                 {makePretty(data.getMyself)}
                             </div>

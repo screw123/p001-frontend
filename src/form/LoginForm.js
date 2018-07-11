@@ -9,7 +9,6 @@ import isEmail from 'validator/lib/isEmail'
 import isEmpty from 'lodash/isEmpty'
 import pickBy from 'lodash/pickBy'
 
-import { getMyself } from '../gql/query.js'
 import { GqlApiSubscriber } from '../container/GqlApi.js'
 
 
@@ -35,7 +34,7 @@ const LoginForm = () => (
                     }}
                     onSubmit={async (values, actions) => {
                         actions.setStatus('')
-                        const isLoginSuccess = q.login({user: values.user, password: values.password})
+                        const isLoginSuccess = await q.login({user: values.user, password: values.password})
                         if (isLoginSuccess===true) {
                             return
                         }
@@ -45,6 +44,7 @@ const LoginForm = () => (
                                     actions.setFieldError('password', t('Email/Phone or password error.  Please check and try again.'))
                                     break
                                 case 500:
+                                default:
                                     actions.setStatus(t('System is currently busy, please wait for 1 minute and try again'))
                                     break
                             }
@@ -73,7 +73,7 @@ const LoginForm = () => (
                             type="submit"
                             disabled={isSubmitting || !isEmpty(pickBy(errors)) || !dirty}
                         >
-                            Submit
+                            { t('Submit')}
                         </FormButton>
                         
                     </FormikForm>
@@ -91,9 +91,4 @@ const validateForm = {
     isLogined: ()=>undefined
 }
 
-const test = (errors) => {
-                            console.log('errors=',errors)
-                            console.log('pickby=',pickBy(errors))
-                            console.log('isempty=', isEmpty(pickBy(errors)))
-                        }
 export default LoginForm

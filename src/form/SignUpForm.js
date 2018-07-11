@@ -1,23 +1,78 @@
 import React from "react"
 import { Formik, Field } from 'formik'
+import styled from 'styled-components'
+import { Link } from "react-router-dom"
 import isMobilePhone from 'validator/lib/isMobilePhone'
 import isEmail from 'validator/lib/isEmail'
+import FormikForm, { TextField, FormButton, FormErr, FormIcon, RadioButtonGroup, RadioButton, CheckBox } from '../component/FormikForm.js'
+import TermsAndConditionPage from '../page/TermsAndConditionPage.js'
+import Modal from '../component/Modal.js'
 
-import FormikForm, { TextField, FormButton, FormErr } from '../component/FormikForm.js'
 import { I18n } from 'react-i18next'
 
 import isEmpty from 'lodash/isEmpty'
 import pickBy from 'lodash/pickBy'
+import omitBy from 'lodash/omitBy'
+import isUndefined from 'lodash/isUndefined'
 
-import { ApolloProvider, Query, Mutation } from 'react-apollo'
+import { ApolloProvider, Mutation } from 'react-apollo'
 import { addUser } from '../gql/query.js'
 
 import GqlApi from '../container/GqlApi.js'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
 import parseApolloErr from '../util/parseErr.js'
+import passwordTest from '../util/passwordTest.js'
 
-const SignUpForm = () => (
+const TCDiv = styled.div`
+    font-weight: 600;
+    cursor: pointer;
+`
+
+class SignUpForm extends React.Component {
+    
+    constructor(props) {
+        super(props)
+        this.state={
+            showPw: false,
+            showTC: false
+        }
+        this.toggleShowPw = this.toggleShowPw.bind(this)
+        this.toggleShowTC = this.toggleShowTC.bind(this)
+        this.validate = this.validate.bind(this)
+    }
+    
+    toggleShowPw() {
+        if (this.state.showPw===false) { this.setState({showPw: true}) }
+        else { this.setState({showPw: false})}
+    }
+    
+    toggleShowTC() {
+        if (this.state.showTC===false) { this.setState({showTC: true}) }
+        else { this.setState({showTC: false})}
+    }
+    
+    validate(v) {
+        const validateFunc = {
+            firstName: ({firstName}) => (firstName.length>0)? undefined : 'Please enter your First Name',
+            lastName: ({lastName}) => (lastName.length>0)? undefined : 'Please enter your Last Name',
+            email: ({email}) => isEmail(email)? undefined : 'Please enter valid email address',
+            mobilePhone: ({mobilePhone}) => isMobilePhone(mobilePhone, 'zh-HK')? undefined : 'Please enter Hong Kong mobile phone number',
+            password: ({password}) => (passwordTest(password))? undefined : 'Need at least 8 characters, with both uppercase and lowercase',
+            verifyBySMS: ({verifyBySMS}) => (['Email','SMS'].includes(verifyBySMS))? undefined: 'Please choose a way to verify your account',
+            agreeTerms: ({agreeTerms}) => (agreeTerms) ? undefined : 'Please read and agree on our Terms and Condition before proceed'
+        }
+        const keyArr = Object.keys(v)
+        let err = {}
+        for (let i=0; i<keyArr.length; i++) {
+            const f = keyArr[i]
+            const e = validateFunc[keyArr[i]](v)
+            err[f] = e
+        }
+        return omitBy(err, isUndefined)
+    }
+    
+    
+    
+    render(){return(
     <ApolloProvider client={GqlApi.getGqlClientPublic()}>
         <Mutation mutation={addUser} errorPolicy="all">
         {(mutate, {loading, err})=>(
@@ -27,136 +82,148 @@ const SignUpForm = () => (
                     initialValues={{
                         email:'',
                         password:'',
-                        pw_again:'',
                         firstName: '',
                         lastName: '',
-                        mobilePhone: ''
+                        mobilePhone: '',
+                        verifyBySMS: 'Email',
+                        agreeTerms: false,
                     }}
-                    validate={ (values) => {
-                        const keyArr = Object.keys(validateForm)
-                        let err = {}
-                        for (let i=0; i<keyArr.length; i++) {
-                            const f = keyArr[i]
-                            const e = validateForm[f](values)
-                            if (e !== undefined) { err[f] = e }
-                        }
-                        return err
-                    }}
-                    onSubmit={async (values, actions) => {
+                    validate={this.validate}
+                    onSubmit={ async(values, actions) => {
                         actions.setStatus('')
-                        const keyArr = Object.keys(validateForm)
-                        let haveErr = false
-                        for (let i=0; i<keyArr.length; i++) {
-                            const f = keyArr[i]
-                            const e = validateForm[f](values)
-                            if (e !== undefined) {
-                                actions.setFieldError(f, e)
-                                haveErr = true
-                            }
-                        }
-                        if (haveErr) { actions.setSubmitting(false) }
-                        else {
-                            //submit to server
-                            try {
-                                const d = await mutate({variables: {
-                                    firstName: values.firstName,
-                                    lastName: values.lastName,
-                                    email: values.email,
-                                    password: values.password,
-                                    mobilePhone: values.mobilePhone
-                                }})
-                                console.log(d)
-                            } catch(e) { 
-                                const errStack = parseApolloErr(e, t)
-                                for (let i=0; i<errStack.length; i++) {
-                                    if (errStack[i].key) { actions.setStatus(errStack[i].message) }
-                                    else {actions.setFieldError(errStack[i].key, errStack[i].message)}
+                        //submit to server
+                        console.log('validate ok, now submit')
+                        try {
+                            const d = await mutate({variables: {
+                                firstName: values.firstName,
+                                lastName: values.lastName,
+                                email: values.email,
+                                password: values.password,
+                                mobilePhone: values.mobilePhone,
+                                verifyBySMS: values.verifyBySMS,
+                            }})
+                            console.log(d)
+                        } catch(e) { 
+                            console.log('submit err', e)
+                            const errStack = parseApolloErr(e, t)
+                            console.log('errStack=', errStack)
+                            for (let i=0; i<errStack.length; i++) {
+                                if (errStack[i].key) { 
+                                    console.log('err key =', errStack[i].key)
+                                    
+                                    actions.setFieldError(errStack[i].key, errStack[i].message)
                                 }
-                                actions.setSubmitting(false)
+                                else {
+                                    actions.setStatus(errStack[i].message)
+                                }
                             }
-                            
-                            console.log('submitted to server')
+                            actions.setSubmitting(false)
                         }
-                        
                     }}
+                    
                 >
-                {({ errors, isSubmitting, values, dirty, status, setStatus }) => (
-                    <div>
-                        <FormikForm>
+                {({ errors, handleSubmit, isSubmitting, dirty, touched, values, status }) => {
+                return (
+                    
+                    <FormikForm>
+                        <Field
+                            name="firstName"
+                            type="text"
+                            component={TextField}
+                            label={t('First Name')}
+                            err={errors.firstName}
+                            value={values.firstName}
+                        />
+                        <Field
+                            name="lastName"
+                            type="text"
+                            component={TextField}
+                            label={t('Last Name')}
+                            value={values.lastName}
+                            err={errors.lastName}
+                        />
+                        <Field
+                            name="email"
+                            type="text"
+                            component={TextField}
+                            label={t('Email')}
+                            value={values.email}
+                            err={errors.email}
+                        />
+                        <Field
+                            name="mobilePhone"
+                            type="text"
+                            component={TextField}
+                            label={t('Hong Kong Mobile Number')}
+                            value={values.mobilePhone}
+                            err={errors.mobilePhone}
+                        />
+                        <Field
+                            name="password"
+                            type={(this.state.showPw)? 'text': 'password'}
+                            component={TextField}
+                            label={t('Password')}
+                            placeholder={t('8 characters with uppercase and lowercase letters')}
+                            value={values.password}
+                            err={errors.password}
+                            rightIcon={[<FormIcon icon={(this.state.showPw)? 'eye': 'eye-slash'} key="showPw" onClick={ this.toggleShowPw}/>]}
+                        />
+                        <RadioButtonGroup
+                            name="verifyBySMS"
+                            label={t('How do you want to verify your account?')}
+                            value={values.verifyBySMS}
+                            err={errors.verifyBySMS}
+                            touched={touched}
+                        >
                             <Field
-                                name="firstName"
-                                type="text"
-                                component={TextField}
-                                label="First Name"
-                                value={values.firstName}
+                                component={RadioButton}
+                                name="verifyBySMS"
+                                value="SMS"
+                                label="SMS"
+                                checked={values.verifyBySMS==="SMS"}
                             />
                             <Field
-                                name="lastName"
-                                type="text"
-                                component={TextField}
-                                label="Last Name"
-                                value={values.lastName}
-                            />
-                            <Field
-                                name="email"
-                                type="text"
-                                component={TextField}
+                                component={RadioButton}
+                                name="verifyBySMS"
+                                value="Email"
                                 label="Email"
-                                value={values.email}
+                                checked={values.verifyBySMS==="Email"}
                             />
-                            <Field
-                                name="mobilePhone"
-                                type="text"
-                                component={TextField}
-                                label="Hong Kong Mobile Number"
-                                value={values.mobilePhone}
+                        </RadioButtonGroup>
+                        <Field
+                            component={CheckBox}
+                            name="agreeTerms"
+                            value="agreeTerms"
+                            key="agreeTerms"
+                            label={
+                                [t("I have already review and agree on "),
                                 
-                            />
-                            <Field
-                                name="password"
-                                type={(status['password']['showPw'])? 'text': 'password'}
-                                component={TextField}
-                                label="Password (8 characters with uppercase and lowercase letters)"
-                                value={values.password}
-                                rightIcon={[<FontAwesomeIcon icon="eye-slash" onClick={()=> {
-                                    let s = status
-                                    s['password']['showPw'] = (s['password']['showPw']) ? false: true
-                                    setStatus(s)
-                                }}/>]}
-                            />
-                            <Field
-                                name="pw_again"
-                                type="password"
-                                component={TextField}
-                                label="Confirm Password"
-                                value={values.pw_again}
-                            />
-                            <FormErr>{status.form}</FormErr>
-                            <FormButton
-                                type="submit"
-                                disabled={isSubmitting || !isEmpty(pickBy(errors)) || !dirty }
-                                value="Submit"
-                            >
-                                Submit
-                            </FormButton>
-                        </FormikForm>
-                    </div>
-                )}
+                                ]}
+                            checked={values.agreeTerms===true}
+                        />
+                        <TCDiv onClick={this.toggleShowTC}>{t('Terms of Condition')}</TCDiv>
+                        <FormErr>{status && status.form}</FormErr>
+                        <FormButton
+                            type="submit"
+                            disabled={isSubmitting || !isEmpty(pickBy(errors)) || !dirty || loading }
+                        >
+                           { t('Submit')}
+                        </FormButton>
+                        <Modal
+                            show={this.state.showTC}
+                            component={<TermsAndConditionPage/>}
+                            title={t('Terms and Conditions')}
+                        />
+                    </FormikForm>
+                )}}
                 </Formik>
             )}
             </I18n>
         )}
         </Mutation>
     </ApolloProvider>
-)
-
-const validateForm = {
-    firstName: ({firstName}) => (firstName.length>0)? undefined : 'Please enter your First Name',
-    lastName: ({lastName}) => (lastName.length>0)? undefined : 'Please enter your Last Name',
-    email: ({email}) => isEmail(email)? undefined : 'Please enter valid email address',
-    mobilePhone: ({mobilePhone}) => isMobilePhone(mobilePhone, 'zh-HK')? undefined : 'Please enter Hong Kong mobile phone number',
-    password: ({password}) => (password.length>7)? undefined : 'Need at least 8 characters'
+    )}
+    
 }
-
 
 export default SignUpForm

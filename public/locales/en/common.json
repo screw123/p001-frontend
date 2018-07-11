@@ -13,7 +13,6 @@
     "Last Name": "Last Name",
     "Email": "Email",
     "Hong Kong Mobile Number": "Hong Kong Mobile Number",
-    "Password (8 characters with uppercase and lowercase letters)": "Password (8 characters with uppercase and lowercase letters)",
     "Confirm Password": "Confirm Password",
     "Please enter your First Name": "Please enter your First Name",
     "Please enter your Last Name": "Please enter your Last Name",
@@ -33,5 +32,6 @@
     "Verification PIN": "Verification PIN",
     "User Activation": "User Activation",
     "Email/Phone or password error.  Please check and try again.": "Email/Phone or password error.  Please check and try again.",
-    "System is currently busy, please wait for 1 minute and try again": "System is currently busy, please wait for 1 minute and try again"
+    "System is currently busy, please wait for 1 minute and try again": "System is currently busy, please wait for 1 minute and try again",
+    "How do you want to verify your account?": "How do you want to verify your account?"
 }

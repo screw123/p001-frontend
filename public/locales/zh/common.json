@@ -13,7 +13,6 @@
     "Last Name": "名",
     "Email": "電郵地址",
     "Hong Kong Mobile Number": "香港手機號碼",
-    "Password (8 characters with uppercase and lowercase letters)": "密碼(8位或以上, 含大階及小階字母)",
     "Confirm Password": "再次輸入密碼",
     "Please enter your First Name": "請輸入姓氏",
     "Please enter your Last Name": "請輸入名字",
@@ -33,5 +32,6 @@
     "Verification PIN": "驗證碼",
     "User Activation": "用戶驗證",
     "Email/Phone or password error.  Please check and try again.": "電郵/電話 或密碼錯誤, 請修正並重試.",
-    "System is currently busy, please wait for 1 minute and try again": "系統現在繁忙, 請等1分鐘再試."
+    "System is currently busy, please wait for 1 minute and try again": "系統現在繁忙, 請等1分鐘再試.",
+    "How do you want to verify your account?": "確認帳戶的方法"
 }

@@ -3,6 +3,7 @@ import IndexPage from './page/IndexPage.js'
 import DataPage from './page/DataPage.js'
 import SignUpPage from './page/SignUpPage.js'
 import UserActivationPage from './page/UserActivationPage.js'
+import TermsAndConditionPage from './page/TermsAndConditionPage.js'
 
 
 const routes = [
@@ -27,6 +28,12 @@ const routes = [
         menuName: 'User Activation',
         component: UserActivationPage,
         showInNavBar: false
+    },
+    {
+        path: "/terms",
+        exact: true,
+        menuName: 'Terms And Condition',
+        component: TermsAndConditionPage
     },
     {
         path: "/",

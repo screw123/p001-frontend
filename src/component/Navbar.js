@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { I18n } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
-import GqlApi, {GqlApiSubscriber} from '../container/GqlApi.js'
+import GqlApi from '../container/GqlApi.js'
 
 const StickyDiv = styled.div`
     position: sticky;

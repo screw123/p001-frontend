@@ -15,7 +15,7 @@ class UserActivationPage extends React.Component {
             {(t, { i18n }) => (
                 <Background>
                     <h1>{t('User Activation')}</h1>
-                    <UserActivationForm match={this.props.match} />
+                    <UserActivationForm match={this.props.match} user={{}} />
                 </Background>
             )}
             </I18n>

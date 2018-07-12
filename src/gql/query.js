@@ -194,6 +194,7 @@ export const addUser = gql`
             createThru: "WebClient"
         ) {
             _id
+            verifyDeadline
         }
     }
 `

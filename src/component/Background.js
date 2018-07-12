@@ -7,9 +7,19 @@ const Background = styled.div`
     min-height: 100vh;
 `
 
-const Row = styled.div`
+export const WrapRow = styled.div`
     display: flex;
+    flex-flow: row wrap;
+`
+
+export const StraightRow = styled.div`
+    display: flex
     flex-flow: row nowrap;
+`
+
+export const ClickableText = styled.div`
+    font-weight: 600;
+    cursor: pointer;
 `
 
 export default Background

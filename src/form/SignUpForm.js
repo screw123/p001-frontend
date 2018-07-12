@@ -1,12 +1,11 @@
 import React from "react"
 import { Formik, Field } from 'formik'
-import styled from 'styled-components'
-import { Link } from "react-router-dom"
 import isMobilePhone from 'validator/lib/isMobilePhone'
 import isEmail from 'validator/lib/isEmail'
-import FormikForm, { TextField, FormButton, FormErr, FormIcon, RadioButtonGroup, RadioButton, CheckBox } from '../component/FormikForm.js'
+import FormikForm, { TextField, FormButton, FormErr, FormIcon, RadioButtonGroup, RadioButton, CheckBox, InputGroup } from '../component/FormikForm.js'
 import TermsAndConditionPage from '../page/TermsAndConditionPage.js'
 import Modal from '../component/Modal.js'
+import {StraightRow, ClickableText } from '../component/Background.js'
 
 import { I18n } from 'react-i18next'
 
@@ -22,18 +21,13 @@ import GqlApi from '../container/GqlApi.js'
 import parseApolloErr from '../util/parseErr.js'
 import passwordTest from '../util/passwordTest.js'
 
-const TCDiv = styled.div`
-    font-weight: 600;
-    cursor: pointer;
-`
-
 class SignUpForm extends React.Component {
     
     constructor(props) {
         super(props)
         this.state={
             showPw: false,
-            showTC: false
+            showTC: false,
         }
         this.toggleShowPw = this.toggleShowPw.bind(this)
         this.toggleShowTC = this.toggleShowTC.bind(this)
@@ -102,7 +96,8 @@ class SignUpForm extends React.Component {
                                 mobilePhone: values.mobilePhone,
                                 verifyBySMS: values.verifyBySMS,
                             }})
-                            console.log(d)
+                            console.log('server return', d)
+                            if (this.props.onUserCreated) { this.props.onUserCreated(d.data.addUser) }
                         } catch(e) { 
                             console.log('submit err', e)
                             const errStack = parseApolloErr(e, t)
@@ -122,7 +117,7 @@ class SignUpForm extends React.Component {
                     }}
                     
                 >
-                {({ errors, handleSubmit, isSubmitting, dirty, touched, values, status }) => {
+                {({ errors, handleSubmit, setValues, isSubmitting, dirty, touched, values, status }) => {
                 return (
                     
                     <FormikForm>
@@ -190,29 +185,52 @@ class SignUpForm extends React.Component {
                                 checked={values.verifyBySMS==="Email"}
                             />
                         </RadioButtonGroup>
+                        <InputGroup>
                         <Field
                             component={CheckBox}
                             name="agreeTerms"
                             value="agreeTerms"
                             key="agreeTerms"
-                            label={
-                                [t("I have already review and agree on "),
-                                
-                                ]}
                             checked={values.agreeTerms===true}
-                        />
-                        <TCDiv onClick={this.toggleShowTC}>{t('Terms of Condition')}</TCDiv>
+                            err={errors.agreeTerms}
+                        >
+                            <div>
+                                {t("I have already review and agree on ")}
+                                <ClickableText onClick={this.toggleShowTC}>
+                                    {t('Terms of Condition')}
+                                </ClickableText>
+                            </div>
+                        </Field>
+                        
+                        </InputGroup>
                         <FormErr>{status && status.form}</FormErr>
                         <FormButton
                             type="submit"
-                            disabled={isSubmitting || !isEmpty(pickBy(errors)) || !dirty || loading }
+                            disabled={isSubmitting || !isEmpty(pickBy(errors)) || loading }
                         >
-                           { t('Submit')}
+                            <StraightRow>
+                                {t('Submit')}
+                                
+                            </StraightRow>
                         </FormButton>
                         <Modal
                             show={this.state.showTC}
                             component={<TermsAndConditionPage/>}
                             title={t('Terms and Conditions')}
+                            footerButtons={[
+                                <FormButton type="button" onClick={()=> {
+                                    setValues({agreeTerms: true})
+                                    this.toggleShowTC()
+                                }}>
+                                    {t('I Agree')}
+                                </FormButton>,
+                                <FormButton type="button" onClick={()=> {
+                                    setValues({agreeTerms: false})
+                                    this.toggleShowTC()
+                                }}>
+                                    {t('I Disagree')}
+                                </FormButton>
+                            ]}
                         />
                     </FormikForm>
                 )}}

@@ -1,10 +1,10 @@
 import LoginPage from './page/LoginPage.js'
 import IndexPage from './page/IndexPage.js'
 import DataPage from './page/DataPage.js'
+import SignUpWorkflow from './page/SignUpWorkflow.js'
 import SignUpPage from './page/SignUpPage.js'
 import UserActivationPage from './page/UserActivationPage.js'
 import TermsAndConditionPage from './page/TermsAndConditionPage.js'
-
 
 const routes = [
     {
@@ -14,6 +14,11 @@ const routes = [
     },
     {
         path: "/signup",
+        menuName: 'Sign Up',
+        component: SignUpWorkflow
+    },
+    {
+        path: "/signupNormal",
         menuName: 'Sign Up',
         component: SignUpPage
     },

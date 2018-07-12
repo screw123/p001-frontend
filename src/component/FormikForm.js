@@ -35,7 +35,7 @@ const Input = styled.input`
     outline: none;
 `
 
-const ErrorLabel = styled.label`
+const ErrorLabel = styled.div`
     color: Red;
     display: block;
     font-size: 0.8em;
@@ -45,6 +45,7 @@ const FieldDiv = styled.div`
     display: block
     box-sizing:border-box;
     padding: 0.3em;
+    min-width: 220px;
     
     @media (max-width: 480px) {
         width: 100%
@@ -64,7 +65,7 @@ const FieldDiv = styled.div`
 `
 
 const FieldLabel = styled.label`
-    display: block;
+    display: ${props=> (props.hidden)? 'none':'block'};
     text-transform: uppercase;
     font-size: 0.9em;
 `
@@ -73,52 +74,25 @@ const InputRow = styled.div`
     display: flex
     box-sizing:border-box;
     border-radius: 0.25em;
-    border: 0.13em solid #999999;
+    border: 0.1em solid #999999;
     background-color: rgba(255, 255, 255, 0.1);
     text-overflow: clip;
     padding: 0.5em;
+    font-size: 1.1em;
 `
 
-const RBGroup = styled.div`
-    border-radius: 0.25em;
-    border: 0.13em solid #999999;
-    background-color: rgba(255, 255, 255, 0.1);
-    overflow: hidden;
-    display: inline-block;
+export const InputGroup = styled.div`
+    display: flex
     box-sizing:border-box;
-`
-
-const RB = styled.div`
-    box-sizing:border-box;
-    padding: 0.5em;
-    display: inline-block;
-    overflow: hidden;
-`
-
-const RBInput = styled.input`
-    border: none;
-    background: transparent;
-    outline: none;
-    visibility: hidden;
-    display: none;
-`
-
-const RBLabel = styled.label`
-    display: inline-block;
-    font-size: 1em;
-    background: transparent;
-    width: 5em;
-    cursor: pointer;
-    ${props => (props.checked)? `background: rgba(255, 255, 255, 0.7);
-        transition: all 0.2s ease-out;`:''}
-`
+    text-overflow: wrap;
+    padding: 0.5em;`
 
 export const TextField = ({
     field: { name, placeholder, ...fields }, // { name, value, onChange, onBlur }
     form: { touched }, //also values, handleXXXX, dirty, isValid, status, etc.
     classNames, label, rightIcon, err, ...props }) => (
     <FieldDiv className={classNames}>
-        <FieldLabel>
+        <FieldLabel {...props}>
             {label}
             <InputRow>
                 <Input
@@ -181,14 +155,55 @@ export const FormIcon = ({onClick, ...props}) => (
     </IconDiv>
 )
 
+const RBGroup = styled.div`
+    box-sizing:border-box;
+    border-radius: 0.25em;
+    border: 0.1em solid #999999;
+    background-color: rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    display: inline-block;
+    box-sizing:border-box;
+    width: 100%
+`
+
+const RBDiv = styled(FieldDiv)`
+    
+`
+
+const RB = styled.div`
+    box-sizing:border-box;
+    padding: 0.5em;
+    display: inline-block;
+    overflow: hidden;
+`
+
+const RBInput = styled.input`
+    border: none;
+    background: transparent;
+    outline: none;
+    visibility: hidden;
+    display: none;
+`
+
+const RBLabel = styled.label`
+    display: inline-block;
+    font-size: 1em;
+    background: transparent;
+    width: 5em;
+    cursor: pointer;
+    ${props => (props.checked)? `background: rgba(255, 255, 255, 0.7);
+        transition: all 0.2s ease-out;`:''}
+`
+
+
 export const RadioButtonGroup = ({value, err, touched, label, className, children, name }) => (
-    <div>
+    <RBDiv>
         <FieldLabel>{label}</FieldLabel>
         <RBGroup>
             {children}
         </RBGroup>
         {touched[name] && err && <ErrorLabel>{err}</ErrorLabel> }
-    </div>
+    </RBDiv>
 )
 
 export const RadioButton = ({
@@ -212,12 +227,11 @@ export const RadioButton = ({
 
 const CB = styled.input`
 
-    
 `
 
 export const CheckBox = ({
     field: { name, value, ...fields },
-    label, className, checked, ...props }) => {
+    label, className, checked, err, children, ...props }) => {
     return (
         <div>
             <FieldLabel>
@@ -230,11 +244,16 @@ export const CheckBox = ({
                     {...props}
                 />
                 {label}
+                {children}
             </FieldLabel>
+            
+            {err && <ErrorLabel>{err}</ErrorLabel> }
         </div>
         
     )
 }
+
+//export const Row
 
 
 export default FormikForm

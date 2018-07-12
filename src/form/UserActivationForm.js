@@ -24,8 +24,8 @@ class UserActivationForm extends React.Component {
                 {(t) => (
                     <Formik
                         initialValues={{
-                            verificationPIN: this.props.match.params.verificationPIN || '',
-                            _id: this.props.match.params._id || ''
+                            verificationPIN: this.props.user.verificationPIN || this.props.match.params.verificationPIN || '',
+                            _id: this.props.user._id || this.props.match.params._id || ''
                         }}
                         validate={ (values) => {
                             const keyArr = Object.keys(validateForm)
@@ -79,7 +79,7 @@ class UserActivationForm extends React.Component {
                                 component={TextField}
                                 label="ID"
                                 value={values._id}
-                                disabled={(this.props.match.params.verificationPIN)? true: false}
+                                hidden={(this.props.user._id || this.props.match.params._id)? true: false}
                             />
                             <Field
                                 name="verificationPIN"

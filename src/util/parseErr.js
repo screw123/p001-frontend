@@ -15,7 +15,7 @@ const parseApolloErr = (err, t) => {
                 case 'KEY_EXIST':
                     errObj['message'] = t(errObj['key']) +' '+ err.graphQLErrors[i].data[errObj['key']] + ' ' + t('already exists')
                     if (['email', 'mobilePhone'].includes(errObj['key'])) {
-                        errObj['message'] = errObj['message'] + ', ' + <Link to='/login' key='login'>{t('Do you want to login instead?')}</Link>
+                        errObj['message'] = [(errObj['message'] + ', '), (<Link to='/login' key='login'>{t('Do you want to login instead?')}</Link>)]
                     }
                     else {
                         errObj['message'] = errObj['message'] + ', ' + t('please choose another combination')

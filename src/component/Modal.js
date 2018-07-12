@@ -1,5 +1,6 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const ModalBG = styled.div`
     display: ${props=>(props.show)? 'block':'none'};
@@ -10,74 +11,61 @@ const ModalBG = styled.div`
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(0,0,0,0.6);
 `
 
-const ModalContent = styled.div`
+const ModalBody = styled.div`
     background-color: white;
     margin: 15% auto;
-    padding: 20px;
     border: 1px solid #888;
     width: 80%;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    box-shadow: 0 0.2em 0.4em 0 rgba(0,0,0,0.4),0 0.3em 1.2em 0 rgba(0,0,0,0.2);
     transition: all 0.3s ease-out;
     
 `
 
 const Title = styled.h3`
     background-color: lime;
-    
+    padding: 1em 2em;
 `
 
-const unfoldIn = keyframes`
-    0% {
-        transform:scaleY(.005) scaleX(0);
-    }
-    50% {
-        transform:scaleY(.005) scaleX(1);
-    }
-    100% {
-        transform:scaleY(1) scaleX(1);
-    }
+const ModalContent = styled.div`
+    padding: 2em;
 `
 
-const unfoldOut = keyframes`
-    0% {
-        transform:scaleY(1) scaleX(1);
-    }
-    50% {
-        transform:scaleY(.005) scaleX(1);
-    }
-    100% {
-        transform:scaleY(.005) scaleX(0);
-    }
-  &.one {
-    transform:scaleY(.01) scaleX(0);
-    animation:unfoldIn 1s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
-    .modal-background {
-      .modal {
-        transform:scale(0);
-        animation: zoomIn .5s .8s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
-      }
-    }
-    &.out {
-      transform:scale(1);
-      animation:unfoldOut 1s .3s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
-      .modal-background {
-        .modal {
-          animation: zoomOut .5s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
-        }
-      }
-    }
-  }`
+const IconDiv = styled.div`
+    align-self: center;
+    padding: 0.5em;
+    cursor: pointer;
+`
 
-const Modal = ({component, content, title, ...props}) => (
+const ModalFooter = styled.div`
+    padding: 1em;
+    justify-content: center;
+    background-color: lime;
+`
+
+export const CloseIcon = ({onClick, ...props}) => (
+    <IconDiv onClick={onClick}>
+        <FontAwesomeIcon {...props}/>
+    </IconDiv>
+)
+
+const Modal = ({component, content, title, closeModal, footerButtons, ...props}) => (
     <ModalBG {...props}>
-        <ModalContent>
-            <Title>{title}</Title>
-            {component}
-            {content}
-        </ModalContent>
+        <ModalBody>
+            <Title>
+                {title}
+                {closeModal && <CloseIcon onClick={closeModal} />}
+            </Title>
+            <ModalContent>
+                {component}
+                {content}
+            </ModalContent>
+            <ModalFooter>
+                {footerButtons}
+            </ModalFooter>
+        </ModalBody>
     </ModalBG>
 )
 

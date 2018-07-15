@@ -218,13 +218,13 @@ class SignUpForm extends React.Component {
                             component={<TermsAndConditionPage/>}
                             title={t('Terms and Conditions')}
                             footerButtons={[
-                                <FormButton type="button" onClick={()=> {
+                                <FormButton type="button" key='agree' onClick={()=> {
                                     setValues({agreeTerms: true})
                                     this.toggleShowTC()
                                 }}>
                                     {t('I Agree')}
                                 </FormButton>,
-                                <FormButton type="button" onClick={()=> {
+                                <FormButton type="button" key='disagree' onClick={()=> {
                                     setValues({agreeTerms: false})
                                     this.toggleShowTC()
                                 }}>

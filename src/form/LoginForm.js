@@ -52,20 +52,20 @@ const LoginForm = () => (
                         }
                     }}
                 >
-                {({ errors, handleSubmit, isSubmitting, dirty, touched, values, status }) => (
+                {({ errors, isSubmitting, dirty, touched, values, status }) => (
                     <FormikForm>
                         <Field
                             name="user"
                             type="text"
                             component={TextField}
-                            label="Email/Phone"
+                            label={t('Email/Phone')}
                             value={values.user}
                         />
                         <Field
                             name="password"
                             type="password"
                             component={TextField}
-                            label="Password"
+                            label={t('Password')}
                             value={values.password}
                         />
                         <FormErr>{status}</FormErr>

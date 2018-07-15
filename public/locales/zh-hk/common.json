@@ -33,5 +33,6 @@
     "User Activation": "用戶驗證",
     "Email/Phone or password error.  Please check and try again.": "電郵/電話 或密碼錯誤, 請修正並重試.",
     "System is currently busy, please wait for 1 minute and try again": "系統現在繁忙, 請等1分鐘再試.",
-    "How do you want to verify your account?": "確認帳戶的方法"
+    "How do you want to verify your account?": "確認帳戶的方法",
+    "Please activate your account within": "請於此時間內啟用戶口"
 }

@@ -4,103 +4,109 @@ import { ApolloProvider, Mutation } from 'react-apollo'
 import { Formik, Field } from 'formik'
 import FormikForm, { TextField, FormButton, FormErr } from '../component/FormikForm.js'
 
-import { I18n } from 'react-i18next'
-
 import isEmpty from 'lodash/isEmpty'
 import pickBy from 'lodash/pickBy'
 
 import { verifyUser } from '../gql/query.js'
 import parseApolloErr from '../util/parseErr.js'
 import GqlApi from '../container/GqlApi.js'
+import LocaleApi from '../container/LocaleApi.js'
 
 
 class UserActivationForm extends React.Component {
     
-    render(){ return(
+    render(){ 
+        return(
         <ApolloProvider client={GqlApi.getGqlClientPublic()}>
             <Mutation mutation={verifyUser} errorPolicy="all">
             {(mutate, {loading, err})=>(
-                <I18n>
-                {(t) => (
-                    <Formik
-                        initialValues={{
-                            verificationPIN: this.props.user.verificationPIN || this.props.match.params.verificationPIN || '',
-                            _id: this.props.user._id || this.props.match.params._id || ''
-                        }}
-                        validate={ (values) => {
-                            const keyArr = Object.keys(validateForm)
-                            let err = {}
-                            for (let i=0; i<keyArr.length; i++) {
-                                const f = keyArr[i]
-                                const e = validateForm[f](values)
-                                if (e !== undefined) { err[f] = e }
+                <Formik
+                    initialValues={{
+                        verificationPIN: this.props.user.verificationPIN || this.props.match.params.verificationPIN || '',
+                        _id: this.props.user._id || this.props.match.params._id || ''
+                    }}
+                    validate={ (values) => {
+                        const keyArr = Object.keys(validateForm)
+                        let err = {}
+                        for (let i=0; i<keyArr.length; i++) {
+                            const f = keyArr[i]
+                            const e = validateForm[f](values)
+                            if (e !== undefined) { err[f] = e }
+                        }
+                        return err
+                    }}
+                    onSubmit={async (values, actions) => {
+                        actions.setStatus('')
+                        const keyArr = Object.keys(validateForm)
+                        let haveErr = false
+                        for (let i=0; i<keyArr.length; i++) {
+                            const f = keyArr[i]
+                            const e = validateForm[f](values)
+                            if (e !== undefined) {
+                                actions.setFieldError(f, e)
+                                haveErr = true
                             }
-                            return err
-                        }}
-                        onSubmit={async (values, actions) => {
-                            actions.setStatus('')
-                            const keyArr = Object.keys(validateForm)
-                            let haveErr = false
-                            for (let i=0; i<keyArr.length; i++) {
-                                const f = keyArr[i]
-                                const e = validateForm[f](values)
-                                if (e !== undefined) {
-                                    actions.setFieldError(f, e)
-                                    haveErr = true
-                                }
+                        }
+                        if (haveErr) {
+                            actions.setSubmitting(false)
+                            return
+                        }
+                        //submit to server
+                        try {
+                            const d = await mutate({variables: {
+                                _id: values._id,
+                                verificationPIN: values.verificationPIN
+                            }})
+                            console.log(d)
+                        } catch(e) { 
+                            const errStack = parseApolloErr(e, LocaleApi.t)
+                            for (let i=0; i<errStack.length; i++) {
+                                if (errStack[i].key) { actions.setStatus(errStack[i].message) }
+                                else {actions.setFieldError(errStack[i].key, errStack[i].message)}
                             }
-                            if (haveErr) {
-                                actions.setSubmitting(false)
-                                return
-                            }
-                            //submit to server
-                            try {
-                                const d = await mutate({variables: {
-                                    _id: values._id,
-                                    verificationPIN: values.verificationPIN
-                                }})
-                                console.log(d)
-                            } catch(e) { 
-                                const errStack = parseApolloErr(e, t)
-                                for (let i=0; i<errStack.length; i++) {
-                                    if (errStack[i].key) { actions.setStatus(errStack[i].message) }
-                                    else {actions.setFieldError(errStack[i].key, errStack[i].message)}
-                                }
-                                actions.setSubmitting(false)
-                            }
-                            console.log('submitted to server')
-                        }}
-                    >
-                    {({ errors, handleSubmit, isSubmitting, dirty, touched, values, status }) => (
-                        <FormikForm>
-                            <Field
-                                name="_id"
-                                type="text"
-                                component={TextField}
-                                label="ID"
-                                value={values._id}
-                                hidden={(this.props.user._id || this.props.match.params._id)? true: false}
-                            />
-                            <Field
-                                name="verificationPIN"
-                                type="text"
-                                component={TextField}
-                                label="Verification PIN"
-                                value={values.verificationPIN}
-                            />
-                            <FormErr>{status}</FormErr>
-                            <FormButton
-                                type="submit"
-                                disabled={isSubmitting || !isEmpty(pickBy(errors))}
-                            >
-                                {t('Validate')}
-                            </FormButton>
+                            actions.setSubmitting(false)
+                        }
+                        console.log('submitted to server')
+                    }}
+                >
+                {({ errors, handleSubmit, isSubmitting, dirty, touched, values, status }) => (
+                    <FormikForm>
+                        <Field
+                            name="_id"
+                            type="text"
+                            component={TextField}
+                            label={LocaleApi.t('ID')}
+                            value={values._id}
+                            hidden={(this.props.user._id || this.props.match.params._id)? true: false}
+                        />
+                        <Field
+                            name="verificationPIN"
+                            type="text"
+                            component={TextField}
+                            label={LocaleApi.t('Verification PIN')}
+                            value={values.verificationPIN}
+                        />
                             
-                        </FormikForm>
-                    )}
-                    </Formik>
+                            {this.props.user.verifyDeadline && 
+                                <p>
+                                    {LocaleApi.t('Please activate your account within')
+                                    + ' : ' 
+                                    + LocaleApi.moment(this.props.user.verifyDeadline).toNow(true)
+                                    }
+                                </p>
+                            }
+                        
+                        <FormErr>{status}</FormErr>
+                        <FormButton
+                            type="submit"
+                            disabled={isSubmitting || !isEmpty(pickBy(errors))}
+                        >
+                            {LocaleApi.t('Validate')}
+                        </FormButton>
+                        
+                    </FormikForm>
                 )}
-                </I18n>
+                </Formik>
             )}
             </Mutation>
         </ApolloProvider>

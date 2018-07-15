@@ -9,7 +9,7 @@ class SignUpPage extends React.Component {
     
     render = () => (
         <I18n>
-            {(t, { i18n }) => (
+            {(t) => (
                 <Background>
                     <h1>{t('Sign Up')}</h1>
                     <SignUpForm />

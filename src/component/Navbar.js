@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import { I18n } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
 import GqlApi from '../container/GqlApi.js'
+import LocaleApi from '../container/LocaleApi.js'
 
 const StickyDiv = styled.div`
     position: sticky;
@@ -30,12 +30,12 @@ const RightSideMenuItem = styled.button`
 
 
 class Navbar extends React.Component {
-    genItems = (t) => {
+    genItems = () => {
         let c = []
         for (var i = 0; i < this.props.routes.length; i++) {
             if (!(this.props.routes[i].showInNavBar===false)) {
                 c.push(<NormalMenuItem to={this.props.routes[i].path} key={i}>
-                    {t(this.props.routes[i].menuName)}
+                    {LocaleApi.t(this.props.routes[i].menuName)}
                 </NormalMenuItem>)
             }
         }
@@ -44,23 +44,23 @@ class Navbar extends React.Component {
     
     render = () => {
         return (
-            <I18n>
-            {(t, { i18n }) => (
-                <StickyDiv>
-                    {this.genItems(t)}
-                    <RightSideMenuItem onClick={() => { i18n.changeLanguage('en'); }}>
-                        EN
-                    </RightSideMenuItem>
-                    <RightSideMenuItem onClick={() => { i18n.changeLanguage('zh'); }}>
-                        中
-                    </RightSideMenuItem>
-                    <RightSideMenuItem onClick={() => { }}>
-                        {(GqlApi.state.isLogined)? "Hello": "Not logined"}
-                    </RightSideMenuItem>
-                    
-                </StickyDiv>
-            )}
-            </I18n>
+            <StickyDiv>
+                {this.genItems()}
+                <RightSideMenuItem onClick={() => {
+                    LocaleApi.changeLanguage('en')
+                }}>
+                    EN
+                </RightSideMenuItem>
+                <RightSideMenuItem onClick={() => {
+                    LocaleApi.changeLanguage('zh-hk')
+                }}>
+                    中
+                </RightSideMenuItem>
+                <RightSideMenuItem onClick={() => { }}>
+                    {(GqlApi.state.isLogined)? "Hello": "Not logined"}
+                </RightSideMenuItem>
+                
+            </StickyDiv>
         )
     }
 }

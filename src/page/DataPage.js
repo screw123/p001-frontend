@@ -1,5 +1,4 @@
 import React from "react"
-import { I18n } from 'react-i18next'
 import { getMyself } from '../gql/query.js'
 import Background from '../component/Background.js'
 

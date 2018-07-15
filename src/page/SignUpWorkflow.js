@@ -12,8 +12,11 @@ class SignUpWorkflow extends React.Component {
     constructor(props) {
         super(props)
         this.state={
-            user: {},
-            userCreated: false,
+            user: {
+                _id: "5b49d6a6f7d0e820e0ae004e",
+                verifyDeadline: "2018-07-15T10:55:34.242Z"
+            },
+            userCreated: true,
             account: {},
             accountCreated: false,
             userVerified: false,

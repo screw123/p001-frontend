@@ -231,6 +231,7 @@ const CB = styled.input`
 
 export const CheckBox = ({
     field: { name, value, ...fields },
+    form: { touched },
     label, className, checked, err, children, ...props }) => {
     return (
         <div>
@@ -247,7 +248,7 @@ export const CheckBox = ({
                 {children}
             </FieldLabel>
             
-            {err && <ErrorLabel>{err}</ErrorLabel> }
+            {touched[name] && err && <ErrorLabel>{err}</ErrorLabel> }
         </div>
         
     )

@@ -2,9 +2,6 @@ import React from "react"
 import { I18n } from 'react-i18next'
 import styled from 'styled-components'
 
-import LoadingAnim, {BigLoadingScreen, LoadingIcon} from '../component/Loading.js'
-import Background from '../component/Background.js'
-
 const BigImg = styled.img`
     max-width: auto;
     height: 100%;

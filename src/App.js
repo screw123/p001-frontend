@@ -8,7 +8,7 @@ import routes from './routes.js'
 import Navbar from './component/Navbar.js'
 import PrivateRoute from './component/PrivateRoute.js'
 
-import GqlApi, { GqlApiProvider } from './container/GqlApi.js'
+import GqlApi, { GqlApiProvider, DummyPassHistory } from './container/GqlApi.js'
 
 class App extends React.Component {
     constructor() {
@@ -46,6 +46,7 @@ class App extends React.Component {
             <BrowserRouter>
                 <GqlApiProvider>
                     <div>
+                        <DummyPassHistory />
                         <Navbar routes={routes} />
                         {this.genItems(routes)}
                     </div>
@@ -55,7 +56,7 @@ class App extends React.Component {
     }
 }
 
-export default App;
+export default App
 
 
 /*

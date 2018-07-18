@@ -184,7 +184,7 @@ export const getMyAccount = gql`{
 }`
 
 export const addUser = gql`
-    mutation ($firstName: String!, $lastName: String!, $email: String!, $mobilePhone: String!, $password: String!) {
+    mutation ($firstName: String!, $lastName: String!, $email: String!, $mobilePhone: String!, $password: String! $verifyBySMS: Boolean!, $language: String!) {
         addUser(
             firstName: $firstName,
             lastName: $lastName,
@@ -192,6 +192,8 @@ export const addUser = gql`
             mobilePhone: $mobilePhone,
             password: $password,
             createThru: "WebClient"
+            verifyBySMS: $verifyBySMS,
+            language: $language
         ) {
             _id
             verifyDeadline
@@ -207,6 +209,18 @@ export const verifyUser = gql`
         ) {
             _id
             isActive
+        }
+    }
+`
+
+export const resendVerification = gql`
+    mutation ($_id: String!, $verifyBySMS: Boolean!) {
+        verifyUser(
+            _id: $_id,
+            verifyBySMS: $verifyBySMS
+        ) {
+            _id
+            verifyDeadline
         }
     }
 `

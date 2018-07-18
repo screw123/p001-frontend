@@ -7,6 +7,7 @@ const FormikForm = styled(Form)`
     padding: 1em;
     display: flex;
     box-sizing:border-box;
+    justify-content: space-between;
     flex-flow: row wrap;
     flex: 0 0 auto;
     
@@ -18,12 +19,13 @@ const FormikForm = styled(Form)`
         width: 95%
     }
     
-    @media (min-width: 769px) and (max-width: 1024px) {
+    @media (min-width: 769px) and (max-width: 1366px) {
         width: 95%
     }
     
-    @media (min-width: 1025px) {
-        width: 1024px
+    @media (min-width: 1367px) {
+        width: 1366px
+        margin: auto
     }`
 
 const Input = styled.input`
@@ -41,7 +43,7 @@ const ErrorLabel = styled.div`
     font-size: 0.8em;
 `
 
-const FieldDiv = styled.div`
+export const FieldDiv = styled.div`
     display: block
     box-sizing:border-box;
     padding: 0.3em;
@@ -56,21 +58,28 @@ const FieldDiv = styled.div`
     }
     
     @media (min-width: 769px) and (max-width: 1024px) {
-        width: 50%
+        width: 48%;
     }
     
     @media (min-width: 1025px) {
-        width: 50%
+        width: 48%;
     }
 `
 
+export const FieldRow = styled(FieldDiv)`
+    display: block
+    width: 100%
+    box-sizing:border-box;
+    padding: 0.3em;
+`
+
 const FieldLabel = styled.label`
-    display: ${props=> (props.hidden)? 'none':'block'};
+    display: block;
     text-transform: uppercase;
     font-size: 0.9em;
 `
 
-const InputRow = styled.div`
+export const InputRow = styled.div`
     display: flex
     box-sizing:border-box;
     border-radius: 0.25em;
@@ -90,23 +99,28 @@ export const InputGroup = styled.div`
 export const TextField = ({
     field: { name, placeholder, ...fields }, // { name, value, onChange, onBlur }
     form: { touched }, //also values, handleXXXX, dirty, isValid, status, etc.
-    classNames, label, rightIcon, err, ...props }) => (
-    <FieldDiv className={classNames}>
-        <FieldLabel {...props}>
-            {label}
-            <InputRow>
-                <Input
-                    name={name}
-                    placeholder={placeholder}
-                    {...fields}
-                    {...props}
-                />
-                {rightIcon && genRightIcon(rightIcon)}
-            </InputRow>
-        </FieldLabel>
-        {touched[name] && err && <ErrorLabel>{err}</ErrorLabel> }
-    </FieldDiv>
-)
+    classNames, label, rightIcon, err, hidden, ...props }) => {
+        
+        if (hidden) return null
+        else return (
+            (!hidden) && <FieldDiv className={classNames}>
+                <FieldLabel {...props}>
+                    {label}
+                    <InputRow>
+                        <Input
+                            name={name}
+                            placeholder={placeholder}
+                            {...fields}
+                            {...props}
+                        />
+                        {rightIcon && genRightIcon(rightIcon)}
+                    </InputRow>
+                </FieldLabel>
+                {touched[name] && err && <ErrorLabel>{err}</ErrorLabel> }
+            </FieldDiv>
+        )
+    }
+
 
 const genRightIcon = (iconArr) => {
     let arr = []

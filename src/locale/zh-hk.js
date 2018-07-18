@@ -1,4 +1,4 @@
-{
+const zhhkJSON = {
     "Login": "登入",
     "Sign Up": "註册",
     "Dashboard": "我的資訊",
@@ -36,3 +36,5 @@
     "How do you want to verify your account?": "確認帳戶的方法",
     "Please activate your account within": "請於此時間內啟用戶口"
 }
+
+export default zhhkJSON

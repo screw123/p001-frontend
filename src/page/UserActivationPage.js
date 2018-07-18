@@ -5,7 +5,6 @@ import UserActivationForm from '../form/UserActivationForm.js'
 
 
 import Background from '../component/Background.js'
-import { Redirect } from "react-router-dom"
 
 class UserActivationPage extends React.Component {
     

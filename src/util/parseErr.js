@@ -12,6 +12,9 @@ const parseApolloErr = (err, t) => {
                 case 'INVALID': 
                     errObj['message'] = t(errObj['key']) +' '+ t('cannot be') + ' '+ err.graphQLErrors[i].data[errObj['key']]
                     break
+                case 'NOT_FOUND':
+                    errObj['message'] = t('We cannot find') + ' ' + t(errObj['key']) + ' '+ err.graphQLErrors[i].data[errObj['key']] + '.'
+                    break
                 case 'KEY_EXIST':
                     errObj['message'] = t(errObj['key']) +' '+ err.graphQLErrors[i].data[errObj['key']] + ' ' + t('already exists')
                     if (['email', 'mobilePhone'].includes(errObj['key'])) {
@@ -26,6 +29,9 @@ const parseApolloErr = (err, t) => {
                     break
                 case 'SUSPENDED':
                     errObj['message'] = t('Your login/account is not activated.  If you have already activated your account, please contact our support team.')
+                    break
+                case 'EXPIRED':
+                    errObj['message'] = t('Your') + ' ' + t(errObj['key']) + ' ' + t('has expired') + '.'
                     break
                 case 'NOT_AUTHORIZED':
                     errObj['message'] = t('Not authorized')

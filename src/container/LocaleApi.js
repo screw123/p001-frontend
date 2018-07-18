@@ -6,8 +6,7 @@ import XHR from 'i18next-xhr-backend'
 import LngDetector from 'i18next-browser-languagedetector'
 import { reactI18nextModule } from 'react-i18next'
 import 'moment/locale/zh-hk'
-import { Provider, Subscribe, Container } from "unstated";
-
+import { Provider, Subscribe, Container } from "unstated"
 
 class LocaleContainer extends Container {
     constructor() {
@@ -20,14 +19,13 @@ class LocaleContainer extends Container {
                 fallbackLng: 'en',
                 ns: ['common'],
                 defaultNS: 'common',
-                debug: true,
                 backend: {
-                    loadPath: '/locales/{{lng}}/{{ns}}.json',
+                    loadPath: '/locales/{{lng}}.json',
                 },
                 react: {
                 }
-            })
-        if (i18next.language=='zh-hk') { moment.locale('zh-hk') }
+})
+        if (i18next.language==='zh-HK') { moment.locale('zh-HK') }
         this.state = {
             moment: moment ,
             i18n: i18next

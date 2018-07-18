@@ -1,4 +1,4 @@
-{
+const enJSON = {
     "Login": "Login",
     "Sign Up": "Sign Up",
     "Dashboard": "Dashboard",
@@ -36,3 +36,5 @@
     "How do you want to verify your account?": "How do you want to verify your account?",
     "Please activate your account within": "Please activate your account within"
 }
+
+export default enJSON

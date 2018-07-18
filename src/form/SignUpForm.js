@@ -18,6 +18,7 @@ import { ApolloProvider, Mutation } from 'react-apollo'
 import { addUser } from '../gql/query.js'
 
 import GqlApi from '../container/GqlApi.js'
+import LocaleApi from '../container/LocaleApi.js'
 import parseApolloErr from '../util/parseErr.js'
 import passwordTest from '../util/passwordTest.js'
 
@@ -95,6 +96,7 @@ class SignUpForm extends React.Component {
                                 password: values.password,
                                 mobilePhone: values.mobilePhone,
                                 verifyBySMS: values.verifyBySMS,
+                                language: LocaleApi.state.i18n.language
                             }})
                             console.log('server return', d)
                             if (this.props.onUserCreated) { this.props.onUserCreated(d.data.addUser) }

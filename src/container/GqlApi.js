@@ -3,7 +3,7 @@ import React from "react";
 import ApolloClient from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
-
+import { withRouter } from 'react-router'
 import { Provider, Subscribe, Container } from "unstated";
 
 import isEmpty from 'lodash/isEmpty'
@@ -20,7 +20,8 @@ class ApolloContainer extends Container {
             gqlClient: {},
             gqlClientPublic: {},
             isLogined: false,
-            uid: ''
+            uid: '',
+            history: {}
         }
     }
     
@@ -56,13 +57,10 @@ class ApolloContainer extends Container {
     async checkLogined() {
         try {
             const res = await request.get('https://cd.nicecar.hk/checkl').withCredentials()
-            if (res.statusCode===200) {
-                this.setState({isLogined: true})
-            }
+            if (res.statusCode===200) { this.setState({isLogined: true}) }
+            else { this.setState({isLogined: false}) }
         }
-        catch(e) {
-            console.log(e)
-        }
+        catch(e) { console.log(e) }
     }
     
     async login(userPWObj) {
@@ -82,13 +80,22 @@ class ApolloContainer extends Container {
     }
     
     async logout() {
-        this.setState({isLogined: false})
-        this.setState({gqlClient: {}})
-        this.setState({gqlClientPublic: {}})
+        const res = await request.get('https://cd.nicecar.hk/logout').withCredentials()
+        console.log(res)
+        if (res.statusCode===200) {
+            this.setState({isLogined: false})
+            this.setState({gqlClient: {}})
+            this.setState({gqlClientPublic: {}})
+            this.state.history.push('/')
+        }
     }
     
     setUid(id) {
         this.setState({uid: id})
+    }
+    
+    setHistoryObj(obj) {
+        this.setState({history: obj})
     }
     
 }
@@ -113,6 +120,18 @@ export const GqlApiSubscriber = props => {
 };
 
 export default GqlApi;
+
+
+class DummyPassHistoryObj extends React.PureComponent  {
+    constructor(props) {
+        super(props)
+        GqlApi.setHistoryObj(this.props.history)
+    }
+    render() { return (' ')}
+}
+
+export const DummyPassHistory = new withRouter(DummyPassHistoryObj)
+
 
 // IMPORT NOTE:
 // With the above export structure, we have the ability to

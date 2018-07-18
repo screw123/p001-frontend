@@ -14,7 +14,7 @@ class SignUpWorkflow extends React.Component {
         this.state={
             user: {
                 _id: "5b49d6a6f7d0e820e0ae004e",
-                verifyDeadline: "2018-07-15T10:55:34.242Z"
+                verifyDeadline: "2018-07-17T10:00:00.242Z"
             },
             userCreated: true,
             account: {},
@@ -43,8 +43,14 @@ class SignUpWorkflow extends React.Component {
                 {this.state.userCreated && !(this.state.userVerified) &&
                     <div>
                         <h1>{t('User Activation')}</h1>
-                        <UserActivationForm match={{params: {}}} user={this.state.user} />
+                        <UserActivationForm match={{params: {}}} user={this.state.user} onVerifySuccess={this.onUserVerified}/>
                     </div>
+                }
+                {this.state.userVerified && !(this.state.accountCreated) &&
+                    <div>
+                        Validated!  Now pls create account.  Fixme help user login first
+                    </div>
+                    
                 }
                 </Background>
             )}

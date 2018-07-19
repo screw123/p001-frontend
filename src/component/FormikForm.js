@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const FormikForm = styled(Form)`
-    padding: 1em;
     display: flex;
     box-sizing:border-box;
     justify-content: space-between;
@@ -46,7 +45,7 @@ const ErrorLabel = styled.div`
 export const FieldDiv = styled.div`
     display: block
     box-sizing:border-box;
-    padding: 0.3em;
+    padding: 1em;
     min-width: 220px;
     
     @media (max-width: 480px) {
@@ -67,10 +66,11 @@ export const FieldDiv = styled.div`
 `
 
 export const FieldRow = styled(FieldDiv)`
-    display: block
+    display: flex
     width: 100%
     box-sizing:border-box;
-    padding: 0.3em;
+    padding: 1em;
+    flex-flow: row wrap;
 `
 
 const FieldLabel = styled.label`
@@ -142,11 +142,9 @@ export const FB = styled.button`
 `
 
 export const FormButton = ({children, ...props}) => (
-    <FieldDiv>
-        <FB {...props}>
-            {children}
-        </FB>
-    </FieldDiv>
+    <FB {...props}>
+        {children}
+    </FB>
 )
 
 const FE = styled.label`

@@ -13,6 +13,7 @@ import isEmpty from 'lodash/isEmpty'
 import pickBy from 'lodash/pickBy'
 import omitBy from 'lodash/omitBy'
 import isUndefined from 'lodash/isUndefined'
+import merge from 'lodash/merge'
 
 import { ApolloProvider, Mutation } from 'react-apollo'
 import { addUser } from '../gql/query.js'
@@ -99,7 +100,7 @@ class SignUpForm extends React.Component {
                                 language: LocaleApi.state.i18n.language
                             }})
                             console.log('server return', d)
-                            if (this.props.onUserCreated) { this.props.onUserCreated(d.data.addUser) }
+                            if (this.props.onUserCreated) { this.props.onUserCreated(merge({password: values.password}, d.data.addUser) }
                         } catch(e) { 
                             console.log('submit err', e)
                             const errStack = parseApolloErr(e, t)

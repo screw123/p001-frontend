@@ -32,11 +32,11 @@ class LocaleContainer extends Container {
         }
     }
     
-    t(...props) {
+    t = (...props) => {
         return this.state.i18n.t(...props)
     }
 
-    moment(...props) {
+    moment = (...props) => {
         return this.state.moment(...props)
     }
     

@@ -12,14 +12,16 @@ import pickBy from 'lodash/pickBy'
 import { GqlApiSubscriber } from '../container/GqlApi.js'
 
 
-const LoginForm = () => (
+class LoginForm extends React.PureComponent {
+    //props= user object
+    render() { return(
         <GqlApiSubscriber>
         {(q) => (
             <I18n>
             {(t) => (
                 <Formik
                     initialValues={{
-                        user:'',
+                        user: this.props.user._id || this.props.user.email || this.props.user.mobilePhone || '',
                         password:''
                     }}
                     validate={ (values) => {
@@ -36,7 +38,7 @@ const LoginForm = () => (
                         actions.setStatus('')
                         const isLoginSuccess = await q.login({user: values.user, password: values.password})
                         if (isLoginSuccess===true) {
-                            return
+                            if (this.props.onLoginSuccess) { this.props.onLoginSuccess() }
                         }
                         else {
                             switch (isLoginSuccess) {
@@ -52,7 +54,7 @@ const LoginForm = () => (
                         }
                     }}
                 >
-                {({ errors, isSubmitting, dirty, touched, values, status }) => (
+                {({ errors, isSubmitting, dirty, touched, values, status, initialValues }) => (
                     <FormikForm>
                         <Field
                             name="user"
@@ -60,6 +62,7 @@ const LoginForm = () => (
                             component={TextField}
                             label={t('Email/Phone')}
                             value={values.user}
+                            hidden={(initialValues['user'] != '')}
                         />
                         <Field
                             name="password"
@@ -83,7 +86,8 @@ const LoginForm = () => (
             </I18n>
         )}
         </GqlApiSubscriber>
-    )
+    )}
+}
 
 const validateForm = {
     user: ({user}) => (isMobilePhone(user, 'zh-HK') || isEmail(user)) ? undefined: 'Must be email or phone number',

@@ -215,7 +215,7 @@ export const verifyUser = gql`
 
 export const resendVerification = gql`
     mutation ($_id: String!, $verifyBySMS: Boolean!) {
-        verifyUser(
+        resendVerification(
             _id: $_id,
             verifyBySMS: $verifyBySMS
         ) {

@@ -17,25 +17,43 @@ class UserActivationForm extends React.Component {
     
     constructor(props) {
         super(props)
+        /* props
+        user: {_id, verifyDeadline}
+        match: {params : {_id, verificationPIN}}
+        */
         this.state= {
-            now: ((this.props.user.verifyDeadline) ? LocaleApi.moment() : null)
+            expired: false,
+            resendCountDown: 0
+        }
+        this.checkExpired = this.checkExpired.bind(this)
+        this.resetCountDown = this.resetCountDown.bind(this)
+        if (this.props.user.verifyDeadline) {
+            if (moment().isAfter(this.props.user.verifyDeadline)) {
+                this.state.expired = true
+            }
         }
     }
     
     componentDidMount() {
-        if (this.props.user.verifyDeadline) {
-            this.interval = setInterval(() => this.tick(), 1000)
-        }
+        this.interval = setInterval(() => this.tick(), 1000)
     }
-
+    
     componentWillUnmount() {
-        if (this.props.user.verifyDeadline) {
-            clearInterval(this.interval)
+        clearInterval(this.interval)
+    }
+    
+    checkExpired(d) {
+        if (moment().isAfter(d)) {
+            this.setState({expired: true})
         }
     }
     
     tick() {
-        this.setState({now: LocaleApi.moment() })
+        this.setState(prevState => (prevState.resendCountDown>0) ? {resendCountDown: prevState.resendCountDown-1} : {resendCountDown: 0})
+    }
+    
+    resetCountDown() {
+        this.setState({resendCountDown: 5})
     }
     
     async resendVerificationPIN(mutate, verifyBySMS) {
@@ -47,6 +65,7 @@ class UserActivationForm extends React.Component {
                 verifyBySMS: verifyBySMS
             }})
             console.log(d)
+            this.resetCountDown()
             return d
         }
         catch(e) { 
@@ -56,38 +75,34 @@ class UserActivationForm extends React.Component {
     }
     
     render(){ 
-        if (this.state.now) {
-            if (!this.state.now.isBefore(this.props.user.verifyDeadline)) {
-                return (
-                    <ApolloProvider client={GqlApi.getGqlClientPublic()}>
-                        <Mutation mutation={resendVerification} errorPolicy="all">
-                        {(mutate, {loading, err})=>{
-                            if (err) { return <p>{LocaleApi.t('Server Error.  Please retry in 1 minute.')}</p> }
-                            else{ return(
-                            <div>Expired.  Resend press button.
-                                <FormButton
-                                    type="button"
-                                    disabled={loading}
-                                    onClick={() => this.resendVerificationPIN(mutate, true)}
-                                >
-                                    {LocaleApi.t('Resend by SMS')}
-                                </FormButton>
-                                <FormButton
-                                    type="button"
-                                    disabled={loading}
-                                    onClick={() => this.resendVerificationPIN(mutate, false)}
-                                >
-                                    {LocaleApi.t('Resend by Email')}
-                                </FormButton>
-                            </div>)
-                        }}}
-                        </Mutation>
-                    </ApolloProvider>
-                )
-            }
-        }
+        const resendButton1 = (this.state.resendCountDown!=0) && (<p>{this.state.resendCountDown} mins before press resend again</p>)
+        const resendButton2 = (this.state.resendCountDown==0) && (<ApolloProvider client={GqlApi.getGqlClientPublic()}>
+                <Mutation mutation={resendVerification} errorPolicy="all">
+                {(mutate, {loading, err})=>{
+                    if (err) { return <p>{LocaleApi.t('Server Error.  Please retry in 1 minute.')}</p> }
+                    else{ return(
+                    <FieldRow>
+                        <FormButton
+                            type="button"
+                            disabled={loading}
+                            onClick={() => this.resendVerificationPIN(mutate, true)}
+                        >
+                            {LocaleApi.t('Resend by') + ' ' + LocaleApi.t('SMS')}
+                        </FormButton>
+                        <FormButton
+                            type="button"
+                            disabled={loading}
+                            onClick={() => this.resendVerificationPIN(mutate, false)}
+                        >
+                            {LocaleApi.t('Resend by') + ' ' + LocaleApi.t('Email')}
+                        </FormButton>
+                    </FieldRow>)
+                }}}
+                </Mutation>
+            </ApolloProvider>
+        )
         
-        return(
+        const inputForm = (
             <ApolloProvider client={GqlApi.getGqlClientPublic()}>
                 <Mutation mutation={verifyUser} errorPolicy="all">
                 {(mutate, {loading, err})=>(
@@ -129,12 +144,13 @@ class UserActivationForm extends React.Component {
                                     verificationPIN: values.verificationPIN
                                 }})
                                 console.log('verify success', d)
-                                if (this.props.onUserVerified) { this.props.onUserVerified() }
+                                if (this.props.onUserVerified) { this.props.onUserVerified(d.data.verifyUser._id) }
                                 
                             } catch(e) { 
                                 const errStack = parseApolloErr(e, LocaleApi.t)
+                                console.log('errStack = ',errStack)
                                 for (let i=0; i<errStack.length; i++) {
-                                    if (errStack[i].key) { actions.setStatus(errStack[i].message) }
+                                    if (!errStack[i].key) { actions.setStatus(errStack[i].message) }
                                     else {actions.setFieldError(errStack[i].key, errStack[i].message)}
                                 }
                                 actions.setSubmitting(false)
@@ -144,6 +160,14 @@ class UserActivationForm extends React.Component {
                     >
                     {({ errors, handleSubmit, isSubmitting, dirty, touched, values, status }) => (
                         <FormikForm>
+                            {this.props.user.verifyDeadline && 
+                                <FieldRow>
+                                    {LocaleApi.t('Please activate your account within')
+                                    + ' : ' 
+                                    + LocaleApi.state.moment.duration(moment(this.props.user.verifyDeadline).diff(moment())).humanize()
+                                    }
+                                </FieldRow>
+                            }
                             <Field
                                 name="_id"
                                 type="text"
@@ -159,21 +183,16 @@ class UserActivationForm extends React.Component {
                                 label={LocaleApi.t('Verification PIN')}
                                 value={values.verificationPIN}
                             />
-                            {this.state.now && 
-                                <FieldRow>
-                                    {LocaleApi.t('Please activate your account within')
-                                    + ' : ' 
-                                    + LocaleApi.state.moment.duration(moment(this.props.user.verifyDeadline).diff(moment())).humanize()
-                                    }
-                                </FieldRow>
-                            }
                             <FormErr>{status}</FormErr>
-                            <FormButton
-                                type="submit"
-                                disabled={isSubmitting || !isEmpty(pickBy(errors))}
-                            >
-                                {LocaleApi.t('Validate')}
-                            </FormButton>
+                            <FieldRow>
+                                <FormButton
+                                    type="submit"
+                                    disabled={isSubmitting || !isEmpty(pickBy(errors))}
+                                >
+                                    {LocaleApi.t('Validate')}
+                                </FormButton>
+                                
+                            </FieldRow>
                             
                         </FormikForm>
                     )}
@@ -183,6 +202,25 @@ class UserActivationForm extends React.Component {
                 
             </ApolloProvider>
         )
+        
+        if (this.state.expired===true) {
+            return (
+                <div>
+                    Expired.  Resend press button.
+                    {resendButton1}
+                    {resendButton2}
+                </div>
+            )
+        }
+        else {
+            return(
+                <div>
+                    {inputForm}
+                    {resendButton1}
+                    {resendButton2}
+                </div>
+            )
+        }
     }
         
 }

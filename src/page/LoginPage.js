@@ -22,7 +22,7 @@ class LoginPage extends React.Component {
                     {(t) => (
                         <Background>
                             <h1>{(this.props.location.state)? t('Please Login First')+'...' : t('Login Page')}</h1>
-                            <LoginForm />
+                            <LoginForm user={{}}/>
                         </Background>
                     )}
                     </I18n>

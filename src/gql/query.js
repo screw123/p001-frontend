@@ -184,7 +184,7 @@ export const getMyAccount = gql`{
 }`
 
 export const addUser = gql`
-    mutation ($firstName: String!, $lastName: String!, $email: String!, $mobilePhone: String!, $password: String! $verifyBySMS: Boolean!, $language: String!) {
+    mutation ($firstName: String!, $lastName: String!, $email: String!, $mobilePhone: String!, $password: String! $verifyBySMS: Boolean!, $language: Language!) {
         addUser(
             firstName: $firstName,
             lastName: $lastName,
@@ -201,9 +201,9 @@ export const addUser = gql`
     }
 `
 
-export const verifyUser = gql`
+export const verifyNewUser = gql`
     mutation ($_id: String!, $verificationPIN: String!) {
-        verifyUser(
+        verifyNewUser(
             _id: $_id,
             verificationPIN: $verificationPIN
         ) {
@@ -221,6 +221,16 @@ export const resendVerification = gql`
         ) {
             _id
             verifyDeadline
+        }
+    }
+`
+
+export const resetPassword = gql`
+    mutation ($_id: String!) {
+        resetPassword(
+            _id: $_id,
+        ) {
+            _id
         }
     }
 `

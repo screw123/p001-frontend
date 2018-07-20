@@ -66,6 +66,7 @@ class ApolloContainer extends Container {
     async login(userPWObj) {
         //userPWObj = {user: aaa, password: bbb}
         try {
+            console.log('GqlApi.login, userPWObj=', userPWObj)
             const res = await request.post('https://cd.nicecar.hk/l').withCredentials().type('form').query(userPWObj).ok(()=>true)
             if (res.statusCode===200) {
                 this.setState({isLogined: true})

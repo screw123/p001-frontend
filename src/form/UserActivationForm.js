@@ -7,7 +7,7 @@ import FormikForm, { FieldRow, TextField, FormButton, FormErr } from '../compone
 import isEmpty from 'lodash/isEmpty'
 import pickBy from 'lodash/pickBy'
 
-import { verifyUser, resendVerification } from '../gql/query.js'
+import { verifyNewUser, resendVerification } from '../gql/query.js'
 import parseApolloErr from '../util/parseErr.js'
 import GqlApi from '../container/GqlApi.js'
 import LocaleApi from '../container/LocaleApi.js'
@@ -104,7 +104,7 @@ class UserActivationForm extends React.Component {
         
         const inputForm = (
             <ApolloProvider client={GqlApi.getGqlClientPublic()}>
-                <Mutation mutation={verifyUser} errorPolicy="all">
+                <Mutation mutation={verifyNewUser} errorPolicy="all">
                 {(mutate, {loading, err})=>(
                     <Formik
                         initialValues={{
@@ -144,11 +144,15 @@ class UserActivationForm extends React.Component {
                                     verificationPIN: values.verificationPIN
                                 }})
                                 console.log('verify success', d)
-                                if (this.props.onUserVerified) { this.props.onUserVerified(d.data.verifyUser._id) }
+                                if (this.props.onVerifySuccess) { 
+                                    console.log('call parent"s onVerifySuccess()')
+                                    this.props.onVerifySuccess(d.data.verifyNewUser._id)
+                                    
+                                }
                                 
                             } catch(e) { 
                                 const errStack = parseApolloErr(e, LocaleApi.t)
-                                console.log('errStack = ',errStack)
+                                console.log('errStack = ',errStack, e)
                                 for (let i=0; i<errStack.length; i++) {
                                     if (!errStack[i].key) { actions.setStatus(errStack[i].message) }
                                     else {actions.setFieldError(errStack[i].key, errStack[i].message)}

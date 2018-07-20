@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { I18n } from 'react-i18next'
-import GqlApi from '../container/GqlApi.js'
+import GqlApi, {GqlApiSubscriber} from '../container/GqlApi.js'
 import LocaleApi from '../container/LocaleApi.js'
 
 const StickyDiv = styled.div`
@@ -30,42 +30,55 @@ const RightSideMenuItem = styled.button`
 
 
 const Navbar = (props) => {
-    const genItems = (t) => {
+    const genItems = (g, t) => {
         let c = []
         for (var i = 0; i < props.routes.length; i++) {
-            if (!(props.routes[i].showInNavBar===false)) {
-                c.push(<NormalMenuItem to={props.routes[i].path} key={i}>
-                    {t(props.routes[i].menuName)}
-                </NormalMenuItem>)
+            if (g.state.isLogined) {
+                if (props.routes[i].navbar.showAfterLogin===true) {
+                    c.push(<NormalMenuItem to={props.routes[i].path} key={i}>
+                        {t(props.routes[i].menuName)}
+                    </NormalMenuItem>)
+                }
+            }
+            else {
+                if (props.routes[i].navbar.showBeforeLogin===true) {
+                    c.push(<NormalMenuItem to={props.routes[i].path} key={i}>
+                        {t(props.routes[i].menuName)}
+                    </NormalMenuItem>)
+                }    
             }
         }
         return c
     }
     
     return (
-        <I18n>
-        {(t) => (
-            <StickyDiv>
-                {genItems(t)}
-                <RightSideMenuItem onClick={() => {
-                    LocaleApi.changeLanguage('en')
-                }}>
-                    EN
-                </RightSideMenuItem>
-                <RightSideMenuItem onClick={() => {
-                    LocaleApi.changeLanguage('zh-HK')
-                }}>
-                    中
-                </RightSideMenuItem>
-                <RightSideMenuItem onClick={() => {
+        <GqlApiSubscriber>
+        {(g) => (
+            <I18n>
+            {(t) => (
+                <StickyDiv>
+                    {genItems(g, t)}
+                    <RightSideMenuItem onClick={() => {
+                        LocaleApi.changeLanguage('en')
+                    }}>
+                        EN
+                    </RightSideMenuItem>
+                    <RightSideMenuItem onClick={() => {
+                        LocaleApi.changeLanguage('zh-HK')
+                    }}>
+                        中
+                    </RightSideMenuItem>
+                    <RightSideMenuItem onClick={() => {
+                        
+                    }}>
+                        {(g.state.isLogined)? "Hello": "Not logined"}
+                    </RightSideMenuItem>
                     
-                }}>
-                    {(GqlApi.state.isLogined)? "Hello": "Not logined"}
-                </RightSideMenuItem>
-                
-            </StickyDiv>
+                </StickyDiv>
+            )}
+            </I18n>
         )}
-        </I18n>
+        </GqlApiSubscriber>
     )
 }
 

@@ -1,18 +1,18 @@
 import React from "react"
-import SignUpForm from '../form/SignUpForm.js'
+import ResetPasswordForm from '../form/ResetPasswordForm.js'
 import { I18n } from 'react-i18next'
 
 import Background from '../component/Background.js'
 
-class SignUpPage extends React.Component {
+class ResetPasswordPage extends React.Component {
     
     
     render = () => (
         <I18n>
             {(t) => (
                 <Background>
-                    <h1>{t('Sign Up')}</h1>
-                    <SignUpForm />
+                    <h1>{t('Reset Your Password')}</h1>
+                    <ResetPasswordForm />
                 </Background>
             )}
         </I18n>
@@ -20,4 +20,4 @@ class SignUpPage extends React.Component {
     )
 }
 
-export default SignUpPage
+export default ResetPasswordPage

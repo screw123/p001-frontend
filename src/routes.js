@@ -2,7 +2,7 @@ import LoginPage from './page/LoginPage.js'
 import IndexPage from './page/IndexPage.js'
 import DataPage from './page/DataPage.js'
 import SignUpWorkflow from './page/SignUpWorkflow.js'
-import SignUpPage from './page/SignUpPage.js'
+import ResetPasswordPage from './page/ResetPasswordPage.js'
 import UserActivationPage from './page/UserActivationPage.js'
 import TermsAndConditionPage from './page/TermsAndConditionPage.js'
 
@@ -10,44 +10,90 @@ const routes = [
     {
         path: "/login",
         menuName: 'Login',
-        component: LoginPage
+        component: LoginPage,
+        navbar: {
+            showBeforeLogin: true,
+            showAfterLogin: false
+        },
+        router: {
+            requireLogin: false
+        }
     },
     {
         path: "/signup",
         menuName: 'Sign Up',
-        component: SignUpWorkflow
-    },
-    {
-        path: "/signupNormal",
-        menuName: 'Sign Up',
-        component: SignUpPage
+        component: SignUpWorkflow,
+        navbar: {
+            showBeforeLogin: true,
+            showAfterLogin: false
+        },
+        router: {
+            requireLogin: false
+        }
     },
     {
         path: "/dash",
         menuName: 'Dashboard',
         component: DataPage,
-        requireLogin: true
+        navbar: {
+            showBeforeLogin: false,
+            showAfterLogin: true
+        },
+        router: {
+            requireLogin: true
+        }
     },
     {
         path: "/userActivation/:_id?/:verificationPIN?",
         menuName: 'User Activation',
         component: UserActivationPage,
-        showInNavBar: false
+        navbar: {
+            showBeforeLogin: false,
+            showAfterLogin: false
+        },
+        router: {
+            requireLogin: false
+        }
     },
     {
         path: "/terms",
         exact: true,
         menuName: 'Terms And Condition',
-        component: TermsAndConditionPage
+        component: TermsAndConditionPage,
+        navbar: {
+            showBeforeLogin: true,
+            showAfterLogin: true
+        },
+        router: {
+            requireLogin: false
+        }
     },
     {
         path: "/",
         exact: true,
         menuName: 'Welcome to P001',
-        component: IndexPage
+        component: IndexPage,
+        navbar: {
+            showBeforeLogin: true,
+            showAfterLogin: true
+        },
+        router: {
+            requireLogin: false
+        }
+    },
+    {
+        path: "/resetPassword",
+        exact: true,
+        menuName: 'Reset Your Password',
+        component: ResetPasswordPage,
+        navbar: {
+            showBeforeLogin: false,
+            showAfterLogin: false
+        },
+        router: {
+            requireLogin: false
+        }
     }
 ]
-
-
 
 export default routes

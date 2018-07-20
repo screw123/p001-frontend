@@ -90,17 +90,19 @@ class SignUpForm extends React.Component {
                         //submit to server
                         console.log('validate ok, now submit')
                         try {
-                            const d = await mutate({variables: {
+                            const vars = {
                                 firstName: values.firstName,
                                 lastName: values.lastName,
                                 email: values.email,
                                 password: values.password,
                                 mobilePhone: values.mobilePhone,
-                                verifyBySMS: values.verifyBySMS,
-                                language: LocaleApi.state.i18n.language
-                            }})
+                                verifyBySMS: (values.verifyBySMS==='SMS')? true: false,
+                                language: LocaleApi.getCurrentLangForGql()
+                            }
+                            console.log('vars=', vars)
+                            const d = await mutate({variables: vars})
                             console.log('server return', d)
-                            if (this.props.onUserCreated) { this.props.onUserCreated(merge({password: values.password}, d.data.addUser) }
+                            if (this.props.onUserCreated) { this.props.onUserCreated(merge({password: values.password}, d.data.addUser)) }
                         } catch(e) { 
                             console.log('submit err', e)
                             const errStack = parseApolloErr(e, t)
@@ -120,9 +122,8 @@ class SignUpForm extends React.Component {
                     }}
                     
                 >
-                {({ errors, handleSubmit, setValues, isSubmitting, dirty, touched, values, status }) => {
+                {({ errors, handleSubmit, setValues, isSubmitting, touched, values, status }) => {
                 return (
-                    
                     <FormikForm>
                         <Field
                             name="firstName"

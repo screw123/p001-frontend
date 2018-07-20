@@ -25,6 +25,7 @@
     "react-i18next": "^7.7.0",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4",
+    "react-stripe-elements": "^2.0.1",
     "styled-components": "^3.3.3",
     "superagent": "^3.8.3",
     "unstated": "^2.1.1",

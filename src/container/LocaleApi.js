@@ -45,6 +45,10 @@ class LocaleContainer extends Container {
         moment.locale(lang)
         this.setState({moment: moment})
     }
+    
+    getCurrentLangForGql() {
+        return (this.state.i18n.language==='en')? 'en': 'zhHK'
+    }
 }
 
 const LocaleApi = new LocaleContainer();

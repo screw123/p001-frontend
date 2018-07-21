@@ -1,18 +1,26 @@
 import React from "react"
 
 import { Formik, Field } from 'formik'
-import FormikForm, { TextField, FormButton, FormErr } from '../component/FormikForm.js'
+import FormikForm, { TextField, FormButton, FormErr, FieldRow } from '../component/FormikForm.js'
 import { I18n } from 'react-i18next'
 import isMobilePhone from 'validator/lib/isMobilePhone'
 import isEmail from 'validator/lib/isEmail'
+import ResetPasswordForm from './ResetPasswordForm.js'
 
 import isEmpty from 'lodash/isEmpty'
 import pickBy from 'lodash/pickBy'
 
-import { GqlApiSubscriber } from '../container/GqlApi.js'
+import GqlApi, { GqlApiSubscriber } from '../container/GqlApi.js'
 
 
 class LoginForm extends React.PureComponent {
+    constructor(props) {
+        super(props)
+        this.state={showResetPassword: false}
+        this.showResetPasswordForm=this.showResetPasswordForm.bind(this)
+    }
+    showResetPasswordForm = ()=> this.setState({showResetPassword: true})
+
     //props= user object
     render() { return(
         <GqlApiSubscriber>
@@ -55,31 +63,47 @@ class LoginForm extends React.PureComponent {
                     }}
                 >
                 {({ errors, isSubmitting, dirty, touched, values, status, initialValues }) => (
-                    <FormikForm>
-                        <Field
-                            name="user"
-                            type="text"
-                            component={TextField}
-                            label={t('Email/Phone')}
-                            value={values.user}
-                            hidden={(initialValues['user'] != '')}
-                        />
-                        <Field
-                            name="password"
-                            type="password"
-                            component={TextField}
-                            label={t('Password')}
-                            value={values.password}
-                        />
-                        <FormErr>{status}</FormErr>
-                        <FormButton
-                            type="submit"
-                            disabled={isSubmitting || !isEmpty(pickBy(errors)) || !dirty}
-                        >
-                            { t('Submit')}
-                        </FormButton>
-                        
-                    </FormikForm>
+                    <div>
+                        <FormikForm>
+                            <Field
+                                name="user"
+                                type="text"
+                                component={TextField}
+                                label={t('Email/Phone')}
+                                value={values.user}
+                                hidden={(initialValues['user'] != '')}
+                            />
+                            <Field
+                                name="password"
+                                type="password"
+                                component={TextField}
+                                label={t('Password')}
+                                value={values.password}
+                            />
+                            <FormErr>{status}</FormErr>
+                            <FieldRow>
+                                <FormButton
+                                    type="submit"
+                                    disabled={isSubmitting || !isEmpty(pickBy(errors)) || !dirty}
+                                >
+                                    { t('Submit')}
+                                </FormButton>
+                                {!this.state.showResetPassword && <FormButton
+                                    type="button"
+                                    onClick={this.showResetPasswordForm}
+                                >
+                                    { t('Forget Your Password?')}
+                                </FormButton>}
+                            </FieldRow>
+                            
+                        </FormikForm>
+                        {this.state.showResetPassword && 
+                            <div>
+                                <h2>{t('Reset Your Password')}</h2>
+                                <ResetPasswordForm />
+                            </div>
+                        }
+                    </div>
                 )}
                 </Formik>
             )}

@@ -26,9 +26,6 @@ export const getMyself = gql`{
                 streetAddress
                 telephone
                 isActive
-                account_id  {
-                    _id
-                }
             }
             defaultBillingAddress_id {
                 addressType
@@ -38,9 +35,6 @@ export const getMyself = gql`{
                 streetAddress
                 telephone
                 isActive
-                account_id  {
-                    _id
-                }
             }
             defaultShippingAddress_id {
                 addressType
@@ -50,9 +44,6 @@ export const getMyself = gql`{
                 streetAddress
                 telephone
                 isActive
-                account_id  {
-                    _id
-                }
             }
             isActive
         }
@@ -75,9 +66,6 @@ export const getMyself = gql`{
                 streetAddress
                 telephone
                 isActive
-                account_id  {
-                    _id
-                }
             }
             defaultBillingAddress_id {
                 addressType
@@ -87,9 +75,6 @@ export const getMyself = gql`{
                 streetAddress
                 telephone
                 isActive
-                account_id  {
-                    _id
-                }
             }
             defaultShippingAddress_id {
                 addressType
@@ -99,9 +84,6 @@ export const getMyself = gql`{
                 streetAddress
                 telephone
                 isActive
-                account_id  {
-                    _id
-                }
             }
             isActive
         }
@@ -124,9 +106,6 @@ export const getMyself = gql`{
                 streetAddress
                 telephone
                 isActive
-                account_id  {
-                    _id
-                }
             }
             defaultBillingAddress_id {
                 addressType
@@ -136,9 +115,6 @@ export const getMyself = gql`{
                 streetAddress
                 telephone
                 isActive
-                account_id  {
-                    _id
-                }
             }
             defaultShippingAddress_id {
                 addressType
@@ -148,9 +124,6 @@ export const getMyself = gql`{
                 streetAddress
                 telephone
                 isActive
-                account_id  {
-                    _id
-                }
             }
             isActive
         }
@@ -226,9 +199,9 @@ export const resendVerification = gql`
 `
 
 export const resetPassword = gql`
-    mutation ($_id: String!) {
+    mutation ($login: String!) {
         resetPassword(
-            _id: $_id,
+            login: $login,
         ) {
             _id
         }

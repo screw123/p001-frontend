@@ -21,7 +21,7 @@ class ApolloContainer extends Container {
             gqlClientPublic: {},
             isLogined: false,
             uid: '',
-            history: {}
+            history: {push:()=>{}}
         }
     }
     
@@ -97,6 +97,10 @@ class ApolloContainer extends Container {
     
     setHistoryObj(obj) {
         this.setState({history: obj})
+    }
+
+    redirect(path) {
+        this.state.history.push(path)
     }
     
 }

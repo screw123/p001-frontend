@@ -18,8 +18,10 @@ class LoginForm extends React.PureComponent {
         super(props)
         this.state={showResetPassword: false}
         this.showResetPasswordForm=this.showResetPasswordForm.bind(this)
+        this.onResetSucess=this.onResetSucess.bind(this)
     }
     showResetPasswordForm = ()=> this.setState({showResetPassword: true})
+    onResetSucess = ()=> this.setState({showResetPassword: false})
 
     //props= user object
     render() { return(
@@ -100,7 +102,7 @@ class LoginForm extends React.PureComponent {
                         {this.state.showResetPassword && 
                             <div>
                                 <h2>{t('Reset Your Password')}</h2>
-                                <ResetPasswordForm />
+                                <ResetPasswordForm onResetSucess={()=>this.onResetSucess} />
                             </div>
                         }
                     </div>

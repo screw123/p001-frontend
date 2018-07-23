@@ -204,6 +204,7 @@ export const resetPassword = gql`
             login: $login,
         ) {
             _id
+            verifyBySMS
         }
     }
 `

@@ -29,12 +29,6 @@ class DataPage extends React.Component {
                     <h3>Your list of accounts:</h3>
                     <p><b>{d.accountOwn_id[0].name}</b>({d._id}) {d.accountOwn_id[0].isActive? "Active": "SUSPENDED"}<br />
                     Current Balance: {d.accountOwn_id[0].balance} <br />
-                    <b>Default Billing Address</b><br />
-                    {d.accountOwn_id[0].defaultBillingAddress_id.addressType}<br />
-                    {d.accountOwn_id[0].defaultBillingAddress_id.legalName}<br />
-                    {d.accountOwn_id[0].defaultBillingAddress_id.streepAddress}<br />
-                    {d.accountOwn_id[0].defaultBillingAddress_id.addressRegion}<br />
-                    {d.accountOwn_id[0].defaultBillingAddress_id.addressCountry}<br />
                     </p>
                 </div>
             )
@@ -46,7 +40,10 @@ class DataPage extends React.Component {
                     <Query query={getMyself}>
                     {({ client, loading, error, data, refetch }) => {
                         if (loading) return (<BigLoadingScreen/>)
-                        if (error) return (<p>Error :(</p>)
+                        if (error) {
+                            console.log(error)
+                            return (<p>Error :(</p>)
+                        }
                         
                         if (data.getMyself.length==0) return (<button onClick={() => {
                             refetch()

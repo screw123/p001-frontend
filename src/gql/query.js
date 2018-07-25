@@ -12,39 +12,6 @@ export const getMyself = gql`{
             accountType
             priceList
             balance
-            manager_id {
-                _id
-            }
-            viewer_id {
-                _id
-            }
-            address_id {
-                addressType
-                legalName
-                addressCountry
-                addressRegion
-                streetAddress
-                telephone
-                isActive
-            }
-            defaultBillingAddress_id {
-                addressType
-                legalName
-                addressCountry
-                addressRegion
-                streetAddress
-                telephone
-                isActive
-            }
-            defaultShippingAddress_id {
-                addressType
-                legalName
-                addressCountry
-                addressRegion
-                streetAddress
-                telephone
-                isActive
-            }
             isActive
         }
         accountView_id {
@@ -52,39 +19,6 @@ export const getMyself = gql`{
             accountType
             priceList
             balance
-            manager_id {
-                _id
-            }
-            viewer_id {
-                _id
-            }
-            address_id {
-                addressType
-                legalName
-                addressCountry
-                addressRegion
-                streetAddress
-                telephone
-                isActive
-            }
-            defaultBillingAddress_id {
-                addressType
-                legalName
-                addressCountry
-                addressRegion
-                streetAddress
-                telephone
-                isActive
-            }
-            defaultShippingAddress_id {
-                addressType
-                legalName
-                addressCountry
-                addressRegion
-                streetAddress
-                telephone
-                isActive
-            }
             isActive
         }
         accountManage_id {
@@ -92,39 +26,6 @@ export const getMyself = gql`{
             accountType
             priceList
             balance
-            manager_id {
-                _id
-            }
-            viewer_id {
-                _id
-            }
-            address_id {
-                addressType
-                legalName
-                addressCountry
-                addressRegion
-                streetAddress
-                telephone
-                isActive
-            }
-            defaultBillingAddress_id {
-                addressType
-                legalName
-                addressCountry
-                addressRegion
-                streetAddress
-                telephone
-                isActive
-            }
-            defaultShippingAddress_id {
-                addressType
-                legalName
-                addressCountry
-                addressRegion
-                streetAddress
-                telephone
-                isActive
-            }
             isActive
         }
         
@@ -208,5 +109,68 @@ export const resetPassword = gql`
         }
     }
 `
+
+export const getDefaultPriceList = gql`
+    query {
+        getDefaultPriceList {
+            _id
+            code
+            item_id {
+                SKUType
+                shortCode
+                name
+                longDesc
+                iconPicURL
+                smallPicURL
+                largePicURL
+                lengthM
+                widthM
+                heightM
+            }
+            rentMode
+            rent
+            ship_in_base
+            ship_in_perPiece
+            ship_out_base
+            ship_out_perPiece
+            ship_first_base
+            ship_first_perPiece
+            ship_last_base
+            ship_last_perPiece
+            desc
+        }
+    }`
+
+export const getMyPriceList = gql`
+    query{
+        getMyPriceList {
+        _id
+        code
+        item_id {
+            _id
+            SKUType
+            shortCode
+            name
+            longDesc
+            iconPicURL
+            smallPicURL
+            largePicURL
+            lengthM
+            widthM
+            heightM
+        }
+        rentMode
+        rent
+        ship_in_base
+        ship_in_perPiece
+        ship_out_base
+        ship_out_perPiece
+        ship_first_base
+        ship_first_perPiece
+        ship_last_base
+        ship_last_perPiece
+        }
+    }`
+
 
 export default getMyself

@@ -10,24 +10,10 @@ export const getMyself = gql`{
         accountOwn_id {
             name
             accountType
-            priceList
             balance
             isActive
         }
-        accountView_id {
-            name
-            accountType
-            priceList
-            balance
-            isActive
-        }
-        accountManage_id {
-            name
-            accountType
-            priceList
-            balance
-            isActive
-        }
+        
         
     }
 }`
@@ -115,7 +101,8 @@ export const getDefaultPriceList = gql`
         getDefaultPriceList {
             _id
             code
-            item_id {
+            SKU_id {
+                _id
                 SKUType
                 shortCode
                 name
@@ -137,40 +124,57 @@ export const getDefaultPriceList = gql`
             ship_first_perPiece
             ship_last_base
             ship_last_perPiece
-            desc
         }
     }`
 
 export const getMyPriceList = gql`
     query{
         getMyPriceList {
-        _id
-        code
-        item_id {
             _id
-            SKUType
-            shortCode
-            name
-            longDesc
-            iconPicURL
-            smallPicURL
-            largePicURL
-            lengthM
-            widthM
-            heightM
-        }
-        rentMode
-        rent
-        ship_in_base
-        ship_in_perPiece
-        ship_out_base
-        ship_out_perPiece
-        ship_first_base
-        ship_first_perPiece
-        ship_last_base
-        ship_last_perPiece
+            code
+            SKU_id {
+                _id
+                SKUType
+                shortCode
+                name
+                longDesc
+                iconPicURL
+                smallPicURL
+                largePicURL
+                lengthM
+                widthM
+                heightM
+            }
+            rentMode
+            rent
+            ship_in_base
+            ship_in_perPiece
+            ship_out_base
+            ship_out_perPiece
+            ship_first_base
+            ship_first_perPiece
+            ship_last_base
+            ship_last_perPiece
         }
     }`
 
+
+export const addQuotation = gql`
+    mutation ($firstName: String!, $lastName: String!, $email: String!, $mobilePhone: String!, $password: String! $verifyBySMS: Boolean!, $language: Language!) {
+        addUser(
+            firstName: $firstName,
+            lastName: $lastName,
+            email: $email,
+            mobilePhone: $mobilePhone,
+            password: $password,
+            createThru: "WebClient"
+            verifyBySMS: $verifyBySMS,
+            language: $language
+        ) {
+            _id
+            verifyDeadline
+        }
+    }
+`
 
 export default getMyself

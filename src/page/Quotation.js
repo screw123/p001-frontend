@@ -2,7 +2,7 @@ import React from "react"
 import { getMyPriceList, getDefaultPriceList, addQuotation } from '../gql/query.js'
 import Background from '../component/Background.js'
 
-import { Formik, Field } from 'formik'
+import { Formik, Field, FieldArray } from 'formik'
 import FormikForm, { TextField, FormButton, FormErr, FieldRow } from '../component/FormikForm.js'
 import styled from 'styled-components'
 
@@ -113,9 +113,14 @@ class Quotation extends React.Component {
                             const {coms, initialValue} = this.genQuotationFromPriceList(fullPriceList.DEFAULT, t)
                             console.log('coms=',coms, 'initialValue=', initialValue)
                             return(
+                                <div>{coms}
                                 <Formik
-                                    initialValues={initialValue}
+                                    initialValues={{
+                                        containers: initialValue,
+                                        totalAmt: 0
+                                    }}
                                     validate={ (values) => {
+
                                         return {}  //Fixme do some basic checking.  TBC if it's necessary
                                     }}
                                     onSubmit={async (values, actions) => {
@@ -123,8 +128,30 @@ class Quotation extends React.Component {
                                         actions.setSubmitting(false)
                                     }}
                                 >
-                                {({ errors, isSubmitting, dirty, touched, values, status, initialValues }) => (
+                                {({ errors, isSubmitting, dirty, touched, values, status }) => (
                                     <FormikForm>
+                                        <FieldArray
+                                            name="orders"
+                                            render={(arrayHelper)=> {
+                                                let r = []
+                                                const containerType = Object.keys(values.containers)
+                                                for (let i=0; i<containerType.length; i++) {
+                                                    let rentType = Object.keys(values.containers[containerType[i]])
+                                                    for (let j=0; j<rentType.length; j++) {
+                                                        r.push(<Field
+                                                            name={'containers.' + containerType[i] + '.' + rentType[j]}
+                                                            type='number'
+                                                            component={TextField}
+                                                            label={t(containerType[i]) + ' ' + t(rentType[j])}
+                                                            value={values.containers[containerType[i]][rentType[j]]}
+                                                            min={0}
+                                                        />)
+                                                    }
+                                                    
+                                                }
+                                                return r
+                                            }}
+                                        />
                                         <FormErr>{status}</FormErr>
                                         <FieldRow>
                                             <FormButton
@@ -138,7 +165,7 @@ class Quotation extends React.Component {
                                         
                                     </FormikForm>
                                 )}
-                                </Formik>
+                                </Formik></div>
                             )
                         }}
                         </Mutation>

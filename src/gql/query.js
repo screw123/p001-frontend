@@ -96,9 +96,9 @@ export const resetPassword = gql`
     }
 `
 
-export const getDefaultPriceList = gql`
-    query {
-        getDefaultPriceList {
+export const getPriceListByAccount = gql`
+    query ($account_id: String!){
+        getPriceListByAccount(account_id: $account_id) {
             _id
             code
             SKU_id {
@@ -126,38 +126,6 @@ export const getDefaultPriceList = gql`
             ship_last_perPiece
         }
     }`
-
-export const getMyPriceList = gql`
-    query{
-        getMyPriceList {
-            _id
-            code
-            SKU_id {
-                _id
-                SKUType
-                shortCode
-                name
-                longDesc
-                iconPicURL
-                smallPicURL
-                largePicURL
-                lengthM
-                widthM
-                heightM
-            }
-            rentMode
-            rent
-            ship_in_base
-            ship_in_perPiece
-            ship_out_base
-            ship_out_perPiece
-            ship_first_base
-            ship_first_perPiece
-            ship_last_base
-            ship_last_perPiece
-        }
-    }`
-
 
 export const addQuotation = gql`
     mutation ($firstName: String!, $lastName: String!, $email: String!, $mobilePhone: String!, $password: String! $verifyBySMS: Boolean!, $language: Language!) {

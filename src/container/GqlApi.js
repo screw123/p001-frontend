@@ -31,7 +31,7 @@ class ApolloContainer extends Container {
     getGqlClient() {
         if (isEmpty(this.state.gqlClient)) {
             const gqlClient = new ApolloClient({
-                link: new HttpLink({ uri: "https://cd.nicecar.hk/gql", credentials: 'include' }),
+                link: new HttpLink({ uri: "https://wisekeep.hk/gql", credentials: 'include' }),
                 cache: new InMemoryCache(),
                 onError: (e) => { console.log("Apollo Client Error:", e) }
             })
@@ -44,7 +44,7 @@ class ApolloContainer extends Container {
     getGqlClientPublic() {
         if (isEmpty(this.state.gqlClientPublic)) {
             const gqlClientPublic = new ApolloClient({
-                link: new HttpLink({ uri: "https://cd.nicecar.hk/gqlPublic"}),
+                link: new HttpLink({ uri: "https://wisekeep.hk/gqlPublic"}),
                 cache: new InMemoryCache(),
                 onError: (e) => { console.log("Apollo Public Client Error:", e) }
             })
@@ -56,7 +56,7 @@ class ApolloContainer extends Container {
     
     async checkLogined() {
         try {
-            const res = await request.get('https://cd.nicecar.hk/checkl').withCredentials()
+            const res = await request.get('https://wisekeep.hk/checkl').withCredentials()
             if (res.statusCode===200) { this.setState({isLogined: true}) }
             else { this.setState({isLogined: false}) }
         }
@@ -67,7 +67,7 @@ class ApolloContainer extends Container {
         //userPWObj = {user: aaa, password: bbb}
         try {
             console.log('GqlApi.login, userPWObj=', userPWObj)
-            const res = await request.post('https://cd.nicecar.hk/l').withCredentials().type('form').query(userPWObj).ok(()=>true)
+            const res = await request.post('https://wisekeep.hk/l').withCredentials().type('form').query(userPWObj).ok(()=>true)
             if (res.statusCode===200) {
                 this.setState({isLogined: true})
                 return new Promise((resolve, reject) => resolve(true))
@@ -81,7 +81,7 @@ class ApolloContainer extends Container {
     }
     
     async logout() {
-        const res = await request.get('https://cd.nicecar.hk/logout').withCredentials()
+        const res = await request.get('https://wisekeep.hk/logout').withCredentials()
         console.log(res)
         if (res.statusCode===200) {
             this.setState({isLogined: false})

@@ -5,7 +5,7 @@ import SignUpWorkflow from './page/SignUpWorkflow.js'
 import ResetPasswordPage from './page/ResetPasswordPage.js'
 import UserActivationPage from './page/UserActivationPage.js'
 import TermsAndConditionPage from './page/TermsAndConditionPage.js'
-import Quotation from './page/Quotation.js'
+import QuotationPage from './page/QuotationPage.js'
 
 const routes = [
     {
@@ -99,7 +99,7 @@ const routes = [
         path: "/quotation",
         exact: true,
         menuName: 'Quotation',
-        component: Quotation,
+        component: QuotationPage,
         navbar: {
             showBeforeLogin: true,
             showAfterLogin: true

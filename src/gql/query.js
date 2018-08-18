@@ -116,6 +116,7 @@ export const getPriceListByAccount = gql`
             }
             rentMode
             rent
+            duration
             ship_in_base
             ship_in_perPiece
             ship_out_base

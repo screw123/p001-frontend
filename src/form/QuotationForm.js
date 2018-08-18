@@ -24,52 +24,81 @@ class Quotation extends React.Component {
         this.genQuotationFromPriceList = this.genQuotationFromPriceList.bind(this)
         this.genPricingGrid = this.genPricingGrid.bind(this)
         this.getPrice = this.getPrice.bind(this)
-        this.handleChange = this.handleChange.bind(this)
+        this.updateValues = this.updateValues.bind(this)
     }
     
-    transformPriceList = (p) => {
+    transformPriceList = (p) => { //to transform a single priceList
         console.time('transformPriceList')
-        console.log(p)
         const result = {}
         for(let i = 0; i<p.length;i++){
-            const priceList = p[i].code
             const itemCode = p[i].SKU_id.shortCode
             const rentMode = p[i].rentMode
+            const duration = p[i].duration
             let pricing = {}
-            pricing[priceList] = {}
-            pricing[priceList][itemCode] = merge({}, p[i].SKU_id)
-            pricing[priceList][itemCode]['mode'] = {}
-            pricing[priceList][itemCode]['mode'][rentMode] = omit(p[i], ['__typename', 'SKU_id', 'code', 'rentMode'])
+            pricing[itemCode] = merge({}, p[i].SKU_id)
+            pricing[itemCode]['mode'] = {}
+            pricing[itemCode]['mode'][rentMode] = {}
+            pricing[itemCode]['mode'][rentMode][duration] = omit(p[i], ['__typename', 'SKU_id', 'code', 'rentMode', 'duration'])
             merge(result, pricing)
         }
         console.timeEnd('transformPriceList')
         return result
     }
     
-    genQuotationFromPriceList = (p, t) => {
+    transformPriceListMulti = (p) => { //to transform a multiple priceList
+        console.time('transformPriceListMulti')
         console.log(p)
+        const result = {}
+        for(let i = 0; i<p.length;i++){
+            const priceList = p[i].code
+            const itemCode = p[i].SKU_id.shortCode
+            const rentMode = p[i].rentMode
+            const duration = p[i].duration
+            let pricing = {}
+            pricing[priceList] = {}
+            pricing[priceList][itemCode] = merge({}, p[i].SKU_id)
+            pricing[priceList][itemCode]['mode'] = {}
+            pricing[priceList][itemCode]['mode'][rentMode] = {}
+            pricing[priceList][itemCode]['mode'][rentMode][duration] = omit(p[i], ['__typename', 'SKU_id', 'code', 'rentMode', 'duration'])
+            merge(result, pricing)
+        }
+        console.timeEnd('transformPriceListMulti')
+        return result
+    }
+    
+    genQuotationFromPriceList = (p, t) => { //p = priceList, t=translation object
         const SKUList = Object.keys(p)
         let SKUUIComponents = []
         let initialValue = {}
+        
         for (let i=0; i<SKUList.length; i++) {
-            const SKUObject = p[SKUList[i]]
-            const {com, initValue} = this.genPricingGrid(SKUObject.mode, t)
+            const SKUObject = p[SKUList[i]] //SKUObject = {rentMode: {duration: rent}}
+            const rentModeList = Object.keys(SKUObject.mode)
+            let coms = []
+            for (let j=0; j<rentModeList.length; j++) {
+                
+                const {com, initValue} = this.genPricingGrid(SKUObject.mode[rentModeList[j]], t, rentModeList[j])
+                coms.push(com)
+                if (initialValue[SKUList[i]]===undefined) { initialValue[SKUList[i]] = {} } 
+                initialValue[SKUList[i]][rentModeList[j]] = initValue
+            }
             SKUUIComponents.push(
                 <div key={SKUObject._id}>
                     <h2>{t(SKUObject.name)}</h2>
                     <img src={SKUObject.smallPicURL} />
                     <div>{t(SKUObject.longDesc)}</div>
-                    {com}
+                    {coms}
                 </div>
             )
-            initialValue[SKUList[i]] = initValue
             
         }
         return {coms: SKUUIComponents, initialValue: initialValue}
     }
 
-    genPricingGrid = (mode, t) => {
+    genPricingGrid = (mode, t, rentMode) => {
+        //mode = {duration: {rent}}, t = translation function, rentMode = rentMode name ('MONTH', 'DAY', 'YEAR')
         const modeList = Object.keys(mode)
+        console.log(mode)
         let pricingGrid = []
         let initValue = {}
         for (let i=0; i<modeList.length; i++) {
@@ -77,7 +106,7 @@ class Quotation extends React.Component {
             initValue[modeList[i]] = 0
             pricingGrid.push(
                 <div key={m._id}>
-                    <h3>{t(modeList[i])}</h3>
+                    <h3>{modeList[i] + ' ' + t(rentMode)}</h3>
                     <div><b>{t('Rent')}:</b>{m.rent}</div>
                     <div>{t('Shipping you the empty box')}: {this.getPrice(m.ship_first_base, t)}({t('Basic')})/{this.getPrice(m.ship_first_perPiece, t)}({t('Per Piece')})</div>
                     <div>{t('You send the box for archive')}: {this.getPrice(m.ship_in_base, t)}({t('Basic')})/{this.getPrice(m.ship_in_perPiece, t)}({t('Per Piece')})</div>
@@ -94,25 +123,38 @@ class Quotation extends React.Component {
         else return p
     }
     
-    calcOrderTotalAmt = (priceList, v) => {
+    updateValues = (priceList, values, fieldName, fieldValue, setFieldValue) => { //setFieldValue for container type and totalAmt
+        console.time('updateValues')
         let totalAmt = 0
-        const containerType = Object.keys(v)
+        const qty = values.containers
+        setFieldValue(fieldName, fieldValue) //setFieldValue for container type first
+        
+        //Calculate total amt below
+        const containerType = Object.keys(qty)
         for (let i=0; i<containerType.length; i++) {
-            let rentType = Object.keys(v.containers[containerType[i]])
-            for (let j=0; j<rentType.length; j++) {
-                
+            let rentMode = Object.keys(qty[containerType[i]])
+            for (let j=0; j<rentMode.length; j++) {
+                let duration = Object.keys(qty[containerType[i]][rentMode[j]])
+                for (let k=0; k<duration.length; k++) {
+                    const path = 'containers.'+containerType[i]+'.'+rentMode[j] + '.'+duration[k]
+                    let typeQty = qty[containerType[i]][rentMode[j]][duration[k]]
+    
+                    if (path==fieldName) { typeQty = fieldValue }
+                    
+                    if (typeQty>0) {
+                        totalAmt = totalAmt + (priceList[containerType[i]]['mode'][rentMode[j]][duration[k]].rent * typeQty)
+                    }
+                }
             }
         }
-    }
-    
-    handleChange = (e) => {
-        console.log(e)
+        setFieldValue('totalAmt', totalAmt)
+        console.timeEnd('updateValues')
     }
     
     render(){ return (
         <I18n>
         {(t)=>(
-            <ApolloProvider client={(GqlApi.state.isLogined)? GqlApi.getGqlClient(): GqlApi.getGqlClientPublic()}>
+            <ApolloProvider client={(GqlApi.checkLogined())? GqlApi.getGqlClient(): GqlApi.getGqlClientPublic()}>
                 <Query query={getPriceListByAccount} variables={{account_id: this.props.account_id}}>
                 {({ client, loading: queryLoading, error: queryErr, data, refetch }) => (
                     <Mutation mutation={addQuotation} errorPolicy="all">
@@ -121,7 +163,7 @@ class Quotation extends React.Component {
                         if (queryLoading) return (<BigLoadingScreen/>)
                         
                         if (queryErr) {
-                            console.log(queryErr)
+                            console.log('QuotationForm', queryErr, this.props.account_id)
                             return (<p>Error :(</p>)
                         }
                         
@@ -130,13 +172,14 @@ class Quotation extends React.Component {
                         console.log('priceList=',fullPriceList)
                         
                         //coms is the list of components.  InitialValue is the structure for Formik
-                        const {coms, initialValue} = this.genQuotationFromPriceList(fullPriceList.DEFAULT, t)
+                        const {coms, initialValue} = this.genQuotationFromPriceList(fullPriceList, t)
                         console.log('coms=',coms, 'initialValue=', initialValue)
                         return(
                             <div>{coms}
                             <Formik
                                 initialValues={{
-                                    containers: initialValue
+                                    containers: initialValue,
+                                    totalAmt: 0
                                 }}
                                 validate={ (values)=>{
                                     //need to charge minimum
@@ -149,33 +192,44 @@ class Quotation extends React.Component {
                             >
                             {({ errors, isSubmitting, setFieldValue, dirty, touched, values, status }) => (
                                 <FormikForm>
-                                    <FieldArray
-                                        name="orders"
-                                        render={(arrayHelper)=> {
-                                            let r = []
-                                            const containerType = Object.keys(values.containers)
-                                            for (let i=0; i<containerType.length; i++) {
-                                                let rentType = Object.keys(values.containers[containerType[i]])
-                                                for (let j=0; j<rentType.length; j++) {
+                                    <FieldArray name="orders" render={(arrayHelper)=> {
+                                        let r = []
+                                        
+                                        //containerType = 'STANDARD', 'HIGH VALUE', ...
+                                        const containerType = Object.keys(values.containers)
+                                        
+                                        for (let i=0; i<containerType.length; i++) {
+                                        
+                                            //rentMode = 'DAY', 'MONTH', 'YEAR', ...
+                                            let rentMode = Object.keys(values.containers[containerType[i]])
+                                            
+                                            for (let j=0; j<rentMode.length; j++) {
+                                            
+                                                let duration = Object.keys(values.containers[containerType[i]][rentMode[j]])
+                                                
+                                                for (let k=0; k<duration.length; k++) {
+                                                    
+                                                
                                                     r.push(<Field
-                                                        name={'containers.' + containerType[i] + '.' + rentType[j]}
+                                                        name={'containers.' + containerType[i] + '.' + rentMode[j] + '.' + duration[k]}
                                                         component={TextField}
-                                                        label={t(containerType[i]) + ' ' + t(rentType[j])}
-                                                        value={values.containers[containerType[i]][rentType[j]]}
+                                                        label={t(containerType[i]) + ', ' + duration[k] + ' ' + t(rentMode[j])}
+                                                        value={values.containers[containerType[i]][rentMode[j]][duration[k]]}
                                                         min={0}
-                                                        key={containerType[i]+'.'+rentType[j]}
+                                                        key={containerType[i]+'.'+rentMode[j]+'.'+duration[k]}
                                                         onChange={(e)=> {
                                                             if (+e.target.value!== +e.target.value) {//not a value
-                                                                //do nothing
+                                                                //do nothing 
                                                             }
-                                                            else { setFieldValue(e.target.name, Math.abs(+e.target.value)) }
+                                                            else { this.updateValues(fullPriceList, values, e.target.name, Math.abs(+e.target.value), setFieldValue) }
                                                         }}
                                                     />)
                                                 }
-                                                
                                             }
-                                            return r
-                                        }}
+                                            
+                                        }
+                                        return r
+                                    }}
                                     />
                                     <p>Total amount: {values.totalAmt}</p>
                                     <FormErr>{status}</FormErr>

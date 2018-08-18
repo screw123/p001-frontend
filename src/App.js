@@ -11,11 +11,8 @@ import PrivateRoute from './component/PrivateRoute.js'
 import GqlApi, { GqlApiProvider, DummyPassHistory } from './container/GqlApi.js'
 
 class App extends React.Component {
-    constructor() {
-        super()
-        if (!GqlApi.state.isLogined) {
-            GqlApi.checkLogined()
-        }
+    componentDidMount() {
+        GqlApi.checkLogined()
         library.add(faEye, faEyeSlash)
     }
     

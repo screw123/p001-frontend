@@ -19,19 +19,18 @@ class ApolloContainer extends Container {
         this.state = {
             gqlClient: {},
             gqlClientPublic: {},
-            isLogined: false,
+            isLogined: undefined,
             uid: '',
             history: {push:()=>{}}
         }
     }
-    
     // These methods will also be avaiable anywhere we inject our
     // container context
     
     getGqlClient() {
         if (isEmpty(this.state.gqlClient)) {
             const gqlClient = new ApolloClient({
-                link: new HttpLink({ uri: "https://wisekeep.hk/gql", credentials: 'include' }),
+                link: new HttpLink({ uri: "https://wisekeep.hk/api/gql", credentials: 'include' }),
                 cache: new InMemoryCache(),
                 onError: (e) => { console.log("Apollo Client Error:", e) }
             })
@@ -44,7 +43,7 @@ class ApolloContainer extends Container {
     getGqlClientPublic() {
         if (isEmpty(this.state.gqlClientPublic)) {
             const gqlClientPublic = new ApolloClient({
-                link: new HttpLink({ uri: "https://wisekeep.hk/gqlPublic"}),
+                link: new HttpLink({ uri: "https://wisekeep.hk/api/gqlPublic"}),
                 cache: new InMemoryCache(),
                 onError: (e) => { console.log("Apollo Public Client Error:", e) }
             })
@@ -56,9 +55,24 @@ class ApolloContainer extends Container {
     
     async checkLogined() {
         try {
-            const res = await request.get('https://wisekeep.hk/checkl').withCredentials()
-            if (res.statusCode===200) { this.setState({isLogined: true}) }
-            else { this.setState({isLogined: false}) }
+            console.log('GqlApi.checkLogined')
+            if (this.state.isLogined===undefined) {
+                console.log('GqlApi.isLogined==undefined')
+                this.setState({isLogined: new Promise(async (resolve) => {
+                    const res = await request.get('https://wisekeep.hk/api/checkl').withCredentials()
+                    if (res.statusCode===200) { 
+                        console.log('status==200, return true')
+                        this.setState({isLogined: true})
+                        return resolve(true)
+                    }
+                    else {
+                        console.log('status!=200, return false')
+                        this.setState({isLogined: false})
+                        return resolve(false)
+                    }
+                })})
+            }
+            return this.state.isLogined
         }
         catch(e) { console.log(e) }
     }
@@ -67,7 +81,7 @@ class ApolloContainer extends Container {
         //userPWObj = {user: aaa, password: bbb}
         try {
             console.log('GqlApi.login, userPWObj=', userPWObj)
-            const res = await request.post('https://wisekeep.hk/l').withCredentials().type('form').query(userPWObj).ok(()=>true)
+            const res = await request.post('https://wisekeep.hk/api/l').withCredentials().type('form').query(userPWObj).ok(()=>true)
             if (res.statusCode===200) {
                 this.setState({isLogined: true})
                 return new Promise((resolve, reject) => resolve(true))
@@ -81,7 +95,7 @@ class ApolloContainer extends Container {
     }
     
     async logout() {
-        const res = await request.get('https://wisekeep.hk/logout').withCredentials()
+        const res = await request.get('https://wisekeep.hk/api/logout').withCredentials()
         console.log(res)
         if (res.statusCode===200) {
             this.setState({isLogined: false})

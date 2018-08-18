@@ -7,7 +7,7 @@ import FormikForm, { TextField, FormButton, FormErr, FieldRow } from '../compone
 import styled from 'styled-components'
 
 import { I18n } from 'react-i18next'
-import GqlApi from '../container/GqlApi.js'
+import GqlApi, { GqlApiSubscriber } from '../container/GqlApi.js'
 import { ApolloProvider, Query, Mutation } from "react-apollo"
 import {BigLoadingScreen} from '../component/Loading.js'
 
@@ -152,108 +152,112 @@ class Quotation extends React.Component {
     }
     
     render(){ return (
-        <I18n>
-        {(t)=>(
-            <ApolloProvider client={(GqlApi.checkLogined())? GqlApi.getGqlClient(): GqlApi.getGqlClientPublic()}>
-                <Query query={getPriceListByAccount} variables={{account_id: this.props.account_id}}>
-                {({ client, loading: queryLoading, error: queryErr, data, refetch }) => (
-                    <Mutation mutation={addQuotation} errorPolicy="all">
-                    {(mutate, {loading: mutateLoading, err: mutateErr})=>{
-                    
-                        if (queryLoading) return (<BigLoadingScreen/>)
+        <GqlApiSubscriber>
+        {(g)=>(
+            <I18n>
+            {(t)=>(
+                <ApolloProvider client={(g.state.isLogined)? GqlApi.getGqlClient() : GqlApi.getGqlClientPublic()}>
+                    <Query query={getPriceListByAccount} variables={{account_id: this.props.account_id}}>
+                    {({ client, loading: queryLoading, error: queryErr, data, refetch }) => (
+                        <Mutation mutation={addQuotation} errorPolicy="all">
+                        {(mutate, {loading: mutateLoading, err: mutateErr})=>{
                         
-                        if (queryErr) {
-                            console.log('QuotationForm', queryErr, this.props.account_id)
-                            return (<p>Error :(</p>)
-                        }
-                        
-                        //Full price list converts what DB sends back into {priceList: {box: {rentMode: }}}
-                        const fullPriceList = this.transformPriceList(data.getPriceListByAccount)
-                        console.log('priceList=',fullPriceList)
-                        
-                        //coms is the list of components.  InitialValue is the structure for Formik
-                        const {coms, initialValue} = this.genQuotationFromPriceList(fullPriceList, t)
-                        console.log('coms=',coms, 'initialValue=', initialValue)
-                        return(
-                            <div>{coms}
-                            <Formik
-                                initialValues={{
-                                    containers: initialValue,
-                                    totalAmt: 0
-                                }}
-                                validate={ (values)=>{
-                                    //need to charge minimum
-                                    return {}
-                                }}
-                                onSubmit={async (values, actions) => {
-                                    actions.setStatus('')
-                                    actions.setSubmitting(false)
-                                }}
-                            >
-                            {({ errors, isSubmitting, setFieldValue, dirty, touched, values, status }) => (
-                                <FormikForm>
-                                    <FieldArray name="orders" render={(arrayHelper)=> {
-                                        let r = []
-                                        
-                                        //containerType = 'STANDARD', 'HIGH VALUE', ...
-                                        const containerType = Object.keys(values.containers)
-                                        
-                                        for (let i=0; i<containerType.length; i++) {
-                                        
-                                            //rentMode = 'DAY', 'MONTH', 'YEAR', ...
-                                            let rentMode = Object.keys(values.containers[containerType[i]])
-                                            
-                                            for (let j=0; j<rentMode.length; j++) {
-                                            
-                                                let duration = Object.keys(values.containers[containerType[i]][rentMode[j]])
-                                                
-                                                for (let k=0; k<duration.length; k++) {
-                                                    
-                                                
-                                                    r.push(<Field
-                                                        name={'containers.' + containerType[i] + '.' + rentMode[j] + '.' + duration[k]}
-                                                        component={TextField}
-                                                        label={t(containerType[i]) + ', ' + duration[k] + ' ' + t(rentMode[j])}
-                                                        value={values.containers[containerType[i]][rentMode[j]][duration[k]]}
-                                                        min={0}
-                                                        key={containerType[i]+'.'+rentMode[j]+'.'+duration[k]}
-                                                        onChange={(e)=> {
-                                                            if (+e.target.value!== +e.target.value) {//not a value
-                                                                //do nothing 
-                                                            }
-                                                            else { this.updateValues(fullPriceList, values, e.target.name, Math.abs(+e.target.value), setFieldValue) }
-                                                        }}
-                                                    />)
-                                                }
-                                            }
-                                            
-                                        }
-                                        return r
+                            if (queryLoading) return (<BigLoadingScreen/>)
+                            
+                            if (queryErr) {
+                                console.log('QuotationForm', queryErr, this.props.account_id)
+                                return (<p>Error :(</p>)
+                            }
+                            
+                            //Full price list converts what DB sends back into {priceList: {box: {rentMode: }}}
+                            const fullPriceList = this.transformPriceList(data.getPriceListByAccount)
+                            console.log('priceList=',fullPriceList)
+                            
+                            //coms is the list of components.  InitialValue is the structure for Formik
+                            const {coms, initialValue} = this.genQuotationFromPriceList(fullPriceList, t)
+                            console.log('coms=',coms, 'initialValue=', initialValue)
+                            return(
+                                <div>{coms}
+                                <Formik
+                                    initialValues={{
+                                        containers: initialValue,
+                                        totalAmt: 0
                                     }}
-                                    />
-                                    <p>Total amount: {values.totalAmt}</p>
-                                    <FormErr>{status}</FormErr>
-                                    <FieldRow>
-                                        <FormButton
-                                            type="submit"
-                                            disabled={isSubmitting || !isEmpty(pickBy(errors)) || !dirty}
-                                        >
-                                            { t('Submit')}
-                                        </FormButton>
+                                    validate={ (values)=>{
+                                        //need to charge minimum
+                                        return {}
+                                    }}
+                                    onSubmit={async (values, actions) => {
+                                        actions.setStatus('')
+                                        actions.setSubmitting(false)
+                                    }}
+                                >
+                                {({ errors, isSubmitting, setFieldValue, dirty, touched, values, status }) => (
+                                    <FormikForm>
+                                        <FieldArray name="orders" render={(arrayHelper)=> {
+                                            let r = []
+                                            
+                                            //containerType = 'STANDARD', 'HIGH VALUE', ...
+                                            const containerType = Object.keys(values.containers)
+                                            
+                                            for (let i=0; i<containerType.length; i++) {
+                                            
+                                                //rentMode = 'DAY', 'MONTH', 'YEAR', ...
+                                                let rentMode = Object.keys(values.containers[containerType[i]])
+                                                
+                                                for (let j=0; j<rentMode.length; j++) {
+                                                
+                                                    let duration = Object.keys(values.containers[containerType[i]][rentMode[j]])
+                                                    
+                                                    for (let k=0; k<duration.length; k++) {
+                                                        
+                                                    
+                                                        r.push(<Field
+                                                            name={'containers.' + containerType[i] + '.' + rentMode[j] + '.' + duration[k]}
+                                                            component={TextField}
+                                                            label={t(containerType[i]) + ', ' + duration[k] + ' ' + t(rentMode[j])}
+                                                            value={values.containers[containerType[i]][rentMode[j]][duration[k]]}
+                                                            min={0}
+                                                            key={containerType[i]+'.'+rentMode[j]+'.'+duration[k]}
+                                                            onChange={(e)=> {
+                                                                if (+e.target.value!== +e.target.value) {//not a value
+                                                                    //do nothing 
+                                                                }
+                                                                else { this.updateValues(fullPriceList, values, e.target.name, Math.abs(+e.target.value), setFieldValue) }
+                                                            }}
+                                                        />)
+                                                    }
+                                                }
+                                                
+                                            }
+                                            return r
+                                        }}
+                                        />
+                                        <p>Total amount: {values.totalAmt}</p>
+                                        <FormErr>{status}</FormErr>
+                                        <FieldRow>
+                                            <FormButton
+                                                type="submit"
+                                                disabled={isSubmitting || !isEmpty(pickBy(errors)) || !dirty}
+                                            >
+                                                { t('Submit')}
+                                            </FormButton>
+                                            
+                                        </FieldRow>
                                         
-                                    </FieldRow>
-                                    
-                                </FormikForm>
-                            )}
-                            </Formik></div>
-                        )
-                    }}
-                    </Mutation>
-                )}
-                </Query>
-            </ApolloProvider>
+                                    </FormikForm>
+                                )}
+                                </Formik></div>
+                            )
+                        }}
+                        </Mutation>
+                    )}
+                    </Query>
+                </ApolloProvider>
+            )}
+            </I18n>
         )}
-        </I18n>
+        </GqlApiSubscriber>
     )}
                 
 }

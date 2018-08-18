@@ -54,11 +54,11 @@ class ApolloContainer extends Container {
     }
     
     async checkLogined() {
-        try {
-            console.log('GqlApi.checkLogined')
-            if (this.state.isLogined===undefined) {
-                console.log('GqlApi.isLogined==undefined')
-                this.setState({isLogined: new Promise(async (resolve) => {
+        console.log('GqlApi.checkLogined, isLogined=', this.state.isLogined)
+        if (this.state.isLogined===undefined) {
+            console.log('GqlApi.isLogined==undefined')
+            this.setState({isLogined: new Promise(async (resolve) => {
+                try {
                     const res = await request.get('https://wisekeep.hk/api/checkl').withCredentials()
                     if (res.statusCode===200) { 
                         console.log('status==200, return true')
@@ -70,11 +70,16 @@ class ApolloContainer extends Container {
                         this.setState({isLogined: false})
                         return resolve(false)
                     }
-                })})
-            }
-            return this.state.isLogined
+                }
+                catch(e) {
+                    console.log('status!=200, return false')
+                    this.setState({isLogined: false})
+                    return resolve(false)
+                }
+                
+            })})
         }
-        catch(e) { console.log(e) }
+        return this.state.isLogined
     }
     
     async login(userPWObj) {

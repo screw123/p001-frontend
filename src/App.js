@@ -8,7 +8,9 @@ import routes from './routes.js'
 import Navbar from './component/Navbar.js'
 import PrivateRoute from './component/PrivateRoute.js'
 
-import GqlApi, { GqlApiProvider, DummyPassHistory } from './container/GqlApi.js'
+import {BigLoadingScreen } from './component/Loading.js'
+
+import GqlApi, { GqlApiProvider, DummyPassHistory, GqlApiSubscriber } from './container/GqlApi.js'
 
 class App extends React.Component {
     componentDidMount() {
@@ -42,11 +44,20 @@ class App extends React.Component {
         return (
             <BrowserRouter>
                 <GqlApiProvider>
-                    <div>
-                        <DummyPassHistory />
-                        <Navbar routes={routes} />
-                        {this.genItems(routes)}
-                    </div>
+                    <GqlApiSubscriber>
+                    {(g)=>(
+                        <div>
+                            {((g.state.isLogined===true)||(g.state.isLogined===false)) && <div>
+                                <DummyPassHistory />
+                                <Navbar routes={routes} />
+                                {this.genItems(routes)}
+                            </div>}
+                            {(!((g.state.isLogined===true)||(g.state.isLogined===false))) && <div>
+                                <BigLoadingScreen />
+                            </div>}
+                        </div>
+                    )}
+                    </GqlApiSubscriber>
                 </GqlApiProvider>
             </BrowserRouter>
         )

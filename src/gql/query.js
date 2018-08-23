@@ -129,21 +129,29 @@ export const getPriceListByAccount = gql`
     }`
 
 export const addQuotation = gql`
-    mutation ($firstName: String!, $lastName: String!, $email: String!, $mobilePhone: String!, $password: String! $verifyBySMS: Boolean!, $language: Language!) {
-        addUser(
-            firstName: $firstName,
-            lastName: $lastName,
-            email: $email,
-            mobilePhone: $mobilePhone,
-            password: $password,
-            createThru: "WebClient"
-            verifyBySMS: $verifyBySMS,
-            language: $language
-        ) {
+    mutation ($account_id: String!, $quotationLines: [quotationLines!]!) {
+        addQuotation(account_id: $account_id, quotationLines: $quotationLines) {
             _id
-            verifyDeadline
+            version
+            status
+            quotationDetails {
+                priceList_id {
+                    _id
+                }
+                SKU_id {
+                    _id
+                }
+                qty
+                rentMode
+                duration
+            }
+            account_id {
+                _id
+            }
+            originalPrice
+            discountedPrice
+            updateDateTime
         }
-    }
-`
+    }`
 
 export default getMyself

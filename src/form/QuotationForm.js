@@ -188,8 +188,39 @@ class Quotation extends React.Component {
                                         return {}
                                     }}
                                     onSubmit={async (values, actions) => {
-                                        actions.setStatus('')
-                                        actions.setSubmitting(false)
+                                        let quotation_lines = []
+                                        const containerType = Object.keys(values.containers)
+                                            
+                                        for (let i=0; i<containerType.length; i++) {
+                                        
+                                            //rentMode = 'DAY', 'MONTH', 'YEAR', ...
+                                            let rentMode = Object.keys(values.containers[containerType[i]])
+                                            
+                                            for (let j=0; j<rentMode.length; j++) {
+                                            
+                                                let duration = Object.keys(values.containers[containerType[i]][rentMode[j]])
+                                                
+                                                for (let k=0; k<duration.length; k++) {
+                                                    if (values.containers[containerType[i]][rentMode[j]][duration[k]]>0) {
+                                                        quotation_lines.push({
+                                                            priceList_id: fullPriceList[containerType[i]]['mode'][rentMode[j]][duration[k]]._id,
+                                                            qty: values.containers[containerType[i]][rentMode[j]][duration[k]],
+                                                            remarks: ''
+                                                        })
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        console.log(quotation_lines)
+                                        try {
+                                            const d = await mutate({variables: {
+                                                account_id: this.props.account_id,
+                                                quotationLines: quotation_lines
+                                            }})
+                                            console.log('server return', d)
+                                        }
+                                        catch(e) { console.log(e) }
+                                        actions.setSubmitting(false)           
                                     }}
                                 >
                                 {({ errors, isSubmitting, setFieldValue, dirty, touched, values, status }) => (

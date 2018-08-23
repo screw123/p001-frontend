@@ -11,6 +11,8 @@
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
     <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://cdn.ravenjs.com/3.26.4/raven.min.js" crossorigin="anonymous"></script>
+    
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -23,6 +25,9 @@
     <title>P001</title>
   </head>
   <body>
+    <script>
+      Raven.config('https://27b22b2c8f804e0fbefd86e83290923c@sentry.io/1265833').install()
+    </script>
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>

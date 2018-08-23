@@ -1,10 +1,8 @@
 import React from "react"
 import { getPriceListByAccount, addQuotation } from '../gql/query.js'
-import Background from '../component/Background.js'
 
 import { Formik, Field, FieldArray } from 'formik'
 import FormikForm, { TextField, FormButton, FormErr, FieldRow } from '../component/FormikForm.js'
-import styled from 'styled-components'
 
 import { I18n } from 'react-i18next'
 import GqlApi, { GqlApiSubscriber } from '../container/GqlApi.js'
@@ -19,12 +17,12 @@ import pickBy from 'lodash/pickBy'
 class Quotation extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { loadData: false }
         this.transformPriceList = this.transformPriceList.bind(this)
         this.genQuotationFromPriceList = this.genQuotationFromPriceList.bind(this)
         this.genPricingGrid = this.genPricingGrid.bind(this)
         this.getPrice = this.getPrice.bind(this)
         this.updateValues = this.updateValues.bind(this)
+        this.calcTotalAmt = this.calcTotalAmt.bind(this)
     }
     
     transformPriceList = (p) => { //to transform a single priceList
@@ -70,6 +68,7 @@ class Quotation extends React.Component {
         const SKUList = Object.keys(p)
         let SKUUIComponents = []
         let initialValue = {}
+
         
         for (let i=0; i<SKUList.length; i++) {
             const SKUObject = p[SKUList[i]] //SKUObject = {rentMode: {duration: rent}}
@@ -85,7 +84,7 @@ class Quotation extends React.Component {
             SKUUIComponents.push(
                 <div key={SKUObject._id}>
                     <h2>{t(SKUObject.name)}</h2>
-                    <img src={SKUObject.smallPicURL} />
+                    <img src={SKUObject.smallPicURL} alt={SKUObject.name}/>
                     <div>{t(SKUObject.longDesc)}</div>
                     {coms}
                 </div>
@@ -97,13 +96,33 @@ class Quotation extends React.Component {
 
     genPricingGrid = (mode, t, rentMode) => {
         //mode = {duration: {rent}}, t = translation function, rentMode = rentMode name ('MONTH', 'DAY', 'YEAR')
+        console.log('mode=', mode)
         const modeList = Object.keys(mode)
         console.log(mode)
         let pricingGrid = []
         let initValue = {}
+        
+        //get previous Quotation as long as it exists and matches current account id
+        let prevQuotation = undefined
+        if (typeof(Storage) !== "undefined") {
+            prevQuotation = JSON.parse(window.localStorage.Quotation)
+            console.log('prevQuotation=', prevQuotation)
+            if ((prevQuotation.account_id._id===this.props.account_id)||(prevQuotation.account_id._id===null)) {}
+            else { prevQuotation=undefined }
+        }
+        
+        
         for (let i=0; i<modeList.length; i++) {
             const m = mode[modeList[i]]
-            initValue[modeList[i]] = 0
+            
+            //if prev Quotation exist + priceList_id matches, get the qty, else =0
+            if (prevQuotation!==undefined) { 
+                const v = prevQuotation.quotationDetails.find(v => m._id === v.priceList_id._id)
+                if (v) { initValue[modeList[i]] = v.qty }
+                else { initValue[modeList[i]] = 0}
+            }
+            else { initValue[modeList[i]] = 0 }
+            
             pricingGrid.push(
                 <div key={m._id}>
                     <h3>{modeList[i] + ' ' + t(rentMode)}</h3>
@@ -130,16 +149,33 @@ class Quotation extends React.Component {
         setFieldValue(fieldName, fieldValue) //setFieldValue for container type first
         
         //Calculate total amt below
+        totalAmt = this.calcTotalAmt(qty, fieldName, fieldValue, priceList)
+        setFieldValue('totalAmt', totalAmt)
+        console.timeEnd('updateValues')
+    }
+    
+    calcTotalAmt = (qty, fieldName, fieldValue, priceList) => {
+        //qty=value.containers
+        //fieldName = fieldName from Formik.  If calc out of Formik, just give ''
+        //If calc out of Formik, just give 0
+        
+        let totalAmt = 0
         const containerType = Object.keys(qty)
         for (let i=0; i<containerType.length; i++) {
             let rentMode = Object.keys(qty[containerType[i]])
             for (let j=0; j<rentMode.length; j++) {
                 let duration = Object.keys(qty[containerType[i]][rentMode[j]])
                 for (let k=0; k<duration.length; k++) {
+                    
+                    //fieldName, by default, is 'containers.'+containerType[i]+'.'+rentMode[j] + '.'+duration[k]
+                    //because setFieldValue is async, we cannot use the values.containers in Formik immediately after setFieldValue
+                    //therefore we go around this, by compare fieldName vs path,
+                    //where path is how we are traversing the values.containers object structure
+                    
                     const path = 'containers.'+containerType[i]+'.'+rentMode[j] + '.'+duration[k]
                     let typeQty = qty[containerType[i]][rentMode[j]][duration[k]]
     
-                    if (path==fieldName) { typeQty = fieldValue }
+                    if (path===fieldName) { typeQty = fieldValue }
                     
                     if (typeQty>0) {
                         totalAmt = totalAmt + (priceList[containerType[i]]['mode'][rentMode[j]][duration[k]].rent * typeQty)
@@ -147,8 +183,7 @@ class Quotation extends React.Component {
                 }
             }
         }
-        setFieldValue('totalAmt', totalAmt)
-        console.timeEnd('updateValues')
+        return totalAmt
     }
     
     render(){ return (
@@ -218,9 +253,12 @@ class Quotation extends React.Component {
                                                 quotationLines: quotation_lines
                                             }})
                                             console.log('server return', d)
+                                            if (typeof(Storage) !== "undefined") {
+                                                window.localStorage.setItem('Quotation', JSON.stringify(d.data.addQuotation))
+                                            }
                                         }
                                         catch(e) { console.log(e) }
-                                        actions.setSubmitting(false)           
+                                        actions.setSubmitting(false)
                                     }}
                                 >
                                 {({ errors, isSubmitting, setFieldValue, dirty, touched, values, status }) => (
@@ -248,13 +286,10 @@ class Quotation extends React.Component {
                                                             component={TextField}
                                                             label={t(containerType[i]) + ', ' + duration[k] + ' ' + t(rentMode[j])}
                                                             value={values.containers[containerType[i]][rentMode[j]][duration[k]]}
-                                                            min={0}
                                                             key={containerType[i]+'.'+rentMode[j]+'.'+duration[k]}
                                                             onChange={(e)=> {
-                                                                if (+e.target.value!== +e.target.value) {//not a value
-                                                                    //do nothing 
-                                                                }
-                                                                else { this.updateValues(fullPriceList, values, e.target.name, Math.abs(+e.target.value), setFieldValue) }
+                                                                //if (+e.target.value!== +e.target.value) {//not a value
+                                                                if (!isNaN(parseInt(e.target.value|0))) { this.updateValues(fullPriceList, values, e.target.name, Math.abs(parseInt(e.target.value|0)), setFieldValue) }
                                                             }}
                                                         />)
                                                     }

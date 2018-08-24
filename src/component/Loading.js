@@ -90,6 +90,19 @@ const InlineDiv = styled.div`
     box-sizing: border-box;
 `
 
+const LoadingTextContainer = styled.div`
+    display: grid;
+    grid: 3fr 1fr 2fr / 1fr 20fr 1fr;
+    min-height: 100vh;
+    place-items: center / center;
+`
+
+const LoadingText = styled.p`
+    grid-column: 2/2;
+    grid-row: 2/2;
+    place-self: center;
+`
+
 const LoadingAnim = (props) => (
     <SkFoldingCube {...props}>
         <Cube/>
@@ -97,11 +110,15 @@ const LoadingAnim = (props) => (
         <Cube4/>
         <Cube3/>
     </SkFoldingCube>
+
 )
 
-export const BigLoadingScreen = () => (
+export const BigLoadingScreen = ({text}) => (
     <FullHeightDiv>
         <LoadingAnim size={6} fullSize/>
+        {text && <LoadingTextContainer>
+            <LoadingText>{text}</LoadingText>
+        </LoadingTextContainer>}
     </FullHeightDiv>
 )
 

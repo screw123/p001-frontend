@@ -197,7 +197,7 @@ class Quotation extends React.Component {
                         <Mutation mutation={addQuotation} errorPolicy="all">
                         {(mutate, {loading: mutateLoading, err: mutateErr})=>{
                         
-                            if (queryLoading) return (<BigLoadingScreen/>)
+                            if (queryLoading) return (<BigLoadingScreen text={'Getting your best price...'}/>)
                             
                             if (queryErr) {
                                 console.log('QuotationForm', queryErr, this.props.account_id)
@@ -253,6 +253,10 @@ class Quotation extends React.Component {
                                                 quotationLines: quotation_lines
                                             }})
                                             console.log('server return', d)
+                                            
+                                            //save the submitted quotation to localStorage
+                                            //The only use of this local stored quotation is for auto filling number of boxes ordered, nothing more.  Do not use to show amount to user
+                                            //and do not use the quotation id anymore.
                                             if (typeof(Storage) !== "undefined") {
                                                 window.localStorage.setItem('Quotation', JSON.stringify(d.data.addQuotation))
                                             }

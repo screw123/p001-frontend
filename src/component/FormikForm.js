@@ -266,7 +266,20 @@ export const CheckBox = ({
     )
 }
 
-//export const Row
+export const DropDown = ({
+    field: { name, placeholder, ...fields }, // { name, value, onChange, onBlur }
+    form: { touched }, //also values, handleXXXX, dirty, isValid, status, etc.
+    valueList, classNames, label, rightIcon, err, hidden, ...props }) => {
+    return (
+        <select {...props}>
+            {valueList.map(v=>DD(v.value, v.name))}
+        </select>
+    )
+}
+
+const DD = (value, name) => {
+    return (<option value={value} key={value}>{name}</option>)
+}
 
 
 export default FormikForm

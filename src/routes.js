@@ -6,6 +6,7 @@ import ResetPasswordPage from './page/ResetPasswordPage.js'
 import UserActivationPage from './page/UserActivationPage.js'
 import TermsAndConditionPage from './page/TermsAndConditionPage.js'
 import QuotationPage from './page/QuotationPage.js'
+import SalesOrderConfirmPage from './page/SalesOrderConfirmPage.js'
 
 const routes = [
     {
@@ -107,6 +108,19 @@ const routes = [
         router: {
             requireLogin: false
         }
+    },
+    {
+        path: "/confirmSalesOrder",
+        exact: true,
+        menuName: 'Confirm Sales Order',
+        component: SalesOrderConfirmPage,
+        navbar: {
+            showBeforeLogin: false,
+            showAfterLogin: true
+        },
+        router: {
+            requireLogin: true
+        }    
     }
 ]
 

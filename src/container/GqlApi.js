@@ -10,6 +10,8 @@ import isEmpty from 'lodash/isEmpty'
 
 import request from 'superagent'
 
+import getMyself from '../gql/query.js'
+
 class ApolloContainer extends Container {
     constructor() {
         super()
@@ -21,8 +23,23 @@ class ApolloContainer extends Container {
             gqlClientPublic: {},
             isLogined: undefined,
             uid: '',
-            history: {push:()=>{}}
+            history: {push:()=>{}},
+            myself: {
+                firstName: '',
+                lastName: '',
+                email: '',
+                mobilePhone: '',
+                accountOwn_id: [{
+                    _id: '',
+                    name: '',
+                    accountType: '',
+                    balance: 0,
+                    isActive: false
+                }],
+                accountManage_id: []
+            }
         }
+        this.getGqlClient = this.getGqlClient.bind(this)
     }
     // These methods will also be avaiable anywhere we inject our
     // container context
@@ -54,25 +71,23 @@ class ApolloContainer extends Container {
     }
     
     async checkLogined() {
-        console.log('GqlApi.checkLogined, isLogined=', this.state.isLogined)
         if (this.state.isLogined===undefined) {
-            console.log('GqlApi.isLogined==undefined')
             this.setState({isLogined: new Promise(async (resolve) => {
                 try {
                     const res = await request.get('https://wisekeep.hk/api/checkl').withCredentials()
                     if (res.statusCode===200) { 
-                        console.log('status==200, return true')
                         this.setState({isLogined: true})
+                        const gqlClient = this.getGqlClient()
+                        const q = await gqlClient.query({query: getMyself})
+                        this.setState({myself: q.data.getMyself})
                         return resolve(true)
                     }
                     else {
-                        console.log('status!=200, return false')
                         this.setState({isLogined: false})
                         return resolve(false)
                     }
                 }
                 catch(e) {
-                    console.log('status!=200, return false')
                     this.setState({isLogined: false})
                     return resolve(false)
                 }
@@ -85,7 +100,6 @@ class ApolloContainer extends Container {
     async login(userPWObj) {
         //userPWObj = {user: aaa, password: bbb}
         try {
-            console.log('GqlApi.login, userPWObj=', userPWObj)
             const res = await request.post('https://wisekeep.hk/api/l').withCredentials().type('form').query(userPWObj).ok(()=>true)
             if (res.statusCode===200) {
                 this.setState({isLogined: true})
@@ -101,7 +115,6 @@ class ApolloContainer extends Container {
     
     async logout() {
         const res = await request.get('https://wisekeep.hk/api/logout').withCredentials()
-        console.log(res)
         if (res.statusCode===200) {
             this.setState({isLogined: false})
             this.setState({gqlClient: {}})

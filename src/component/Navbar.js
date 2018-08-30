@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { I18n } from 'react-i18next'
 import GqlApi, {GqlApiSubscriber} from '../container/GqlApi.js'
 import LocaleApi from '../container/LocaleApi.js'
+import getMyself from '../gql/query.js'
 
 const StickyDiv = styled.div`
     position: sticky;
@@ -29,21 +30,22 @@ const RightSideMenuItem = styled.button`
 
 
 
-const Navbar = (props) => {
-    const genItems = (g, t) => {
+class Navbar extends React.PureComponent {
+    
+    genItems = (g, t) => {
         let c = []
-        for (var i = 0; i < props.routes.length; i++) {
-            if (g.state.isLogined) {
-                if (props.routes[i].navbar.showAfterLogin===true) {
-                    c.push(<NormalMenuItem to={props.routes[i].path} key={i}>
-                        {t(props.routes[i].menuName)}
+        for (var i = 0; i < this.props.routes.length; i++) {
+            if (g.state.isLogined===true) {
+                if (this.props.routes[i].navbar.showAfterLogin===true) {
+                    c.push(<NormalMenuItem to={this.props.routes[i].path} key={i}>
+                        {t(this.props.routes[i].menuName)}
                     </NormalMenuItem>)
                 }
             }
             else {
-                if (props.routes[i].navbar.showBeforeLogin===true) {
-                    c.push(<NormalMenuItem to={props.routes[i].path} key={i}>
-                        {t(props.routes[i].menuName)}
+                if (this.props.routes[i].navbar.showBeforeLogin===true) {
+                    c.push(<NormalMenuItem to={this.props.routes[i].path} key={i}>
+                        {t(this.props.routes[i].menuName)}
                     </NormalMenuItem>)
                 }    
             }
@@ -51,13 +53,13 @@ const Navbar = (props) => {
         return c
     }
     
-    return (
+    render() { return (
         <GqlApiSubscriber>
         {(g) => (
             <I18n>
             {(t) => (
                 <StickyDiv>
-                    {genItems(g, t)}
+                    {this.genItems(g, t)}
                     <RightSideMenuItem onClick={() => {
                         LocaleApi.changeLanguage('en')
                     }}>
@@ -71,7 +73,7 @@ const Navbar = (props) => {
                     <RightSideMenuItem onClick={() => {
                         
                     }}>
-                        {(g.state.isLogined)? "Hello": "Not logined"}
+                        {(g.state.isLogined) ? (g.state.myself.firstName + ' ' + g.state.myself.lastName) : t('Not Logined') }
                     </RightSideMenuItem>
                     
                 </StickyDiv>
@@ -79,7 +81,7 @@ const Navbar = (props) => {
             </I18n>
         )}
         </GqlApiSubscriber>
-    )
+    )}
 }
 
 export default Navbar

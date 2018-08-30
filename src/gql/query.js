@@ -8,6 +8,14 @@ export const getMyself = gql`{
         email
         mobilePhone
         accountOwn_id {
+            _id
+            name
+            accountType
+            balance
+            isActive
+        }
+        accountManage_id {
+            _id
             name
             accountType
             balance
@@ -151,6 +159,51 @@ export const addQuotation = gql`
             originalPrice
             discountedPrice
             updateDateTime
+        }
+    }`
+
+export const getQuotationById = gql`
+    query ($quotation_id: String!){
+        getQuotationById(quotation_id: $quotation_id) {
+            _id
+            status
+            quotationDetails {
+                priceList_id {
+                    _id
+                }
+                SKU_id {
+                    _id
+                    name
+                    iconPicURL
+                    lengthM
+                    widthM
+                    heightM
+                }
+                qty
+                rentMode
+                duration
+                rent_unitPrice
+                rent_originalLineTotal
+                rent_unitDiscount
+                rent_discountedLineTotal
+                remarks
+            }
+            account_id {
+                _id
+                name
+            }
+            accountType
+            priceList
+            originalPrice
+            discountedPrice
+            createDateTime
+        }
+    }`
+
+export const addRentalOrder = gql`
+    mutation ($quotation_id: String!) {
+        addRentalOrder(quotation_id: $quotation_id) {
+            _id
         }
     }`
 

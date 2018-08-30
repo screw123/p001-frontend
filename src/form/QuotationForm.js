@@ -12,6 +12,7 @@ import {BigLoadingScreen} from '../component/Loading.js'
 import merge from 'lodash/merge'
 import omit from 'lodash/omit'
 import isEmpty from 'lodash/isEmpty'
+import isEqual from 'lodash/isEqual'
 import pickBy from 'lodash/pickBy'
 
 class Quotation extends React.Component {
@@ -23,6 +24,10 @@ class Quotation extends React.Component {
         this.getPrice = this.getPrice.bind(this)
         this.updateValues = this.updateValues.bind(this)
         this.calcTotalAmt = this.calcTotalAmt.bind(this)
+        this.state = {
+            initialValue: {},
+            loadCount: 0
+        }
     }
     
     transformPriceList = (p) => { //to transform a single priceList
@@ -68,7 +73,6 @@ class Quotation extends React.Component {
         const SKUList = Object.keys(p)
         let SKUUIComponents = []
         let initialValue = {}
-
         
         for (let i=0; i<SKUList.length; i++) {
             const SKUObject = p[SKUList[i]] //SKUObject = {rentMode: {duration: rent}}
@@ -96,17 +100,15 @@ class Quotation extends React.Component {
 
     genPricingGrid = (mode, t, rentMode) => {
         //mode = {duration: {rent}}, t = translation function, rentMode = rentMode name ('MONTH', 'DAY', 'YEAR')
-        console.log('mode=', mode)
         const modeList = Object.keys(mode)
-        console.log(mode)
         let pricingGrid = []
         let initValue = {}
         
         //get previous Quotation as long as it exists and matches current account id
         let prevQuotation = undefined
         if (typeof(Storage) !== "undefined") {
+            console.log(window.localStorage.Quotation)
             prevQuotation = JSON.parse(window.localStorage.Quotation)
-            console.log('prevQuotation=', prevQuotation)
             if ((prevQuotation.account_id._id===this.props.account_id)||(prevQuotation.account_id._id===null)) {}
             else { prevQuotation=undefined }
         }
@@ -186,7 +188,9 @@ class Quotation extends React.Component {
         return totalAmt
     }
     
-    render(){ return (
+    render(){ 
+        
+        return (
         <GqlApiSubscriber>
         {(g)=>(
             <I18n>
@@ -210,7 +214,8 @@ class Quotation extends React.Component {
                             
                             //coms is the list of components.  InitialValue is the structure for Formik
                             const {coms, initialValue} = this.genQuotationFromPriceList(fullPriceList, t)
-                            console.log('coms=',coms, 'initialValue=', initialValue)
+                            console.log('initialValue=', initialValue)
+                            
                             return(
                                 <div>{coms}
                                 <Formik
@@ -293,7 +298,7 @@ class Quotation extends React.Component {
                                                             key={containerType[i]+'.'+rentMode[j]+'.'+duration[k]}
                                                             onChange={(e)=> {
                                                                 //if (+e.target.value!== +e.target.value) {//not a value
-                                                                if (!isNaN(parseInt(e.target.value|0))) { this.updateValues(fullPriceList, values, e.target.name, Math.abs(parseInt(e.target.value|0)), setFieldValue) }
+                                                                if (!isNaN(parseInt(e.target.value|0, 10))) { this.updateValues(fullPriceList, values, e.target.name, Math.abs(parseInt(e.target.value|0, 10)), setFieldValue) }
                                                             }}
                                                         />)
                                                     }
@@ -335,7 +340,7 @@ class Quotation extends React.Component {
 export const OrderField = ({
     field: { name, placeholder, ...fields }, // { name, value, onChange, onBlur }
     form: { touched }, //also values, handleXXXX, dirty, isValid, status, etc.
-    classNames, label, rightIcon, err, hidden, DescCom, ...props }) => {
+    classNames, label, rightIcon, err, hidden, DescCom, ...props }) => { return (
         
         <div>
             <DescCom />
@@ -343,7 +348,7 @@ export const OrderField = ({
         </div>
         
         
-}
+)}
 
 
 

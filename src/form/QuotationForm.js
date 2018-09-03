@@ -25,7 +25,8 @@ class Quotation extends React.Component {
         this.updateValues = this.updateValues.bind(this)
         this.calcTotalAmt = this.calcTotalAmt.bind(this)
         this.state = {
-            initialValue: {},
+            containerInitValue: {},
+            fullPriceList: {},
             loadCount: 0
         }
     }
@@ -219,6 +220,7 @@ class Quotation extends React.Component {
                             return(
                                 <div>{coms}
                                 <Formik
+                                    enableReinitialize={true}
                                     initialValues={{
                                         containers: initialValue,
                                         totalAmt: 0

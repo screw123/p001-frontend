@@ -14,7 +14,7 @@ class SalesOrderConfirmPage extends React.Component {
             {(t, { i18n }) => (
                 <Background>
                     
-                    <SalesOrderConfirmForm quotation_id={"5b86135cb5a42c6478ca7258"} />
+                    <SalesOrderConfirmForm quotation_id={"5b86135cb5a42c6478ca7258"} account_id={"5b518c4c031c7d0179e23b6a"}/>
                 </Background>
             )}
             </I18n>

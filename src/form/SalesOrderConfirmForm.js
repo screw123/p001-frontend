@@ -16,15 +16,19 @@ import {BigLoadingScreen} from '../component/Loading.js'
 import { Blockdiv } from '../component/Doc.js'
 import { FormButton } from '../component/FormikForm.js'
 
+import SelectAddress from '../component/SelectAddress.js'
+
 class SalesOrderConfirmForm extends React.Component {
 	
 	constructor(props) {
-		super(props)
+		super(props) //Fixme props should pass whole account object instead of just account_id
 		this.genQuotationLines = this.genQuotationLines.bind(this)
 		this.addSalesOrderClient = this.addSalesOrderClient.bind(this)
 		this.backToQuotationForm = this.backToQuotationForm.bind(this)
+		this.handleBillingAddressChange = this.handleBillingAddressChange.bind(this)
 		this.state = {
-			submitting: false
+			submitting: false,
+			selectedBillingAddress: undefined
 		}
 	}
 	
@@ -65,12 +69,16 @@ class SalesOrderConfirmForm extends React.Component {
         console.log('server return', d)
 	}
 	
+	handleBillingAddressChange(id) {
+		this.setState({selectedBillingAddress: id})
+	}
+	
     //props= quotation_id
     render(){ return (
         <LocaleApiSubscriber>
         {(c)=>(
             <ApolloProvider client={GqlApi.getGqlClient()}>
-                <Query query={getQuotationById} variables={{quotation_id: this.props.quotation_id}}>
+                <Query query={getQuotationById} variables={{quotation_id: this.props.quotation_id, account_id: this.props.account_id}}>
                 {({ client, loading: queryLoading, error: queryErr, data, refetch }) => (
                     <Mutation mutation={addRentalOrder} errorPolicy="all">
                     {(mutate, {loading: mutateLoading, err: mutateErr})=>{
@@ -81,11 +89,16 @@ class SalesOrderConfirmForm extends React.Component {
                             console.log('SalesOrderConfirmForm', queryErr, this.props.quotation_id)
                             return (<p>{parseApolloErr(queryErr, c.t)}(</p>)
                         }
-                    	
+                    	console.log('data=', data)
                     	const quote = data.getQuotationById
                     	
                         return(
 							<div>
+								<SelectAddress
+									addressLine={data.getAccountById.address_id}
+									selected={this.state.selectedBillingAddress||data.getAccountById.defaultBillingAddress_id._id}
+									onChange={this.handleBillingAddressChange}
+								/>
 								<p>{c.t('Account')+' : ' + quote.account_id.name + ' (' + quote.account_id._id + ')'}</p>
 								<p>{c.t('Quotation date') + ' : ' + c.moment(quote.createDateTime).format('YYYY-MM-DD HH:mm')}</p>
 								{this.genQuotationLines(quote.quotationDetails, c.t)}

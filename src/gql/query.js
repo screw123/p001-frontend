@@ -163,7 +163,7 @@ export const addQuotation = gql`
     }`
 
 export const getQuotationById = gql`
-    query ($quotation_id: String!){
+    query ($quotation_id: String!, $account_id: String!){
         getQuotationById(quotation_id: $quotation_id) {
             _id
             status
@@ -198,6 +198,27 @@ export const getQuotationById = gql`
             discountedPrice
             createDateTime
         }
+        getAccountById(_id: $account_id) {
+            _id
+            name
+            address_id {
+                _id
+                addressType
+                legalName
+                streetAddress
+                addressRegion1
+                addressRegion2
+                addressCountry
+                telephone
+            }
+            defaultBillingAddress_id {
+                _id
+            }
+            defaultShippingAddress_id {
+                _id
+            }
+            stripeCustomerObject
+        }
     }`
 
 export const addRentalOrder = gql`
@@ -206,5 +227,13 @@ export const addRentalOrder = gql`
             _id
         }
     }`
+    
+export const addAddress = gql`
+mutation ($quotation_id: String!) {
+    addRentalOrder(quotation_id: $quotation_id) {
+        _id
+    }
+}`
+
 
 export default getMyself

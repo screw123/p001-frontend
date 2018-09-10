@@ -62,11 +62,13 @@ class Navbar extends React.PureComponent {
                     {this.genItems(g, t)}
                     <RightSideMenuItem onClick={() => {
                         LocaleApi.changeLanguage('en')
+                        console.log('en clicked')
                     }}>
                         EN
                     </RightSideMenuItem>
                     <RightSideMenuItem onClick={() => {
                         LocaleApi.changeLanguage('zh-HK')
+                        console.log('zh-HK clicked')
                     }}>
                         中
                     </RightSideMenuItem>

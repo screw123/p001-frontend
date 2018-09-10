@@ -4,7 +4,7 @@
     "Confirm Password": "再次輸入密碼",
     "Dashboard": "我的資訊",
     "DAY": "日",
-    "Dimension", "大小",
+    "Dimension": "大小",
     "Email": "電郵",
     "Email/Phone": "電郵或香港手機號碼",
     "Email/Phone or password error.  Please check and try again.": "電郵/電話 或密碼錯誤, 請修正並重試.",
@@ -33,7 +33,7 @@
     "Please login to continue": "請登入以繼續",
     "Quotation date": "報價日期",
     "Resend by": "重新發出",
-    "Reset is done.  Your should receive your password shortly by": "我們已為你重新設立密碼. 你請查看你的",
+    "Reset is done.  Your should receive your password shortly by": "我們已為你重新設立密碼. 請查看你的",
     "Reset Your Password": "重設密碼",
     "Sign Up": "註册",
     "SMS": "手機短訊",
@@ -49,5 +49,7 @@
     "YEAR": "年",
     "Your": "你的",
     "Your login/account is not activated.  If you have already activated your account, please contact our support team.": "你的用戶/帳戶未啟用.  如你確定已啟用過, 請聯絡我們.",
-    "Your user login is already activated, redirecting to login page, please wait...": "你的登入用戶已啟用, 將轉到登入頁面, 請稍候..."
+    "Your user login is already activated, redirecting to login page, please wait...": "你的登入用戶已啟用, 將轉到登入頁面, 請稍候...",
+    "has a wrong status": "狀態錯誤",
+    "Standard Box": "標準箱"
 }

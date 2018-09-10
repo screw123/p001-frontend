@@ -24,6 +24,9 @@ const parseApolloErr = (err, t) => {
                         errObj['message'] = errObj['message'] + ', ' + t('please choose another combination')
                     }
                     break
+                case 'WRONG_STATUS':
+                    errObj['message'] = t(errObj['key']) +' '+ t('has a wrong status')
+                    break
                 case 'USER_ALREADY_ACTIVATED':
                     errObj['message'] = t('Your user login is already activated, redirecting to login page...')
                     break

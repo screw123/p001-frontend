@@ -49,5 +49,7 @@
     "YEAR": "Year",
     "Your": "Your",
     "Your login/account is not activated.  If you have already activated your account, please contact our support team.": "Your login/account is not activated.  If you have already activated your account, please contact our support team.",
-    "Your user login is already activated, redirecting to login page, please wait...": "Your user login is already activated, redirecting to login page, please wait..."
+    "Your user login is already activated, redirecting to login page, please wait...": "Your user login is already activated, redirecting to login page, please wait...",
+    "has a wrong status": "has a wrong status",
+    "Standard Box": "Standard Box"
 }

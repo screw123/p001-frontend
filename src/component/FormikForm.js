@@ -303,16 +303,19 @@ const RadioBlock = styled.div`
     ${({selected}) => selected? `background-color: rgba(255, 255, 255, 0.8);` : ``}
 `
 
-const updateSelect = ({setFieldValue, name, currentValue, value, multiSelect}) => {
+const updateSelect = ({setFieldValue, name, currentValue, value, multiSelect, isSelect}) => {
+    debugger
+    let newValue = value
+    if (isSelect) { newValue = value.value} //Select send back {value, label} obj instead of just value
     if (multiSelect) {
-        if (currentValue.includes(value)) {
-            setFieldValue(name, currentValue.filter(v => value !== v))
+        if (currentValue.includes(newValue)) {
+            setFieldValue(name, currentValue.filter(v => newValue !== v))
         }
         else {
-            setFieldValue(name, currentValue.concat([value]))
+            setFieldValue(name, currentValue.concat([newValue]))
         }
     }
-    else { setFieldValue(name, value) }
+    else { setFieldValue(name, newValue) }
 }
 
 const CustomSelectContainer = ({ children, ...props }) => { return (
@@ -341,9 +344,6 @@ export const MultiSelect = ({
         <FieldDiv className={classNames}>
             <FieldLabel>{label}</FieldLabel>
             <Select
-                components={{ 
-                    SelectContainer: StyledSelectContainer
-                }}
                 name={name}
                 value={value}
                 defaultValue={defaultValue}
@@ -352,6 +352,14 @@ export const MultiSelect = ({
                 isSearchable={true}
                 options={options}
                 {...fields}
+                onChange={(v)=>updateSelect({
+                    'setFieldValue': setFieldValue,
+                    'name': name,
+                    'currentValue': value,
+                    'value': v,
+                    'multiSelect': multiSelect,
+                    'isSelect': true
+                })}
             />
             {touched[name] && errors[name] && <ErrorLabel>{errors[name]}</ErrorLabel> }
         </FieldDiv>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faEyeSlash, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 
 import { BrowserRouter, Route } from 'react-router-dom'
 import routes from './routes.js'
@@ -15,7 +15,7 @@ import GqlApi, { GqlApiProvider, DummyPassHistory, GqlApiSubscriber } from './co
 class App extends React.Component {
     componentDidMount() {
         GqlApi.checkLogined()
-        library.add(faEye, faEyeSlash)
+        library.add(faEye, faEyeSlash, faPlusCircle)
     }
     
     genItems = (routes) => {

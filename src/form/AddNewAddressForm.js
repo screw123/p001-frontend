@@ -2,6 +2,7 @@ import React from "react"
 import { Formik, Field } from 'formik'
 import isMobilePhone from 'validator/lib/isMobilePhone'
 import FormikForm, { TextField, FormButton, FormErr, FormIcon, RadioButtonGroup, RadioButton, CheckBox, InputGroup, DropDown } from '../component/FormikForm.js'
+import Select from 'react-select'
 
 import { I18n } from 'react-i18next'
 
@@ -17,7 +18,6 @@ import { addAddress } from '../gql/query.js'
 import GqlApi from '../container/GqlApi.js'
 import LocaleApi from '../container/LocaleApi.js'
 import parseApolloErr from '../util/parseErr.js'
-import passwordTest from '../util/passwordTest.js'
 
 class AddNewAddressForm extends React.Component {
     
@@ -28,12 +28,14 @@ class AddNewAddressForm extends React.Component {
     
     validate(v) {
         const validateFunc = {
-            firstName: ({firstName}) => (firstName.length>0)? undefined : 'Please enter your First Name',
-            lastName: ({lastName}) => (lastName.length>0)? undefined : 'Please enter your Last Name',
-            mobilePhone: ({mobilePhone}) => isMobilePhone(mobilePhone, 'zh-HK')? undefined : 'Please enter Hong Kong mobile phone number',
-            password: ({password}) => (passwordTest(password))? undefined : 'Need at least 8 characters, with both uppercase and lowercase',
-            verifyBySMS: ({verifyBySMS}) => (['Email','SMS'].includes(verifyBySMS))? undefined: 'Please choose a way to verify your account',
-            agreeTerms: ({agreeTerms}) => (agreeTerms) ? undefined : 'Please read and agree on our Terms and Condition before proceed'
+            legalName: ({legalName}) => (legalName.length>0)? undefined : 'Please provide a name',
+            streetAddress: ({streetAddress}) => (streetAddress.length>9)? undefined : 'Please provide a valid address',
+            addressRegion1: () => undefined,
+            addressRegion2: () => undefined,
+            addressType: () => undefined,
+            addressCountry: () => undefined,
+            account_id: () => undefined,
+            telephone: ({telephone}) => isMobilePhone(telephone, 'zh-HK')? undefined : 'Please enter Hong Kong mobile phone number',
         }
         const keyArr = Object.keys(v)
         let err = {}
@@ -72,7 +74,7 @@ class AddNewAddressForm extends React.Component {
                 }}
                 
             >
-            {({ errors, handleSubmit, setValues, isSubmitting, touched, values, status }) => {
+            {({ errors, setFieldValue, handleSubmit, setValues, isSubmitting, touched, values, status }) => {
             return (
                 <FormikForm>
                     <Field
@@ -91,12 +93,25 @@ class AddNewAddressForm extends React.Component {
                         value={values.streetAddress}
                         err={errors.streetAddress}
                     />
-                    <DropDown field={{name: "addressRegion1"}} form={{}} valueList={[
-                        {value: t('KOWLOON'), name: t('KOWLOON')},
-                        {value: t('HONG KONG ISLAND'), name: t('HONG KONG ISLAND')},
-                        {value: t('NEW TERRITORIES'), name: t('NEW TERRITORIES')},
-                        {value: t('LANTAU'), name: t('LANTAU')},
-                    ]} onChange={(e)=>this.changeAcct(e)}/>
+                    <Select
+                        options={[
+                            {value: t('KOWLOON'), label: t('KOWLOON')},
+                            {value: t('HONG KONG ISLAND'), label: t('HONG KONG ISLAND')},
+                            {value: t('NEW TERRITORIES'), label: t('NEW TERRITORIES')},
+                            {value: t('LANTAU'), label: t('LANTAU')}
+                        ]}
+                        onChange={v => setFieldValue('addressRegion1', v.value)}
+                        value={values.addressRegion1}
+                    />
+                    <Select
+                        options={[
+                            {value: t('TSIM SHA TSUI'), label: t('TSIM SHA TSUI')},
+                            {value: t('TUEN MUN'), label: t('TUEN MUN')}
+                        ]}
+                        onChange={v => setFieldValue('addressRegion2', v.value)}
+                        value={values.addressRegion2}
+                    />
+ 
                     <Field
                         name="telephone"
                         type="text"
@@ -105,28 +120,6 @@ class AddNewAddressForm extends React.Component {
                         value={values.telephone}
                         err={errors.telephone}
                     />
-                    <RadioButtonGroup
-                        name="verifyBySMS"
-                        label={t('How do you want to verify your account?')}
-                        value={values.verifyBySMS}
-                        err={errors.verifyBySMS}
-                        touched={touched}
-                    >
-                        <Field
-                            component={RadioButton}
-                            name="verifyBySMS"
-                            value="SMS"
-                            label="SMS"
-                            checked={values.verifyBySMS==="SMS"}
-                        />
-                        <Field
-                            component={RadioButton}
-                            name="verifyBySMS"
-                            value="Email"
-                            label="Email"
-                            checked={values.verifyBySMS==="Email"}
-                        />
-                    </RadioButtonGroup>
                     <FormErr>{status && status.form}</FormErr>
                     <FormButton
                         type="submit"

@@ -94,6 +94,7 @@ class SalesOrderConfirmForm extends React.Component {
                     	
                         return(
 							<div>
+								<h3>{c.t('Billing Address')}</h3>
 								<SelectAddress
 									addressLine={data.getAccountById.address_id}
 									selected={this.state.selectedBillingAddress||data.getAccountById.defaultBillingAddress_id._id}

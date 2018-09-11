@@ -2,6 +2,7 @@ import React from 'react'
 import { Form } from 'formik'
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Select, { components } from 'react-select'
 
 const FormikForm = styled(Form)`
     display: flex;
@@ -280,6 +281,115 @@ export const DropDown = ({
 const DD = (value, name) => {
     return (<option value={value} key={value}>{name}</option>)
 }
+
+
+const RadioBlockGroup = styled.div`
+    box-sizing:border-box;
+    display: flex;
+    flex-flow: row wrap;
+    box-sizing:border-box;
+    width: 100%
+`
+
+const RadioBlock = styled.div`
+    border: 0.1em solid #999999;
+    border-radius: 0.25em;
+    display: block;
+    margin: 0.25em;
+    padding: 0.5em;
+    cursor: pointer;
+    width: 10em;
+    min-width: 10em;
+    ${({selected}) => selected? `background-color: rgba(255, 255, 255, 0.8);` : ``}
+`
+
+const updateSelect = ({setFieldValue, name, currentValue, value, multiSelect}) => {
+    if (multiSelect) {
+        if (currentValue.includes(value)) {
+            setFieldValue(name, currentValue.filter(v => value !== v))
+        }
+        else {
+            setFieldValue(name, currentValue.concat([value]))
+        }
+    }
+    else { setFieldValue(name, value) }
+}
+
+const CustomSelectContainer = ({ children, ...props }) => { return (
+    <components.SelectContainer {...props}>
+        {children}
+    </components.SelectContainer>
+)}
+const StyledSelectContainer= styled(CustomSelectContainer)`
+    cursor: pointer;
+`
+
+export const MultiSelect = ({
+    field: { name, value, ...fields },
+    form: { touched, errors, setFieldValue },
+    classNames, options, defaultValue, disabled, label, multiSelect, isLoading, hidden, ...props }) => {
+    /*  Radio by default, will change to select if options > 3
+        if multi-select, will change radio to checkbox
+        field.name = internal name used by code
+        label = text label shown on form
+        defaultValue = value or [value]
+        options = [{value, label}]  */
+    
+    if (hidden) return null
+    else if (options.length>3) { 
+        return (
+        <FieldDiv className={classNames}>
+            <FieldLabel>{label}</FieldLabel>
+            <Select
+                components={{ 
+                    SelectContainer: StyledSelectContainer
+                }}
+                name={name}
+                value={value}
+                defaultValue={defaultValue}
+                isDisabled={disabled}
+                isLoading={isLoading}
+                isSearchable={true}
+                options={options}
+                {...fields}
+            />
+            {touched[name] && errors[name] && <ErrorLabel>{errors[name]}</ErrorLabel> }
+        </FieldDiv>
+    )}
+    
+    else { 
+        let items = []
+        for(let i=0; i<options.length;i++) {
+            
+            let isSelected
+            if (multiSelect) { isSelected = (value.find(v => v===options[i].value) !== undefined) }
+            else { isSelected = (options[i].value === value) }
+            
+            items.push(
+                <RadioBlock key={options[i].value} selected={isSelected} onClick={(e)=>updateSelect({
+                    'setFieldValue': setFieldValue,
+                    'name': name,
+                    'currentValue': value,
+                    'value': options[i].value,
+                    'multiSelect': multiSelect}
+                )}>
+                    <div>{options[i].label}</div>
+                </RadioBlock>
+            )
+        }
+        return(
+        <FieldDiv className={classNames}>
+            <FieldLabel>{label}</FieldLabel>
+            <RadioBlockGroup>
+                {items}
+            </RadioBlockGroup>
+            {touched[name] && errors[name] && <ErrorLabel>{errors[name]}</ErrorLabel> }
+        </FieldDiv>
+    )}
+
+}
+
+
 
 
 export default FormikForm

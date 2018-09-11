@@ -7,6 +7,7 @@ import UserActivationPage from './page/UserActivationPage.js'
 import TermsAndConditionPage from './page/TermsAndConditionPage.js'
 import QuotationPage from './page/QuotationPage.js'
 import SalesOrderConfirmPage from './page/SalesOrderConfirmPage.js'
+import TestPage from './page/TestPage.js'
 
 const routes = [
     {
@@ -121,7 +122,20 @@ const routes = [
         router: {
             requireLogin: true
         }    
-    }
+    },
+    {
+        path: "/testPage",
+        exact: true,
+        menuName: 'Testing Zone',
+        component: TestPage,
+        navbar: {
+            showBeforeLogin: true,
+            showAfterLogin: true
+        },
+        router: {
+            requireLogin: false
+        }
+    },
 ]
 
 export default routes

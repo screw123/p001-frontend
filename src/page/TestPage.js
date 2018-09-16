@@ -33,7 +33,7 @@ class TestPage extends React.Component {
                         label="Testing~!!"
                         component={MultiSelect}
                         value={values.test}
-                        multiSelect={false}
+                        multiSelect={true}
                         options={[
                         	{value: "test1", label: "haha"},
                         	{value: "test2", label: "haha2"},

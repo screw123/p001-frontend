@@ -2,7 +2,7 @@ import React from "react"
 import { Formik, Field } from 'formik'
 import isMobilePhone from 'validator/lib/isMobilePhone'
 import isEmail from 'validator/lib/isEmail'
-import FormikForm, { TextField, FormButton, FormErr, FormIcon, RadioButtonGroup, RadioButton, CheckBox, InputGroup } from '../component/FormikForm.js'
+import FormikForm, { TextField, FormButton, FormErr, FormIcon, RadioButtonGroup, RadioButton, CheckBox } from '../component/FormikForm.js'
 import TermsAndConditionPage from '../page/TermsAndConditionPage.js'
 import Modal from '../component/Modal.js'
 import {StraightRow, ClickableText } from '../component/Background.js'
@@ -189,7 +189,6 @@ class SignUpForm extends React.Component {
                                 checked={values.verifyBySMS==="Email"}
                             />
                         </RadioButtonGroup>
-                        <InputGroup>
                         <Field
                             component={CheckBox}
                             name="agreeTerms"
@@ -206,7 +205,6 @@ class SignUpForm extends React.Component {
                             </div>
                         </Field>
                         
-                        </InputGroup>
                         <FormErr>{status && status.form}</FormErr>
                         <FormButton
                             type="submit"

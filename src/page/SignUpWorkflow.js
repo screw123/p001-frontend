@@ -4,8 +4,8 @@ import SignUpForm from '../form/SignUpForm.js'
 import UserActivationForm from '../form/UserActivationForm.js'
 import LoginForm from '../form/LoginForm.js'
 
-import GqlApi from '../container/GqlApi.js'
-import LocaleApi from '../container/LocaleApi.js'
+import GqlApi from '../stateContainer/GqlApi.js'
+import LocaleApi from '../stateContainer/LocaleApi.js'
 
 import { I18n } from 'react-i18next'
 

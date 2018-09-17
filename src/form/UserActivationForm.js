@@ -9,8 +9,8 @@ import pickBy from 'lodash/pickBy'
 
 import { verifyNewUser, resendVerification } from '../gql/query.js'
 import parseApolloErr from '../util/parseErr.js'
-import GqlApi from '../container/GqlApi.js'
-import LocaleApi from '../container/LocaleApi.js'
+import GqlApi from '../stateContainer/GqlApi.js'
+import LocaleApi from '../stateContainer/LocaleApi.js'
 import moment from 'moment'
 
 class UserActivationForm extends React.Component {

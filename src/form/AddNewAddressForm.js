@@ -15,8 +15,8 @@ import merge from 'lodash/merge'
 import { Mutation } from 'react-apollo'
 import { addAddress } from '../gql/query.js'
 
-import GqlApi from '../container/GqlApi.js'
-import LocaleApi from '../container/LocaleApi.js'
+import GqlApi from '../stateContainer/GqlApi.js'
+import LocaleApi from '../stateContainer/LocaleApi.js'
 import parseApolloErr from '../util/parseErr.js'
 
 class AddNewAddressForm extends React.Component {

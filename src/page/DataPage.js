@@ -2,7 +2,7 @@ import React from "react"
 import { getMyself } from '../gql/query.js'
 import Background from '../component/Background.js'
 
-import GqlApi from '../container/GqlApi.js'
+import GqlApi from '../stateContainer/GqlApi.js'
 import { ApolloProvider, Query } from "react-apollo"
 import {BigLoadingScreen} from '../component/Loading.js'
 

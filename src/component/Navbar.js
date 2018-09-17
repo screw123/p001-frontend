@@ -1,9 +1,13 @@
+//The whole NavBar component is controlled here.
+//Current design is app.js directly supply props to this component and all logics stores here.
+//Later on depends on complexity we may split it out into more structures.
+
 import React from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { I18n } from 'react-i18next'
-import GqlApi, {GqlApiSubscriber} from '../container/GqlApi.js'
-import LocaleApi from '../container/LocaleApi.js'
+import GqlApi, {GqlApiSubscriber} from '../stateContainer/GqlApi.js'
+import LocaleApi from '../stateContainer/LocaleApi.js'
 import getMyself from '../gql/query.js'
 
 const StickyDiv = styled.div`

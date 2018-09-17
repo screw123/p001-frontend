@@ -4,7 +4,7 @@ import { I18n } from 'react-i18next'
 import Background from '../component/Background.js'
 import { Redirect } from "react-router-dom"
 
-import { GqlApiSubscriber } from '../container/GqlApi.js'
+import { GqlApiSubscriber } from '../stateContainer/GqlApi.js'
 
 class LoginPage extends React.Component {
     

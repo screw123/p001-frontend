@@ -10,7 +10,7 @@ import PrivateRoute from './component/PrivateRoute.js'
 
 import {BigLoadingScreen } from './component/Loading.js'
 
-import GqlApi, { GqlApiProvider, DummyPassHistory, GqlApiSubscriber } from './container/GqlApi.js'
+import GqlApi, { GqlApiProvider, DummyPassHistory, GqlApiSubscriber } from './stateContainer/GqlApi.js'
 
 class App extends React.Component {
     componentDidMount() {

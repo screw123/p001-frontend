@@ -10,7 +10,7 @@ import ResetPasswordForm from './ResetPasswordForm.js'
 import isEmpty from 'lodash/isEmpty'
 import pickBy from 'lodash/pickBy'
 
-import GqlApi, { GqlApiSubscriber } from '../container/GqlApi.js'
+import GqlApi, { GqlApiSubscriber } from '../stateContainer/GqlApi.js'
 
 
 class LoginForm extends React.PureComponent {

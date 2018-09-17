@@ -5,8 +5,8 @@ import { I18n } from 'react-i18next'
 import isEmpty from 'lodash/isEmpty'
 import pickBy from 'lodash/pickBy'
 
-import GqlApi from '../container/GqlApi.js'
-import LocaleApi, {LocaleApiSubscriber} from '../container/LocaleApi.js'
+import GqlApi from '../stateContainer/GqlApi.js'
+import LocaleApi, {LocaleApiSubscriber} from '..StateContainerLocaleApi.js'
 import { ApolloProvider, Query, Mutation } from "react-apollo"
 
 import { getQuotationById, addRentalOrder } from '../gql/query.js'

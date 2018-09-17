@@ -1,7 +1,9 @@
+//Private route (need login) component for use with React Router v4
+
 import React from "react";
 import { Route, Redirect } from "react-router-dom"
 
-import { GqlApiSubscriber } from '../container/GqlApi.js'
+import { GqlApiSubscriber } from '../stateContainer/GqlApi.js'
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <GqlApiSubscriber>

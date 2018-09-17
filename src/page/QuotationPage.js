@@ -7,7 +7,7 @@ import SalesOrderConfirmForm from '../form/SalesOrderConfirmForm.js'
 import { DropDown } from '../component/FormikForm.js'
 import Background from '../component/Background.js'
 
-import GqlApi, {GqlApiSubscriber} from '../container/GqlApi.js'
+import GqlApi, {GqlApiSubscriber} from '../stateContainer/GqlApi.js'
 
 import union from 'lodash/union'
 

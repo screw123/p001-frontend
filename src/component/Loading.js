@@ -1,7 +1,7 @@
+//Big and small loading animation
+
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
-
-//spin kit
 
 const SkFoldingCube = styled.div`
     margin: ${({size})=> (size>0) ? (size/10):0.1}em ${({size})=> (size>0) ? (size/2):0.5}em;

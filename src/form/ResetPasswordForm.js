@@ -11,7 +11,7 @@ import isEmail from 'validator/lib/isEmail'
 
 import { resetPassword } from '../gql/query.js'
 import parseApolloErr from '../util/parseErr.js'
-import GqlApi from '../container/GqlApi.js'
+import GqlApi from '../stateContainer/GqlApi.js'
 import { I18n } from 'react-i18next'
 
 class PasswordResetForm extends React.PureComponent {

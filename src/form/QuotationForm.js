@@ -5,7 +5,7 @@ import { Formik, Field, FieldArray } from 'formik'
 import FormikForm, { TextField, FormButton, FormErr, FieldRow } from '../component/FormikForm.js'
 
 import { I18n } from 'react-i18next'
-import GqlApi, { GqlApiSubscriber } from '../container/GqlApi.js'
+import GqlApi, { GqlApiSubscriber } from '../stateContainer/GqlApi.js'
 import { ApolloProvider, Query, Mutation } from "react-apollo"
 import {BigLoadingScreen} from '../component/Loading.js'
 

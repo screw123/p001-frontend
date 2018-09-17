@@ -1,8 +1,11 @@
+//For choosing a new address.
+//It make use of "MultiSelect" component for Formik.
+
 import React from 'react'
 import { Form } from 'formik'
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import LocaleApi, {LocaleApiSubscriber} from '../container/LocaleApi.js'
+import LocaleApi, {LocaleApiSubscriber} from '../stateContainer/LocaleApi.js'
 import AddNewAddressForm from '../form/AddNewAddressForm.js'
 import Modal from '../component/Modal.js'
 

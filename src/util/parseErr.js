@@ -42,6 +42,9 @@ const parseApolloErr = (err, t) => {
                 case 'PASSWORD_TOO_SIMPLE':
                     errObj['message'] = t('Need at least 8 characters, with both uppercase and lowercase')
                     break
+                case 'PASSWORD_NOT_MATCH':
+                    errObj['message'] = t('Wrong password.  Please check your input and try again')
+                    break
                 default:
                     errObj['message'] = t(errObj['key']) + t('cannot be') + err.graphQLErrors[i].data[errObj['key']]
             }

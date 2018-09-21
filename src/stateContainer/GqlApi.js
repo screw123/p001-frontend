@@ -1,3 +1,6 @@
+//This module check and manage user login, and keep GraphQL client objects in state
+//Also keep user info in state if user has logined
+
 import React from "react";
 
 import ApolloClient from 'apollo-client'
@@ -22,9 +25,9 @@ class ApolloContainer extends Container {
             gqlClient: {},
             gqlClientPublic: {},
             isLogined: undefined,
-            uid: '',
             history: {push:()=>{}},
             myself: {
+                _id: '',
                 firstName: '',
                 lastName: '',
                 email: '',
@@ -36,10 +39,10 @@ class ApolloContainer extends Container {
                     balance: 0,
                     isActive: false
                 }],
-                accountManage_id: []
+                accountManage_id: [],
+                accountView_id: []
             }
         }
-        this.getGqlClient = this.getGqlClient.bind(this)
     }
     // These methods will also be avaiable anywhere we inject our
     // container context
@@ -122,11 +125,6 @@ class ApolloContainer extends Container {
             this.state.history.push('/')
         }
     }
-    
-    setUid(id) {
-        this.setState({uid: id})
-    }
-    
     setHistoryObj(obj) {
         this.setState({history: obj})
     }

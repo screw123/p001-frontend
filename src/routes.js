@@ -98,7 +98,7 @@ const routes = [
         }
     },
     {
-        path: "/quotation",
+        path: "/quotation/:quotation_id?",
         exact: true,
         menuName: 'Quotation',
         component: QuotationPage,

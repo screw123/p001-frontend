@@ -21,7 +21,12 @@ export const getMyself = gql`{
             balance
             isActive
         }
-        
+        accountView_id {
+            _id
+            name
+            accountType
+            isActive
+        }
         
     }
 }`
@@ -229,11 +234,72 @@ export const addRentalOrder = gql`
     }`
     
 export const addAddress = gql`
-mutation ($quotation_id: String!) {
-    addRentalOrder(quotation_id: $quotation_id) {
-        _id
+    mutation (
+        $account_id: String!,
+        $legalName: String!,
+        $addressCountry: String!,
+        $addressRegion1: String!,
+        $addressRegion2: String!,
+        $streetAddress: String!,
+        $telephone: String
+    ) {
+        addAddress(
+            account_id: $account_id,
+            legalName: $legalName,
+            addressCountry: $addressCountry,
+            addressRegion1: $addressRegion1,
+            addressRegion2: $addressRegion2,
+            streetAddress: $streetAddress,
+            telephone: $telephone
+        ) {
+            _id
+            legalName
+            addressCountry
+            addressRegion1
+            addressRegion2
+            streetAddress
+            telephone
+            isActive
+            account_id
+        }
+    }`
+
+
+export const updateUserDetails = gql`
+    mutation (
+        $firstName: String,
+        $lastName: String,
+        $existingPassword: String,
+        $newPassword: String
+    ) {
+        updateUserDetails(firstName: $firstName, lastName: $lastName, existingPassword: $existingPassword, newPassword: $newPassword) {
+            _id
+            firstName
+            lastName
+            email
+            mobilePhone
+            accountOwn_id {
+                _id
+                name
+                accountType
+                balance
+                isActive
+            }
+            accountManage_id {
+                _id
+                name
+                accountType
+                balance
+                isActive
+            }
+            accountView_id {
+                _id
+                name
+                accountType
+                isActive
+            }
+        }
     }
-}`
+`
 
-
-export default getMyself
+export default {}

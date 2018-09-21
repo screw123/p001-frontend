@@ -44,7 +44,11 @@ class QuotationPage extends React.Component {
                                     })
                             )
                         } onChange={(e)=>this.changeAcct(e)}/>
-                        {this.state.selectedAcct && <QuotationForm account_id={this.state.selectedAcct} />}
+                        {this.state.selectedAcct && 
+                            <QuotationForm 
+                                account_id={this.state.selectedAcct}
+                            />
+                        }
                     </Background>
                 )}
                 </I18n>

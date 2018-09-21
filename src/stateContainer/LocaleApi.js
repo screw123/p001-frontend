@@ -1,3 +1,8 @@
+//This is for keeping the i18n object and the moment object with correct locale
+//i18n object can also be obtained by using I18n from react-i18next, same effect
+//however moment object with locale must use the instance from here
+//changing language of the whole app, must also use the changeLanguage() function here
+
 import React from "react";
 
 import moment from 'moment'

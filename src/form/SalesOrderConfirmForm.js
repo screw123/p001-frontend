@@ -6,14 +6,14 @@ import isEmpty from 'lodash/isEmpty'
 import pickBy from 'lodash/pickBy'
 
 import GqlApi from '../stateContainer/GqlApi.js'
-import LocaleApi, {LocaleApiSubscriber} from '..StateContainerLocaleApi.js'
+import LocaleApi, {LocaleApiSubscriber} from '../stateContainer/LocaleApi.js'
 import { ApolloProvider, Query, Mutation } from "react-apollo"
 
 import { getQuotationById, addRentalOrder } from '../gql/query.js'
 import parseApolloErr from '../util/parseErr.js'
 import {BigLoadingScreen} from '../component/Loading.js'
 
-import { Blockdiv } from '../component/Doc.js'
+import { QuotationDisplay } from '../component/QuotationDisplay.js'
 import { FormButton } from '../component/FormikForm.js'
 
 import SelectAddress from '../component/SelectAddress.js'
@@ -22,7 +22,6 @@ class SalesOrderConfirmForm extends React.Component {
 	
 	constructor(props) {
 		super(props) //Fixme props should pass whole account object instead of just account_id
-		this.genQuotationLines = this.genQuotationLines.bind(this)
 		this.addSalesOrderClient = this.addSalesOrderClient.bind(this)
 		this.backToQuotationForm = this.backToQuotationForm.bind(this)
 		this.handleBillingAddressChange = this.handleBillingAddressChange.bind(this)
@@ -32,37 +31,13 @@ class SalesOrderConfirmForm extends React.Component {
 		}
 	}
 	
-	genQuotationLines = (qd, t) => {
-		let coms = []
-		for (let i=0; i< qd.length; i++) {
-			const line = qd[i]
-			coms.push(
-				<div key={'line'+i}>
-					<img src={line.SKU_id.iconPicURL} width={50} height={50} />
-					<div>
-						<Blockdiv><label>{t(line.SKU_id.name)}</label></Blockdiv>
-						<Blockdiv><label>{t('Dimension') + ' : ' + (line.SKU_id.lengthM * 100) + 'cm x ' + (line.SKU_id.widthM * 100) + 'cm x ' + (line.SKU_id.heightM * 100) + 'cm'}</label></Blockdiv>
-						<Blockdiv><label>{line.duration + ' ' + t(line.rentMode)}</label></Blockdiv>
-						<label>{'Qty : ' + line.qty}</label>
-						<label>{'Unit Price : ' + line.rent_unitPrice}</label>
-						<label>{'Unit Discount : ' + line.rent_unitDiscount}</label>
-						<label>{'Line Total : ' + line.rent_discountedLineTotal}</label>
-						<p>{'Remarks: ' + line.remarks}</p>
-					</div>
-				</div>
-			)
-			
-		}
-		return coms
-	}
+	
 	
 	backToQuotationForm = () => {
 		console.log('backToQuotationForm')
-		
 	}
 	
 	addSalesOrderClient = async (mutate, quotation_id) => {
-		console.log('addSalesOrderClient')
 		const d = await mutate({variables: {
             quotation_id: this.props.quotation_id
         }})
@@ -100,16 +75,10 @@ class SalesOrderConfirmForm extends React.Component {
 									selected={this.state.selectedBillingAddress||data.getAccountById.defaultBillingAddress_id._id}
 									onChange={this.handleBillingAddressChange}
 								/>
-								<p>{c.t('Account')+' : ' + quote.account_id.name + ' (' + quote.account_id._id + ')'}</p>
-								<p>{c.t('Quotation date') + ' : ' + c.moment(quote.createDateTime).format('YYYY-MM-DD HH:mm')}</p>
-								{this.genQuotationLines(quote.quotationDetails, c.t)}
-								<h3>{'Total Price : ' + quote.discountedPrice}</h3>
+								<QuotationDisplay quotation={quote} />
 								<p>Is everything ok?</p>
 								<FormButton onClick={()=>this.addSalesOrderClient(mutate, this.props.quotation_id)}>
-									Yes
-								</FormButton>
-								<FormButton onClick={()=>this.backToQuotationForm()}>
-									No
+									{c.t('Submit')}
 								</FormButton>
 							</div>
                             

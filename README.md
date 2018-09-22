@@ -1,7 +1,7 @@
 # Top 3 important rule for this project at this stage:
-1. Performance
-2. Functionality
-3. Code readibility
+1. Performance (codes are running efficiently, and use small packages instead of large one.)
+2. Functionality (Complete all checkboxes of specs as described)
+3. Code readibility (Give enough comment to explain what is happening and reasoning of codes)
 
 
 

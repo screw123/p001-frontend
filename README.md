@@ -49,3 +49,28 @@ Will help to speed up look and feel coding later on.
 All other CSS/UI packages should not be used.
 
 
+# Structure of the project
+
+`./public` contains translation file and other static files
+
+All source codes are in `./src`
+
+We have a simple structure of Pages > Forms > Components
+while stateContainer is globally available to all and implementing `Unstated`
+
+
+## `./src/component`
+Contains all basic React components.
+Also contains higher level components that use basic components, but itself does not perform a complete functions that user request.
+
+## `./src/stateContainer`
+So far only GqlApi.js and LocaleApi.js
+All stateContainers implements `Unstated`, and contains states that shares with other components/forms/pages at a global level
+
+## `./src/form`
+All user forms stored here.
+Some pages will also be stored here.
+Everything in this directory is meant to be called by "Pages"
+
+## `./src/pages`
+Is the topmost component that just below router

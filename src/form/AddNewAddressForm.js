@@ -69,7 +69,7 @@ class AddNewAddressForm extends React.Component {
                 onSubmit={ async(values, actions) => {
                     actions.setStatus('')
                     //submit to server
-                    console.log('validate ok, now submit')
+                    console.log('validate ok, now submit.')
                     
                 }}
                 

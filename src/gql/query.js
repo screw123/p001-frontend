@@ -37,21 +37,21 @@ export const getMyAccount = gql`{
         name
         balance
         isActive
-        defaultBillingAddress_id {
+        address_id {
+            _id
             addressType
             legalName
             addressCountry
-            addressRegion
+            addressRegion1
+            addressRegion2
             streetAddress
             telephone
         }
+        defaultBillingAddress_id {
+            _id
+        }
         defaultShippingAddress_id {
-            addressType
-            legalName
-            addressCountry
-            addressRegion
-            streetAddress
-            telephone
+            _id
         }
     }
 }`

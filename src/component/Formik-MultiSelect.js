@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { FieldDiv, FieldLabel, ErrorLabel } from './Formik-Basic.js'
-
+import {LoadingIcon, BigLoadingScreen} from '../component/Loading'
 import Select, { components } from 'react-select'
 
 const RadioBlockGroup = styled.div`
@@ -67,8 +67,9 @@ export const MultiSelect = ({
         defaultValue = value or [value]
         options = [{value, label}]  */
     
-    if (hidden) return null
-    else if (options.length>3) { 
+    if (hidden) 
+        return null
+    else if(options.length>3) { 
         return (
         <FieldDiv className={classNames}>
             <FieldLabel>{label}</FieldLabel>
@@ -79,7 +80,7 @@ export const MultiSelect = ({
                     options.filter(v=> v.value===value)
                 }
                 isDisabled={disabled}
-                isLoading={isLoading}
+                isLoading={LoadingIcon}
                 isSearchable={true}
                 isMulti={multiSelect}
                 options={options}

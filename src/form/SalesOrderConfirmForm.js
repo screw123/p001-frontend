@@ -66,11 +66,11 @@ class SalesOrderConfirmForm extends React.Component {
                         }
                     	console.log('data=', data)
                     	const quote = data.getQuotationById
-                    	
                         return(
 							<div>
 								<h3>{c.t('Billing Address')}</h3>
 								<SelectAddress
+									account_id= {this.props.account_id}
 									addressLine={data.getAccountById.address_id}
 									selected={this.state.selectedBillingAddress||data.getAccountById.defaultBillingAddress_id._id}
 									onChange={this.handleBillingAddressChange}

@@ -44,6 +44,12 @@ class ApolloContainer extends Container {
             }
         }
     }
+    
+    //send state value to other componenets
+    returnState() {
+        return this.state;
+    }
+
     // These methods will also be avaiable anywhere we inject our
     // container context
     
@@ -103,7 +109,7 @@ class ApolloContainer extends Container {
     async login(userPWObj) {
         //userPWObj = {user: aaa, password: bbb}
         try {
-            const res = await request.post('https://wisekeep.hk/api/l').withCredentials().type('form').query(userPWObj).ok(()=>true)
+            const res = await request.post('https://wisekeep.hk/api/graphiql').withCredentials().type('form').query(userPWObj).ok(()=>true)
             if (res.statusCode===200) {
                 this.setState({isLogined: true})
                 return new Promise((resolve, reject) => resolve(true))

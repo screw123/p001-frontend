@@ -43,7 +43,7 @@ const routes = [
             showAfterLogin: true
         },
         router: {
-            requireLogin: true
+            requireLogin: true 
         }
     },
     {

@@ -57,7 +57,9 @@ class SelectAddress extends React.Component{
 
     showAddNewAddressModal() { this.setState({showAddNewAddressModal: true}) }
 
-    render(){ return (
+    render(){ 
+        console.log("address list "+this.props.addressLine.streetAddress);
+        return (
         <LocaleApiSubscriber>
         {(c)=>(
             <AddressGroup>
@@ -78,7 +80,10 @@ class SelectAddress extends React.Component{
                 {this.state.showAddNewAddressModal &&
                     <Modal
                         show={this.state.showAddNewAddressModal}
-                        component={<AddNewAddressForm />}
+                        component={<AddNewAddressForm 
+                                account_id={this.props.account_id} 
+                                addressItems={this.props.addressLine}
+                            />}
                         title={c.t('Add New Address')}
                         footerButtons={[
 

@@ -27,12 +27,12 @@ const RadioBlock = styled.div`
 
 const updateSelect = ({setFieldValue, name, currentValue, value, multiSelect, isSelect}) => {
     let newValue = value
+    //selectaddress issues #15, inject a value key for each object in array 
+    console.log("onchange is triggered : "+value.value)
     if (isSelect) { 
         if (multiSelect) {
             //multiSelect mode react-select returns array of selected key/value pair
             newValue = value.map(v=> {return v.value}) 
-            
-            console.log(newValue)
         }
         else { newValue = value.value } //react-select send back {value, label} obj instead of just value
         setFieldValue(name, newValue)

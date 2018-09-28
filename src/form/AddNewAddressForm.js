@@ -29,7 +29,6 @@ class AddNewAddressForm extends React.Component {
     //get user_id from GqlApi
     getUserId() {
         this.setState({user_id: this.props.getGqlApiState()});
-
     }
     
     validate(v) {

@@ -69,7 +69,7 @@ class ApolloContainer extends Container {
     getGqlClientPublic() {
         if (isEmpty(this.state.gqlClientPublic)) {
             const gqlClientPublic = new ApolloClient({
-                link: new HttpLink({ uri: "https://wisekeep.hk/api/gqlPublic"}),
+                link: new HttpLink({ uri: "https://wisekeep.hk/api/graphiql"}),
                 cache: new InMemoryCache(),
                 onError: (e) => { console.log("Apollo Public Client Error:", e) }
             })
@@ -109,7 +109,7 @@ class ApolloContainer extends Container {
     async login(userPWObj) {
         //userPWObj = {user: aaa, password: bbb}
         try {
-            const res = await request.post('https://wisekeep.hk/api/graphiql').withCredentials().type('form').query(userPWObj).ok(()=>true)
+            const res = await request.post('https://wisekeep.hk/api/l').withCredentials().type('form').query(userPWObj).ok(()=>true)
             if (res.statusCode===200) {
                 this.setState({isLogined: true})
                 return new Promise((resolve, reject) => resolve(true))

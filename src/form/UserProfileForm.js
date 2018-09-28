@@ -6,34 +6,47 @@ import {StraightRow } from '../component/Background.js'
 import GqlApi from '../stateContainer/GqlApi.js'
 import { ApolloProvider, Mutation } from 'react-apollo'
 import { updateUserDetails } from '../gql/query.js'
+import { I18n } from 'react-i18next'
 
+import isMobilePhone from 'validator/lib/isMobilePhone'
+import isEmail from 'validator/lib/isEmail'
+import omitBy from 'lodash/omitBy'
+import isUndefined from 'lodash/isUndefined'
+import passwordTest from '../util/passwordTest.js'
 
-class UserProfileForm extends React.Component {
-    
+import parseApolloErr from '../util/parseErr.js'
+
+let user ={};
+
+class UserProfileForm extends React.Component {  
     constructor(props) {
         super(props)
         this.state={
-            user: {},
-            showPw: false
+            showExPw: false,
+            showNwPw: false
         }
-        this.toggleShowPw = this.toggleShowPw.bind(this)
-    }
-
-    //Get User Info
-    componentDidMount() {
-        this.setState({user: GqlApi.state.myself})
+        this.toggleShowExPw = this.toggleShowExPw.bind(this)
+        this.toggleShowNwPw = this.toggleShowNwPw.bind(this)
+        user = props.user;
     }
     
-    toggleShowPw() {
-        if (this.state.showPw===false) { this.setState({showPw: true}) }
-        else { this.setState({showPw: false})}
+    toggleShowExPw() {
+        if (this.state.showExPw===false) { this.setState({showExPw: true}) }
+        else { this.setState({showExPw: false})}
+    }
+    toggleShowNwPw() {
+        if (this.state.showNwPw===false) { this.setState({showNwPw: true}) }
+        else { this.setState({showNwPw: false})}
     }
 
     validate(v) {
         const validateFunc = {
             firstName: ({firstName}) => (firstName.length>0)? undefined : 'Please enter your First Name',
             lastName: ({lastName}) => (lastName.length>0)? undefined : 'Please enter your Last Name',
-            newPassword: ({newPassword}) => (passwordTest(newPassword))? undefined : 'Need at least 8 characters, with both uppercase and lowercase'
+            email: ({email}) => isEmail(email)? undefined : 'Please enter valid email address',
+            mobilePhone: ({mobilePhone}) => isMobilePhone(mobilePhone, 'zh-HK')? undefined : 'Please enter Hong Kong mobile phone number',
+            newPassword: ({newPassword}) => (passwordTest(newPassword))? undefined : 'Need at least 8 characters, with both uppercase and lowercase',
+            existingPassword: ({existingPassword}) => (passwordTest(existingPassword))? undefined : 'Need at least 8 characters, with both uppercase and lowercase'
         }
         const keyArr = Object.keys(v)
         let err = {}
@@ -54,11 +67,12 @@ class UserProfileForm extends React.Component {
                 {(t) => (
                     <Formik
                         initialValues={{
-                            email: this.state.user.email,
-                            password:'',
-                            firstName: this.state.user.firstName,
-                            lastName: this.state.user.lastName,
-                            mobilePhone: this.state.user.mobilePhone
+                            email: user.email,
+                            newPassword:'',
+                            existingPassword: '',
+                            firstName: user.firstName,
+                            lastName: user.lastName,
+                            mobilePhone: user.mobilePhone
                         }}
                         validate={this.validate}
                         onSubmit={ async(values, actions) => {
@@ -99,7 +113,7 @@ class UserProfileForm extends React.Component {
 
                         
                     >
-                    {({ errors, dirty, isSubmitting, values, status }) => {
+                    {({ errors, dirty, values, status }) => {
                     return (
                         <FormikForm>
                             <Field
@@ -138,33 +152,33 @@ class UserProfileForm extends React.Component {
                             />
                             <Field
                                 name="existingPassword"
-                                type={(this.state.showPw)? 'text': 'password'}
+                                type={(this.state.showExPw)? 'text': 'password'}
                                 component={TextField}
                                 label={t('Existing Password')}
                                 placeholder={t('8 characters with uppercase and lowercase letters')}
-                                value={values.password}
-                                err={errors.password}
-                                rightIcon={[<FormIcon icon={(this.state.showPw)? 'eye': 'eye-slash'} key="showPw" onClick={ this.toggleShowPw}/>]}
+                                value={values.existingPassword}
+                                err={errors.existingPassword}
+                                rightIcon={[<FormIcon icon={(this.state.showExPw)? 'eye': 'eye-slash'} key="showExPw" onClick={ this.toggleShowExPw}/>]}
                             />
                             <Field
                                 name="newPassword"
-                                type={(this.state.showPw)? 'text': 'password'}
+                                type={(this.state.showNwPw)? 'text': 'password'}
                                 component={TextField}
                                 label={t('New Password')}
                                 placeholder={t('8 characters with uppercase and lowercase letters')}
-                                value={values.password}
-                                err={errors.password}
-                                rightIcon={[<FormIcon icon={(this.state.showPw)? 'eye': 'eye-slash'} key="showPw" onClick={ this.toggleShowPw}/>]}
+                                value= {values.newPassword}
+                                err={errors.newPassword}
+                                rightIcon={[<FormIcon icon={(this.state.showNwPw)? 'eye': 'eye-slash'} key="showNwPw" onClick={ this.toggleShowNwPw}/>]}
                             />
-                            <FormErr>{status && status.form}</FormErr>
                             <FormButton
                                 type="submit"
-                                disabled={!dirty || isSubmitting || !isEmpty(pickBy(errors)) || loading }
-                            >
+                                disabled={!dirty}
+                                >
                                 <StraightRow>
                                     {t('Submit')}
                                 </StraightRow>
                             </FormButton>
+                            <FormErr>{status && status.form}</FormErr>
 
                         </FormikForm>
                     )}}

@@ -56,6 +56,8 @@ const FB = styled.button`
 	flex: 0 0 auto;
     align-self: stretch;
     font-size: 1em;
+    padding: 15px;
+    margin: 5px 15px;
     font-weight: ${props => props.disabled ? `400` : `600`};
     color: ${props => props.disabled ? `rgba(128, 128, 128, 0.2)` : `Black`};
     ${props => props.fullSize && `width: 100%`}

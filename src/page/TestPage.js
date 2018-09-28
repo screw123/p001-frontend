@@ -8,6 +8,8 @@ import isEmpty from 'lodash/isEmpty'
 import pickBy from 'lodash/pickBy'
 import Background from '../component/Background.js'
 
+import UserProfileForm from '../form/UserProfileForm.js'
+
 
 class TestPage extends React.Component {
     constructor(props) {
@@ -17,7 +19,7 @@ class TestPage extends React.Component {
 
     render() { return(
     	<Background>
-        <Formik
+        {/* <Formik
             initialValues={{
                 test: []
             }}
@@ -53,9 +55,13 @@ class TestPage extends React.Component {
                 
             </div>
         )}
-        </Formik>
+        </Formik> */}
+        <UserProfileForm user={ {firstName: "Tom", 
+            lastName: "Tin", 
+            email: "abc@gmail.com",
+            mobilePhone: "92545176"} } />
         </Background>
-    )}
+     )}
 }
 
 export default TestPage

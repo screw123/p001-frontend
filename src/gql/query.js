@@ -232,7 +232,7 @@ export const addRentalOrder = gql`
             _id
         }
     }`
-    
+
 export const addAddress = gql`
     mutation (
         $addressType: String!,
@@ -262,7 +262,9 @@ export const addAddress = gql`
             streetAddress
             telephone
             isActive
-            account_id
+            account_id {
+                _id
+            }
         }
     }`
 

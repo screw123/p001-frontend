@@ -66,10 +66,9 @@ export const MultiSelect = ({
         label = text label shown on form
         defaultValue = value or [value]
         options = [{value, label}]  */
-    
     if (hidden) 
         return null
-    else if(options.length>3) { 
+    else {
         return (
         <FieldDiv className={classNames}>
             <FieldLabel>{label}</FieldLabel>
@@ -98,7 +97,7 @@ export const MultiSelect = ({
         </FieldDiv>
     )}
     
-    else { 
+    /*else { 
         let items = []
         for(let i=0; i<options.length;i++) {
             
@@ -126,6 +125,6 @@ export const MultiSelect = ({
             </RadioBlockGroup>
             {touched[name] && errors[name] && <ErrorLabel>{errors[name]}</ErrorLabel> }
         </FieldDiv>
-    )}
+    )}*/
 
 }

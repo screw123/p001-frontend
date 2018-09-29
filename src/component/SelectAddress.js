@@ -4,10 +4,13 @@
 import React from 'react'
 import { Form } from 'formik'
 import styled from 'styled-components'
+import { FieldLabel } from './FormikForm.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import LocaleApi, {LocaleApiSubscriber} from '../stateContainer/LocaleApi.js'
 import AddNewAddressForm from '../form/AddNewAddressForm.js'
 import Modal from '../component/Modal.js'
+import { MultiSelect } from './Formik-MultiSelect.js';
+import { FormButton } from './Formik-Basic.js';
 
 const AddressDisplay = ({address, key1, selected, ...props}) => {
     console.log('addressDisplay', address, key1, ...props)
@@ -57,12 +60,41 @@ class SelectAddress extends React.Component{
 
     showAddNewAddressModal() { this.setState({showAddNewAddressModal: true}) }
 
-    render(){ 
-        console.log("address list "+this.props.addressLine.streetAddress);
-        return (
+    render(){
+        const options = this.props.addresses.map((v)=>{
+            return Object.assign({value: v._id, label: v.streetAddress}, v)
+        })
+
+        return ( 
         <LocaleApiSubscriber>
         {(c)=>(
-            <AddressGroup>
+            //implement here: disabled, classNames, label, hidden
+            <div>
+                <FieldLabel>{this.props.label}</FieldLabel>
+                <FormButton onClick={this.showAddNewAddressModal}>Add New Address</FormButton>
+                <MultiSelect
+                    field={this.props.field}
+                    form={this.props.form}
+                    options={options}
+                    multiSelect={this.props.multiSelect}
+                    isLoading={this.props.isLoading}
+                />
+                <Modal
+                    show={this.state.showAddNewAddressModal}
+                    component={<AddNewAddressForm account_id={this.props.account_id}/>}
+                    title={c.t('Add New Address')}
+                />
+            </div>
+            
+        )}
+        </LocaleApiSubscriber>
+    )}
+}
+
+export default SelectAddress
+
+/*
+<AddressGroup>
                 {this.props.addressLine && this.props.addressLine.map((v)=>{ 
                     return <AddressDisplay
                         address={v}
@@ -91,9 +123,5 @@ class SelectAddress extends React.Component{
                     />
                 }
             </AddressGroup>
-        )}
-        </LocaleApiSubscriber>
-    )}
-}
 
-export default SelectAddress
+            */

@@ -5,6 +5,9 @@ import { I18n } from 'react-i18next'
 import isEmpty from 'lodash/isEmpty'
 import pickBy from 'lodash/pickBy'
 
+import { Formik, Field } from 'formik'
+import FormikForm, { MultiSelect, TextField, FormButton, FormErr, FormIcon, RadioButtonGroup, RadioButton, CheckBox, InputGroup, DropDown } from '../component/FormikForm.js'
+
 import GqlApi from '../stateContainer/GqlApi.js'
 import LocaleApi, {LocaleApiSubscriber} from '../stateContainer/LocaleApi.js'
 import { ApolloProvider, Query, Mutation } from "react-apollo"
@@ -14,7 +17,6 @@ import parseApolloErr from '../util/parseErr.js'
 import {BigLoadingScreen} from '../component/Loading.js'
 
 import { QuotationDisplay } from '../component/QuotationDisplay.js'
-import { FormButton } from '../component/FormikForm.js'
 
 import SelectAddress from '../component/SelectAddress.js'
 
@@ -48,6 +50,10 @@ class SalesOrderConfirmForm extends React.Component {
 		this.setState({selectedBillingAddress: id})
 	}
 	
+	validate() {
+		return {}
+	}
+
     //props= quotation_id
     render(){ return (
         <LocaleApiSubscriber>
@@ -66,21 +72,44 @@ class SalesOrderConfirmForm extends React.Component {
                         }
                     	console.log('data=', data)
                     	const quote = data.getQuotationById
-                        return(
-							<div>
-								<h3>{c.t('Billing Address')}</h3>
-								<SelectAddress
-									account_id= {this.props.account_id}
-									addressLine={data.getAccountById.address_id}
-									selected={this.state.selectedBillingAddress||data.getAccountById.defaultBillingAddress_id._id}
-									onChange={this.handleBillingAddressChange}
-								/>
-								<QuotationDisplay quotation={quote} />
-								<p>Is everything ok?</p>
-								<FormButton onClick={()=>this.addSalesOrderClient(mutate, this.props.quotation_id)}>
-									{c.t('Submit')}
-								</FormButton>
-							</div>
+						
+						return(
+							<Formik
+								initialValues={{
+									billingAddress: '',
+									quotation_id: this.props.quotation_id
+								}}
+								validate={this.validate}
+								onSubmit={async (values, actions) => {
+									actions.setStatus('')
+									actions.setSubmitting(false)
+								}}
+							>
+							{({ errors, isSubmitting, dirty, touched, values, status, initialValues }) => (
+								<div>
+									<FormikForm>
+										
+										<Field
+											name="billingAddress"
+											type="text"
+											component={SelectAddress}
+											label={c.t('Billing Address')}
+											value={values.billingAddress}
+											account_id= {this.props.account_id}
+											addresses={data.getAccountById.address_id}
+											selected={this.state.selectedBillingAddress||data.getAccountById.defaultBillingAddress_id._id}
+											onChange={this.handleBillingAddressChange}
+										/>
+										<QuotationDisplay quotation={quote} />
+										<p>Is everything ok?</p>
+										<FormButton onClick={()=>this.addSalesOrderClient(mutate, this.props.quotation_id)}>
+											{c.t('Submit')}
+										</FormButton>
+										<FormErr>{status}</FormErr>
+									</FormikForm>
+								</div>
+							)}
+							</Formik>
                             
                         )
                     }}

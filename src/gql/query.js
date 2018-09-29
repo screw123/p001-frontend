@@ -235,6 +235,7 @@ export const addRentalOrder = gql`
     
 export const addAddress = gql`
     mutation (
+        $addressType: String!,
         $account_id: String!,
         $legalName: String!,
         $addressCountry: String!,
@@ -244,6 +245,7 @@ export const addAddress = gql`
         $telephone: String
     ) {
         addAddress(
+            addressType: $addressType,
             account_id: $account_id,
             legalName: $legalName,
             addressCountry: $addressCountry,

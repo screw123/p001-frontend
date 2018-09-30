@@ -242,7 +242,7 @@ export const addAddress = gql`
         $addressRegion1: String!,
         $addressRegion2: String!,
         $streetAddress: String!,
-        $telephone: String
+        $telephone: String!
     ) {
         addAddress(
             addressType: $addressType,

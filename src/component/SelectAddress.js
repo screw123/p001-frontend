@@ -1,17 +1,15 @@
 //For choosing a new address.
 //It make use of "MultiSelect" component for Formik.
+//https://github.com/screw123/p001-frontend/issues/16
 
 import React from 'react'
-import { Formik, Field} from 'formik'
 import styled from 'styled-components'
 import { FieldLabel } from './FormikForm.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import LocaleApi, {LocaleApiSubscriber} from '../stateContainer/LocaleApi.js'
+import {LocaleApiSubscriber} from '../stateContainer/LocaleApi.js'
 import AddNewAddressForm from '../form/AddNewAddressForm.js'
 import Modal from '../component/Modal.js'
-import FormikForm, { MultiSelect, TextField, FormButton, FormErr, FormIcon, RadioButtonGroup, RadioButton, CheckBox, InputGroup, DropDown } from '../component/FormikForm.js'
-import { I18n } from 'react-i18next'
-
+import { MultiSelect } from '../component/FormikForm.js'
 
 const AddressDisplay = ({address, key1, selected, ...props}) => {
     console.log('addressDisplay', address, key1, ...props)
@@ -43,8 +41,8 @@ const AddressBlock = styled.div`
     ${({selected}) => selected? `background-color: rgba(255, 255, 255, 0.5);` : ``}
 `
 
-const AddressGroup = styled.div`
-    display: flex;
+const AddAddressButton = styled.button`
+
 `
 
 class SelectAddress extends React.Component{
@@ -56,10 +54,13 @@ class SelectAddress extends React.Component{
     constructor(props) {
         super(props)
         this.state = {showAddNewAddressModal: false}
-        this.showAddNewAddressModal = this.showAddNewAddressModal.bind(this)
+        this.toggleAddNewAddressModal = this.toggleAddNewAddressModal.bind(this)
     }
 
-    showAddNewAddressModal() { this.setState({showAddNewAddressModal: true}) }
+    toggleAddNewAddressModal = () => {
+        console.log('toggling')
+        this.setState(prevState=>({showAddNewAddressModal: (prevState.showAddNewAddressModal? false: true) }))
+    }
 
     render(){
         const options = this.props.addresses.map((v)=>{
@@ -68,26 +69,42 @@ class SelectAddress extends React.Component{
 
         return ( 
         <LocaleApiSubscriber>
-        {(c)=>(
-            //implement here: disabled, classNames, label, hidden
-            <div>
-                <FieldLabel>{this.props.label}</FieldLabel>
-                <FormButton onClick={this.showAddNewAddressModal}>Add New Address</FormButton>
-                <MultiSelect
-                    field={this.props.field}
-                    form={this.props.form}
-                    options={options}
-                    multiSelect={this.props.multiSelect}
-                    isLoading={this.props.isLoading}
-                />
-                <Modal
-                    show={this.state.showAddNewAddressModal}
-                    component={<AddNewAddressForm account_id={this.props.account_id}/>}
-                    title={c.t('Add New Address')}
-                />
-            </div>
-            
-        )}
+        {(c)=>{
+            if (this.props.hidden) {return null}
+            else { return(
+                <div className={this.props.classNames}>
+                    <FieldLabel>{this.props.label}</FieldLabel>
+                    {this.props.allowAddAddress && 
+                        <AddAddressButton onClick={this.toggleAddNewAddressModal} disabled={this.props.disabled}>
+                            <FontAwesomeIcon icon='plus-circle'/>
+                            {c.t('Add New Address')}
+                        </AddAddressButton> 
+                    }
+                    <MultiSelect
+                        field={this.props.field}
+                        form={this.props.form}
+                        options={options}
+                        multiSelect={this.props.multiSelect}
+                        isLoading={this.props.isLoading}
+                        disabled={this.props.disabled}
+                        onChange={this.props.onChange}
+                    />
+                    <Modal
+                        show={this.state.showAddNewAddressModal}
+                        component={<AddNewAddressForm
+                            account_id={this.props.account_id}
+                            onSubmitSuccess={(address)=> {
+                                console.log('Modal onSubmitSuccess')
+                                this.toggleAddNewAddressModal
+                                this.props.onAddNewAddress(address)
+                            }}
+                        />}
+                        closeModal={this.toggleAddNewAddressModal}
+                        title={c.t('Add New Address')}
+                    />
+                </div>
+            )}
+        }}
         </LocaleApiSubscriber>
     )}
 }

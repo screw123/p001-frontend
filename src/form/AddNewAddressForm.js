@@ -31,20 +31,19 @@ class AddNewAddressForm extends React.Component {
     }
     
     validate(v) {
-            const validateFunc = {
-            legalName: ({legalName}) => (legalName.length>0)? undefined : 'Please provide a name',
-            legalName: ({legalName}) => (legalName.length<255)? undefined : 'Please provide name less than 25',
-            streetAddress: ({streetAddress}) => (streetAddress.length>0)? undefined : 'Please provide a valid address',
-            streetAddress: ({streetAddress}) => (streetAddress.length<500)? undefined : 'Please provide street address less than 500',
-            addressRegion1: ({addressRegion1}) => (addressRegion1.length>0)? undefined : 'Please provide a valid first region',
-            addressRegion1: ({addressRegion1}) => (addressRegion1.length<50)? undefined : 'Please provide first region less than 50',
-            addressRegion2: ({addressRegion2}) => (addressRegion2.length>0)? undefined : 'Please provide a valid second region',
-            addressRegion2: ({addressRegion2}) => (addressRegion2.length<50)? undefined : 'Please provide second region less than 50',
+        const validateFunc = {
+            legalName: ({legalName}) => (legalName.length>0)? undefined : 'Please provide a valid personal/company name',
+            legalName: ({legalName}) => (legalName.length<255)? undefined : 'Please provide a valid personal/company name',
+            streetAddress: ({streetAddress}) => (streetAddress.length>4)? undefined : 'Please provide a valid address',
+            streetAddress: ({streetAddress}) => (streetAddress.length<500)? undefined : 'Please provide a valid address',
+            addressRegion1: ({addressRegion1}) => (addressRegion1.length>0)? undefined : 'Please provide a valid region',
+            addressRegion1: ({addressRegion1}) => (addressRegion1.length<50)? undefined : 'Please provide a valid region',
+            addressRegion2: ({addressRegion2}) => (addressRegion2.length>0)? undefined : 'Please provide a valid region',
+            addressRegion2: ({addressRegion2}) => (addressRegion2.length<50)? undefined : 'Please provide a valid region',
             addressType: () => undefined,
-            addressCountry: () => undefined,
+            addressCountry: ({addressCountry}) => (addressCountry && addressCountry.length>0)? undefined : 'Please choose address Country',
             account_id: () => undefined,
-            telephone: ({telephone}) => (telephone.length>0)? undefined: 'Please provide a valid phone number',
-            telephone: ({telephone}) => isMobilePhone(telephone, 'zh-HK')? undefined : 'Please enter Hong Kong mobile phone number',
+            telephone: ({telephone}) => (telephone.length==8)? undefined: 'Please provide a valid phone number'
         }
         const keyArr = Object.keys(v)
         let err = {}
@@ -68,7 +67,7 @@ class AddNewAddressForm extends React.Component {
                         initialValues={{
                             addressType: 'CUSTOMER',
                             legalName: '',
-                            addressCountry: t('HONG KONG'),
+                            addressCountry: ' ',
                             addressRegion1: '',
                             addressRegion2: '',
                             streetAddress: '',
@@ -96,7 +95,7 @@ class AddNewAddressForm extends React.Component {
                                 console.log('vars=', vars)
                                 const d = await mutate({variables: vars})
                                 console.log('server return', d)
-                                if(this.props.onSubmit){this.props.onSubmit(d.data.addAddress)}
+                                if(this.props.onSubmitSuccess){this.props.onSubmitSuccess(d.data.addAddress)}
                             } catch(er) { 
                                 console.log('submit err', er, er.message)
                                 const errStack = parseApolloErr(er, t)
@@ -115,8 +114,7 @@ class AddNewAddressForm extends React.Component {
                             }                        
                         }}                    
                     >
-                    {({ errors, setFieldValue, handleSubmit, setValues, isSubmitting, touched, values, status }) => {
-                        
+                    {({ errors, isSubmitting, touched, values, status }) => {
                         return (
                             <FormikForm>
                                 <Field

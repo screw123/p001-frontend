@@ -85,7 +85,7 @@ class SalesOrderConfirmForm extends React.Component {
 									actions.setSubmitting(false)
 								}}
 							>
-							{({ errors, isSubmitting, dirty, touched, values, status, initialValues }) => (
+							{({ errors, isSubmitting, dirty, touched, values, status, initialValues, setFieldValue }) => (
 								<div>
 									<FormikForm>
 										
@@ -98,7 +98,9 @@ class SalesOrderConfirmForm extends React.Component {
 											account_id= {this.props.account_id}
 											addresses={data.getAccountById.address_id}
 											selected={this.state.selectedBillingAddress||data.getAccountById.defaultBillingAddress_id._id}
-											onChange={this.handleBillingAddressChange}
+											onChange={(v)=>setFieldValue('billingAddress', v._id)}
+											allowAddAddress={true}
+											onAddNewAddress={(v)=>refetch()}
 										/>
 										<QuotationDisplay quotation={quote} />
 										<p>Is everything ok?</p>

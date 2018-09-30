@@ -49,7 +49,7 @@ const ModalFooter = styled.div`
 
 export const CloseIcon = ({onClick, ...props}) => (
     <IconDiv onClick={onClick}>
-        <FontAwesomeIcon {...props}/>
+        <FontAwesomeIcon icon='window-close' {...props}/>
     </IconDiv>
 )
 

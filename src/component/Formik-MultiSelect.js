@@ -58,8 +58,8 @@ const StyledSelectContainer= styled(CustomSelectContainer)`
 
 export const MultiSelect = ({
     field: { name, value, ...fields },
-    form: { touched, errors, setFieldValue },
-    classNames, options, disabled, label, multiSelect, isLoading, hidden, ...props }) => {
+    form: { setFieldValue },
+    touched, classNames, err, options, disabled, label, multiSelect, isLoading, hidden, ...props }) => {
     /*  Radio by default, will change to select if options > 3
         if multi-select, will change radio to checkbox
         field.name = internal name used by code
@@ -79,7 +79,7 @@ export const MultiSelect = ({
                     options.filter(v=> v.value===value)
                 }
                 isDisabled={disabled}
-                isLoading={LoadingIcon}
+                isLoading={isLoading}
                 isSearchable={true}
                 isMulti={multiSelect}
                 options={options}
@@ -93,7 +93,7 @@ export const MultiSelect = ({
                     'isSelect': true
                 })}
             />
-            {touched[name] && errors[name] && <ErrorLabel>{errors[name]}</ErrorLabel> }
+            {err && <ErrorLabel>{err}</ErrorLabel> }
         </FieldDiv>
     )}
     

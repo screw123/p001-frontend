@@ -13,7 +13,7 @@ import isEmpty from 'lodash/isEmpty'
 
 import request from 'superagent'
 
-import getMyself from '../gql/query.js'
+import { getMyself } from '../gql/query.js'
 
 class ApolloContainer extends Container {
     constructor() {
@@ -84,19 +84,23 @@ class ApolloContainer extends Container {
             this.setState({isLogined: new Promise(async (resolve) => {
                 try {
                     const res = await request.get('https://wisekeep.hk/api/checkl').withCredentials()
+                    console.log('checkl res=', res)
                     if (res.statusCode===200) { 
                         this.setState({isLogined: true})
                         const gqlClient = this.getGqlClient()
                         const q = await gqlClient.query({query: getMyself})
                         this.setState({myself: q.data.getMyself})
+                        console.log('200, login=true')
                         return resolve(true)
                     }
                     else {
+                        console.log('not 200, login=false')
                         this.setState({isLogined: false})
                         return resolve(false)
                     }
                 }
                 catch(e) {
+                    console.log('error, login=false', e)
                     this.setState({isLogined: false})
                     return resolve(false)
                 }

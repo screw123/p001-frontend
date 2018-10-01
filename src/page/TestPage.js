@@ -195,8 +195,47 @@ class TestPage extends React.Component {
 
     render() { return(
     	<Background>
-            {/* <UserProfileForm user={ GqlApi.state.myself } /> */}
-            <InfoList {...infoProps} />
+        {/* <Formik
+            initialValues={{
+                test: []
+            }}
+            validate={ (values) => {} }
+            onSubmit={ console.log('submitted') }
+        >
+        {({ errors, isSubmitting, dirty, touched, values, status, initialValues }) => (
+            <div>
+                <FormikForm>
+                    <Field
+                        name="test"
+                        type="text"
+                        label="Testing~!!"
+                        component={MultiSelect}
+                        value={values.test}
+                        multiSelect={true}
+                        options={[
+                        	{value: "test1", label: "haha"},
+                        	{value: "test2", label: "haha2"},
+                        	{value: "test3", label: "haha3"},
+                        	{value: "test4", label: "haha4"}
+                        ]}
+                        
+                    />
+                    <FormErr>{status}</FormErr>
+                    <FormButton
+                        type="submit"
+                        disabled={isSubmitting || !isEmpty(pickBy(errors)) || !dirty}
+                    >
+                        {'Submit'}
+                    </FormButton>
+                </FormikForm>
+                
+            </div>
+        )}
+        </Formik> */}
+
+        {/* <UserProfileForm user={ GqlApi.state.myself } /> */}
+
+        <EditAddressForm address={demoUser} />  
         </Background>
      )}
 }

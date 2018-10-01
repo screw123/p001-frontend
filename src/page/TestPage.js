@@ -10,6 +10,7 @@ import Background from '../component/Background.js'
 
 import UserProfileForm from '../form/UserProfileForm.js'
 
+import GqlApi from '../stateContainer/GqlApi.js'
 
 class TestPage extends React.Component {
     constructor(props) {
@@ -56,10 +57,7 @@ class TestPage extends React.Component {
             </div>
         )}
         </Formik> */}
-        <UserProfileForm user={ {firstName: "Tom", 
-            lastName: "Tin", 
-            email: "abc@gmail.com",
-            mobilePhone: "92545176"} } />
+        <UserProfileForm user={ GqlApi.state.myself } />
         </Background>
      )}
 }

@@ -13,7 +13,7 @@ import isEmpty from 'lodash/isEmpty'
 
 import request from 'superagent'
 
-import getMyself from '../gql/query.js'
+import {getMyself} from '../gql/query.js'
 
 class ApolloContainer extends Container {
     constructor() {

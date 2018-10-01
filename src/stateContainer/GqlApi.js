@@ -125,6 +125,13 @@ class ApolloContainer extends Container {
             this.state.history.push('/')
         }
     }
+    
+    async updateMyself(myself) {
+        console.log('myself=', myself)
+        const q = await this.state.gqlClient.query({query: getMyself})
+        this.setState({myself: q.data.getMyself})
+    }
+    
     setHistoryObj(obj) {
         this.setState({history: obj})
     }

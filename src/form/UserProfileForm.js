@@ -42,7 +42,10 @@ class UserProfileForm extends React.Component {
             lastName: ({lastName}) => (lastName.length>0)? undefined : 'Please enter your Last Name',
             email: ({email}) => isEmail(email)? undefined : 'Please enter valid email address',
             mobilePhone: ({mobilePhone}) => isMobilePhone(mobilePhone, 'zh-HK')? undefined : 'Please enter Hong Kong mobile phone number',
-            newPassword: ({newPassword}) => (passwordTest(newPassword))? undefined : 'Need at least 8 characters, with both uppercase and lowercase',
+            newPassword: ({newPassword}) => {
+                if (newPassword.length==0) { return undefined }
+                return (passwordTest(newPassword))? undefined : 'Need at least 8 characters, with both uppercase and lowercase'
+            },
             //existingPassword: ({existingPassword}) => (passwordTest(existingPassword))? undefined : 'Need at least 8 characters, with both uppercase and lowercase'
             existingPassword: () => {return undefined}
         }
@@ -92,6 +95,11 @@ class UserProfileForm extends React.Component {
                                     // After getting the result from backend, update it in GqlApi
                                     const result = await d.data.updateUserDetails
                                     GqlApi.updateMyself(result)
+                                    
+                                    //call props.onSubmitSuccess if available
+                                    if (this.props.onSubmitSuccess) {
+                                        this.props.onSubmitSuccess()
+                                    }
                                 } catch(e) { 
                                     console.log('submit err', e)
                                     const errStack = parseApolloErr(e, t)
@@ -138,7 +146,7 @@ class UserProfileForm extends React.Component {
                                     label={t('Email')}
                                     value={values.email}
                                     err={errors.email}
-                                    readOnly
+                                    disabled={true}
                                 />
                                 <Field
                                     name="mobilePhone"
@@ -147,7 +155,7 @@ class UserProfileForm extends React.Component {
                                     label={t('Hong Kong Mobile Number')}
                                     value={values.mobilePhone}
                                     err={errors.mobilePhone}
-                                    readOnly
+                                    disabled={true}
                                 />
                                 <Field
                                     name="existingPassword"
@@ -169,6 +177,7 @@ class UserProfileForm extends React.Component {
                                     err={errors.newPassword}
                                     rightIcon={[<FormIcon icon={(this.state.showNwPw)? 'eye': 'eye-slash'} key="showNwPw" onClick={ this.toggleShowNwPw}/>]}
                                 />
+                                <FormErr>{status}</FormErr>
                                 <FormButton
                                     type="submit"
                                     disabled={!dirty}
@@ -177,7 +186,7 @@ class UserProfileForm extends React.Component {
                                         {t('Submit')}
                                     </StraightRow>
                                 </FormButton>
-                                <FormErr>{status && status.form}</FormErr>
+                                
     
                             </FormikForm>
                         )}}

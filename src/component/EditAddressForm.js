@@ -139,11 +139,17 @@ class EditAddressForm extends React.Component {
                                 <Field
                                     name="addressRegion2"
                                     type="text"
-                                    component={TextField}
+                                    component={MultiSelect}
                                     label={t('Address Region2')}
                                     value={values.addressRegion2}
                                     err={errors.addressRegion2}
                                     placeholder="Second Address Region"
+                                    options={[
+                                        {value: t('屯門'), label: t('屯門')},
+                                        {value: t('HONG KONG ISLAND'), label: t('HONG KONG ISLAND')},
+                                        {value: t('NEW TERRITORIES'), label: t('NEW TERRITORIES')},
+                                        {value: t('LANTAU'), label: t('LANTAU')}
+                                    ]}
                                 />
                                 <Field
                                     name="addressCountry"

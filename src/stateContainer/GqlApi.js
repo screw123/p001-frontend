@@ -13,7 +13,7 @@ import isEmpty from 'lodash/isEmpty'
 
 import request from 'superagent'
 
-import getMyself from '../gql/query.js'
+import {getMyself} from '../gql/query.js'
 
 class ApolloContainer extends Container {
     constructor() {
@@ -125,6 +125,13 @@ class ApolloContainer extends Container {
             this.state.history.push('/')
         }
     }
+    
+    async updateMyself(myself) {
+        console.log('myself=', myself)
+        const q = await this.state.gqlClient.query({query: getMyself})
+        this.setState({myself: q.data.getMyself})
+    }
+    
     setHistoryObj(obj) {
         this.setState({history: obj})
     }

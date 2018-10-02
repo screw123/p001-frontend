@@ -1,6 +1,6 @@
 import React from 'react'
 import {SectionHeader} from './Background.js'
-import ListItem from '../form/ListItem.js'
+import InfoList from '../form/InfoList.js'
 import VirtualList from 'react-tiny-virtual-list'
 
 export default class InfoList extends React.Component {
@@ -21,7 +21,7 @@ export default class InfoList extends React.Component {
         
         if(typeof (renderComponent) == 'undefined') {
             list = data.map((item) => (
-                <ListItem data={item} />
+                <InfoList data={item} />
             ))
         } else {
             list = data.map((item) => (

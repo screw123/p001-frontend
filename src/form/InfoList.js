@@ -1,4 +1,4 @@
-const ListItem = (props) => {
+const InfoList = (props) => {
     return (
         <div  key={props.data} style={style}>
             {props.data}
@@ -6,4 +6,4 @@ const ListItem = (props) => {
         )
     }
 
-export default ListItem;
+export default InfoList;

@@ -1,7 +1,6 @@
 import React from 'react'
-import {SectionHeader} from './Background.js'
-import InfoList from '../form/InfoList.js'
-import VirtualList from 'react-tiny-virtual-list'
+import {SectionHeader, HIL, HT, HIR} from './Background.js'
+import ListItem from '../form/ListItem.js'
 
 export default class InfoList extends React.Component {
     constructor(props){
@@ -9,20 +8,28 @@ export default class InfoList extends React.Component {
     }
 
     render() {
-        let list
+        let list, propsData
         const {
-                data,
-                header,
-                renderComponent,
-                width,
-                height,
-                itemSize
-            } = this.props
+            data,
+            headerIconLeft,
+            headerText,
+            headerIconRight,
+            renderComponent,
+            width,
+            height,
+            itemSize
+        } = this.props
         
+            
         if(typeof (renderComponent) == 'undefined') {
-            list = data.map((item) => (
-                <InfoList data={item} />
-            ))
+            list = this.props.data.map((item, i) => {
+            propsData = {item, width, height, itemSize}
+            return (
+                <div key={i}>
+                    <ListItem {...propsData} />
+                </div>
+                )
+            })
         } else {
             list = data.map((item) => (
                 <renderComponent data={item}/>
@@ -32,15 +39,11 @@ export default class InfoList extends React.Component {
         return(
             <React.Fragment>
                 <SectionHeader>
-                    {header}
+                    <HIL>{headerIconLeft}</HIL>
+                    <HT>{headerText}</HT>
+                    <HIR>{headerIconRight}</HIR>
                 </SectionHeader>
-                <VirtualList
-                    width={width}
-                    height={height}
-                    itemCount={data.length}
-                    itemSize={itemSize} 
-                    renderItem = {list}
-                />
+                {list}
             </React.Fragment>
         )
     }

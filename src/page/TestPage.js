@@ -11,6 +11,160 @@ import Background from '../component/Background.js'
 import UserProfileForm from '../form/UserProfileForm.js'
 
 import GqlApi from '../stateContainer/GqlApi.js'
+import InfoList from "../component/InfoList.js";
+
+const data = [
+    {
+        "_id": "5b518c4c031c7d0179e23b6a",
+        "accountType": "PERSONAL",
+        "address_id": [
+            "5afba4f4b2d52237e3f2fc75",
+            "5afba4fbb2d52237e3f2fc76"
+        ],
+        "balance": 500.45,
+        "creationDateTime": "2018-07-20T07:16:28.117Z",
+        "defaultBillingAddress_id": "5afba4f4b2d52237e3f2fc75",
+        "defaultShippingAddress_id": "5afba4fbb2d52237e3f2fc76",
+        "isActive": true,
+        "name": "DEFAULT",
+        "owner_id": "5b518c4b031c7d0179e23b69",
+        "priceList": "VIP",
+        "updateDateTime": "2018-07-20T07:16:28.117Z"
+    },
+    {
+        "_id": "5b8769d78b53fbb204118e8b",
+        "accountType": "PERSONAL",
+        "balance": 0,
+        "creationDateTime": "2018-07-20T07:16:28.117Z",
+        "isActive": true,
+        "name": "Testing",
+        "owner_id": "5b518c4b031c7d0179e23b69",
+        "priceList": "DEFAULT",
+        "updateDateTime": "2018-07-20T07:16:28.117Z"
+    },
+    {
+        "_id": "5b518c4c031c7d0179e23b6a",
+        "accountType": "PERSONAL",
+        "address_id": [
+            "5afba4f4b2d52237e3f2fc75",
+            "5afba4fbb2d52237e3f2fc76"
+        ],
+        "balance": 500.45,
+        "creationDateTime": "2018-07-20T07:16:28.117Z",
+        "defaultBillingAddress_id": "5afba4f4b2d52237e3f2fc75",
+        "defaultShippingAddress_id": "5afba4fbb2d52237e3f2fc76",
+        "isActive": true,
+        "name": "DEFAULT",
+        "owner_id": "5b518c4b031c7d0179e23b69",
+        "priceList": "VIP",
+        "updateDateTime": "2018-07-20T07:16:28.117Z"
+    },
+    {
+        "_id": "5b8769d78b53fbb204118e8b",
+        "accountType": "PERSONAL",
+        "balance": 0,
+        "creationDateTime": "2018-07-20T07:16:28.117Z",
+        "isActive": true,
+        "name": "Testing",
+        "owner_id": "5b518c4b031c7d0179e23b69",
+        "priceList": "DEFAULT",
+        "updateDateTime": "2018-07-20T07:16:28.117Z"
+    },
+    {
+        "_id": "5b518c4c031c7d0179e23b6a",
+        "accountType": "PERSONAL",
+        "address_id": [
+            "5afba4f4b2d52237e3f2fc75",
+            "5afba4fbb2d52237e3f2fc76"
+        ],
+        "balance": 500.45,
+        "creationDateTime": "2018-07-20T07:16:28.117Z",
+        "defaultBillingAddress_id": "5afba4f4b2d52237e3f2fc75",
+        "defaultShippingAddress_id": "5afba4fbb2d52237e3f2fc76",
+        "isActive": true,
+        "name": "DEFAULT",
+        "owner_id": "5b518c4b031c7d0179e23b69",
+        "priceList": "VIP",
+        "updateDateTime": "2018-07-20T07:16:28.117Z"
+    },
+    {
+        "_id": "5b8769d78b53fbb204118e8b",
+        "accountType": "PERSONAL",
+        "balance": 0,
+        "creationDateTime": "2018-07-20T07:16:28.117Z",
+        "isActive": true,
+        "name": "Testing",
+        "owner_id": "5b518c4b031c7d0179e23b69",
+        "priceList": "DEFAULT",
+        "updateDateTime": "2018-07-20T07:16:28.117Z"
+    },
+    {
+        "_id": "5b518c4c031c7d0179e23b6a",
+        "accountType": "PERSONAL",
+        "address_id": [
+            "5afba4f4b2d52237e3f2fc75",
+            "5afba4fbb2d52237e3f2fc76"
+        ],
+        "balance": 500.45,
+        "creationDateTime": "2018-07-20T07:16:28.117Z",
+        "defaultBillingAddress_id": "5afba4f4b2d52237e3f2fc75",
+        "defaultShippingAddress_id": "5afba4fbb2d52237e3f2fc76",
+        "isActive": true,
+        "name": "DEFAULT",
+        "owner_id": "5b518c4b031c7d0179e23b69",
+        "priceList": "VIP",
+        "updateDateTime": "2018-07-20T07:16:28.117Z"
+    },
+    {
+        "_id": "5b8769d78b53fbb204118e8b",
+        "accountType": "PERSONAL",
+        "balance": 0,
+        "creationDateTime": "2018-07-20T07:16:28.117Z",
+        "isActive": true,
+        "name": "Testing",
+        "owner_id": "5b518c4b031c7d0179e23b69",
+        "priceList": "DEFAULT",
+        "updateDateTime": "2018-07-20T07:16:28.117Z"
+    },
+    {
+        "_id": "5b518c4c031c7d0179e23b6a",
+        "accountType": "PERSONAL",
+        "address_id": [
+            "5afba4f4b2d52237e3f2fc75",
+            "5afba4fbb2d52237e3f2fc76"
+        ],
+        "balance": 500.45,
+        "creationDateTime": "2018-07-20T07:16:28.117Z",
+        "defaultBillingAddress_id": "5afba4f4b2d52237e3f2fc75",
+        "defaultShippingAddress_id": "5afba4fbb2d52237e3f2fc76",
+        "isActive": true,
+        "name": "DEFAULT",
+        "owner_id": "5b518c4b031c7d0179e23b69",
+        "priceList": "VIP",
+        "updateDateTime": "2018-07-20T07:16:28.117Z"
+    },
+    {
+        "_id": "5b8769d78b53fbb204118e8b",
+        "accountType": "PERSONAL",
+        "balance": 0,
+        "creationDateTime": "2018-07-20T07:16:28.117Z",
+        "isActive": true,
+        "name": "Testing",
+        "owner_id": "5b518c4b031c7d0179e23b69",
+        "priceList": "DEFAULT",
+        "updateDateTime": "2018-07-20T07:16:28.117Z"
+    }
+];
+
+const infoProps = {
+    data: data,
+    headerIconLeft: "Left Icon",
+    headerText: "Header",
+    headerIconRight: "Right Icon",
+    width: '100%',
+    height: 600,
+    itemSize: 50
+}
 
 class TestPage extends React.Component {
     constructor(props) {
@@ -18,46 +172,11 @@ class TestPage extends React.Component {
         this.state={showResetPassword: false}
     }
 
+
     render() { return(
     	<Background>
-        {/* <Formik
-            initialValues={{
-                test: []
-            }}
-            validate={ (values) => {} }
-            onSubmit={ console.log('submitted') }
-        >
-        {({ errors, isSubmitting, dirty, touched, values, status, initialValues }) => (
-            <div>
-                <FormikForm>
-                    <Field
-                        name="test"
-                        type="text"
-                        label="Testing~!!"
-                        component={MultiSelect}
-                        value={values.test}
-                        multiSelect={true}
-                        options={[
-                        	{value: "test1", label: "haha"},
-                        	{value: "test2", label: "haha2"},
-                        	{value: "test3", label: "haha3"},
-                        	{value: "test4", label: "haha4"}
-                        ]}
-                        
-                    />
-                    <FormErr>{status}</FormErr>
-                    <FormButton
-                        type="submit"
-                        disabled={isSubmitting || !isEmpty(pickBy(errors)) || !dirty}
-                    >
-                        {'Submit'}
-                    </FormButton>
-                </FormikForm>
-                
-            </div>
-        )}
-        </Formik> */}
-        <UserProfileForm user={ GqlApi.state.myself } />
+            {/* <UserProfileForm user={ GqlApi.state.myself } /> */}
+            <InfoList {...infoProps} />
         </Background>
      )}
 }

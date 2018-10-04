@@ -11,15 +11,16 @@ import AddNewAddressForm from '../form/AddNewAddressForm.js'
 import Modal from '../component/Modal.js'
 import { MultiSelect } from '../component/FormikForm.js'
 
-const AddressDisplay = ({address, key1, selected, ...props}) => {
-    console.log('addressDisplay', address, key1, ...props)
+const AddressDisplay = ({data, innerRef, innerProps, ...props}) => {
+    console.log('addressDisplay', data, innerRef, innerProps, ...props)
     return (
-        <AddressBlock key={key1} selected={selected} {...props} >
-            <AddressLine>{address.legalName||'DEFAULT'}</AddressLine>
-            <AddressLine>{address.streetAddress||'N/A'}</AddressLine>
-            <AddressLine>{address.addressRegion1||'N/A'}</AddressLine>
-            <AddressLine>{address.addressRegion2||'N/A'}</AddressLine>
-            <AddressLine>{address.addressCountry||'N/A'}</AddressLine>
+        <AddressBlock {...innerProps}>
+            <AddressLine>{data.legalName||'DEFAULT'}</AddressLine>
+            <AddressLine>{data.streetAddress||'N/A'}</AddressLine>
+            <AddressLine>{data.addressRegion1||undefined}</AddressLine>
+            <AddressLine>{data.addressRegion2||undefined}</AddressLine>
+            <AddressLine>{data.addressCountry||'N/A'}</AddressLine>
+            <AddressLine>{data.telephone||undefined}</AddressLine>
         </AddressBlock>
     )
 }
@@ -31,19 +32,25 @@ const AddressLine = styled.div`
 `
 
 const AddressBlock = styled.div`
-    border: 0.1em solid #999999;
-    border-radius: 0.25em;
-    width: 150px;
-    max-width: 150px;
+    border: 0 0 0 1em solid #999999;
     display: block;
-    margin: 0.25em;
     cursor: pointer;
-    ${({selected}) => selected? `background-color: rgba(255, 255, 255, 0.5);` : ``}
 `
 
 const AddAddressButton = styled.button`
 
 `
+
+const AddressMultiValueLabelDiv = styled.div`
+    font-size: 0.7em;
+`
+
+const AddressMultiValueLabel = ({data, innerProps}) => {
+    console.log('innerProps=', innerProps)
+    let a = (data.legalName||'DEFAULT') + ': ' + (data.streetAddress.substring(0,9)) + '...' + (data.addressCountry||'N/A') + (' / Tel: ' + data.telephone)
+    return (<AddressMultiValueLabelDiv>{a}</AddressMultiValueLabelDiv>)
+}
+
 
 class SelectAddress extends React.Component{
     /* props =
@@ -64,7 +71,8 @@ class SelectAddress extends React.Component{
 
     render(){
         const options = this.props.addresses.map((v)=>{
-            return Object.assign({value: v._id, label: v.streetAddress}, v)
+            let a = (v.legalName||'DEFAULT') + ': ' + (v.streetAddress) + ', ' + (v.addressRegion1) + (v.addressRegion2) + (v.addressCountry||'N/A') + (' / Tel: ' + v.telephone)
+            return Object.assign({value: v._id, label: a}, v)
         })
 
         return ( 
@@ -84,24 +92,30 @@ class SelectAddress extends React.Component{
                         field={this.props.field}
                         form={this.props.form}
                         options={options}
+                        value={this.props.value}
                         multiSelect={this.props.multiSelect}
+                        placeholder={this.props.placeholder}
                         isLoading={this.props.isLoading}
                         disabled={this.props.disabled}
                         onChange={this.props.onChange}
+                        customOption={AddressDisplay}
+                        customMultiValueLabel={AddressMultiValueLabel}
                     />
-                    <Modal
-                        show={this.state.showAddNewAddressModal}
-                        component={<AddNewAddressForm
-                            account_id={this.props.account_id}
-                            onSubmitSuccess={(address)=> {
-                                console.log('Modal onSubmitSuccess')
-                                this.toggleAddNewAddressModal
-                                this.props.onAddNewAddress(address)
-                            }}
-                        />}
-                        closeModal={this.toggleAddNewAddressModal}
-                        title={c.t('Add New Address')}
-                    />
+                    {this.props.allowAddAddress &&
+                        <Modal
+                            show={this.state.showAddNewAddressModal}
+                            component={<AddNewAddressForm
+                                account_id={this.props.account_id}
+                                onSubmitSuccess={(address)=> {
+                                    console.log('Modal onSubmitSuccess')
+                                    this.toggleAddNewAddressModal
+                                    this.props.onAddNewAddress(address)
+                                }}
+                            />}
+                            closeModal={this.toggleAddNewAddressModal}
+                            title={c.t('Add New Address')}
+                        />
+                    }
                 </div>
             )}
         }}
@@ -110,92 +124,3 @@ class SelectAddress extends React.Component{
 }
 
 export default SelectAddress
-
-/*
-<AddressGroup>
-                {this.props.addressLine && this.props.addressLine.map((v)=>{ 
-                    return <AddressDisplay
-                        address={v}
-                        key1={v._id}
-                        id={v._id}
-                        selected={(v._id===this.props.selected)}
-                        onClick={(e)=>this.props.onChange(e.target.parentNode.id)}
-                    />
-=======
-            <I18n>
-            {(t)=>(
-                <Formik>
-                    <FormikForm>
-                        <button onClick={this.showAddNewAddressModal}>Add New Address</button>
-                        {this.state.showAddNewAddressModal &&
-                        <Modal
-                            show={this.state.showAddNewAddressModal}
-                            component={<AddNewAddressForm 
-                                    account_id={this.props.account_id} 
-                                    addressItems={this.props.addressLine}
-                                />}
-                            title={c.t('Add New Address')}
-                            footerButtons={[
-
-                            ]}
-                        />
-                    }
-                        <Field
-                            name="billingAddress"
-                            type="text"
-                            component={MultiSelect}
-                            label={t('Select your address')}
-                            //value={values.value}
-                            MultiSelect = {true}
-                            options={
-                                [{value:"KOWLOON", label:"KOWLOON"},
-                                {value:"HONGKONG ISLAND", label:"HONGKONG ISLAND"},
-                                {value:"NEW TERRITORIES", label:"NEW TERRITORIES"},
-                                {value:"LANTAU", label:"LANTAU"}]
-                        }
-                        />
-                    </FormikForm>
-                </Formik>
-            )}
-            </I18n>
-             
-            
-            // <AddressGroup>
-            //     {this.props.addressLine && this.props.addressLine.map((v)=>{ 
-            //         return <AddressDisplay
-            //             address={v}
-            //             key1={v._id}
-            //             id={v._id}
-            //             selected={(v._id===this.props.selected)}
-            //             onClick={(e)=>this.props.onChange(e.target.parentNode.id)}
-            //         />
-                    
-            //     }) }
-            //     <AddressBlock onClick={this.showAddNewAddressModal}>
-            //         <FontAwesomeIcon icon="plus-circle" size="3x" />
-            //         <div>{c.t('Add New Address')}</div>
-            //     </AddressBlock>
-            //     {this.state.showAddNewAddressModal &&
-            //         <Modal
-            //             show={this.state.showAddNewAddressModal}
-            //             component={<AddNewAddressForm 
-            //                     account_id={this.props.account_id} 
-            //                     addressItems={this.props.addressLine}
-            //                 />}
-            //             title={c.t('Add New Address')}
-            //             footerButtons={[
-
-                        ]}
-                    />
-                }
-            </AddressGroup>
-            //             ]}
-            //         />
-            //     }
-            // </AddressGroup>
-        )}
-        </LocaleApiSubscriber>
-    )}
-}
-
-            */

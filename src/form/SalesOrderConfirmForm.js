@@ -76,7 +76,7 @@ class SalesOrderConfirmForm extends React.Component {
 						return(
 							<Formik
 								initialValues={{
-									billingAddress: '',
+									billingAddress: [data.getAccountById.defaultBillingAddress_id._id],
 									quotation_id: this.props.quotation_id
 								}}
 								validate={this.validate}
@@ -95,12 +95,13 @@ class SalesOrderConfirmForm extends React.Component {
 											component={SelectAddress}
 											label={c.t('Billing Address')}
 											value={values.billingAddress}
+											placeholder={c.t('Please choose your billing address')}
 											account_id= {this.props.account_id}
 											addresses={data.getAccountById.address_id}
-											selected={this.state.selectedBillingAddress||data.getAccountById.defaultBillingAddress_id._id}
 											onChange={(v)=>setFieldValue('billingAddress', v._id)}
 											allowAddAddress={true}
 											onAddNewAddress={(v)=>refetch()}
+											multiSelect={true}
 										/>
 										<QuotationDisplay quotation={quote} />
 										<p>Is everything ok?</p>
@@ -109,6 +110,7 @@ class SalesOrderConfirmForm extends React.Component {
 										</FormButton>
 										<FormErr>{status}</FormErr>
 									</FormikForm>
+									
 								</div>
 							)}
 							</Formik>
@@ -124,6 +126,5 @@ class SalesOrderConfirmForm extends React.Component {
     )}
                 
 }
-
 
 export default SalesOrderConfirmForm

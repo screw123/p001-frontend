@@ -95,7 +95,10 @@ class AddNewAddressForm extends React.Component {
                                 console.log('vars=', vars)
                                 const d = await mutate({variables: vars})
                                 console.log('server return', d)
-                                if(this.props.onSubmitSuccess){this.props.onSubmitSuccess(d.data.addAddress)}
+                                if(this.props.onSubmitSuccess) {
+                                    actions.resetForm({})
+                                    this.props.onSubmitSuccess(d.data.addAddress)
+                                }
                             } catch(er) { 
                                 console.log('submit err', er, er.message)
                                 const errStack = parseApolloErr(er, t)

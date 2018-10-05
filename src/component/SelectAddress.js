@@ -11,10 +11,10 @@ import AddNewAddressForm from '../form/AddNewAddressForm.js'
 import Modal from '../component/Modal.js'
 import { MultiSelect } from '../component/FormikForm.js'
 
-const AddressDisplay = ({data, innerRef, innerProps, ...props}) => {
-    console.log('addressDisplay', data, innerRef, innerProps, ...props)
+const AddressDisplay = ({data, key, selected, onClick, disabled, innerProps, ...props}) => {
+    console.log('addressDisplay', data, innerProps)
     return (
-        <AddressBlock {...innerProps}>
+        <AddressBlock key={key} selected={selected} onClick={onClick} disabled={disabled} {...innerProps}>
             <AddressLine>{data.legalName||'DEFAULT'}</AddressLine>
             <AddressLine>{data.streetAddress||'N/A'}</AddressLine>
             <AddressLine>{data.addressRegion1||undefined}</AddressLine>
@@ -32,9 +32,16 @@ const AddressLine = styled.div`
 `
 
 const AddressBlock = styled.div`
-    border: 0 0 0 1em solid #999999;
+    border: 0.1em solid ${props => props.disabled ? `rgba(128, 128, 128, 0.2)` : `White`};
+    border-radius: 0.25em;
     display: block;
+    font-size: 0.7em;
+    padding: 0.5em;
     cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: ${props => props.disabled ? `rgba(128, 128, 128, 0.2)` : `Black`};
+    ${({selected}) => selected? `background-color: rgba(255, 255, 255, 0.8);` : ``}
 `
 
 const AddAddressButton = styled.button`

@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { FieldDiv, FieldLabel, ErrorLabel } from './Formik-Basic.js'
-import {LoadingIcon, BigLoadingScreen} from '../component/Loading'
+import { LoadingIcon } from '../component/Loading'
 import Select, { components } from 'react-select'
 
 const RadioBlockGroup = styled.div`
@@ -16,7 +16,7 @@ const RadioBlockGroup = styled.div`
 `
 
 const RadioBlock = styled.div`
-    border: 0.1em solid #999999;
+    border: 0.1em solid ${props => props.disabled ? `rgba(128, 128, 128, 0.2)` : `White`};
     border-radius: 0.25em;
     display: block;
     font-size: 0.7em;
@@ -24,6 +24,7 @@ const RadioBlock = styled.div`
     cursor: pointer;
     overflow: hidden;
     text-overflow: ellipsis;
+    color: ${props => props.disabled ? `rgba(128, 128, 128, 0.2)` : `Black`};
     ${({selected}) => selected? `background-color: rgba(255, 255, 255, 0.8);` : ``}
 `
 
@@ -102,7 +103,7 @@ export const MultiSelect = ({
             {err && <ErrorLabel>{err}</ErrorLabel> }
         </FieldDiv>
     )}
-    else { //pending: disabled, components, onChange
+    else { //pending: components
         let items = []
         for(let i=0; i<options.length;i++) {
             
@@ -112,18 +113,55 @@ export const MultiSelect = ({
                 return (v===options[i].value)
             }) !== undefined) }
             else { isSelected = (options[i].value === value) }
-            
-            items.push(
-                <RadioBlock key={options[i].value} selected={isSelected} onClick={(e)=>updateSelect({
-                    'setFieldValue': setFieldValue,
-                    'name': name,
-                    'currentValue': value,
-                    'value': options[i].value,
-                    'multiSelect': multiSelect}
-                )}>
-                    {options[i].label}
-                </RadioBlock>
-            )
+
+            if (disabled) {
+                if (customOption) {
+                    items.push(customOption({
+                        data: options[i],
+                        key: options[i].value,
+                        selected: isSelected,
+                        disabled: true
+                    }))
+                }
+                else {
+                    items.push(
+                        <RadioBlock key={options[i].value} selected={isSelected} disabled={true} >
+                            {options[i].label}
+                        </RadioBlock>
+                    )
+                }
+                
+            }
+            else {
+                if (customOption) {
+                    items.push(customOption({
+                        data: options[i],
+                        key: options[i].value,
+                        selected: isSelected,
+                        onClick: (e)=>updateSelect({
+                            'setFieldValue': setFieldValue,
+                            'name': name,
+                            'currentValue': value,
+                            'value': options[i].value,
+                            'multiSelect': multiSelect}
+                        )
+                    }))
+                }
+                else {
+                    items.push(
+                        <RadioBlock key={options[i].value} selected={isSelected} onClick={(e)=>updateSelect({
+                            'setFieldValue': setFieldValue,
+                            'name': name,
+                            'currentValue': value,
+                            'value': options[i].value,
+                            'multiSelect': multiSelect}
+                        )}>
+                            {options[i].label}
+                        </RadioBlock>
+                    )
+                }
+                
+            }
         }
         return(
             <FieldDiv className={classNames}>

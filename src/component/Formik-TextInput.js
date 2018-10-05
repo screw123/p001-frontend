@@ -18,7 +18,7 @@ export const InputRow = styled.div`
     display: flex
     box-sizing:border-box;
     border-radius: 0.25em;
-    border: 0.1em solid #999999;
+    border: ${props => props.disabled ? `0em` : `0.1em solid #999999`};
     background-color: rgba(255, 255, 255, 0.1);
     text-overflow: clip;
     padding: 0.5em;
@@ -41,7 +41,7 @@ export const TextField = ({
             <FieldDiv className={classNames}>
                 <FieldLabel {...props}>
                     {label}
-                    <InputRow>
+                    <InputRow {...props}>
                         <Input
                             name={name}
                             placeholder={placeholder}

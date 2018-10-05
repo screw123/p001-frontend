@@ -1,0 +1,43 @@
+{
+	"name": "p001-front",
+	"version": "0.1.0",
+	"private": true,
+	"dependencies": {
+	  "@fortawesome/fontawesome-svg-core": "^1.2.0",
+	  "@fortawesome/free-solid-svg-icons": "^5.1.0",
+	  "@fortawesome/react-fontawesome": "^0.1.0",
+	  "@progress/kendo-react-dropdowns": "^2.0.0",
+	  "apollo-cache-inmemory": "^1.2.4",
+	  "apollo-client": "^2.3.4",
+	  "apollo-link-http": "^1.5.4",
+	  "final-form": "^4.8.2",
+	  "formik": "^0.11.11",
+	  "graphql": "^0.13.2",
+	  "graphql-tag": "^2.9.2",
+	  "i18next": "^11.3.3",
+	  "i18next-browser-languagedetector": "^2.2.0",
+	  "i18next-localstorage-backend": "^1.1.4",
+	  "i18next-xhr-backend": "^1.5.1",
+	  "lodash": "^4.17.10",
+	  "moment": "^2.22.2",
+	  "moment-timezone": "^0.5.21",
+	  "react": "^16.4.0",
+	  "react-apollo": "^2.1.5",
+	  "react-dom": "^16.4.0",
+	  "react-i18next": "^7.7.0",
+	  "react-router-dom": "^4.3.1",
+	  "react-scripts": "1.1.4",
+	  "react-select": "^2.0.0",
+	  "react-stripe-elements": "^2.0.1",
+	  "styled-components": "^3.3.3",
+	  "superagent": "^3.8.3",
+	  "unstated": "^2.1.1",
+	  "validator": "^10.4.0"
+	},
+	"scripts": {
+	  "start": "react-scripts start",
+	  "build": "react-scripts build",
+	  "test": "react-scripts test --env=jsdom",
+	  "eject": "react-scripts eject"
+	}
+  }

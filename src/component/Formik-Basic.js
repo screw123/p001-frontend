@@ -51,7 +51,7 @@ export const FieldLabel = styled.label`
 
 //Form Button
 const FB = styled.button`
-    border: 2px solid ${props => props.disabled ? `rgba(128, 128, 128, 0.2)` : `White`};
+    border: 0.2em solid ${props => props.disabled ? `rgba(128, 128, 128, 0.2)` : `White`};
 	display: flex;
 	flex: 0 0 auto;
     align-self: stretch;

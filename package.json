@@ -6,7 +6,6 @@
 	  "@fortawesome/fontawesome-svg-core": "^1.2.0",
 	  "@fortawesome/free-solid-svg-icons": "^5.1.0",
 	  "@fortawesome/react-fontawesome": "^0.1.0",
-	  "@progress/kendo-react-dropdowns": "^2.0.0",
 	  "apollo-cache-inmemory": "^1.2.4",
 	  "apollo-client": "^2.3.4",
 	  "apollo-link-http": "^1.5.4",

@@ -45,12 +45,6 @@ class ApolloContainer extends Container {
             }
         }
     }
-    
-    //send state value to other componenets
-    returnState() {
-        return this.state;
-    }
-
     // These methods will also be avaiable anywhere we inject our
     // container context
     

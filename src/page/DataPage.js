@@ -20,11 +20,6 @@ class DataPage extends React.Component {
         console.log('loadData=', this.state.loadData)
     }
 
-    getGqlApiState() {
-        console.log("return state"+GqlApi.returnState().myself._id);
-        return GqlApi.returnState();
-    }
-
     render() {
         const makePretty = (d) => {
             return(

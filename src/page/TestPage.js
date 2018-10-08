@@ -163,7 +163,7 @@ const infoProps = {
     headerIconRight: "Right Icon",
     width: '100%',
     height: 600,
-    itemSize: 50
+    itemSize: 250
 }
 
 class TestPage extends React.Component {

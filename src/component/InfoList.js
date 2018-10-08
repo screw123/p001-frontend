@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import VirtualList from 'react-tiny-virtual-list'
 
 const SectionHeader = styled.div`
     font-weight: 600;
@@ -33,52 +34,36 @@ export default class InfoList extends React.Component {
             height,
             itemSize
         } = this.props
-        
-            
-        if(typeof (renderComponent) == 'undefined') {
-            list = this.props.data.map((item, i) => {
-            propsData = {item, width, height, itemSize}
-            return (
-                <div key={i}>
-                    <ListItem {...propsData} />
-                </div>
-                )
-            })
-        } else {
-            list = data.map((item) => (
-                <renderComponent data={item}/>
-            ))
-        }
 
         return(
-            <React.Fragment>
+            <div>
                 <SectionHeader>
                     <HeaderIconLeft>{headerIconLeft}</HeaderIconLeft>
                     <HeaderText>{headerText}</HeaderText>
                     <HeaderIconRight>{headerIconRight}</HeaderIconRight>
                 </SectionHeader>
-                {list}
-            </React.Fragment>
+                <VirtualList
+                    width={width}
+                    height={height}
+                    itemCount={this.props.data.length}
+                    itemSize={itemSize} 
+                    renderItem={({index, style}) => {
+                        if (renderComponent) { return <renderComponent index={index} style={style} /> }
+                        else {
+                            console.log(style)
+                            return (
+                                <DefaultListItem style={style}>
+                                    {Object.keys(this.props.data[index]).map((k)=> <div>{k+' : '+this.props.data[index][k]}</div>)}
+                                </DefaultListItem>
+                            )
+                        }
+                    }}
+                />
+            </div>
         )
     }
 
 }
 
-const ListItem = (props) => {
-    const {item, width, height, itemSize} = props
-    const itemKeys = Object.keys(item)
-    const style = {padding: "10px 1.5em"}
-    return (
-        <VirtualList
-            width={width}
-            height={height}
-            itemCount={itemKeys.length}
-            itemSize={itemSize} 
-            renderItem={({index}) =>
-                <div key={index} style={style}> 
-                    {itemKeys[index]}: {item[itemKeys[index]]}
-                </div>
-            }
-        />
-    )
-}
+const DefaultListItem = styled.div`
+`

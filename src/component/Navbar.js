@@ -6,9 +6,8 @@ import React from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { I18n } from 'react-i18next'
-import GqlApi, {GqlApiSubscriber} from '../stateContainer/GqlApi.js'
+import { GqlApiSubscriber } from '../stateContainer/GqlApi.js'
 import LocaleApi from '../stateContainer/LocaleApi.js'
-import getMyself from '../gql/query.js'
 
 const StickyDiv = styled.div`
     position: sticky;
@@ -16,7 +15,7 @@ const StickyDiv = styled.div`
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #ff9;
+    background-color: #f47;
     width: 100%;
     z-index: 10;
 `

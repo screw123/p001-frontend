@@ -1,6 +1,6 @@
 import LoginPage from './page/LoginPage.js'
 import IndexPage from './page/IndexPage.js'
-import DataPage from './page/DataPage.js'
+import UserDashboardPage from './page/UserDashboardPage.js'
 import SignUpWorkflow from './page/SignUpWorkflow.js'
 import ResetPasswordPage from './page/ResetPasswordPage.js'
 import UserActivationPage from './page/UserActivationPage.js'
@@ -37,7 +37,7 @@ const routes = [
     {
         path: "/dash",
         menuName: 'Dashboard',
-        component: DataPage,
+        component: UserDashboardPage,
         navbar: {
             showBeforeLogin: false,
             showAfterLogin: true

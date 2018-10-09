@@ -7,7 +7,7 @@ import { ApolloProvider, Query } from "react-apollo"
 import {BigLoadingScreen} from '../component/Loading.js'
 import AddNewAddressForm from '../form/AddNewAddressForm'
 
-class DataPage extends React.Component {
+class UserDashboardPage extends React.Component {
     constructor(props) {
         super(props)
         this.state = { loadData: false }
@@ -66,4 +66,4 @@ class DataPage extends React.Component {
     }
 }
 
-export default DataPage
+export default UserDashboardPage

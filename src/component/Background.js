@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 const BG = styled.div`
-    background: GreenYellow;
+    background: White;
     box-sizing: border-box;
     min-height: 100vh;
 `
@@ -40,10 +40,5 @@ export const ClickableText = styled.div`
     cursor: pointer;
 `
 
-export const SectionHeader = styled.div`
-    font-weight: 600;
-    font-size: 1.5em;
-    padding: 1em;
-`
 
 export default Background

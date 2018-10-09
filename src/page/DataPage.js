@@ -5,7 +5,7 @@ import Background from '../component/Background.js'
 import GqlApi from '../stateContainer/GqlApi.js'
 import { ApolloProvider, Query } from "react-apollo"
 import {BigLoadingScreen} from '../component/Loading.js'
-
+import AddNewAddressForm from '../form/AddNewAddressForm'
 
 class DataPage extends React.Component {
     constructor(props) {
@@ -54,7 +54,8 @@ class DataPage extends React.Component {
                             <button onClick={() => {
                                 GqlApi.logout()
                                 }}>Logout</button>
-                                {makePretty(data.getMyself)}
+                               
+                                {makePretty(data.getMyself)}                                 
                             </div>
                         )
                     }}

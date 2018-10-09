@@ -232,18 +232,20 @@ export const addRentalOrder = gql`
             _id
         }
     }`
-    
+
 export const addAddress = gql`
     mutation (
+        $addressType: String!,
         $account_id: String!,
         $legalName: String!,
         $addressCountry: String!,
         $addressRegion1: String!,
         $addressRegion2: String!,
         $streetAddress: String!,
-        $telephone: String
+        $telephone: String!
     ) {
         addAddress(
+            addressType: $addressType,
             account_id: $account_id,
             legalName: $legalName,
             addressCountry: $addressCountry,
@@ -260,7 +262,9 @@ export const addAddress = gql`
             streetAddress
             telephone
             isActive
-            account_id
+            account_id {
+                _id
+            }
         }
     }`
 

@@ -1,69 +1,65 @@
 import React from 'react'
 import styled from 'styled-components'
-import VirtualList from 'react-tiny-virtual-list'
+import { AutoSizer, List, WindowScroller  } from 'react-virtualized';
 
 const SectionHeader = styled.div`
     font-weight: 600;
     font-size: 1.5em;
     padding: 1em;
-    display: flex
-    justify-content: space-between
-`
-const HeaderIconLeft = styled.div`
-`
-const HeaderText = styled.div`
-`
-const HeaderIconRight = styled.div`
+    display: inline-block
 `
 
+const HeaderText = styled.span`
+    padding: 1em;
+`
 
-export default class InfoList extends React.Component {
-    constructor(props){
+const DefaultListComponent = (a, data) => (
+    <div key={a.key} style={a.style}>
+        {Object.keys(data).map((v)=> <span key={a.index+v}>{v + ' : ' + data[v]}</span>)}
+        <div>------------</div>
+    </div>
+)
+
+export class InfoList extends React.Component {
+    constructor(props) {
         super(props)
     }
 
     render() {
-        let list, propsData
-        const {
-            data,
-            headerIconLeft,
-            headerText,
-            headerIconRight,
-            renderComponent,
-            width,
-            height,
-            itemSize
-        } = this.props
+
 
         return(
             <div>
                 <SectionHeader>
-                    <HeaderIconLeft>{headerIconLeft}</HeaderIconLeft>
-                    <HeaderText>{headerText}</HeaderText>
-                    <HeaderIconRight>{headerIconRight}</HeaderIconRight>
+                    {this.props.headerIconLeft}
+                    <HeaderText>{this.props.headerText}</HeaderText>
+                    {this.props.headerIconRight}
                 </SectionHeader>
-                <VirtualList
-                    width={width}
-                    height={height}
-                    itemCount={this.props.data.length}
-                    itemSize={itemSize} 
-                    renderItem={({index, style}) => {
-                        if (renderComponent) { return <renderComponent index={index} style={style} /> }
-                        else {
-                            console.log(style)
-                            return (
-                                <DefaultListItem style={style}>
-                                    {Object.keys(this.props.data[index]).map((k)=> <div>{k+' : '+this.props.data[index][k]}</div>)}
-                                </DefaultListItem>
-                            )
-                        }
-                    }}
-                />
+                <AutoSizer disableHeight>
+                {({width}) => (
+                    <WindowScroller>
+                    {({ height, isScrolling, onChildScroll, scrollTop }) => {
+                        return(
+                            <List
+                                autoHeight
+                                width={width}
+                                height={ height }
+                                isScrolling={isScrolling}
+                                onScroll={onChildScroll}
+                                scrollTop={scrollTop}
+                                rowCount={this.props.data.length}
+                                rowHeight={({index})=> Object.keys(this.props.data[index]).length*20 + 20 }
+                                rowRenderer={(a) => {
+                                    if (this.props.listComponent) { return this.props.listComponent(a, this.props.data[a.index]) }
+                                    return DefaultListComponent(a, this.props.data[a.index])
+                                }}
+                            />
+                        )
+                    }}</WindowScroller>
+                )}</AutoSizer>
             </div>
         )
     }
-
 }
 
-const DefaultListItem = styled.div`
-`
+export default InfoList

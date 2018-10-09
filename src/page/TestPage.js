@@ -3,7 +3,7 @@ import React from "react"
 import { Formik, Field } from 'formik'
 import FormikForm, { MultiSelect, FormButton, FormErr } from '../component/FormikForm.js'
 
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import isEmpty from 'lodash/isEmpty'
 import pickBy from 'lodash/pickBy'
 import Background from '../component/Background.js'
@@ -158,12 +158,15 @@ const data = [
 
 const infoProps = {
     data: data,
-    headerIconLeft: "Left Icon",
-    headerText: "Header",
-    headerIconRight: "Right Icon",
-    width: '100%',
-    height: 600,
-    itemSize: 250
+    headerIconLeft: (<FontAwesomeIcon icon="plus-circle" />),
+    headerIconRight: (<FontAwesomeIcon icon="eye" />),
+    headerText: "Testing InfoList",
+    listComponent: (a, data) => (
+        <div key={a.key} style={a.style}>
+            {Object.keys(data).map((v)=> <span key={a.index+v}>{v + ' : ' + data[v]}</span>)}
+            <div>+++++++++++</div>
+        </div>
+    )
 }
 
 class TestPage extends React.Component {

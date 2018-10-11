@@ -11,10 +11,11 @@ import TestPage from './page/TestPage.js'
 
 const routes = [
     {
-        path: "/login",
+        path: "/login",  //this should be removed as Login should be a right side icon item
         menuName: 'Login',
         component: LoginPage,
         navbar: {
+            itemID: 2,
             showBeforeLogin: true,
             showAfterLogin: false
         },
@@ -23,10 +24,11 @@ const routes = [
         }
     },
     {
-        path: "/signup",
+        path: "/signup",  //this should be removed as sign up is right side icon item
         menuName: 'Sign Up',
         component: SignUpWorkflow,
         navbar: {
+            itemID: 3,
             showBeforeLogin: true,
             showAfterLogin: false
         },
@@ -36,18 +38,21 @@ const routes = [
     },
     {
         path: "/dash",
-        menuName: 'Dashboard',
+        menuName: 'My Keep',
         component: UserDashboardPage,
         navbar: {
+            itemID: 11,
+            firstLevel: true,
             showBeforeLogin: false,
             showAfterLogin: true
         },
         router: {
-            requireLogin: true 
+            requireLogin: true
         }
     },
     {
-        path: "/userActivation/:_id?/:verificationPIN?",
+        path: "/userActivation/:_id?/:verificationPIN?",  //will not show in NavBar
+        linkURL: "/userActivation",
         menuName: 'User Activation',
         component: UserActivationPage,
         navbar: {
@@ -59,11 +64,13 @@ const routes = [
         }
     },
     {
-        path: "/terms",
+        path: "/terms",  //is temp, will update and change
         exact: true,
         menuName: 'Terms And Condition',
         component: TermsAndConditionPage,
         navbar: {
+            itemID: 701,
+            firstLevel: false,
             showBeforeLogin: true,
             showAfterLogin: true
         },
@@ -72,20 +79,22 @@ const routes = [
         }
     },
     {
-        path: "/",
+        path: "/",  //main page
         exact: true,
-        menuName: 'Welcome to P001',
+        menuName: 'Home',
         component: IndexPage,
         navbar: {
+            itemID: 1,
+            firstLevel: true,
             showBeforeLogin: true,
-            showAfterLogin: true
+            showAfterLogin: false
         },
         router: {
             requireLogin: false
         }
     },
     {
-        path: "/resetPassword",
+        path: "/resetPassword",  //this should be removed as reset password should only be shown in login page
         exact: true,
         menuName: 'Reset Your Password',
         component: ResetPasswordPage,
@@ -99,6 +108,7 @@ const routes = [
     },
     {
         path: "/quotation/:quotation_id?",
+        linkURL: "/quotation",
         exact: true,
         menuName: 'Quotation',
         component: QuotationPage,
@@ -111,7 +121,7 @@ const routes = [
         }
     },
     {
-        path: "/confirmSalesOrder",
+        path: "/confirmSalesOrder",  //should be removed???
         exact: true,
         menuName: 'Confirm Sales Order',
         component: SalesOrderConfirmPage,
@@ -129,6 +139,8 @@ const routes = [
         menuName: 'Testing Zone',
         component: TestPage,
         navbar: {
+            itemID: 999,
+            firstLevel: true,
             showBeforeLogin: true,
             showAfterLogin: true
         },

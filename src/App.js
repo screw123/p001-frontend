@@ -1,6 +1,7 @@
 import React from 'react'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faEye, faEyeSlash, faPlusCircle, faWindowClose } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faEyeSlash, faPlusCircle, faWindowClose, faBell, faUser } from '@fortawesome/free-solid-svg-icons'
+import styled from 'styled-components'
 
 import { BrowserRouter, Route } from 'react-router-dom'
 import routes from './routes.js'
@@ -12,10 +13,16 @@ import {BigLoadingScreen } from './component/Loading.js'
 
 import GqlApi, { GqlApiProvider, DummyPassHistory, GqlApiSubscriber } from './stateContainer/GqlApi.js'
 
+const MainContainer = styled.div`
+    display: grid;
+    grid-template-rows: [navbar] auto [body] auto [end];
+    grid-template-columns: auto;
+`
+
 class App extends React.Component {
     componentDidMount() {
         GqlApi.checkLogined()
-        library.add(faEye, faEyeSlash, faPlusCircle, faWindowClose)
+        library.add(faEye, faEyeSlash, faPlusCircle, faWindowClose, faBell, faUser)
     }
     
     genItems = (routes) => {
@@ -42,24 +49,20 @@ class App extends React.Component {
     }
     render() {
         return (
-            <BrowserRouter>
-                <GqlApiProvider>
-                    <GqlApiSubscriber>
-                    {(g)=>(
-                        <div>
-                            {((g.state.isLogined===true)||(g.state.isLogined===false)) && <div>
-                                <DummyPassHistory />
-                                <Navbar routes={routes} />
-                                {this.genItems(routes)}
-                            </div>}
-                            {(!((g.state.isLogined===true)||(g.state.isLogined===false))) && <div>
-                                <BigLoadingScreen />
-                            </div>}
-                        </div>
-                    )}
-                    </GqlApiSubscriber>
-                </GqlApiProvider>
-            </BrowserRouter>
+            <BrowserRouter><GqlApiProvider><GqlApiSubscriber>
+            {(g)=>(
+                <div>
+                    {((g.state.isLogined===true)||(g.state.isLogined===false)) && <MainContainer>
+                        <DummyPassHistory />  {/*Load this to add the history obj into GqpApi state */}
+                        {this.genItems(routes)}  {/* Put routes.js all into react-router */}
+                        <Navbar routes={routes} />  {/* Generate NavBar Component */}
+                    </MainContainer>}
+                    {(!((g.state.isLogined===true)||(g.state.isLogined===false))) && <div>
+                        <BigLoadingScreen />
+                    </div>}
+                </div>
+            )}
+            </GqlApiSubscriber></GqlApiProvider></BrowserRouter>
         )
     }
 }

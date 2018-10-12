@@ -1,6 +1,6 @@
 import React from 'react'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faEye, faEyeSlash, faPlusCircle, faWindowClose, faBell, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faEyeSlash, faPlusCircle, faWindowClose, faBell, faUser, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import styled from 'styled-components'
 
 import { BrowserRouter, Route } from 'react-router-dom'
@@ -22,27 +22,29 @@ const MainContainer = styled.div`
 class App extends React.Component {
     componentDidMount() {
         GqlApi.checkLogined()
-        library.add(faEye, faEyeSlash, faPlusCircle, faWindowClose, faBell, faUser)
+        library.add(faEye, faEyeSlash, faPlusCircle, faWindowClose, faBell, faUser, faEdit, faTrashAlt)
     }
     
     genItems = (routes) => {
         let c = []
         for (var i = 0; i < routes.length; i++) {
-            if (routes[i].requireLogin) {
-                c.push(<PrivateRoute
-                    component={routes[i].component}
-                    exact={routes[i].exact}
-                    path={routes[i].path}
-                    key={i}
-                />)
-            }
-            else {
-                c.push(<Route
-                    component={routes[i].component}
-                    exact={routes[i].exact}
-                    path={routes[i].path}
-                    key={i}
-                />)
+            if (routes[i].path) {
+                if (routes[i].requireLogin) {
+                    c.push(<PrivateRoute
+                        component={routes[i].component}
+                        exact={routes[i].exact}
+                        path={routes[i].path}
+                        key={i}
+                    />)
+                }
+                else {
+                    c.push(<Route
+                        component={routes[i].component}
+                        exact={routes[i].exact}
+                        path={routes[i].path}
+                        key={i}
+                    />)
+                }
             }
         }
         return c

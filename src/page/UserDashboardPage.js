@@ -2,18 +2,37 @@ import React from "react"
 import { getMyself } from '../gql/query.js'
 import Background from '../component/Background.js'
 
-import GqlApi from '../stateContainer/GqlApi.js'
+import { I18n } from 'react-i18next'
+import { GqlApiSubscriber } from '../stateContainer/GqlApi.js'
+import { LocaleApiSubscriber } from '../stateContainer/LocaleApi.js'
 import { ApolloProvider, Query } from "react-apollo"
 import {BigLoadingScreen} from '../component/Loading.js'
 import AddNewAddressForm from '../form/AddNewAddressForm'
 
-class UserDashboardPage extends React.Component {
-    constructor(props) {
-        super(props)
-    }
+class UserDashboardPage extends React.PureComponent {
 
-    render() {
-        const makePretty = (d) => {
+    render() { return (
+        <GqlApiSubscriber>
+        {(g)=>(
+            <LocaleApiSubscriber>
+            {(c)=>(
+                <div>
+                    <div>{c.t('Hello, user!', {name: g.state.myself.firstName + ' ' + g.state.myself.lastName}) }</div>
+
+                    <ApolloProvider client={g.getGqlClient()}><Query query={getMyself}>
+                    {({ loading, error, data }) => (
+                        <div>1</div>
+                    )}</Query></ApolloProvider>
+                </div>
+            )}</LocaleApiSubscriber>
+        )}</GqlApiSubscriber>
+    )}
+}
+
+export default UserDashboardPage
+
+/*
+const makePretty = (d) => {
             return(
                 <div>
                     <h2>Welcome {d.firstName + ' ' + d.lastName}</h2>
@@ -24,35 +43,4 @@ class UserDashboardPage extends React.Component {
                     </p>
                 </div>
             )
-        }
-
-        return (
-            <ApolloProvider client={GqlApi.getGqlClient()}>
-                <Background>
-                    <Query query={getMyself}>
-                    {({ client, loading, error, data, refetch }) => {
-                        if (loading) return (<BigLoadingScreen/>)
-                        if (error) {
-                            console.log(error)
-                            return (<p>Error :(</p>)
-                        }
-                        
-                        if (data.getMyself.length==0) return (<button onClick={() => {
-                            refetch()
-                            }}>Load data after login</button>)
-
-                        return(
-                            <div>
-                               
-                                {makePretty(data.getMyself)}                                 
-                            </div>
-                        )
-                    }}
-                    </Query>
-                </Background>
-            </ApolloProvider>
-        )
-    }
-}
-
-export default UserDashboardPage
+        }*/

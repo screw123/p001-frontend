@@ -15,7 +15,8 @@ const routes = [
         menuName: 'Login',
         component: LoginPage,
         navbar: {
-            itemID: 2,
+            firstLevel: true,
+            itemId: 2,
             showBeforeLogin: true,
             showAfterLogin: false
         },
@@ -28,7 +29,8 @@ const routes = [
         menuName: 'Sign Up',
         component: SignUpWorkflow,
         navbar: {
-            itemID: 3,
+            itemId: 3,
+            firstLevel: true,
             showBeforeLogin: true,
             showAfterLogin: false
         },
@@ -41,7 +43,7 @@ const routes = [
         menuName: 'My Keep',
         component: UserDashboardPage,
         navbar: {
-            itemID: 11,
+            itemId: 11,
             firstLevel: true,
             showBeforeLogin: false,
             showAfterLogin: true
@@ -56,6 +58,8 @@ const routes = [
         menuName: 'User Activation',
         component: UserActivationPage,
         navbar: {
+            itemId: 901,
+            firstLevel: false,
             showBeforeLogin: false,
             showAfterLogin: false
         },
@@ -69,9 +73,10 @@ const routes = [
         menuName: 'Terms And Condition',
         component: TermsAndConditionPage,
         navbar: {
-            itemID: 701,
+            itemId: 701,
+            parentId: 11,
             firstLevel: false,
-            showBeforeLogin: true,
+            showBeforeLogin: false,
             showAfterLogin: true
         },
         router: {
@@ -84,7 +89,7 @@ const routes = [
         menuName: 'Home',
         component: IndexPage,
         navbar: {
-            itemID: 1,
+            itemId: 1,
             firstLevel: true,
             showBeforeLogin: true,
             showAfterLogin: false
@@ -99,8 +104,11 @@ const routes = [
         menuName: 'Reset Your Password',
         component: ResetPasswordPage,
         navbar: {
+            itemId: 702,
+            parentId: 11,
+            firstLevel: false,
             showBeforeLogin: false,
-            showAfterLogin: false
+            showAfterLogin: true
         },
         router: {
             requireLogin: false
@@ -113,6 +121,8 @@ const routes = [
         menuName: 'Quotation',
         component: QuotationPage,
         navbar: {
+            itemId: 101,
+            firstLevel: true,
             showBeforeLogin: true,
             showAfterLogin: true
         },
@@ -126,6 +136,8 @@ const routes = [
         menuName: 'Confirm Sales Order',
         component: SalesOrderConfirmPage,
         navbar: {
+            itemId: 901,
+            firstLevel: true,
             showBeforeLogin: false,
             showAfterLogin: true
         },
@@ -139,7 +151,7 @@ const routes = [
         menuName: 'Testing Zone',
         component: TestPage,
         navbar: {
-            itemID: 999,
+            itemId: 999,
             firstLevel: true,
             showBeforeLogin: true,
             showAfterLogin: true

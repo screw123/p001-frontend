@@ -15,7 +15,8 @@ const BG2 = styled.div`
     @media (min-width: 1367px) {
         width: 1366px
         margin: auto
-    }`
+    }
+`
 
 const Background = ({children}) => (
     <BG>

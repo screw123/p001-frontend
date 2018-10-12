@@ -54,5 +54,7 @@
     "Standard Box": "Standard Box",
     "Add New Address": "Add New Address",
     "My Keep": "My Keep",
-    "Quotation": "Quotation"
+    "Quotation": "Quotation",
+    "Hello, user!": "Hello, {{name}}!",
+    "Logout": "Logout"
 }

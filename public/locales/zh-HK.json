@@ -53,6 +53,8 @@
     "has a wrong status": "狀態錯誤",
     "Standard Box": "標準箱",
     "Add New Address": "加入新地址",
-    "My Keep": "我的 XX",
-    "Quotation": "報價單"
+    "My Keep": "我的帳戶",
+    "Quotation": "報價單",
+    "Hello, user!": "{{name}}你好!",
+    "Logout": "登出"
 }

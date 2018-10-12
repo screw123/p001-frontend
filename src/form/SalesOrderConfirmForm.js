@@ -1,15 +1,13 @@
 import React from "react"
 
-import { I18n } from 'react-i18next'
-
 import isEmpty from 'lodash/isEmpty'
 import pickBy from 'lodash/pickBy'
 
 import { Formik, Field } from 'formik'
-import FormikForm, { MultiSelect, TextField, FormButton, FormErr, FormIcon, RadioButtonGroup, RadioButton, CheckBox, InputGroup, DropDown } from '../component/FormikForm.js'
+import FormikForm, { FormButton, FormErr } from '../component/FormikForm.js'
 
 import GqlApi from '../stateContainer/GqlApi.js'
-import LocaleApi, {LocaleApiSubscriber} from '../stateContainer/LocaleApi.js'
+import {LocaleApiSubscriber} from '../stateContainer/LocaleApi.js'
 import { ApolloProvider, Query, Mutation } from "react-apollo"
 
 import { getQuotationById, addRentalOrder } from '../gql/query.js'

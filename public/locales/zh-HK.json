@@ -52,5 +52,9 @@
     "Your user login is already activated, redirecting to login page, please wait...": "你的登入用戶已啟用, 將轉到登入頁面, 請稍候...",
     "has a wrong status": "狀態錯誤",
     "Standard Box": "標準箱",
-    "Add New Address": "加入新地址"
+    "Add New Address": "加入新地址",
+    "My Keep": "我的帳戶",
+    "Quotation": "報價單",
+    "Hello, user!": "{{name}}你好!",
+    "Logout": "登出"
 }

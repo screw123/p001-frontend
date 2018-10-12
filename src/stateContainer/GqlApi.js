@@ -5,7 +5,8 @@ import React from "react";
 
 import ApolloClient from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
-import { HttpLink } from 'apollo-link-http'
+//import { HttpLink } from 'apollo-link-http'
+import { BatchHttpLink } from "apollo-link-batch-http";
 import { withRouter } from 'react-router'
 import { Provider, Subscribe, Container } from "unstated";
 
@@ -44,6 +45,7 @@ class ApolloContainer extends Container {
                 accountView_id: []
             }
         }
+        this.getGqlClient = this.getGqlClient.bind(this)
     }
     // These methods will also be avaiable anywhere we inject our
     // container context
@@ -51,7 +53,7 @@ class ApolloContainer extends Container {
     getGqlClient() {
         if (isEmpty(this.state.gqlClient)) {
             const gqlClient = new ApolloClient({
-                link: new HttpLink({ uri: "https://wisekeep.hk/api/gql", credentials: 'include' }),
+                link: new BatchHttpLink({ uri: "https://wisekeep.hk/api/gql", credentials: 'include' }),
                 cache: new InMemoryCache(),
                 onError: (e) => { console.log("Apollo Client Error:", e) }
             })
@@ -64,7 +66,7 @@ class ApolloContainer extends Container {
     getGqlClientPublic() {
         if (isEmpty(this.state.gqlClientPublic)) {
             const gqlClientPublic = new ApolloClient({
-                link: new HttpLink({ uri: "https://wisekeep.hk/api/gqlPublic"}),
+                link: new BatchHttpLink({ uri: "https://wisekeep.hk/api/gqlPublic"}),
                 cache: new InMemoryCache(),
                 onError: (e) => { console.log("Apollo Public Client Error:", e) }
             })
@@ -81,10 +83,8 @@ class ApolloContainer extends Container {
                     const res = await request.get('https://wisekeep.hk/api/checkl').withCredentials()
                     console.log('checkl res=', res)
                     if (res.statusCode===200) { 
+                        const a = await this.updateMyself({})
                         this.setState({isLogined: true})
-                        const gqlClient = this.getGqlClient()
-                        const q = await gqlClient.query({query: getMyself})
-                        this.setState({myself: q.data.getMyself})
                         console.log('200, login=true')
                         return resolve(true)
                     }
@@ -109,14 +109,20 @@ class ApolloContainer extends Container {
         //userPWObj = {user: aaa, password: bbb}
         try {
             const res = await request.post('https://wisekeep.hk/api/l').withCredentials().type('form').query(userPWObj).ok(()=>true)
+            console.log('login.res=', res)
             if (res.statusCode===200) {
+                const a = await this.updateMyself({})
                 this.setState({isLogined: true})
                 return new Promise((resolve, reject) => resolve(true))
             }
-            else if (res.statusCode===401){ return new Promise((resolve, reject) => resolve(401)) }
-            else { return new Promise((resolve, reject) => resolve(500)) }
+            else if (res.statusCode===401){ 
+                console.log('statusCode=401')
+                return new Promise((resolve, reject) => resolve(401)) }
+            else { 
+                console.log('statusCode unknown')
+                return new Promise((resolve, reject) => resolve(500)) }
         } catch(e) {
-            console.log(e)
+            console.log('caught error, ',e)
             return new Promise((resolve, reject) => resolve(500))
         }
     }
@@ -132,8 +138,7 @@ class ApolloContainer extends Container {
     }
     
     async updateMyself(myself) {
-        console.log('myself=', myself)
-        const q = await this.state.gqlClient.query({query: getMyself})
+        const q = await this.getGqlClient().query({query: getMyself})
         this.setState({myself: q.data.getMyself})
     }
     
@@ -147,7 +152,7 @@ class ApolloContainer extends Container {
     
 }
 
-const GqlApi = new ApolloContainer();
+const GqlApi = new ApolloContainer()
 
 // Then we will wrap the provider and subscriber inside of functional
 // React components. This simplifies reuse of the module as we
@@ -164,10 +169,9 @@ export const GqlApiSubscriber = props => {
   // We also leave the subscribe "to" flexible, so you can have full
   // control over your subscripton from outside of the module
   return <Subscribe to={props.to || [GqlApi]}>{props.children}</Subscribe>;
-};
+}
 
 export default GqlApi;
-
 
 class DummyPassHistoryObj extends React.PureComponent  {
     constructor(props) {

@@ -39,12 +39,22 @@ const routes = [
         }
     },
     {
-        path: "/dash",
         menuName: 'My Keep',
+        navbar: {
+            itemId: 100,
+            firstLevel: true,
+            showBeforeLogin: false,
+            showAfterLogin: true
+        }
+    },
+    {
+        path: "/dash",
+        menuName: 'Dashboard',
         component: UserDashboardPage,
         navbar: {
-            itemId: 11,
-            firstLevel: true,
+            itemId: 101,
+            parentId: 100,
+            firstLevel: false,
             showBeforeLogin: false,
             showAfterLogin: true
         },
@@ -74,7 +84,7 @@ const routes = [
         component: TermsAndConditionPage,
         navbar: {
             itemId: 701,
-            parentId: 11,
+            parentId: 100,
             firstLevel: false,
             showBeforeLogin: false,
             showAfterLogin: true
@@ -105,7 +115,7 @@ const routes = [
         component: ResetPasswordPage,
         navbar: {
             itemId: 702,
-            parentId: 11,
+            parentId: 100,
             firstLevel: false,
             showBeforeLogin: false,
             showAfterLogin: true

@@ -109,8 +109,14 @@ class ApolloContainer extends Container {
         //userPWObj = {user: aaa, password: bbb}
         try {
             const res = await request.post('https://wisekeep.hk/api/l').withCredentials().type('form').query(userPWObj).ok(()=>true)
+            console.log('login.res=', res)
             if (res.statusCode===200) {
                 this.setState({isLogined: true})
+                const gqlClient = this.getGqlClient()
+                console.log('gqlClient=', gqlClient)
+                const q = await gqlClient.query({query: getMyself})
+                console.log('login.q=', q.data)
+                this.setState({myself: q.data.getMyself})
                 return new Promise((resolve, reject) => resolve(true))
             }
             else if (res.statusCode===401){ return new Promise((resolve, reject) => resolve(401)) }

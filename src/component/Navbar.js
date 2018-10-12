@@ -21,16 +21,15 @@ const StickyDiv = styled.div`
     display: grid;
     grid-template-rows: auto;
     grid-column-gap: 10px;
-    z-index: 10;
     @media (max-width: 768px) {
-        grid-template-columns: 100px auto 100px;
+        grid-template-columns: 100px auto 150px;
     }
     @media (min-width: 769px) {
-        grid-template-columns: 100px auto 100px;
+        grid-template-columns: 100px auto 150px;
     }
 `
 
-const LogoContainer = styled.div`
+const LeftSideContainer = styled.div`
     justify-self: center;
     align-self: center;
 `
@@ -40,10 +39,13 @@ const NormalMenuItem = styled(Link)`
     padding: 0.3em;
 `
 
-const RightSideIcon = styled((props) => {
-    console.log('RightSideIcon.children=', props.children)
+const FontAwesomeMenuIcon = styled(FontAwesomeIcon)`
+    ${props => props.haveMenu ? 'content: "▾"': ''}
+`
+
+const RightSideIcon = styled(({haveMenu, ...props}) => {
     return (<div>
-        <FontAwesomeIcon {...props} />
+        <FontAwesomeMenuIcon {...props} />
         {props.children}
     </div>)
 })`
@@ -57,10 +59,10 @@ const RightSideIcon = styled((props) => {
     }
 `
 
-const RightSideDiv = styled.div`
+const RightSideContainer = styled.div`
     display: grid;
     grid-template-rows: auto;
-    grid-template-columns: ${props=>props.isLogined? '1fr 1fr 1fr': 'auto'};
+    grid-template-columns: ${props=>props.isLogined? '1fr 1fr 1fr': '1fr 2fr'};
     grid-column-gap: 0.6em;
     justify-self: center;
     align-self: center;
@@ -82,8 +84,8 @@ const Menu = styled.div`
     display: none;
     position: absolute;
     right: 0;
-    background-color: #f9f9f9;
-    min-width: 100px;
+    background-color: #f47;
+    min-width: 150px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
     ${RightSideMenu}:hover & {
@@ -92,17 +94,25 @@ const Menu = styled.div`
 
 `
 
-const MenuItem = styled.div`
-    cursor: pointer;
+const MenuText = styled.div`
+    background-color: #f47;
+    padding: 0.3em;
+    cursor: default;
+    user-select: none;
+`
+
+const Separator = styled.hr`
+    border-top: 1px solid #8c8b8b;
     background-color: #f47;
 `
 
-class Navbar extends React.Component {
-    constructor(props) {
-        super(props)
-        this.toggleMenuDisplay = this.toggleMenuDisplay.bind(this)
-        this.state = {showMenu: null}
-    }
+const MenuLink = styled.div`
+    cursor: pointer;
+    background-color: #f47;
+    padding: 0.3em;
+`
+
+class Navbar extends React.PureComponent {
     genMenu = (g, t) => {
         let c = []
         for (var i = 0; i < this.props.routes.length; i++) {
@@ -123,11 +133,37 @@ class Navbar extends React.Component {
         }
         return c
     }
-    
-    toggleMenuDisplay = (n)=> {
-        console.log('toggleMenuDisplay')
-        this.setState(prevState=> ({showMenu: ((prevState.showMenu===n)? null: n)}))
-    }
+
+    getRightSideMenu = () => (
+        <GqlApiSubscriber>
+        {(g) => (
+            <I18n>
+            {(t) => (
+                <RightSideContainer isLogined={g.state.isLogined}>
+                    {!(LocaleApi.state.i18n.language==='en') && <LangSelector fontsize={1.3} onClick={() => LocaleApi.changeLanguage('en')}>EN</LangSelector>}
+                    {(LocaleApi.state.i18n.language==='en') && <LangSelector fontsize={1.5} onClick={() => LocaleApi.changeLanguage('zh-HK') }>中</LangSelector>}
+
+                    {g.state.isLogined && <RightSideMenu>
+                        <RightSideIcon icon='bell' >
+                            <Menu>
+                                <MenuText>You have no new messages</MenuText>
+                            </Menu>
+                        </RightSideIcon>
+                    </RightSideMenu>}
+                    {g.state.isLogined && <RightSideMenu>
+                        <RightSideIcon icon='user' haveMenu>
+                            <Menu>
+                                <MenuText>{g.state.myself.firstName + ' ' + g.state.myself.lastName} </MenuText>
+                                <Separator/>
+                                <MenuLink onClick={()=> g.logout()}> {t('Logout')} </MenuLink>
+                            </Menu>
+                        </RightSideIcon>
+                    </RightSideMenu>}
+                    {!g.state.isLogined && <RightSideMenu>Sign Up</RightSideMenu>}
+                </RightSideContainer>
+            )}</I18n>
+        )}</GqlApiSubscriber>
+    )
 
     render() { return (
         <GqlApiSubscriber>
@@ -135,34 +171,12 @@ class Navbar extends React.Component {
             <I18n>
             {(t) => (
                 <StickyDiv>
-                    <LogoContainer>Logo</LogoContainer>
+                    <LeftSideContainer>Logo</LeftSideContainer>
+
                     <div>{this.genMenu(g, t)}</div>
-                    <RightSideDiv isLogined={g.state.isLogined}>
-                        {!(LocaleApi.state.i18n.language==='en') && <LangSelector fontsize={1.3} onClick={() => {
-                            LocaleApi.changeLanguage('en')
-                            console.log('en clicked')
-                        }}>
-                            EN
-                        </LangSelector>}
-                        {(LocaleApi.state.i18n.language==='en') && <LangSelector fontsize={1.5} onClick={() => {
-                            LocaleApi.changeLanguage('zh-HK')
-                            console.log('zh-HK clicked')
-                        }}>
-                            中
-                        </LangSelector>}
-                        {g.state.isLogined && <RightSideIcon icon='bell' onClick={() => {
-                            
-                        }}>
-                        </RightSideIcon>}
-                        {g.state.isLogined && <RightSideMenu>
-                            <RightSideIcon icon='user' onClick={() => { this.toggleMenuDisplay('user') }} >
-                                <Menu name='user' show={this.state.showMenu}>
-                                    <MenuItem>{g.state.myself.firstName + ' ' + g.state.myself.lastName}</MenuItem>
-                                    <MenuItem>{g.state.myself.firstName + ' ' + g.state.myself.lastName}</MenuItem>
-                                </Menu>
-                            </RightSideIcon>
-                        </RightSideMenu>}
-                    </RightSideDiv>
+
+                    {this.getRightSideMenu()}
+                    
                 </StickyDiv>
             )}
             </I18n>

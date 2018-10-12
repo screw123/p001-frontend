@@ -51,9 +51,6 @@ class UserDashboardPage extends React.Component {
 
                         return(
                             <div>
-                            <button onClick={() => {
-                                GqlApi.logout()
-                                }}>Logout</button>
                                
                                 {makePretty(data.getMyself)}                                 
                             </div>

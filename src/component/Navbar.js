@@ -23,10 +23,10 @@ const StickyDiv = styled.div`
     grid-column-gap: 10px;
     box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.1);
     @media (max-width: 768px) {
-        grid-template-columns: 100px auto 150px;
+        grid-template-columns: 100px auto auto;
     }
     @media (min-width: 769px) {
-        grid-template-columns: 100px auto 150px;
+        grid-template-columns: 100px auto auto;
     }
 `
 
@@ -43,6 +43,10 @@ const MainMenu = styled.div`
     align-self: center;
     padding: 0.3rem;
 `
+const FirstLevelContainer = styled.div`
+    display: inline-block;
+    padding: 0.3rem 0.5rem;
+`
 
 const FirstLevelText = styled(({displayText, key, ...props}) => (
     <div >
@@ -53,7 +57,6 @@ const FirstLevelText = styled(({displayText, key, ...props}) => (
 
 ))`
     white-space: nowrap;
-    padding: 0.3rem 0.6rem;
     font-size: 1rem;
     font-weight: 500;
     cursor: pointer;
@@ -65,11 +68,9 @@ const FirstLevelText = styled(({displayText, key, ...props}) => (
 
 const FirstLevelLink = styled(Link)`
     display: inline-block;
-    padding: 0.3em;
     white-space: nowrap; 
-    padding: 0.3em;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 500;
     cursor: pointer;
     &:hover {
         color: Yellow;
@@ -84,7 +85,7 @@ const RightSideIcon = styled(({icon, haveMenu, ...props}) => (
 ))`
     display: inline-block;
     cursor: pointer;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     justify-self: center;
     align-self: center;
     &:hover {
@@ -97,7 +98,6 @@ const RightContainer = styled.div`
     display: grid;
     grid-template-rows: auto;
     grid-template-columns: ${props=>props.isLogined? '1fr 1fr 1fr': '1fr 2fr'};
-    grid-column-gap: 0.6em;
     justify-self: center;
     align-self: center;
     padding: 0.1rem;
@@ -109,10 +109,6 @@ const LangSelector = styled.span`
     justify-self: center;
     align-self: center;
     cursor: pointer;
-`
-
-const FirstLevelContainer = styled.div`
-    display: inline-block;
 `
 
 const Menu = styled.div`
@@ -169,15 +165,16 @@ class Navbar extends React.PureComponent {
         for (let i = 0; i < firstLevelNode.length; i++) {
 
             const r = firstLevelNode[i]
-            const toPath = r.linkURL||r.path
 
             if ((r.navbar.firstLevel) & ((r.navbar.showAfterLogin===g.state.isLogined) || (r.navbar.showBeforeLogin===!g.state.isLogined))) { //If it's a first Lv item, generate, else skip
-                console.log(`firstLevel node, name=${r.menuName}, itemId=${r.navbar.itemId}`)
-                c.push(<FirstLevelContainer><FirstLevelText displayText={t(r.menuName)} key={r.navbar.itemID}>
-                    
-                    {this.gen2ndLevel({parentId: r.navbar.itemId, t: t, g:g})}
-                    
-                </FirstLevelText></FirstLevelContainer>)
+                if (r.path) { //if have path, means it's a link.  Link should not have 2nd level menu
+                    c.push(<FirstLevelContainer><FirstLevelLink to={r.linkURL||r.path} key={r.navbar.itemID} >{t(r.menuName)}</FirstLevelLink></FirstLevelContainer>)
+                }
+                else {  //if no patt, means it's text, thus use FirstLevelText.  If link should use FirstLevelLink
+                    c.push(<FirstLevelContainer><FirstLevelText displayText={t(r.menuName)} key={r.navbar.itemID}>
+                        {this.gen2ndLevel({parentId: r.navbar.itemId, t: t, g:g})}
+                    </FirstLevelText></FirstLevelContainer>)
+                }
             }
 
             
@@ -230,8 +227,8 @@ class Navbar extends React.PureComponent {
             <I18n>
             {(t) => (
                 <RightContainer isLogined={g.state.isLogined}>
-                    {!(LocaleApi.state.i18n.language==='en') && <LangSelector fontsize={1.3} onClick={() => LocaleApi.changeLanguage('en')}>EN</LangSelector>}
-                    {(LocaleApi.state.i18n.language==='en') && <LangSelector fontsize={1.5} onClick={() => LocaleApi.changeLanguage('zh-HK') }>中</LangSelector>}
+                    {!(LocaleApi.state.i18n.language==='en') && <LangSelector fontsize={1.2} onClick={() => LocaleApi.changeLanguage('en')}>EN</LangSelector>}
+                    {(LocaleApi.state.i18n.language==='en') && <LangSelector fontsize={1.4} onClick={() => LocaleApi.changeLanguage('zh-HK') }>中</LangSelector>}
 
                     {g.state.isLogined && <FirstLevelContainer>
                         <RightSideIcon icon='bell' >

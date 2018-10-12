@@ -10,14 +10,6 @@ import AddNewAddressForm from '../form/AddNewAddressForm'
 class UserDashboardPage extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { loadData: false }
-        this.loadData = this.loadData.bind(this)
-      }
-    
-    loadData() {
-        console.log('loadData=', this.state.loadData)
-        this.setState({loadData: true})
-        console.log('loadData=', this.state.loadData)
     }
 
     render() {

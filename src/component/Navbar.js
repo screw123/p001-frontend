@@ -40,26 +40,22 @@ const NormalMenuItem = styled(Link)`
     padding: 0.3em;
 `
 
-const RightSideIcon = styled((props) => 
-    <div>
-        <FontAwesomeIcon {...props}></FontAwesomeIcon>
+const RightSideIcon = styled((props) => {
+    console.log('RightSideIcon.children=', props.children)
+    return (<div>
+        <FontAwesomeIcon {...props} />
         {props.children}
-    </div>
-)`
+    </div>)
+})`
     display: inline-block;
     cursor: pointer;
     font-size: 1.5em;
     justify-self: center;
     align-self: center;
+    &:hover {
+        color: Yellow;
+    }
 `
-
-const HoverableIcon = (props) => { return(
-    <div>
-        <FontAwesomeIcon {...props}></FontAwesomeIcon>
-        {props.children}
-    </div>
-)}
-
 
 const RightSideDiv = styled.div`
     display: grid;
@@ -76,6 +72,10 @@ const LangSelector = styled.span`
     justify-self: center;
     align-self: center;
     cursor: pointer;
+`
+
+const RightSideMenu = styled.div`
+    display: inline-block;
 `
 
 const Menu = styled.div`
@@ -95,10 +95,6 @@ const Menu = styled.div`
 const MenuItem = styled.div`
     cursor: pointer;
     background-color: #f47;
-`
-
-const RightSideMenu = styled.div`
-    display: inline-block;
 `
 
 class Navbar extends React.Component {

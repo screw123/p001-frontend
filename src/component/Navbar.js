@@ -184,7 +184,7 @@ class Navbar extends React.PureComponent {
 
     gen2ndLevel = ({parentId, t, g}) => {
         const children = this.props.routes.filter(v=> v.navbar.parentId===parentId).sort((a,b)=>a.navbar.itemId-b.navbar.itemId)
-        console.log('children of ', parentId, children)
+
         if (children.length===0) {return undefined}
         let c = []
 
@@ -244,7 +244,7 @@ class Navbar extends React.PureComponent {
                             </RightMenu>
                         </RightSideIcon>
                     </FirstLevelContainer>}
-                    {!g.state.isLogined && <FirstLevelContainer>Sign Up</FirstLevelContainer>}
+                    {!g.state.isLogined && <FirstLevelContainer><FirstLevelLink to={'/login'}>{t('Sign In')}</FirstLevelLink></FirstLevelContainer>}
                 </RightContainer>
             )}</I18n>
         )}</GqlApiSubscriber>

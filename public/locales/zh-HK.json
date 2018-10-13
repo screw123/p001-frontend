@@ -56,5 +56,6 @@
     "My Keep": "我的帳戶",
     "Quotation": "報價單",
     "Hello, user!": "{{name}}你好!",
-    "Logout": "登出"
+    "Logout": "登出",
+    "Edit User Profile": "更改登入資訊"
 }

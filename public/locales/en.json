@@ -56,5 +56,6 @@
     "My Keep": "My Keep",
     "Quotation": "Quotation",
     "Hello, user!": "Hello, {{name}}!",
-    "Logout": "Logout"
+    "Logout": "Logout",
+    "Edit User Profile": "Edit User Profile"
 }

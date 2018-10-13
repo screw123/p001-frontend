@@ -2,12 +2,12 @@ import React from "react"
 import { getMyself } from '../gql/query.js'
 import Background from '../component/Background.js'
 
-import { I18n } from 'react-i18next'
 import { GqlApiSubscriber } from '../stateContainer/GqlApi.js'
 import { LocaleApiSubscriber } from '../stateContainer/LocaleApi.js'
 import { ApolloProvider, Query } from "react-apollo"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {BigLoadingScreen} from '../component/Loading.js'
-import AddNewAddressForm from '../form/AddNewAddressForm'
+
 
 class UserDashboardPage extends React.PureComponent {
 
@@ -17,7 +17,9 @@ class UserDashboardPage extends React.PureComponent {
             <LocaleApiSubscriber>
             {(c)=>(
                 <div>
-                    <div>{c.t('Hello, user!', {name: g.state.myself.firstName + ' ' + g.state.myself.lastName}) }</div>
+                    <div>
+                        {c.t('Hello, user!', {name: g.state.myself.firstName + ' ' + g.state.myself.lastName}) }
+                    </div>
 
                     <ApolloProvider client={g.getGqlClient()}><Query query={getMyself}>
                     {({ loading, error, data }) => (

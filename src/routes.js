@@ -7,6 +7,7 @@ import UserActivationPage from './page/UserActivationPage.js'
 import TermsAndConditionPage from './page/TermsAndConditionPage.js'
 import QuotationPage from './page/QuotationPage.js'
 import SalesOrderConfirmPage from './page/SalesOrderConfirmPage.js'
+import UserProfilePage from './page/UserProfilePage.js'
 import TestPage from './page/TestPage.js'
 
 const routes = [
@@ -115,10 +116,9 @@ const routes = [
         component: ResetPasswordPage,
         navbar: {
             itemId: 702,
-            parentId: 100,
-            firstLevel: false,
-            showBeforeLogin: false,
-            showAfterLogin: true
+            firstLevel: true,
+            showBeforeLogin: true,
+            showAfterLogin: false
         },
         router: {
             requireLogin: false
@@ -131,7 +131,7 @@ const routes = [
         menuName: 'Quotation',
         component: QuotationPage,
         navbar: {
-            itemId: 101,
+            itemId: 201,
             firstLevel: true,
             showBeforeLogin: true,
             showAfterLogin: true
@@ -170,6 +170,22 @@ const routes = [
             requireLogin: false
         }
     },
+    {
+        path: "/editUser",
+        exact: true,
+        menuName: '更改登入資料',
+        component: UserProfilePage,
+        navbar: {
+            itemId: 112,
+            parentId: 100,
+            firstLevel: false,
+            showBeforeLogin: false,
+            showAfterLogin: true
+        },
+        router: {
+            requireLogin: true
+        }
+    }
 ]
 
 export default routes

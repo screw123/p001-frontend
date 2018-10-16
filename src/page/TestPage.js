@@ -186,6 +186,22 @@ const demoUser = {
     "updateDateTime":"2018-09-18T08:19:56.673Z"
 }
 
+// For Edit AddressForm check
+const demoUser = {
+    "_id":"5ba0b52cec46627f7930b9ba",
+    "legalName":"My Office",
+    "addressCountry":"KOWLOON",
+    "streetAddress":"Flat B2, 3/F, Ching Cheong Ind. Bldg., 1 Kwai Cheong Rd,",
+    "addressRegion1":"So Kwun Wat",
+    "addressRegion2":"屯門",
+    "telephone":"99911122",
+    "account_id":"5b518c4c031c7d0179e23b6a",
+    "isActive":true,
+    "addressType":"CUSTOMER",
+    "creationDateTime":"2018-09-18T08:19:56.673Z",
+    "updateDateTime":"2018-09-18T08:19:56.673Z"
+}
+
 class TestPage extends React.Component {
     constructor(props) {
         super(props)

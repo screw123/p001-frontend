@@ -9,7 +9,12 @@ import { ApolloProvider, Query } from "react-apollo"
 import {BigLoadingScreen} from '../component/Loading.js'
 import AddNewAddressForm from '../form/AddNewAddressForm'
 
-class UserDashboardPage extends React.PureComponent {
+class UserDashboardPage extends React.Component {
+    constructor(props) {
+        super(props)
+    }
+
+    
 
     render() { return (
         <GqlApiSubscriber>

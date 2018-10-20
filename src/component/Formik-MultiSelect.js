@@ -25,7 +25,7 @@ const RadioBlock = styled.div`
     overflow: hidden;
     text-overflow: ellipsis;
     color: ${props => props.disabled ? `rgba(128, 128, 128, 0.2)` : `Black`};
-    ${({selected}) => selected? `background-color: rgba(255, 255, 255, 0.8);` : ``}
+    ${({selected}) => selected? `background-color: rgba(255, 64, 112, 0.2);` : ``}
 `
 
 const updateSelect = ({setFieldValue, name, currentValue, value, multiSelect, isSelect}) => {
@@ -112,7 +112,9 @@ export const MultiSelect = ({
                 console.log('inside Radiobox, v=', v, ' option[i].value=', options[i].value)
                 return (v===options[i].value)
             }) !== undefined) }
-            else { isSelected = (options[i].value === value) }
+            else { 
+                console.log(`option[i].value= ${options[i].value}, value=${value}, equals=`)
+                isSelected = (options[i].value === value) }
 
             if (disabled) {
                 if (customOption) {

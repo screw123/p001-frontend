@@ -41,7 +41,7 @@ const AddressBlock = styled.div`
     overflow: hidden;
     text-overflow: ellipsis;
     color: ${props => props.disabled ? `rgba(128, 128, 128, 0.2)` : `Black`};
-    ${({selected}) => selected? `background-color: rgba(255, 255, 255, 0.8);` : ``}
+    ${({selected}) => selected? `background-color: rgba(255, 64, 112, 0.2);` : ``}
 `
 
 const AddAddressButton = styled.button`
@@ -100,12 +100,10 @@ class SelectAddress extends React.Component{
                         field={this.props.field}
                         form={this.props.form}
                         options={options}
-                        value={this.props.value}
                         multiSelect={this.props.multiSelect}
                         placeholder={this.props.placeholder}
                         isLoading={this.props.isLoading}
                         disabled={this.props.disabled}
-                        onChange={this.props.onChange}
                         customOption={AddressDisplay}
                         customMultiValueLabel={AddressMultiValueLabel}
                     />

@@ -206,18 +206,19 @@ class TestPage extends React.Component {
                 <Query query={getMyAccount}>
                 {({ client, loading, error, data, refetch }) => {
                     if (loading) {return (<p>loading</p>)}
-                    if (error) {return (<p>{error}</p>)}
+                    if (error) {
+                        console.log("err: ",error)
+                        return (<p>Err</p>)}
                     return (
                         <div>
                             <SelectAddress
                                 allowAddAddress={false}
                                 account_id={"5b518c4c031c7d0179e23b6a"}
-                                onChange={this.handleAddressChange}
-                                value={this.state.address}
                                 addresses={data.getMyAccount[0].address_id}
-                                field={{name: 'selectaddress'}}
+                                field={{name: 'selectaddress', value: this.state.address}}
+                                form={{setFieldValue: this.handleAddressChange}}
                             />
-                            <EditAddressForm address={this.state.address} />
+                            <EditAddressForm address={data.getMyAccount[0].address_id.find((v)=>v._id===this.state.address)} />
                         </div>
                     )
                 }}</Query>

@@ -22,7 +22,6 @@ class EditAddressForm extends React.Component {
         super(props)
         this.validate = this.validate.bind(this)
         this.getUserId = this.getUserId.bind(this)
-        user = this.props.address;
     }
 
     //get user_id from GqlApi
@@ -60,13 +59,13 @@ class EditAddressForm extends React.Component {
                     else return(
                     <Formik
                         initialValues={{
-                            legalName: user.legalName,
-                            addressCountry: user.addressCountry,
-                            addressRegion1: user.addressRegion1,
-                            addressRegion2: user.addressRegion2,
-                            streetAddress: user.streetAddress,
-                            telephone: user.telephone,
-                            account_id: user.account_id
+                            legalName: this.props.address.legalName|| '',
+                            addressCountry: this.props.address.addressCountry|| '',
+                            addressRegion1: this.props.address.addressRegion1|| '',
+                            addressRegion2: this.props.address.addressRegion2|| '',
+                            streetAddress: this.props.address.streetAddress|| '',
+                            telephone: this.props.address.telephone|| '',
+                            account_id: this.props.address.account_id|| ''
                         }}
                         validate={this.validate}
                         onSubmit={ async(values, actions) => {

@@ -218,7 +218,7 @@ class TestPage extends React.Component {
                                 field={{name: 'selectaddress', value: this.state.address}}
                                 form={{setFieldValue: this.handleAddressChange}}
                             />
-                            <EditAddressForm address={data.getMyAccount[0].address_id.find((v)=>v._id===this.state.address)} />
+                            <EditAddressForm address={data.getMyAccount[0].address_id.find((v)=>v._id===this.state.address) || {}} />
                         </div>
                     )
                 }}</Query>

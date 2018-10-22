@@ -271,7 +271,7 @@ export const addAddress = gql`
     // Initial updateAddress, Fix this
     export const updateAddress = gql`
     mutation (
-        $account_id: String!,
+        $_id: String!,
         $legalName: String!,
         $addressCountry: String!,
         $addressRegion1: String!,
@@ -280,7 +280,7 @@ export const addAddress = gql`
         $telephone: String
     ) {
         updateAddress(
-            account_id: $account_id,
+            _id: $_id,
             legalName: $legalName,
             addressCountry: $addressCountry,
             addressRegion1: $addressRegion1,
@@ -296,7 +296,9 @@ export const addAddress = gql`
             streetAddress
             telephone
             isActive
-            account_id
+            account_id {
+                _id
+            }
         }
     }`
 

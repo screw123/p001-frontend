@@ -37,6 +37,7 @@ class EditAddressForm extends React.Component {
             addressRegion2: ({addressRegion2}) => (addressRegion2.length>0 && addressRegion2.length<50)? undefined : 'Please provide a valid region',
             addressCountry: ({addressCountry}) => (addressCountry && addressCountry.length>0)? undefined : 'Please choose address Country',
             account_id: () => undefined,
+            _id: () => undefined,
             telephone: ({telephone}) => (telephone.length==8)? undefined: 'Please provide a valid phone number'
         }
         const keyArr = Object.keys(v)
@@ -58,13 +59,14 @@ class EditAddressForm extends React.Component {
                     <Formik
                         enableReinitialize={true}
                         initialValues={{
+                            _id: this.props.address._id || '',
                             legalName: this.props.address.legalName || '',
                             addressCountry: this.props.address.addressCountry || '',
                             addressRegion1: this.props.address.addressRegion1 || '',
                             addressRegion2: this.props.address.addressRegion2 || '',
                             streetAddress: this.props.address.streetAddress || '',
                             telephone: this.props.address.telephone || '',
-                            account_id: this.props.address.account_id || ''
+                            account_id: this.props.account_id || ''
                         }}
                         validate={this.validate}
                         onSubmit={ async(values, actions) => {
@@ -75,7 +77,8 @@ class EditAddressForm extends React.Component {
                             console.log('validate ok, now submit.');
                             try {
                                 const vars = {
-                                    account_id: values.account_id,
+                                    _id: values._id,
+                                    //account_id: values.account_id,  //can enable later
                                     legalName: values.legalName,
                                     addressCountry: values.addressCountry,
                                     addressRegion1: values.addressRegion1,

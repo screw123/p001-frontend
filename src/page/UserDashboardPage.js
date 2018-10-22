@@ -8,13 +8,28 @@ import { LocaleApiSubscriber } from '../stateContainer/LocaleApi.js'
 import { ApolloProvider, Query } from "react-apollo"
 import {BigLoadingScreen} from '../component/Loading.js'
 import AddNewAddressForm from '../form/AddNewAddressForm'
+import UserProfileForm from '../form/UserProfileForm.js'
+import {Section} from '../component/Section.js'
 
 class UserDashboardPage extends React.Component {
     constructor(props) {
         super(props)
+        this.toggleUserProfileForm = this.toggleUserProfileForm.bind(this)
+        this.state = {showUserProfileForm: false}
     }
 
-    
+    toggleUserProfileForm = () => {
+        this.setState(prevState=> {showUserProfileForm: !prevState.showUserProfileForm} )
+    }
+
+    genUserProfile = ({t, myself}) => (
+        <div>
+            <Section headerText={t('User Profile')} />
+            <div>{t('Hello, user!', {name: myself.firstName + ' ' + myself.lastName}) }</div>
+            <button onclick={this.toggleUserProfileForm}>Edit</button>
+            {this.state.userUserProfileForm && <UserProfileForm />}
+        </div>
+    )
 
     render() { return (
         <GqlApiSubscriber>
@@ -22,7 +37,7 @@ class UserDashboardPage extends React.Component {
             <LocaleApiSubscriber>
             {(c)=>(
                 <div>
-                    <div>{c.t('Hello, user!', {name: g.state.myself.firstName + ' ' + g.state.myself.lastName}) }</div>
+                    {this.genUserProfile({t: c.t, myself:g.state.myself})}
 
                     <ApolloProvider client={g.getGqlClient()}><Query query={getMyself}>
                     {({ loading, error, data }) => (
@@ -35,17 +50,3 @@ class UserDashboardPage extends React.Component {
 }
 
 export default UserDashboardPage
-
-/*
-const makePretty = (d) => {
-            return(
-                <div>
-                    <h2>Welcome {d.firstName + ' ' + d.lastName}</h2>
-                    
-                    <h3>Your list of accounts:</h3>
-                    <p><b>{d.accountOwn_id[0].name}</b>({d._id}) {d.accountOwn_id[0].isActive? "Active": "SUSPENDED"}<br />
-                    Current Balance: {d.accountOwn_id[0].balance} <br />
-                    </p>
-                </div>
-            )
-        }*/

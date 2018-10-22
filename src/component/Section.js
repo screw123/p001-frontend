@@ -15,9 +15,9 @@ export const HeaderText = styled.span`
 
 export const Section = (props) => (
 	<SectionHeader>
-		{this.props.headerIconLeft}
-		<HeaderText>{this.props.headerText}</HeaderText>
-		{this.props.headerIconRight}
+		{props.headerIconLeft}
+		<HeaderText>{props.headerText}</HeaderText>
+		{props.headerIconRight}
 	</SectionHeader>
 )
 

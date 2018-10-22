@@ -32,16 +32,12 @@ class AddNewAddressForm extends React.Component {
     
     validate(v) {
         const validateFunc = {
-            legalName: ({legalName}) => (legalName.length>0)? undefined : 'Please provide a valid personal/company name',
-            legalName: ({legalName}) => (legalName.length<255)? undefined : 'Please provide a valid personal/company name',
-            streetAddress: ({streetAddress}) => (streetAddress.length>4)? undefined : 'Please provide a valid address',
-            streetAddress: ({streetAddress}) => (streetAddress.length<500)? undefined : 'Please provide a valid address',
-            addressRegion1: ({addressRegion1}) => (addressRegion1.length>0)? undefined : 'Please provide a valid region',
-            addressRegion1: ({addressRegion1}) => (addressRegion1.length<50)? undefined : 'Please provide a valid region',
-            addressRegion2: ({addressRegion2}) => (addressRegion2.length>0)? undefined : 'Please provide a valid region',
-            addressRegion2: ({addressRegion2}) => (addressRegion2.length<50)? undefined : 'Please provide a valid region',
-            addressType: () => undefined,
+            legalName: ({legalName}) => (legalName.length>0 && legalName.length<255)? undefined : 'Please provide a valid personal/company name',
+            streetAddress: ({streetAddress}) => (streetAddress.length>4 && streetAddress.length<500)? undefined : 'Please provide a valid address',
+            addressRegion1: ({addressRegion1}) => (addressRegion1.length>0 && addressRegion1.length<50)? undefined : 'Please provide a valid region',
+            addressRegion2: ({addressRegion2}) => (addressRegion2.length>0 && addressRegion2.length<50)? undefined : 'Please provide a valid region',
             addressCountry: ({addressCountry}) => (addressCountry && addressCountry.length>0)? undefined : 'Please choose address Country',
+            addressType: () => undefined,
             account_id: () => undefined,
             telephone: ({telephone}) => (telephone.length==8)? undefined: 'Please provide a valid phone number'
         }

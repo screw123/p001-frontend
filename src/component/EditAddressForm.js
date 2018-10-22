@@ -22,7 +22,6 @@ class EditAddressForm extends React.Component {
         super(props)
         this.validate = this.validate.bind(this)
         this.getUserId = this.getUserId.bind(this)
-        user = this.props.address;
     }
 
     //get user_id from GqlApi
@@ -55,18 +54,17 @@ class EditAddressForm extends React.Component {
             <Mutation mutation={updateAddress} errorPolicy="all">
             {(mutate, {loading, err})=>(
                 <I18n>
-                {(t) => {
-                    if (err) return (<div>{err}</div>)
-                    else return(
+                {(t) => ( 
                     <Formik
+                        enableReinitialize={true}
                         initialValues={{
-                            legalName: user.legalName,
-                            addressCountry: user.addressCountry,
-                            addressRegion1: user.addressRegion1,
-                            addressRegion2: user.addressRegion2,
-                            streetAddress: user.streetAddress,
-                            telephone: user.telephone,
-                            account_id: user.account_id
+                            legalName: this.props.address.legalName || '',
+                            addressCountry: this.props.address.addressCountry || '',
+                            addressRegion1: this.props.address.addressRegion1 || '',
+                            addressRegion2: this.props.address.addressRegion2 || '',
+                            streetAddress: this.props.address.streetAddress || '',
+                            telephone: this.props.address.telephone || '',
+                            account_id: this.props.address.account_id || ''
                         }}
                         validate={this.validate}
                         onSubmit={ async(values, actions) => {
@@ -107,7 +105,7 @@ class EditAddressForm extends React.Component {
                             }                        
                         }}                    
                     >
-                    {({ errors, isSubmitting, dirty, values, status }) => {
+                    {({ errors, isSubmitting, dirty, values, status, touched }) => {
                         return (
                             <FormikForm>
                                 <Field
@@ -118,6 +116,7 @@ class EditAddressForm extends React.Component {
                                     err={errors.legalName}
                                     value={values.legalName}
                                     placeholder="Input your address"
+                                    ignoreTouch={true}
                                 />
                                 <Field
                                     name="streetAddress"
@@ -126,6 +125,7 @@ class EditAddressForm extends React.Component {
                                     label={t('Address')}
                                     value={values.streetAddress}
                                     err={errors.streetAddress}
+                                    ignoreTouch={true}
                                 />
                                 <Field
                                     name="addressRegion1"
@@ -135,6 +135,7 @@ class EditAddressForm extends React.Component {
                                     value={values.addressRegion1}
                                     err={errors.addressRegion1}
                                     placeholder="First Address Region"
+                                    ignoreTouch={true}
                                 />
                                 <Field
                                     name="addressRegion2"
@@ -150,6 +151,7 @@ class EditAddressForm extends React.Component {
                                         {value: t('NEW TERRITORIES'), label: t('NEW TERRITORIES')},
                                         {value: t('LANTAU'), label: t('LANTAU')}
                                     ]}
+                                    ignoreTouch={true}
                                 />
                                 <Field
                                     name="addressCountry"
@@ -164,6 +166,7 @@ class EditAddressForm extends React.Component {
                                         {value: t('NEW TERRITORIES'), label: t('NEW TERRITORIES')},
                                         {value: t('LANTAU'), label: t('LANTAU')}
                                     ]}
+                                    ignoreTouch={true}
                                 />
                                 <Field
                                     name="telephone"
@@ -172,10 +175,11 @@ class EditAddressForm extends React.Component {
                                     label={t('Phone')}
                                     value={values.telephone}
                                     err={errors.telephone}
+                                    ignoreTouch={true}
                                 />
                                 <FormButton
                                     type="submit"
-                                    disabled={!dirty || isSubmitting || !isEmpty(pickBy(errors)) || loading }
+                                    disabled={!dirty || isSubmitting || !isEmpty(pickBy(errors)) }
                                     >
                                         {t('Submit')}
                                 </FormButton>
@@ -184,8 +188,8 @@ class EditAddressForm extends React.Component {
                             </FormikForm>
                         )}
                     }
-                    </Formik>)
-                }}
+                    </Formik>
+                )}
                 </I18n>
             )}
             </Mutation>

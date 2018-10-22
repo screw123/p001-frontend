@@ -10,8 +10,13 @@ import Background from '../component/Background.js'
 
 import UserProfileForm from '../form/UserProfileForm.js'
 import EditAddressForm from "../component/EditAddressForm.js";
+import SelectAddress from '../component/SelectAddress.js'
 
-import GqlApi from '../stateContainer/GqlApi.js'
+import { ApolloProvider, Query, Mutation } from "react-apollo"
+
+import { getMyAccount} from '../gql/query.js'
+
+import GqlApi, {GqlApiSubscriber} from '../stateContainer/GqlApi.js'
 import InfoList from "../component/InfoList.js";
 
 const data = [
@@ -189,54 +194,36 @@ const demoUser = {
 class TestPage extends React.Component {
     constructor(props) {
         super(props)
-        this.state={showResetPassword: false}
+        this.state={address: ''}
     }
 
+    handleAddressChange = (n, v) => this.setState({address: v})
 
     render() { return(
-    	<Background>
-        {/* <Formik
-            initialValues={{
-                test: []
-            }}
-            validate={ (values) => {} }
-            onSubmit={ console.log('submitted') }
-        >
-        {({ errors, isSubmitting, dirty, touched, values, status, initialValues }) => (
-            <div>
-                <FormikForm>
-                    <Field
-                        name="test"
-                        type="text"
-                        label="Testing~!!"
-                        component={MultiSelect}
-                        value={values.test}
-                        multiSelect={true}
-                        options={[
-                        	{value: "test1", label: "haha"},
-                        	{value: "test2", label: "haha2"},
-                        	{value: "test3", label: "haha3"},
-                        	{value: "test4", label: "haha4"}
-                        ]}
-                        
-                    />
-                    <FormErr>{status}</FormErr>
-                    <FormButton
-                        type="submit"
-                        disabled={isSubmitting || !isEmpty(pickBy(errors)) || !dirty}
-                    >
-                        {'Submit'}
-                    </FormButton>
-                </FormikForm>
-                
-            </div>
-        )}
-        </Formik> */}
-
-        {/* <UserProfileForm user={ GqlApi.state.myself } /> */}
-
-        <EditAddressForm address={demoUser} />  
-        </Background>
+        <GqlApiSubscriber>
+        {(g)=>(
+            <ApolloProvider client={GqlApi.getGqlClient()}>
+                <Query query={getMyAccount}>
+                {({ client, loading, error, data, refetch }) => {
+                    if (loading) {return (<p>loading</p>)}
+                    if (error) {
+                        console.log("err: ",error)
+                        return (<p>Err</p>)}
+                    return (
+                        <div>
+                            <SelectAddress
+                                allowAddAddress={false}
+                                account_id={"5b518c4c031c7d0179e23b6a"}
+                                addresses={data.getMyAccount[0].address_id}
+                                field={{name: 'selectaddress', value: this.state.address}}
+                                form={{setFieldValue: this.handleAddressChange}}
+                            />
+                            <EditAddressForm address={data.getMyAccount[0].address_id.find((v)=>v._id===this.state.address) || {}} />
+                        </div>
+                    )
+                }}</Query>
+            </ApolloProvider>
+        )}</GqlApiSubscriber>
      )}
 }
 

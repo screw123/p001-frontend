@@ -1,8 +1,6 @@
 import React from 'react'
 import { Form } from 'formik'
 import styled from 'styled-components'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Select, { components } from 'react-select'
 
 import {FieldDiv, FieldRow, FieldLabel, ErrorLabel, FormErr, FormIcon, FormButton } from './Formik-Basic.js'
 

@@ -9,7 +9,7 @@ import LocaleApi from '../stateContainer/LocaleApi.js'
 
 import { I18n } from 'react-i18next'
 
-import Background from '../component/Background.js'
+import Background from '../component/BasicComponents.js'
 import {BigLoadingScreen } from '../component/Loading.js'
 
 import { Redirect } from "react-router-dom"

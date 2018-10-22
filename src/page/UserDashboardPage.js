@@ -1,6 +1,6 @@
 import React from "react"
 import { getMyself } from '../gql/query.js'
-import Background from '../component/Background.js'
+import Background from '../component/BasicComponents.js'
 
 import { I18n } from 'react-i18next'
 import { GqlApiSubscriber } from '../stateContainer/GqlApi.js'

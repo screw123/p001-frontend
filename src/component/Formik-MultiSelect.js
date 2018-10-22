@@ -70,7 +70,6 @@ export const MultiSelect = ({
     if (customOption) {customComponentsMS['Option'] = customOption}
     if (customMultiValueLabel) {customComponentsMS['MultiValueLabel'] = customMultiValueLabel}
 
-    console.log('customComponentsMS=', customComponentsMS)
     if (hidden) 
         return null
     else if (options.length>3) {

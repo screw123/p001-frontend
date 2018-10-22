@@ -2,10 +2,10 @@ import React from "react"
 import { Formik, Field } from 'formik'
 import isMobilePhone from 'validator/lib/isMobilePhone'
 import isEmail from 'validator/lib/isEmail'
-import FormikForm, { TextField, FormButton, FormErr, FormIcon, RadioButtonGroup, RadioButton, CheckBox } from '../component/FormikForm.js'
+import FormikForm, { TextField, FormButton, FormErr, FormIcon, RadioButtonGroup, RadioButton, CheckBox2 } from '../component/FormikForm.js'
 import TermsAndConditionPage from '../page/TermsAndConditionPage.js'
 import Modal from '../component/Modal.js'
-import {StraightRow, ClickableText } from '../component/Background.js'
+import {StraightRow, ClickableText } from '../component/BasicComponents.js'
 
 import { I18n } from 'react-i18next'
 
@@ -190,7 +190,7 @@ class SignUpForm extends React.Component {
                             />
                         </RadioButtonGroup>
                         <Field
-                            component={CheckBox}
+                            component={CheckBox2}
                             name="agreeTerms"
                             value="agreeTerms"
                             key="agreeTerms"

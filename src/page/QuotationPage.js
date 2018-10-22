@@ -5,7 +5,7 @@ import QuotationForm from '../form/QuotationForm.js'
 import SalesOrderConfirmForm from '../form/SalesOrderConfirmForm.js'
 
 import { DropDown } from '../component/FormikForm.js'
-import Background from '../component/Background.js'
+import Background from '../component/BasicComponents.js'
 
 import GqlApi, {GqlApiSubscriber} from '../stateContainer/GqlApi.js'
 

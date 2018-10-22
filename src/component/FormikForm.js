@@ -108,7 +108,7 @@ const CB = styled.input`
 
 `
 
-export const CheckBox = ({
+export const CheckBox2 = ({
     field: { name, value, ...fields },
     form: { touched },
     label, className, checked, err, children, ...props }) => {
@@ -120,6 +120,34 @@ export const CheckBox = ({
                     type="checkbox"
                     value={value} 
                     checked={checked}
+                    {...fields}
+                    {...props}
+                />
+                {label}
+                {children}
+            </FieldLabel>
+            
+            {touched[name] && err && <ErrorLabel>{err}</ErrorLabel> }
+        </div>
+        
+    )
+}
+
+export const CheckBox = ({
+    field: { name, value, ...fields },
+    form: { touched, setFieldValue },
+    label, className, checked, err, children, ...props }) => {
+    return (
+        <div>
+            <FieldLabel>
+                <CB
+                    name={name}
+                    type="checkbox"
+                    value={value} 
+                    checked={checked}
+                    onClick={()=>{
+                        setFieldValue(name, checked)
+                    }}
                     {...fields}
                     {...props}
                 />

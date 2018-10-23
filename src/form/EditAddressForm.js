@@ -38,7 +38,7 @@ class EditAddressForm extends React.Component {
             addressCountry: ({addressCountry}) => (addressCountry && addressCountry.length>0)? undefined : 'Please choose address Country',
             account_id: () => undefined,
             _id: () => undefined,
-            isActive: () => undefined,
+            disable: () => undefined,
             telephone: ({telephone}) => (telephone.length==8)? undefined: 'Please provide a valid phone number'
         }
         const keyArr = Object.keys(v)
@@ -68,7 +68,7 @@ class EditAddressForm extends React.Component {
                             streetAddress: this.props.address.streetAddress || '',
                             telephone: this.props.address.telephone || '',
                             account_id: this.props.account_id || '',
-                            isActive: true,
+                            disable: true,
                         }}
                         validate={this.validate}
                         onSubmit={ async(values, actions) => {
@@ -183,11 +183,11 @@ class EditAddressForm extends React.Component {
                                     ignoreTouch={true}
                                 />
                                 <Field
-                                    name="isActive"
-                                    key="isActive"
+                                    name="disable"
+                                    key="disable"
                                     component={CheckBox}
-                                    checked={!values.isActive}
-                                    err={errors.isActive}
+                                    checked={values.disable}
+                                    err={errors.disable}
                                     ignoreTouch={true}
                                 >{t('Disable This Address')}</Field>
                                 <FormButton

@@ -146,7 +146,8 @@ export const CheckBox = ({
                     value={value} 
                     checked={checked}
                     onClick={()=>{
-                        setFieldValue(name, checked)
+                        console.log('setFieldValue=', setFieldValue, name, !checked)
+                        setFieldValue(name, !checked)
                     }}
                     {...fields}
                     {...props}

@@ -277,7 +277,8 @@ export const addAddress = gql`
         $addressRegion1: String!,
         $addressRegion2: String!,
         $streetAddress: String!,
-        $telephone: String
+        $telephone: String!,
+        $isActive: Boolean
     ) {
         updateAddress(
             _id: $_id,
@@ -286,7 +287,8 @@ export const addAddress = gql`
             addressRegion1: $addressRegion1,
             addressRegion2: $addressRegion2,
             streetAddress: $streetAddress,
-            telephone: $telephone
+            telephone: $telephone,
+            isActive: $isActive
         ) {
             _id
             legalName

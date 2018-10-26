@@ -68,7 +68,7 @@ class EditAddressForm extends React.Component {
                             streetAddress: this.props.address.streetAddress || '',
                             telephone: this.props.address.telephone || '',
                             account_id: this.props.account_id || '',
-                            disable: true,
+                            disable: false,
                         }}
                         validate={this.validate}
                         onSubmit={ async(values, actions) => {
@@ -86,7 +86,8 @@ class EditAddressForm extends React.Component {
                                     addressRegion1: values.addressRegion1,
                                     addressRegion2: values.addressRegion2,
                                     streetAddress: values.streetAddress,
-                                    telephone: values.telephone
+                                    telephone: values.telephone,
+                                    isActive: !values.disable
                                 }
                                 console.log('vars=', vars)
                                 const d = await mutate({variables: vars})

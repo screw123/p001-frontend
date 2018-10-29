@@ -57,5 +57,6 @@
     "Quotation": "報價單",
     "Hello, user!": "{{name}}你好!",
     "Logout": "登出",
-    "This is the last item, you cannot disable it": "我們需要你最少一個{{object}}, 所以我地希望你能保留."
+    "This is the last item, you cannot disable it": "帳戶中, 請保留最少一個{{object}}.",
+    "address": "地址"
 }

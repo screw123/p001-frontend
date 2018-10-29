@@ -100,8 +100,10 @@ class EditAddressForm extends React.Component {
                                 for (let i=0; i<errStack.length; i++) {
                                     if (errStack[i].key) { 
                                         console.log('err key =', errStack[i].key)
-                                        
-                                        actions.setFieldError(errStack[i].key, errStack[i].message)
+                                        let k = errStack[i].key
+                                        if (k==='address') { k='disable'}
+
+                                        actions.setFieldError(k, errStack[i].message)
                                     }
                                     else {
                                         actions.setStatus(errStack[i].message)
@@ -111,7 +113,7 @@ class EditAddressForm extends React.Component {
                             }                        
                         }}                    
                     >
-                    {({ errors, isSubmitting, dirty, values, status, touched }) => {
+                    {({ errors, isSubmitting, dirty, values, status }) => {
                         return (
                             <FormikForm>
                                 <Field

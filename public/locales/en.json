@@ -56,5 +56,7 @@
     "My Keep": "My Keep",
     "Quotation": "Quotation",
     "Hello, user!": "Hello, {{name}}!",
-    "Logout": "Logout"
+    "Logout": "Logout",
+    "This is the last item, you cannot disable it": "We need at least one {{object}} from you, please do not disable the last one.",
+    "address": "address"
 }

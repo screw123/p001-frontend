@@ -4,7 +4,7 @@ import { I18n } from 'react-i18next'
 import UserActivationForm from '../form/UserActivationForm.js'
 
 
-import Background from '../component/Background.js'
+import Background from '../component/BasicComponents.js'
 
 class UserActivationPage extends React.Component {
     

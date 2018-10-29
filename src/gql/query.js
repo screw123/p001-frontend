@@ -268,6 +268,41 @@ export const addAddress = gql`
         }
     }`
 
+    // Initial updateAddress, Fix this
+    export const updateAddress = gql`
+    mutation (
+        $_id: String!,
+        $legalName: String!,
+        $addressCountry: String!,
+        $addressRegion1: String!,
+        $addressRegion2: String!,
+        $streetAddress: String!,
+        $telephone: String!,
+        $isActive: Boolean
+    ) {
+        updateAddress(
+            _id: $_id,
+            legalName: $legalName,
+            addressCountry: $addressCountry,
+            addressRegion1: $addressRegion1,
+            addressRegion2: $addressRegion2,
+            streetAddress: $streetAddress,
+            telephone: $telephone,
+            isActive: $isActive
+        ) {
+            _id
+            legalName
+            addressCountry
+            addressRegion1
+            addressRegion2
+            streetAddress
+            telephone
+            isActive
+            account_id {
+                _id
+            }
+        }
+    }`
 
 export const updateUserDetails = gql`
     mutation (

@@ -1,8 +1,6 @@
 import React from 'react'
 import { Form } from 'formik'
 import styled from 'styled-components'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Select, { components } from 'react-select'
 
 import {FieldDiv, FieldRow, FieldLabel, ErrorLabel, FormErr, FormIcon, FormButton } from './Formik-Basic.js'
 
@@ -110,7 +108,7 @@ const CB = styled.input`
 
 `
 
-export const CheckBox = ({
+export const CheckBox2 = ({
     field: { name, value, ...fields },
     form: { touched },
     label, className, checked, err, children, ...props }) => {
@@ -122,6 +120,35 @@ export const CheckBox = ({
                     type="checkbox"
                     value={value} 
                     checked={checked}
+                    {...fields}
+                    {...props}
+                />
+                {label}
+                {children}
+            </FieldLabel>
+            
+            {touched[name] && err && <ErrorLabel>{err}</ErrorLabel> }
+        </div>
+        
+    )
+}
+
+export const CheckBox = ({
+    field: { name, value, ...fields },
+    form: { touched, setFieldValue },
+    label, className, checked, err, children, ...props }) => {
+    return (
+        <div>
+            <FieldLabel>
+                <CB
+                    name={name}
+                    type="checkbox"
+                    value={value} 
+                    checked={checked}
+                    onClick={()=>{
+                        console.log('setFieldValue=', setFieldValue, name, !checked)
+                        setFieldValue(name, !checked)
+                    }}
                     {...fields}
                     {...props}
                 />

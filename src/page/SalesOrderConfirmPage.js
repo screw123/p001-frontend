@@ -4,7 +4,7 @@ import { I18n } from 'react-i18next'
 import SalesOrderConfirmForm from '../form/SalesOrderConfirmForm.js'
 
 
-import Background from '../component/Background.js'
+import Background from '../component/BasicComponents.js'
 
 class SalesOrderConfirmPage extends React.Component {
     

@@ -34,7 +34,7 @@ export const InputGroup = styled.div`
 export const TextField = ({
     field: { name, placeholder, ...fields }, // { name, value, onChange, onBlur }
     form: { touched }, //also values, handleXXXX, dirty, isValid, status, etc.
-    classNames, label, rightIcon, err, hidden, ...props }) => {
+    classNames, label, rightIcon, err, hidden, ignoreTouch, ...props }) => {
         
         if (hidden) return null
         else return (
@@ -51,7 +51,7 @@ export const TextField = ({
                         {rightIcon && genRightIcon(rightIcon)}
                     </InputRow>
                 </FieldLabel>
-                {touched[name] && err && <ErrorLabel>{err}</ErrorLabel> }
+                {(ignoreTouch || touched[name]) && err && <ErrorLabel>{err}</ErrorLabel> }
             </FieldDiv>
         )
     }

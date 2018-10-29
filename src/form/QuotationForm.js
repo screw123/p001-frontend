@@ -108,10 +108,12 @@ class Quotation extends React.Component {
         //get previous Quotation as long as it exists and matches current account id
         let prevQuotation = undefined
         if (typeof(Storage) !== "undefined") {
-            console.log(window.localStorage.Quotation)
-            prevQuotation = JSON.parse(window.localStorage.Quotation)
-            if ((prevQuotation.account_id._id===this.props.account_id)||(prevQuotation.account_id._id===null)) {}
-            else { prevQuotation=undefined }
+            if (window.localStorage.Quotation!==undefined) {
+                prevQuotation = JSON.parse(window.localStorage.Quotation)
+                if ((prevQuotation.account_id._id===this.props.account_id)||(prevQuotation.account_id._id===null)) {}
+                else { prevQuotation=undefined }
+            }
+            
         }
         
         

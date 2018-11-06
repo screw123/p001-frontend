@@ -25,19 +25,27 @@
     "react-dom": "^16.4.0",
     "react-i18next": "^7.7.0",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "1.1.4",
+    "react-scripts": "2.0.4",
     "react-select": "^2.0.0",
     "react-stripe-elements": "^2.0.1",
     "react-virtualized": "^9.20.1",
+    "source-map-explorer": "^1.6.0",
     "styled-components": "^3.3.3",
     "superagent": "^3.8.3",
     "unstated": "^2.1.1",
     "validator": "^10.4.0"
   },
   "scripts": {
+    "analyze": "source-map-explorer build/static/js/main.*",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
-  }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }

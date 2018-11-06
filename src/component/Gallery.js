@@ -1,42 +1,52 @@
 import React from "react";
 import styled from "styled-components";
-import { Grid } from "react-virtualized";
 
 const SectionHeader = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
     font-weight: 600;
     font-size: 1.5em;
-    padding: 1em;
-    display: inline-block;
 `;
 
 const HeaderText = styled.span`
     padding: 1em;
 `;
 
-const extra = {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    fontWeight: "bold   "
-};
+const Wrapper = styled.div`
+    display: flex;
+    justify-content: center;
+`;
 
-let DefaultCellRenderer = (a, data) => {
-    console.log(a.rowIndex, a.columnIndex, data);
-    if (a.columnIndex == 2) {
-        return (
-            <div key={a.key} style={{ ...a.style, ...extra }}>
-                <span>
-                    <img src={data} alt={data} />
-                </span>
-            </div>
-        );
-    } else {
-        return (
-            <div key={a.key} style={{ ...a.style, ...extra }}>
-                <p>{data}</p>
-            </div>
-        );
-    }
+const Cell = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 700px;
+    max-height: 500px;
+    overflow-y: auto;
+`;
+const SingleImg = styled.div`
+    margin: 10px;
+`;
+const Name = styled.div`
+    background: mediumseagreen;
+    color: white;
+    text-align: center;
+    font-size: 17px;
+`;
+
+const SingleCell = props => {
+    let { cell } = props;
+    // console.log(cell.URL);
+    return (
+        <SingleImg>
+            <a href="">
+                <img src={cell.URL_thumbnail} alt="Cinque Terre" />
+            </a>
+            <Name>{cell.name}</Name>
+        </SingleImg>
+    );
 };
 
 export default class Gallery extends React.Component {
@@ -44,30 +54,15 @@ export default class Gallery extends React.Component {
         super(props);
     }
 
-    // Setting each column width
-    getColumnWidth({ index }) {
-        switch (index) {
-            case 0:
-                return 100;
-            case 1:
-                return 100;
-            default:
-                return 400;
-        }
-    }
-
     render() {
         let header;
-        if (
-            this.props.headerText &&
-            this.props.headerIconLeft &&
-            this.props.headerIconRight
-        ) {
+        let { data, headerText, headerIconLeft, headerIconRight } = this.props;
+        if (headerText && headerIconLeft && headerIconRight) {
             header = (
                 <SectionHeader>
-                    {this.props.headerIconLeft}
-                    <HeaderText>{this.props.headerText}</HeaderText>
-                    {this.props.headerIconRight}
+                    {headerIconLeft}
+                    <HeaderText>{headerText}</HeaderText>
+                    {headerIconRight}
                 </SectionHeader>
             );
         }
@@ -75,40 +70,13 @@ export default class Gallery extends React.Component {
         return (
             <div>
                 {header}
-                <Grid
-                    cellRenderer={a => {
-                        if (this.props.imageComponent)
-                            return this.props.imageComponent(a);
-                        else {
-                            if (a.columnIndex == 2)
-                                // sending the URL_thumbanil link, skipping URL
-                                return DefaultCellRenderer(
-                                    a,
-                                    this.props.data[a.rowIndex][
-                                        Object.keys(
-                                            this.props.data[a.rowIndex]
-                                        )[a.columnIndex + 1]
-                                    ]
-                                );
-                            else
-                                return DefaultCellRenderer(
-                                    a,
-                                    this.props.data[a.rowIndex][
-                                        Object.keys(
-                                            this.props.data[a.rowIndex]
-                                        )[a.columnIndex]
-                                    ]
-                                );
-                        }
-                    }}
-                    columnCount={Object.keys(this.props.data[0]).length - 1}
-                    columnWidth={this.getColumnWidth}
-                    height={500}
-                    rowCount={this.props.data.length}
-                    // added 25px for some spacing
-                    rowHeight={this.props.imageSize + 25}
-                    width={500}
-                />
+                <Wrapper>
+                    <Cell>
+                        {data.map((item, i) => (
+                            <SingleCell cell={item} key={i} />
+                        ))}
+                    </Cell>
+                </Wrapper>
             </div>
         );
     }

@@ -66,13 +66,13 @@ const data = [
         name: "Nemo 8",
         URL: "http://lorempicsum.com/nemo/500/500/8",
         URL_thumbnail: "http://lorempicsum.com/nemo/200/200/8"
-    },
-    {
-        _id: 9,
-        name: "Nemo 9",
-        URL: "http://lorempicsum.com/nemo/500/500/9",
-        URL_thumbnail: "http://lorempicsum.com/nemo/200/200/9"
     }
+    // {
+    //     _id: 9,
+    //     name: "Nemo 9",
+    //     URL: "http://lorempicsum.com/nemo/500/500/9",
+    //     URL_thumbnail: "http://lorempicsum.com/nemo/200/200/9"
+    // }
 ];
 
 const props = {

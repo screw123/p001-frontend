@@ -13,30 +13,31 @@ const HeaderText = styled.span`
     padding: 1em;
 `;
 
-const extra = {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    fontWeight: "bold   "
-};
+const Cell = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`;
 
-let DefaultCellRenderer = (a, data) => {
-    console.log(a.rowIndex, a.columnIndex, data);
-    if (a.columnIndex == 2) {
-        return (
-            <div key={a.key} style={{ ...a.style, ...extra }}>
-                <span>
-                    <img src={data} alt={data} />
-                </span>
-            </div>
-        );
-    } else {
-        return (
-            <div key={a.key} style={{ ...a.style, ...extra }}>
-                <p>{data}</p>
-            </div>
-        );
-    }
+const Name = styled.div`
+    width: ${props => props.width + "px"};
+    text-align: center;
+    font-weight: bold;
+    background: darkslategrey;
+    color: white;
+`;
+
+const DefaultCellRenderer = (a, imageSize, data) => {
+    // console.log(a.rowIndex, a.columnIndex, "@ data");
+    return (
+        <Cell key={a.key} style={a.style}>
+            <span>
+                <img src={data.URL_thumbnail} alt={data.name} />
+            </span>
+            <Name width={imageSize}>{data.name}</Name>
+        </Cell>
+    );
 };
 
 export default class Gallery extends React.Component {
@@ -44,30 +45,25 @@ export default class Gallery extends React.Component {
         super(props);
     }
 
-    // Setting each column width
-    getColumnWidth({ index }) {
-        switch (index) {
-            case 0:
-                return 100;
-            case 1:
-                return 100;
-            default:
-                return 400;
-        }
-    }
-
     render() {
-        let header;
-        if (
-            this.props.headerText &&
-            this.props.headerIconLeft &&
-            this.props.headerIconRight
-        ) {
+        let {
+            header,
+            data,
+            imageSize,
+            headerText,
+            headerIconLeft,
+            headerIconRight,
+            imageComponent
+        } = this.props;
+        let index = 0;
+        let totalData = data.length - 1;
+
+        if (headerText && headerIconLeft && headerIconRight) {
             header = (
                 <SectionHeader>
-                    {this.props.headerIconLeft}
-                    <HeaderText>{this.props.headerText}</HeaderText>
-                    {this.props.headerIconRight}
+                    {headerIconLeft}
+                    <HeaderText>{headerText}</HeaderText>
+                    {headerIconRight}
                 </SectionHeader>
             );
         }
@@ -77,37 +73,28 @@ export default class Gallery extends React.Component {
                 {header}
                 <Grid
                     cellRenderer={a => {
-                        if (this.props.imageComponent)
-                            return this.props.imageComponent(a);
+                        // console.log(a.rowIndex + a.columnIndex, "@calc");
+                        if (imageComponent) return imageComponent(a);
                         else {
-                            if (a.columnIndex == 2)
-                                // sending the URL_thumbanil link, skipping URL
-                                return DefaultCellRenderer(
-                                    a,
-                                    this.props.data[a.rowIndex][
-                                        Object.keys(
-                                            this.props.data[a.rowIndex]
-                                        )[a.columnIndex + 1]
-                                    ]
-                                );
-                            else
-                                return DefaultCellRenderer(
-                                    a,
-                                    this.props.data[a.rowIndex][
-                                        Object.keys(
-                                            this.props.data[a.rowIndex]
-                                        )[a.columnIndex]
-                                    ]
-                                );
+                            index = a.rowIndex * 3 + a.columnIndex;
+                            if (index > totalData) return null;
+                            return DefaultCellRenderer(
+                                a,
+                                imageSize,
+                                data[index]
+                            );
                         }
                     }}
-                    columnCount={Object.keys(this.props.data[0]).length - 1}
-                    columnWidth={this.getColumnWidth}
-                    height={500}
-                    rowCount={this.props.data.length}
-                    // added 25px for some spacing
-                    rowHeight={this.props.imageSize + 25}
-                    width={500}
+                    columnCount={3}
+                    columnWidth={imageSize * 1.1}
+                    height={imageSize * 2.75}
+                    rowCount={
+                        data.length % 3 === 0
+                            ? data.length / 3
+                            : data.length / 3 + 1
+                    }
+                    rowHeight={imageSize + 50}
+                    width={imageSize * 3.45}
                 />
             </div>
         );

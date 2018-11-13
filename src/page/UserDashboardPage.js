@@ -19,7 +19,7 @@ class UserDashboardPage extends React.Component {
     }
 
     toggleUserProfileForm = () => {
-        this.setState(prevState=> {showUserProfileForm: !prevState.showUserProfileForm} )
+        this.setState(prevState=> {return {showUserProfileForm: !prevState.showUserProfileForm} } )
     }
 
     genUserProfile = ({t, myself}) => (

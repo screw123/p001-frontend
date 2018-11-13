@@ -114,7 +114,7 @@ class SelectAddress extends React.Component{
                                 account_id={this.props.account_id}
                                 onSubmitSuccess={(address)=> {
                                     console.log('Modal onSubmitSuccess')
-                                    this.toggleAddNewAddressModal
+                                    this.toggleAddNewAddressModal()
                                     this.props.onAddNewAddress(address)
                                 }}
                             />}

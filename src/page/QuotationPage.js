@@ -30,25 +30,8 @@ class QuotationPage extends React.Component {
                 <I18n>
                 {(t, { i18n }) => (
                     <Background>
-                        <DropDown field={{}} form={{}} valueList={
-                            union(
-                                (c.state.myself.accountOwn_id===null) ? 
-                                    [] : 
-                                    c.state.myself.accountOwn_id.map((v)=> {
-                                        return {value: v._id, name: v.name}
-                                    }),
-                                (c.state.myself.accountManage_id===null) ? 
-                                    [] :
-                                    c.state.myself.accountManage_id.map((v)=> {
-                                        return {value: v._id, name: v.name}
-                                    })
-                            )
-                        } onChange={(e)=>this.changeAcct(e)}/>
-                        {this.state.selectedAcct && 
-                            <QuotationForm 
-                                account_id={this.state.selectedAcct}
-                            />
-                        }
+                        <QuotationForm  />
+                        
                     </Background>
                 )}
                 </I18n>
@@ -59,3 +42,21 @@ class QuotationPage extends React.Component {
 }
 
 export default QuotationPage
+
+
+/*{c.checkLogined() &&  
+    <DropDown field={{}} form={{}} valueList={
+        union(
+            (c.state.myself.accountOwn_id===null) ? 
+                [] : 
+                c.state.myself.accountOwn_id.map((v)=> {
+                    return {value: v._id, name: v.name}
+                }),
+            (c.state.myself.accountManage_id===null) ? 
+                [] :
+                c.state.myself.accountManage_id.map((v)=> {
+                    return {value: v._id, name: v.name}
+                })
+        )
+    } onChange={(e)=>this.changeAcct(e)}/>
+*/

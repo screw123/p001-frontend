@@ -80,7 +80,12 @@ const props = {
     headerIconLeft: "Header Left",
     headerIconRight: "Header Right",
     data: data,
-    imageSize: 200
+    imageSize: 200,
+
+    selectMode: true,
+    onSelect: {},
+    selectedValue: [],
+    icons: ""
 };
 
 class TestPage extends React.Component {

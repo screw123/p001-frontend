@@ -110,7 +110,7 @@ export const resetPassword = gql`
 `
 
 export const getPriceListByAccount = gql`
-    query ($account_id: String!){
+    query ($account_id: String){
         getPriceListByAccount(account_id: $account_id) {
             _id
             code

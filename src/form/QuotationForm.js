@@ -199,7 +199,7 @@ class Quotation extends React.Component {
             <I18n>
             {(t)=>(
                 <ApolloProvider client={(g.state.isLogined)? GqlApi.getGqlClient() : GqlApi.getGqlClientPublic()}>
-                    <Query query={getPriceListByAccount} variables={{account_id: this.props.account_id}}>
+                    <Query query={getPriceListByAccount} variables={{account_id: this.props.account_id || ''}}>
                     {({ client, loading: queryLoading, error: queryErr, data, refetch }) => (
                         <Mutation mutation={addQuotation} errorPolicy="all">
                         {(mutate, {loading: mutateLoading, err: mutateErr})=>{

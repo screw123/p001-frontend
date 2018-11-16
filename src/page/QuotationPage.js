@@ -4,7 +4,7 @@ import { I18n } from 'react-i18next'
 import QuotationForm from '../form/QuotationForm.js'
 import SalesOrderConfirmForm from '../form/SalesOrderConfirmForm.js'
 
-import { DropDown } from '../component/FormikForm.js'
+import { MultiSelect } from '../component/FormikForm.js'
 import Background from '../component/BasicComponents.js'
 
 import GqlApi, {GqlApiSubscriber} from '../stateContainer/GqlApi.js'
@@ -19,8 +19,8 @@ class QuotationPage extends React.Component {
         this.state = {selectedAcct: undefined}
     }
     
-    changeAcct(e) {
-        this.setState({selectedAcct: e.target.value})
+    changeAcct(e, v) {
+        this.setState({selectedAcct: v})
     }
     
     render() {
@@ -30,8 +30,40 @@ class QuotationPage extends React.Component {
                 <I18n>
                 {(t, { i18n }) => (
                     <Background>
-                        <QuotationForm  />
-                        
+                        {!c.state.isLogined && 
+                        <div>
+                            <QuotationForm account_id='' />
+                        </div> }
+                        {c.state.isLogined && 
+                            <div>
+                                <MultiSelect 
+                                    field={{
+                                        name: 'acct',
+                                        value: this.state.selectedAcct
+                                    }}
+                                    form={{
+                                        setFieldValue: this.changeAcct
+                                    }}
+                                    multiSelect={false}
+                                    label={t('Please choose your account')+':'}
+                                    options={
+                                        union(
+                                            (c.state.myself.accountOwn_id===null) ? 
+                                                [] : 
+                                                c.state.myself.accountOwn_id.map((v)=> {
+                                                    return {value: v._id, label: v.name}
+                                                }),
+                                            (c.state.myself.accountManage_id===null) ? 
+                                                [] :
+                                                c.state.myself.accountManage_id.map((v)=> {
+                                                    return {value: v._id, label: v.name}
+                                                })
+                                        )
+                                    }
+                                />
+                                <QuotationForm account_id='5b518c4c031c7d0179e23b6a' />
+                            </div>
+                        }
                     </Background>
                 )}
                 </I18n>

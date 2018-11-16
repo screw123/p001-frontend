@@ -11,6 +11,9 @@ export const HeaderText = styled.span`
     padding: 1em;
 `;
 
+////////////
+// Modal
+///////////
 export const Cell = styled.div`
     display: flex;
     flex-direction: column;
@@ -28,8 +31,8 @@ export const Name = styled.div`
 
 export const Image = styled.span`
     cursor: pointer;
+    position: relative;
 `;
-
 const anime = keyframes`
   from { transform:scale(0); } 
   to { transform:scale(1); }
@@ -76,4 +79,35 @@ export const Caption = styled.div`
     padding: 10px 0;
     height: 150px;
     animation: ${anime} 0.7s;
+`;
+
+////////////
+// Overlay
+///////////
+export const Overlay = styled.div`
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: 0.3s ease-out;
+    opacity: ${props => (props.overlay ? 1 : 0)};
+    background-color: ${props => (props.overlay ? "#ff4477" : "none")};
+    ${Image}:hover & {
+        opacity: 1;
+    }
+`;
+export const Icon = styled.div`
+    color: white;
+    font-size: 100px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+    transition: 0.3s ease-out;
 `;

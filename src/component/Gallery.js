@@ -9,15 +9,24 @@ import {
     Modal,
     Close,
     Content,
-    Caption
+    Caption,
+    Overlay,
+    Icon
 } from "./GalleryStyles";
 
-const DefaultCellRenderer = (a, imageSize, data, handleClick) => {
+const DefaultCellRenderer = (a, imageSize, data, handleImageClick, overlay) => {
     // console.log(a.rowIndex, a.columnIndex, "@ data");
     return (
         <Cell key={a.key} style={a.style}>
-            <Image onClick={() => handleClick(data)}>
+            <Image onClick={() => handleImageClick(data)}>
                 <img src={data.URL_thumbnail} alt={data.name} />
+                {overlay !== 0 && (
+                    <Overlay overlay={overlay === 2 ? true : false}>
+                        <Icon>
+                            <i className="far fa-check-circle" />
+                        </Icon>
+                    </Overlay>
+                )}
             </Image>
             <Name width={imageSize}>{data.name}</Name>
         </Cell>
@@ -45,13 +54,16 @@ export default class Gallery extends React.Component {
         document.addEventListener("keydown", this.handleKeyPress);
     }
 
-    handleClick = data => {
-        // console.log("clicked");
-        this.setState({
-            image: data.URL,
-            name: data.name,
-            show: true
-        });
+    handleImageClick = data => {
+        if (this.props.selectMode) {
+            this.props.onSelect(data._id);
+        } else {
+            this.setState({
+                image: data.URL,
+                name: data.name,
+                show: true
+            });
+        }
     };
 
     handleClose = () => {
@@ -72,11 +84,11 @@ export default class Gallery extends React.Component {
             headerIconRight,
             imageComponent,
             selectMode,
-            onSelect,
             selectedValue,
             icons
         } = this.props;
         let index = 0;
+        let overlay;
         let totalData = data.length - 1;
 
         if (headerText && headerIconLeft && headerIconRight) {
@@ -93,7 +105,7 @@ export default class Gallery extends React.Component {
             <div>
                 {header}
                 <div>{icons}</div>
-                {selectMode && this.state.show && (
+                {!selectMode && this.state.show && (
                     <Modal>
                         <Close onClick={this.handleClose}>&times;</Close>
                         <Content>
@@ -112,11 +124,17 @@ export default class Gallery extends React.Component {
                         else {
                             index = a.rowIndex * 3 + a.columnIndex;
                             if (index > totalData) return null;
+                            overlay = !selectMode
+                                ? 0
+                                : selectedValue.indexOf(data[index]._id) < 0
+                                ? 1
+                                : 2;
                             return DefaultCellRenderer(
                                 a,
                                 imageSize,
                                 data[index],
-                                this.handleClick
+                                this.handleImageClick,
+                                overlay
                             );
                         }
                     }}

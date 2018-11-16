@@ -1,21 +1,12 @@
 import React from "react";
 
-import { Formik, Field } from "formik";
 import FormikForm, {
     MultiSelect,
     FormButton,
     FormErr
 } from "../component/FormikForm.js";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import isEmpty from "lodash/isEmpty";
-import pickBy from "lodash/pickBy";
 import Background from "../component/Background.js";
-
-import UserProfileForm from "../form/UserProfileForm.js";
-
-import GqlApi from "../stateContainer/GqlApi.js";
-import InfoList from "../component/InfoList.js";
 import Gallery from "../component/Gallery.js";
 
 const data = [
@@ -75,33 +66,47 @@ const data = [
     // }
 ];
 
-const props = {
-    headerText: "Header",
-    headerIconLeft: "Header Left",
-    headerIconRight: "Header Right",
-    data: data,
-    imageSize: 200,
-
-    selectMode: true,
-    onSelect: {},
-    selectedValue: [],
-    icons: ""
-};
-
-class TestPage extends React.Component {
+class GalleryPage extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { showResetPassword: false };
+        this.state = { selectedValue: [] };
     }
 
+    onSelect = id => {
+        // console.log(id, this.state.selectedValue);
+        let exist = this.state.selectedValue.indexOf(id);
+        let newSelected;
+        if (exist < 0) {
+            newSelected = this.state.selectedValue;
+            newSelected.push(id);
+            this.setState({ selectedValue: newSelected });
+        } else {
+            newSelected = this.state.selectedValue.filter(
+                value => value !== id
+            );
+            this.setState({ selectedValue: newSelected });
+        }
+    };
+
     render() {
+        const props = {
+            headerText: "Header",
+            headerIconLeft: "Header Left",
+            headerIconRight: "Header Right",
+            data: data,
+            imageSize: 200,
+
+            selectMode: false,
+            onSelect: this.onSelect,
+            selectedValue: this.state.selectedValue,
+            icons: ""
+        };
         return (
             <Background>
-                {/* <UserProfileForm user={ GqlApi.state.myself } /> */}
-                {/* <Gallery {...props} /> */}
+                <Gallery {...props} />
             </Background>
         );
     }
 }
 
-export default TestPage;
+export default GalleryPage;

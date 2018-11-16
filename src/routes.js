@@ -1,18 +1,19 @@
-import LoginPage from './page/LoginPage.js'
-import IndexPage from './page/IndexPage.js'
-import UserDashboardPage from './page/UserDashboardPage.js'
-import SignUpWorkflow from './page/SignUpWorkflow.js'
-import ResetPasswordPage from './page/ResetPasswordPage.js'
-import UserActivationPage from './page/UserActivationPage.js'
-import TermsAndConditionPage from './page/TermsAndConditionPage.js'
-import QuotationPage from './page/QuotationPage.js'
-import SalesOrderConfirmPage from './page/SalesOrderConfirmPage.js'
-import TestPage from './page/TestPage.js'
+import LoginPage from "./page/LoginPage.js";
+import IndexPage from "./page/IndexPage.js";
+import UserDashboardPage from "./page/UserDashboardPage.js";
+import SignUpWorkflow from "./page/SignUpWorkflow.js";
+import ResetPasswordPage from "./page/ResetPasswordPage.js";
+import UserActivationPage from "./page/UserActivationPage.js";
+import TermsAndConditionPage from "./page/TermsAndConditionPage.js";
+import QuotationPage from "./page/QuotationPage.js";
+import SalesOrderConfirmPage from "./page/SalesOrderConfirmPage.js";
+import TestPage from "./page/TestPage.js";
+import GalleryPage from "./page/GalleryPage";
 
 const routes = [
     {
         path: "/login",
-        menuName: 'Login',
+        menuName: "Login",
         component: LoginPage,
         navbar: {
             showBeforeLogin: true,
@@ -24,7 +25,7 @@ const routes = [
     },
     {
         path: "/signup",
-        menuName: 'Sign Up',
+        menuName: "Sign Up",
         component: SignUpWorkflow,
         navbar: {
             showBeforeLogin: true,
@@ -36,19 +37,19 @@ const routes = [
     },
     {
         path: "/dash",
-        menuName: 'Dashboard',
+        menuName: "Dashboard",
         component: UserDashboardPage,
         navbar: {
             showBeforeLogin: false,
             showAfterLogin: true
         },
         router: {
-            requireLogin: true 
+            requireLogin: true
         }
     },
     {
         path: "/userActivation/:_id?/:verificationPIN?",
-        menuName: 'User Activation',
+        menuName: "User Activation",
         component: UserActivationPage,
         navbar: {
             showBeforeLogin: false,
@@ -61,7 +62,7 @@ const routes = [
     {
         path: "/terms",
         exact: true,
-        menuName: 'Terms And Condition',
+        menuName: "Terms And Condition",
         component: TermsAndConditionPage,
         navbar: {
             showBeforeLogin: true,
@@ -74,7 +75,7 @@ const routes = [
     {
         path: "/",
         exact: true,
-        menuName: 'Welcome to P001',
+        menuName: "Welcome to P001",
         component: IndexPage,
         navbar: {
             showBeforeLogin: true,
@@ -87,7 +88,7 @@ const routes = [
     {
         path: "/resetPassword",
         exact: true,
-        menuName: 'Reset Your Password',
+        menuName: "Reset Your Password",
         component: ResetPasswordPage,
         navbar: {
             showBeforeLogin: false,
@@ -100,7 +101,7 @@ const routes = [
     {
         path: "/quotation/:quotation_id?",
         exact: true,
-        menuName: 'Quotation',
+        menuName: "Quotation",
         component: QuotationPage,
         navbar: {
             showBeforeLogin: true,
@@ -113,7 +114,7 @@ const routes = [
     {
         path: "/confirmSalesOrder",
         exact: true,
-        menuName: 'Confirm Sales Order',
+        menuName: "Confirm Sales Order",
         component: SalesOrderConfirmPage,
         navbar: {
             showBeforeLogin: false,
@@ -121,12 +122,12 @@ const routes = [
         },
         router: {
             requireLogin: true
-        }    
+        }
     },
     {
         path: "/testPage",
         exact: true,
-        menuName: 'Testing Zone',
+        menuName: "Testing Zone",
         component: TestPage,
         navbar: {
             showBeforeLogin: true,
@@ -136,6 +137,19 @@ const routes = [
             requireLogin: false
         }
     },
-]
+    {
+        path: "/gallery",
+        exact: true,
+        menuName: "Gallery",
+        component: GalleryPage,
+        navbar: {
+            showBeforeLogin: true,
+            showAfterLogin: true
+        },
+        router: {
+            requireLogin: false
+        }
+    }
+];
 
-export default routes
+export default routes;

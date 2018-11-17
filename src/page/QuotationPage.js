@@ -17,14 +17,14 @@ class QuotationPage extends React.Component {
         super(props)
         this.changeAcct = this.changeAcct.bind(this)
         const acctList = union(
-            (this.props.container.gqlapi.state.myself.accountOwn_id===null) ? 
+            (this.props.login.state.myself.accountOwn_id===null) ? 
                 [] : 
-                this.props.container.gqlapi.state.myself.accountOwn_id.map((v)=> {
+                this.props.login.state.myself.accountOwn_id.map((v)=> {
                     return {value: v._id, label: v.name}
                 }),
-            (this.props.container.gqlapi.state.myself.accountManage_id===null) ? 
+            (this.props.login.state.myself.accountManage_id===null) ? 
                 [] :
-                this.props.container.gqlapi.state.myself.accountManage_id.map((v)=> {
+                this.props.login.state.myself.accountManage_id.map((v)=> {
                     return {value: v._id, label: v.name}
                 })
         )

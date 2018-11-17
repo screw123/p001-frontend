@@ -25,24 +25,27 @@ class App extends React.Component {
         library.add(faEye, faEyeSlash, faPlusCircle, faWindowClose, faBell, faUser, faEdit, faTrashAlt)
     }
     
-    genItems = (routes) => {
+    genItems = ({routes, container}) => {
         let c = []
         for (var i = 0; i < routes.length; i++) {
             if (routes[i].path) {
+                let Com = routes[i].component
                 if (routes[i].requireLogin) {
                     c.push(<PrivateRoute
-                        component={routes[i].component}
+                        render={(props) => <Com {...props} container={container} />}
                         exact={routes[i].exact}
                         path={routes[i].path}
                         key={i}
+                        container={container}
                     />)
                 }
                 else {
                     c.push(<Route
-                        component={routes[i].component}
+                        render={(props) => <Com {...props} container={container} />}
                         exact={routes[i].exact}
                         path={routes[i].path}
                         key={i}
+                        container={container}
                     />)
                 }
             }
@@ -56,7 +59,7 @@ class App extends React.Component {
                 <div>
                     {((g.state.isLogined===true)||(g.state.isLogined===false)) && <MainContainer>
                         <DummyPassHistory />  {/*Load this to add the history obj into GqpApi state */}
-                        {this.genItems(routes)}  {/* Put routes.js all into react-router */}
+                        {this.genItems({routes: routes, container: {gqlapi: g}})}  {/* Put routes.js all into react-router */}
                         <Navbar routes={routes} />  {/* Generate NavBar Component */}
                     </MainContainer>}
                     {(!((g.state.isLogined===true)||(g.state.isLogined===false))) && <div>

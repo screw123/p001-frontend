@@ -16,7 +16,22 @@ class QuotationPage extends React.Component {
     constructor(props) {
         super(props)
         this.changeAcct = this.changeAcct.bind(this)
-        this.state = {selectedAcct: undefined}
+        const acctList = union(
+            (this.props.container.gqlapi.state.myself.accountOwn_id===null) ? 
+                [] : 
+                this.props.container.gqlapi.state.myself.accountOwn_id.map((v)=> {
+                    return {value: v._id, label: v.name}
+                }),
+            (this.props.container.gqlapi.state.myself.accountManage_id===null) ? 
+                [] :
+                this.props.container.gqlapi.state.myself.accountManage_id.map((v)=> {
+                    return {value: v._id, label: v.name}
+                })
+        )
+        this.state = {
+            selectedAcct: ((acctList.length>0) ? acctList[0].value : ''),
+            acctList: acctList
+        }
     }
     
     changeAcct(e, v) {
@@ -46,22 +61,9 @@ class QuotationPage extends React.Component {
                                     }}
                                     multiSelect={false}
                                     label={t('Please choose your account')+':'}
-                                    options={
-                                        union(
-                                            (c.state.myself.accountOwn_id===null) ? 
-                                                [] : 
-                                                c.state.myself.accountOwn_id.map((v)=> {
-                                                    return {value: v._id, label: v.name}
-                                                }),
-                                            (c.state.myself.accountManage_id===null) ? 
-                                                [] :
-                                                c.state.myself.accountManage_id.map((v)=> {
-                                                    return {value: v._id, label: v.name}
-                                                })
-                                        )
-                                    }
+                                    options={this.state.acctList}
                                 />
-                                <QuotationForm account_id='5b518c4c031c7d0179e23b6a' />
+                                <QuotationForm account_id={this.state.selectedAcct} />
                             </div>
                         }
                     </Background>

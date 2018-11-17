@@ -105,6 +105,7 @@ export default class Gallery extends React.Component {
             <div>
                 {header}
                 <div>{icons}</div>
+
                 {!selectMode && this.state.show && (
                     <Modal>
                         <Close onClick={this.handleClose}>&times;</Close>
@@ -117,6 +118,7 @@ export default class Gallery extends React.Component {
                         <Caption>{this.state.name}</Caption>
                     </Modal>
                 )}
+
                 <Grid
                     cellRenderer={a => {
                         // console.log(a.rowIndex + a.columnIndex, "@calc");
@@ -124,6 +126,10 @@ export default class Gallery extends React.Component {
                         else {
                             index = a.rowIndex * 3 + a.columnIndex;
                             if (index > totalData) return null;
+                            // taking a varible overlay which is:
+                            // 0 when selected mode in off
+                            // 1 when seleted mode is on but the image is not selected
+                            // 2 when seleted mode is on and the image is selected
                             overlay = !selectMode
                                 ? 0
                                 : selectedValue.indexOf(data[index]._id) < 0

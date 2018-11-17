@@ -58,12 +58,6 @@ const data = [
         URL: "http://lorempicsum.com/nemo/500/500/8",
         URL_thumbnail: "http://lorempicsum.com/nemo/200/200/8"
     }
-    // {
-    //     _id: 9,
-    //     name: "Nemo 9",
-    //     URL: "http://lorempicsum.com/nemo/500/500/9",
-    //     URL_thumbnail: "http://lorempicsum.com/nemo/200/200/9"
-    // }
 ];
 
 class GalleryPage extends React.Component {
@@ -73,18 +67,21 @@ class GalleryPage extends React.Component {
     }
 
     onSelect = id => {
-        // console.log(id, this.state.selectedValue);
         let exist = this.state.selectedValue.indexOf(id);
         let newSelected;
         if (exist < 0) {
             newSelected = this.state.selectedValue;
             newSelected.push(id);
-            this.setState({ selectedValue: newSelected });
+            this.setState({ selectedValue: newSelected }, () =>
+                console.log(this.state.selectedValue, "@selectedValue")
+            );
         } else {
             newSelected = this.state.selectedValue.filter(
                 value => value !== id
             );
-            this.setState({ selectedValue: newSelected });
+            this.setState({ selectedValue: newSelected }, () =>
+                console.log(this.state.selectedValue, "@selectedValue")
+            );
         }
     };
 

@@ -18,8 +18,6 @@ import merge from 'lodash/merge'
 import { ApolloProvider, Mutation } from 'react-apollo'
 import { addUser } from '../gql/query.js'
 
-import GqlApi from '../stateContainer/GqlApi.js'
-import LocaleApi from '../stateContainer/LocaleApi.js'
 import parseApolloErr from '../util/parseErr.js'
 import passwordTest from '../util/passwordTest.js'
 

@@ -27,7 +27,7 @@ class ApolloContainer extends Container {
             gqlClient: {},
             gqlClientPublic: {},
             isLogined: undefined,
-            history: {push:()=>{}},
+            history: {push:()=>{}}, //this should go to its own container, fixme later
             myself: {
                 _id: '',
                 firstName: '',

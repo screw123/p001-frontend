@@ -107,13 +107,13 @@ class SignUpWorkflow extends React.Component {
                     {this.state.userCreated && !(this.state.userVerified) &&
                         <div>
                             <h1>{c.t('User Activation')}</h1>
-                            <UserActivationForm match={{params: {}}} user={this.state.user} onVerifySuccess={this.onUserVerified}/>
+                            <UserActivationForm match={{params: {}}} user={this.state.user} onVerifySuccess={this.onUserVerified} {...this.props} />
                         </div>
                     }
                     {this.state.userVerified && !(g.state.isLogined) &&
                         <div>
                             <h1>{c.t('Please login to continue')}</h1>
-                            <LoginForm user={this.state.user} />
+                            <LoginForm user={this.state.user} {...this.props} />
                         </div>
                     }
                 </Background>

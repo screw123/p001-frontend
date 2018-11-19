@@ -18,29 +18,22 @@ class LoginPage extends React.Component {
     }
 
     render() {
-        const { from } = this.props.location.state || { from: { pathname: "/dash" } };
-        return (
-            <GqlApiSubscriber>
-            {(c) => {
-                if (c.state.isLogined) {
-                    return <Redirect to={from} />;
-                }
-                else if (this.state.redirect===true) {
-                    return <Redirect to={this.state.path} />;
-                }
-                else { return (
-                    <I18n>
-                    {(t) => (
-                        <Background>
-                            <h1>{(this.props.location.state)? t('Please Login First')+'...' : t('Login Page')}</h1>
-                            <LoginForm user={{}}/>
-                        </Background>
-                    )}
-                    </I18n>
-                )}
-            }}
-            </GqlApiSubscriber>
-        )
+        const g = this.props.login
+        const c = this.props.i18n
+        const { from } = this.props.location.state || { from: { pathname: "/dash" } }
+
+        if (g.state.isLogined) {
+            return <Redirect to={from} />
+        }
+        else if (this.state.redirect===true) {
+            return <Redirect to={this.state.path} />
+        }
+        else { return (
+            <Background>
+                <h1>{(this.props.location.state)? c.t('Please Login First')+'...' : c.t('Login Page')}</h1>
+                <LoginForm user={{}} {...this.props} />
+            </Background>
+        )}
     }
 }
 

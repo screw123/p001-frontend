@@ -24,94 +24,89 @@ class LoginForm extends React.PureComponent {
     onResetSucess = ()=> this.setState({showResetPassword: false})
 
     //props= user object
-    render() { return(
-        <GqlApiSubscriber>
-        {(q) => (
-            <I18n>
-            {(t) => (
-                <Formik
-                    initialValues={{
-                        user: this.props.user._id || this.props.user.email || this.props.user.mobilePhone || '',
-                        password:''
-                    }}
-                    validate={ (values) => {
-                        const keyArr = Object.keys(validateForm)
-                        let err = {}
-                        for (let i=0; i<keyArr.length; i++) {
-                            const f = keyArr[i]
-                            const e = validateForm[f](values)
-                            if (e !== undefined) { err[f] = e }
+    render() { 
+        const g = this.props.login
+        const c = this.props.i18n
+        return(
+            <Formik
+                initialValues={{
+                    user: this.props.user._id || this.props.user.email || this.props.user.mobilePhone || '',
+                    password:''
+                }}
+                validate={ (values) => {
+                    const keyArr = Object.keys(validateForm)
+                    let err = {}
+                    for (let i=0; i<keyArr.length; i++) {
+                        const f = keyArr[i]
+                        const e = validateForm[f](values)
+                        if (e !== undefined) { err[f] = e }
+                    }
+                    return err
+                }}
+                onSubmit={async (values, actions) => {
+                    actions.setStatus('')
+                    const isLoginSuccess = await g.login({user: values.user, password: values.password})
+                    if (isLoginSuccess===true) {
+                        if (this.props.onLoginSuccess) { this.props.onLoginSuccess() }
+                    }
+                    else {
+                        switch (isLoginSuccess) {
+                            case 401:
+                                actions.setFieldError('password', c.t('Email/Phone or password error.  Please check and try again.'))
+                                break
+                            case 500:
+                            default:
+                                actions.setStatus(c.t('System is currently busy, please wait for 1 minute and try again'))
+                                break
                         }
-                        return err
-                    }}
-                    onSubmit={async (values, actions) => {
-                        actions.setStatus('')
-                        const isLoginSuccess = await q.login({user: values.user, password: values.password})
-                        if (isLoginSuccess===true) {
-                            if (this.props.onLoginSuccess) { this.props.onLoginSuccess() }
-                        }
-                        else {
-                            switch (isLoginSuccess) {
-                                case 401:
-                                    actions.setFieldError('password', t('Email/Phone or password error.  Please check and try again.'))
-                                    break
-                                case 500:
-                                default:
-                                    actions.setStatus(t('System is currently busy, please wait for 1 minute and try again'))
-                                    break
-                            }
-                            actions.setSubmitting(false)
-                        }
-                    }}
-                >
-                {({ errors, isSubmitting, dirty, touched, values, status, initialValues }) => (
-                    <div>
-                        <FormikForm>
-                            <Field
-                                name="user"
-                                type="text"
-                                component={TextField}
-                                label={t('Email/Phone')}
-                                value={values.user}
-                                hidden={(initialValues['user'] != '')}
-                            />
-                            <Field
-                                name="password"
-                                type="password"
-                                component={TextField}
-                                label={t('Password')}
-                                value={values.password}
-                            />
-                            <FormErr>{status}</FormErr>
-                            <FieldRow>
-                                <FormButton
-                                    type="submit"
-                                    disabled={isSubmitting || !isEmpty(pickBy(errors)) || !dirty}
-                                >
-                                    { t('Submit')}
-                                </FormButton>
-                                {!this.state.showResetPassword && <FormButton
-                                    type="button"
-                                    onClick={this.showResetPasswordForm}
-                                >
-                                    { t('Forget Your Password?')}
-                                </FormButton>}
-                            </FieldRow>
-                            
-                        </FormikForm>
-                        {this.state.showResetPassword && 
-                            <div>
-                                <h2>{t('Reset Your Password')}</h2>
-                                <ResetPasswordForm onResetSucess={()=>this.onResetSucess} />
-                            </div>
-                        }
-                    </div>
-                )}
-                </Formik>
+                        actions.setSubmitting(false)
+                    }
+                }}
+            >
+            {({ errors, isSubmitting, dirty, touched, values, status, initialValues }) => (
+                <div>
+                    <FormikForm>
+                        <Field
+                            name="user"
+                            type="text"
+                            component={TextField}
+                            label={c.t('Email/Phone')}
+                            value={values.user}
+                            hidden={(initialValues['user'] != '')}
+                        />
+                        <Field
+                            name="password"
+                            type="password"
+                            component={TextField}
+                            label={c.t('Password')}
+                            value={values.password}
+                        />
+                        <FormErr>{status}</FormErr>
+                        <FieldRow>
+                            <FormButton
+                                type="submit"
+                                disabled={isSubmitting || !isEmpty(pickBy(errors)) || !dirty}
+                            >
+                                { c.t('Submit')}
+                            </FormButton>
+                            {!this.state.showResetPassword && <FormButton
+                                type="button"
+                                onClick={this.showResetPasswordForm}
+                            >
+                                { c.t('Forget Your Password?')}
+                            </FormButton>}
+                        </FieldRow>
+                        
+                    </FormikForm>
+                    {this.state.showResetPassword && 
+                        <div>
+                            <h2>{c.t('Reset Your Password')}</h2>
+                            <ResetPasswordForm onResetSucess={()=>this.onResetSucess} />
+                        </div>
+                    }
+                </div>
             )}
-            </I18n>
-        )}
-        </GqlApiSubscriber>
+            </Formik>
     )}
 }
 

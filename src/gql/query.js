@@ -141,6 +141,39 @@ export const getPriceListByAccount = gql`
         }
     }`
 
+export const getPriceListByCode = gql`
+    query ($code: String){
+        getPriceListByCode(code: $code) {
+            _id
+            code
+            SKU_id {
+                _id
+                SKUType
+                shortCode
+                name
+                longDesc
+                iconPicURL
+                smallPicURL
+                largePicURL
+                lengthM
+                widthM
+                heightM
+            }
+            rentMode
+            rent
+            duration
+            ship_in_base
+            ship_in_perPiece
+            ship_out_base
+            ship_out_perPiece
+            ship_first_base
+            ship_first_perPiece
+            ship_last_base
+            ship_last_perPiece
+        }
+    }`
+
+
 export const addQuotation = gql`
     mutation ($account_id: String!, $quotationLines: [quotationLines!]!) {
         addQuotation(account_id: $account_id, quotationLines: $quotationLines) {

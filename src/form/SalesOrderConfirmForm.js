@@ -53,10 +53,11 @@ class SalesOrderConfirmForm extends React.Component {
 	}
 
     //props= quotation_id
-    render(){ return (
-        <LocaleApiSubscriber>
-        {(c)=>(
-            <ApolloProvider client={GqlApi.getGqlClient()}>
+    render(){
+		const g = this.props.login
+        const c = this.props.i18n
+		return (
+            <ApolloProvider client={g.getGqlClient()}>
                 <Query query={getQuotationById} variables={{quotation_id: this.props.quotation_id, account_id: this.props.account_id}}>
                 {({ client, loading: queryLoading, error: queryErr, data, refetch }) => (
                     <Mutation mutation={addRentalOrder} errorPolicy="all">
@@ -119,8 +120,6 @@ class SalesOrderConfirmForm extends React.Component {
                 )}
                 </Query>
             </ApolloProvider>
-        )}
-        </LocaleApiSubscriber>
     )}
                 
 }

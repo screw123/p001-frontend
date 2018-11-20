@@ -39,38 +39,28 @@ class QuotationPage extends React.Component {
     }
     
     render() {
-        return (
-            <GqlApiSubscriber>
-            {(c) => (
-                <I18n>
-                {(t, { i18n }) => (
-                    <Background>
-                        {!c.state.isLogined && 
-                        <div>
-                            <QuotationForm account_id='' />
-                        </div> }
-                        {c.state.isLogined && 
-                            <div>
-                                <MultiSelect 
-                                    field={{
-                                        name: 'acct',
-                                        value: this.state.selectedAcct
-                                    }}
-                                    form={{
-                                        setFieldValue: this.changeAcct
-                                    }}
-                                    multiSelect={false}
-                                    label={t('Please choose your account')+':'}
-                                    options={this.state.acctList}
-                                />
-                                <QuotationForm account_id={this.state.selectedAcct} />
-                            </div>
-                        }
-                    </Background>
-                )}
-                </I18n>
-            )}
-            </GqlApiSubscriber>
+        const g = this.props.login
+        const c = this.props.i18n
+        return (                                                                                      
+            <Background>
+                {/* if not logined, show QuoationForm without empty account_id */}
+                {/* else, show a selector and account_id */}
+                {c.state.isLogined && (this.state.acctList.length > 1) &&
+                    <MultiSelect 
+                        field={{
+                            name: 'acct',
+                            value: this.state.selectedAcct
+                        }}
+                        form={{
+                            setFieldValue: this.changeAcct
+                        }}
+                        multiSelect={false}
+                        label={c.t('Please choose your account')+':'}
+                        options={this.state.acctList}
+                    />
+                }
+                <QuotationForm account_id={this.state.selectedAcct} {...this.props} />
+            </Background>
         )
     }
 }

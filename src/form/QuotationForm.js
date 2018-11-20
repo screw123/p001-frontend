@@ -1,5 +1,5 @@
 import React from "react"
-import { getPriceListByAccount, addQuotation } from '../gql/query.js'
+import { getPriceListByAccount, getPriceListByCode, addQuotation } from '../gql/query.js'
 
 import { Formik, Field, FieldArray } from 'formik'
 import FormikForm, { TextField, FormButton, FormErr, FieldRow } from '../component/FormikForm.js'
@@ -24,13 +24,18 @@ class Quotation extends React.Component {
         this.getPrice = this.getPrice.bind(this)
         this.updateValues = this.updateValues.bind(this)
         this.calcTotalAmt = this.calcTotalAmt.bind(this)
+        this.updateCouponCode = this.updateCouponCode.bind(this)
         this.state = {
             containerInitValue: {},
             fullPriceList: {},
-            loadCount: 0
+            couponCode: '',
+            couponCodeEntry: ''
         }
     }
     
+    updateCouponCodeEntry = (e) => this.setState({couponCodeEntry: e.target.value.toUpperCase()})
+    updateCouponCode = () => this.setState({couponCode: this.state.couponCodeEntry})
+
     transformPriceList = (p) => { //to transform a single priceList
         console.time('transformPriceList')
         const result = {}
@@ -192,35 +197,35 @@ class Quotation extends React.Component {
     }
     
     render(){ 
-        
+        const g = this.props.login
+        const c = this.props.i18n
+        const q = (this.state.couponCode==='') ? getPriceListByAccount: getPriceListByCode
+
+
         return (
-        <GqlApiSubscriber>
-        {(g)=>(
-            <I18n>
-            {(t)=>(
-                <ApolloProvider client={(g.state.isLogined)? GqlApi.getGqlClient() : GqlApi.getGqlClientPublic()}>
-                    <Query query={getPriceListByAccount} variables={{account_id: this.props.account_id || ''}}>
-                    {({ client, loading: queryLoading, error: queryErr, data, refetch }) => (
-                        <Mutation mutation={addQuotation} errorPolicy="all">
-                        {(mutate, {loading: mutateLoading, err: mutateErr})=>{
-                        
-                            if (queryLoading) return (<BigLoadingScreen text={'Getting your best price...'}/>)
-                            
-                            if (queryErr) {
-                                console.log('QuotationForm', queryErr, this.props.account_id)
-                                return (<p>Error :(</p>)
-                            }
-                            
-                            //Full price list converts what DB sends back into {priceList: {box: {rentMode: }}}
-                            const fullPriceList = this.transformPriceList(data.getPriceListByAccount)
-                            console.log('priceList=',fullPriceList)
-                            
-                            //coms is the list of components.  InitialValue is the structure for Formik
-                            const {coms, initialValue} = this.genQuotationFromPriceList(fullPriceList, t)
-                            console.log('initialValue=', initialValue)
-                            
-                            return(
-                                <div>{coms}
+            <ApolloProvider client={(g.state.isLogined)? GqlApi.getGqlClient() : GqlApi.getGqlClientPublic()}>
+                <Query query={q} variables={{account_id: this.props.account_id || '', code: this.state.couponCode}}>
+                {({ loading: queryLoading, error: queryErr, data, refetch }) => {
+                    
+                    if (queryErr) {
+                        console.log('QuotationForm', queryErr, this.props.account_id)
+                        return (<p>Error :(</p>)
+                    }
+                    console.log('data=', data)
+                    //Full price list converts what DB sends back into {priceList: {box: {rentMode: }}}
+                    const fullPriceList = this.transformPriceList((this.state.couponCode==='') ? data.getPriceListByAccount: data.getPriceListByCode)
+                    console.log('priceList=',fullPriceList)
+                    
+                    //coms is the list of components.  InitialValue is the structure for Formik
+                    const {coms, initialValue} = this.genQuotationFromPriceList(fullPriceList, c.t)
+                    console.log('initialValue=', initialValue)
+
+                    return(<div>
+                        {queryLoading && <BigLoadingScreen text={'Getting your best price...'}/>}
+                        {!queryLoading && <div>
+                            {coms}
+                            <Mutation mutation={addQuotation} errorPolicy="all">
+                            {(mutate, {loading: mutateLoading, err: mutateErr})=>(
                                 <Formik
                                     enableReinitialize={true}
                                     initialValues={{
@@ -297,7 +302,7 @@ class Quotation extends React.Component {
                                                         r.push(<Field
                                                             name={'containers.' + containerType[i] + '.' + rentMode[j] + '.' + duration[k]}
                                                             component={TextField}
-                                                            label={t(containerType[i]) + ', ' + duration[k] + ' ' + t(rentMode[j])}
+                                                            label={c.t(containerType[i]) + ', ' + duration[k] + ' ' + c.t(rentMode[j])}
                                                             value={values.containers[containerType[i]][rentMode[j]][duration[k]]}
                                                             key={containerType[i]+'.'+rentMode[j]+'.'+duration[k]}
                                                             onChange={(e)=> {
@@ -319,24 +324,33 @@ class Quotation extends React.Component {
                                                 type="submit"
                                                 disabled={isSubmitting || !isEmpty(pickBy(errors)) || !dirty}
                                             >
-                                                { t('Submit')}
+                                                { c.t('Submit')}
                                             </FormButton>
                                             
                                         </FieldRow>
                                         
                                     </FormikForm>
                                 )}
-                                </Formik></div>
-                            )
-                        }}
-                        </Mutation>
-                    )}
-                    </Query>
-                </ApolloProvider>
-            )}
-            </I18n>
-        )}
-        </GqlApiSubscriber>
+                                </Formik>
+                            )}
+                            </Mutation>
+                        </div>}
+                        <TextField 
+                            field={{
+                                name: 'couponCodeEntry',
+                                placeholder: 'Please enter coupon code...',
+                                value: this.state.couponCodeEntry
+                                }}
+                            form={{}} 
+                            ignoreTouch={true}
+                            label='Coupon Code'
+                            onChange={this.updateCouponCodeEntry}
+                        />
+                        <FormButton onClick={this.updateCouponCode}>{ c.t('Update')}</FormButton>
+
+                    </div>)
+                }}</Query>
+            </ApolloProvider>
     )}
                 
 }

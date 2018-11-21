@@ -142,8 +142,8 @@ export const getPriceListByAccount = gql`
     }`
 
 export const getPriceListByCode = gql`
-    query ($code: String){
-        getPriceListByCode(code: $code) {
+    query ($code: String, $account_id: String){
+        getPriceListByCode(code: $code, account_id: $account_id) {
             _id
             code
             SKU_id {

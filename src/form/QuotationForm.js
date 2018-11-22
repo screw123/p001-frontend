@@ -200,6 +200,7 @@ class Quotation extends React.Component {
         const g = this.props.login
         const c = this.props.i18n
         const q = (this.state.couponCode==='') ? getPriceListByAccount: getPriceListByCode
+        console.log('q=', q, 'this.props.account_id=', this.props.account_id)
 
 
         return (
@@ -207,6 +208,8 @@ class Quotation extends React.Component {
                 <Query query={q} variables={{account_id: this.props.account_id || '', code: this.state.couponCode}}>
                 {({ loading: queryLoading, error: queryErr, data, refetch }) => {
                     
+                    if (queryLoading) return( <BigLoadingScreen text={'Getting your best price...'}/> )
+
                     if (queryErr) {
                         console.log('QuotationForm', queryErr, this.props.account_id)
                         return (<p>Error :(</p>)
@@ -220,9 +223,8 @@ class Quotation extends React.Component {
                     const {coms, initialValue} = this.genQuotationFromPriceList(fullPriceList, c.t)
                     console.log('initialValue=', initialValue)
 
-                    return(<div>
-                        {queryLoading && <BigLoadingScreen text={'Getting your best price...'}/>}
-                        {!queryLoading && <div>
+                    return(
+                        <div>
                             {coms}
                             <Mutation mutation={addQuotation} errorPolicy="all">
                             {(mutate, {loading: mutateLoading, err: mutateErr})=>(
@@ -334,21 +336,21 @@ class Quotation extends React.Component {
                                 </Formik>
                             )}
                             </Mutation>
-                        </div>}
-                        <TextField 
-                            field={{
-                                name: 'couponCodeEntry',
-                                placeholder: 'Please enter coupon code...',
-                                value: this.state.couponCodeEntry
-                                }}
-                            form={{}} 
-                            ignoreTouch={true}
-                            label='Coupon Code'
-                            onChange={this.updateCouponCodeEntry}
-                        />
-                        <FormButton onClick={this.updateCouponCode}>{ c.t('Update')}</FormButton>
+                            <TextField 
+                                field={{
+                                    name: 'couponCodeEntry',
+                                    placeholder: 'Please enter coupon code...',
+                                    value: this.state.couponCodeEntry
+                                    }}
+                                form={{}} 
+                                ignoreTouch={true}
+                                label='Coupon Code'
+                                onChange={this.updateCouponCodeEntry}
+                            />
+                            <FormButton onClick={this.updateCouponCode}>{ c.t('Update')}</FormButton>
 
-                    </div>)
+                        </div>
+                    )
                 }}</Query>
             </ApolloProvider>
     )}

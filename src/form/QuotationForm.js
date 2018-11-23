@@ -4,16 +4,17 @@ import { getPriceListByAccount, getPriceListByCode, addQuotation } from '../gql/
 import { Formik, Field, FieldArray } from 'formik'
 import FormikForm, { TextField, FormButton, FormErr, FieldRow } from '../component/FormikForm.js'
 
-import { I18n } from 'react-i18next'
-import GqlApi, { GqlApiSubscriber } from '../stateContainer/GqlApi.js'
 import { ApolloProvider, Query, Mutation } from "react-apollo"
 import {BigLoadingScreen} from '../component/Loading.js'
+
+import parseApolloErr from '../util/parseErr.js'
 
 import merge from 'lodash/merge'
 import omit from 'lodash/omit'
 import isEmpty from 'lodash/isEmpty'
 import isEqual from 'lodash/isEqual'
 import pickBy from 'lodash/pickBy'
+import { throwServerError } from "apollo-link-http-common";
 
 class Quotation extends React.Component {
     constructor(props) {
@@ -25,19 +26,53 @@ class Quotation extends React.Component {
         this.updateValues = this.updateValues.bind(this)
         this.calcTotalAmt = this.calcTotalAmt.bind(this)
         this.updateCouponCode = this.updateCouponCode.bind(this)
+        this.removeCouponCode = this.removeCouponCode.bind(this)
+        this.getCouponPriceList = this.getCouponPriceList.bind(this)
         this.state = {
             containerInitValue: {},
-            fullPriceList: {},
+            couponPriceList: {},
             couponCode: '',
-            couponCodeEntry: ''
+            couponCodeEntry: '',
+            couponErr: undefined,
+            couponLoading: false,
+
         }
     }
     
     updateCouponCodeEntry = (e) => this.setState({couponCodeEntry: e.target.value.toUpperCase()})
     updateCouponCode = () => this.setState({couponCode: this.state.couponCodeEntry})
+    removeCouponCode = () => this.setState({couponCode: ''})
 
-    transformPriceList = (p) => { //to transform a single priceList
+    getCouponPriceList = async (gqlClient, t) => {
+        console.log('getCouponPriceList')
+        this.setState({couponLoading: true})
+        try {
+            console.log('getCouponPriceList2')
+            const d = await gqlClient.query({
+                query: getPriceListByCode,
+                variables: {account_id: this.props.account_id || '', code: this.state.couponCodeEntry}
+            })
+            console.log('getCouponPriceList3', d)
+            const fullPriceList = this.transformPriceList(d.data)
+            console.log(fullPriceList)
+            this.setState({couponPriceList: fullPriceList, couponLoading: false, couponCode: this.state.couponCodeEntry, couponErr: undefined})
+        }
+        catch(e) {
+            const errStack = parseApolloErr(e, t)
+            for(let i=0;i<errStack.length;i++) {
+                if (errStack[i].type==='NOT_FOUND') {
+                    this.setState({couponErr: t('Coupon Code is invalid or expired'), couponLoading: false, couponCode: '', couponPriceList:{} })
+                }
+            }
+        }
+        
+
+    }
+
+    transformPriceList = (d) => { //to transform a single priceList
         console.time('transformPriceList')
+        let p = d.getPriceListByAccount
+        if (p===undefined) { p = d.getPriceListByCode }
         const result = {}
         for(let i = 0; i<p.length;i++){
             const itemCode = p[i].SKU_id.shortCode
@@ -54,7 +89,7 @@ class Quotation extends React.Component {
         return result
     }
     
-    transformPriceListMulti = (p) => { //to transform a multiple priceList
+    /*transformPriceListMulti = (p) => { //to transform a multiple priceList
         console.time('transformPriceListMulti')
         console.log(p)
         const result = {}
@@ -73,7 +108,7 @@ class Quotation extends React.Component {
         }
         console.timeEnd('transformPriceListMulti')
         return result
-    }
+    }*/
     
     genQuotationFromPriceList = (p, t) => { //p = priceList, t=translation object
         const SKUList = Object.keys(p)
@@ -201,26 +236,34 @@ class Quotation extends React.Component {
         const c = this.props.i18n
         const q = (this.state.couponCode==='') ? getPriceListByAccount: getPriceListByCode
         console.log('q=', q, 'this.props.account_id=', this.props.account_id)
-
+        const gqlClient = (g.state.isLogined)? g.getGqlClient() : g.getGqlClientPublic()
 
         return (
-            <ApolloProvider client={(g.state.isLogined)? GqlApi.getGqlClient() : GqlApi.getGqlClientPublic()}>
-                <Query query={q} variables={{account_id: this.props.account_id || '', code: this.state.couponCode}}>
+            <ApolloProvider client={gqlClient}>
+                <Query query={getPriceListByAccount} variables={{account_id: this.props.account_id}}>
                 {({ loading: queryLoading, error: queryErr, data, refetch }) => {
-                    
-                    if (queryLoading) return( <BigLoadingScreen text={'Getting your best price...'}/> )
+                    if (queryLoading || this.state.couponLoading) return( <BigLoadingScreen text={'Getting your best price...'}/> )
 
                     if (queryErr) {
                         console.log('QuotationForm', queryErr, this.props.account_id)
                         return (<p>Error :(</p>)
                     }
-                    console.log('data=', data)
                     //Full price list converts what DB sends back into {priceList: {box: {rentMode: }}}
-                    const fullPriceList = this.transformPriceList((this.state.couponCode==='') ? data.getPriceListByAccount: data.getPriceListByCode)
-                    console.log('priceList=',fullPriceList)
+                    const fullPriceList = this.transformPriceList(data)
+                    console.log('priceList=',fullPriceList, 'this.state.couponPriceList=', this.state.couponPriceList)
                     
+                    if (this.state.couponCode==='') {
+
+                    }
+
+                    let coms, initialValue
+                    if (this.state.couponCode==='') {
+                        ({coms, initialValue} = this.genQuotationFromPriceList(fullPriceList, c.t))
+                    }
+                    else {
+                        ({coms, initialValue} = this.genQuotationFromPriceList(this.state.couponPriceList, c.t))
+                    }
                     //coms is the list of components.  InitialValue is the structure for Formik
-                    const {coms, initialValue} = this.genQuotationFromPriceList(fullPriceList, c.t)
                     console.log('initialValue=', initialValue)
 
                     return(
@@ -346,8 +389,9 @@ class Quotation extends React.Component {
                                 ignoreTouch={true}
                                 label='Coupon Code'
                                 onChange={this.updateCouponCodeEntry}
+                                err={this.state.couponErr}
                             />
-                            <FormButton onClick={this.updateCouponCode}>{ c.t('Update')}</FormButton>
+                            <FormButton onClick={()=>this.getCouponPriceList(gqlClient, c.t)}>{ c.t('Update')}</FormButton>
 
                         </div>
                     )

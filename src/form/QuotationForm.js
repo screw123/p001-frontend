@@ -28,6 +28,7 @@ class Quotation extends React.Component {
         this.updateCouponCode = this.updateCouponCode.bind(this)
         this.removeCouponCode = this.removeCouponCode.bind(this)
         this.getCouponPriceList = this.getCouponPriceList.bind(this)
+        this.checkAccountChange = this.checkAccountChange.bind(this)
         this.state = {
             containerInitValue: {},
             couponPriceList: {},
@@ -35,13 +36,20 @@ class Quotation extends React.Component {
             couponCodeEntry: '',
             couponErr: undefined,
             couponLoading: false,
-
+            currentAcct_id: this.props.account_id
         }
     }
     
     updateCouponCodeEntry = (e) => this.setState({couponCodeEntry: e.target.value.toUpperCase()})
     updateCouponCode = () => this.setState({couponCode: this.state.couponCodeEntry})
     removeCouponCode = () => this.setState({couponCode: ''})
+
+    checkAccountChange = () => {
+        console.log('checkAccountChange' ,this.state.currentAcct_id, this.props.account_id)
+        if (this.state.currentAcct_id !== this.props.account_id) {
+            this.setState({currentAcct_id: this.props.account_id, couponCode: '', couponCodeEntry: ''})
+        }
+    }
 
     getCouponPriceList = async (gqlClient, t) => {
         console.log('getCouponPriceList')
@@ -235,8 +243,8 @@ class Quotation extends React.Component {
         const g = this.props.login
         const c = this.props.i18n
         const q = (this.state.couponCode==='') ? getPriceListByAccount: getPriceListByCode
-        console.log('q=', q, 'this.props.account_id=', this.props.account_id)
         const gqlClient = (g.state.isLogined)? g.getGqlClient() : g.getGqlClientPublic()
+        this.checkAccountChange()
 
         return (
             <ApolloProvider client={gqlClient}>
@@ -250,41 +258,87 @@ class Quotation extends React.Component {
                     }
                     //Full price list converts what DB sends back into {priceList: {box: {rentMode: }}}
                     const fullPriceList = this.transformPriceList(data)
-                    console.log('priceList=',fullPriceList, 'this.state.couponPriceList=', this.state.couponPriceList)
-                    
-                    if (this.state.couponCode==='') {
-
-                    }
 
                     let coms, initialValue
-                    if (this.state.couponCode==='') {
-                        ({coms, initialValue} = this.genQuotationFromPriceList(fullPriceList, c.t))
-                    }
-                    else {
-                        ({coms, initialValue} = this.genQuotationFromPriceList(this.state.couponPriceList, c.t))
-                    }
+
+                    //if couponCode is not available, use result from getPriceListByAcct
+                    if (this.state.couponCode==='') { ({coms, initialValue} = this.genQuotationFromPriceList(fullPriceList, c.t)) }
+
+                    //if couponCode is entered and accepted, coupon price list will be stored in state.  use price list in state
+
+                    //Fixme change later that, if couponCode is accepted, do not load price list from server, use coupon pricelist directly
+                    else { ({coms, initialValue} = this.genQuotationFromPriceList(this.state.couponPriceList, c.t)) }
+
+
                     //coms is the list of components.  InitialValue is the structure for Formik
                     console.log('initialValue=', initialValue)
 
-                    return(
-                        <div>
-                            {coms}
-                            <Mutation mutation={addQuotation} errorPolicy="all">
-                            {(mutate, {loading: mutateLoading, err: mutateErr})=>(
-                                <Formik
-                                    enableReinitialize={true}
-                                    initialValues={{
-                                        containers: initialValue,
-                                        totalAmt: 0
-                                    }}
-                                    validate={ (values)=>{
-                                        //need to charge minimum
-                                        return {}
-                                    }}
-                                    onSubmit={async (values, actions) => {
-                                        let quotation_lines = []
-                                        const containerType = Object.keys(values.containers)
+                    return(<div>
+                        {coms}
+                        <Mutation mutation={addQuotation} errorPolicy="all">
+                        {(mutate, {loading: mutateLoading, err: mutateErr})=>(
+                            <Formik
+                                enableReinitialize={true}
+                                initialValues={{
+                                    containers: initialValue,
+                                    totalAmt: 0
+                                }}
+                                validate={ (values)=>{
+                                    //need to charge minimum
+                                    return {}
+                                }}
+                                onSubmit={async (values, actions) => {
+                                    let quotation_lines = []
+                                    const containerType = Object.keys(values.containers)
+                                        
+                                    for (let i=0; i<containerType.length; i++) {
+                                    
+                                        //rentMode = 'DAY', 'MONTH', 'YEAR', ...
+                                        let rentMode = Object.keys(values.containers[containerType[i]])
+                                        
+                                        for (let j=0; j<rentMode.length; j++) {
+                                        
+                                            let duration = Object.keys(values.containers[containerType[i]][rentMode[j]])
                                             
+                                            for (let k=0; k<duration.length; k++) {
+                                                if (values.containers[containerType[i]][rentMode[j]][duration[k]]>0) {
+                                                    quotation_lines.push({
+                                                        priceList_id: fullPriceList[containerType[i]]['mode'][rentMode[j]][duration[k]]._id,
+                                                        qty: values.containers[containerType[i]][rentMode[j]][duration[k]],
+                                                        remarks: ''
+                                                    })
+                                                }
+                                            }
+                                        }
+                                    }
+                                    console.log(quotation_lines)
+                                    try {
+                                        const d = await mutate({variables: {
+                                            account_id: this.props.account_id,
+                                            quotationLines: quotation_lines,
+                                            couponCode: (this.state.couponCode==='') ? undefined: this.state.couponCode
+                                        }})
+                                        console.log('server return', d)
+                                        
+                                        //save the submitted quotation to localStorage
+                                        //The only use of this local stored quotation is for auto filling number of boxes ordered, nothing more.  Do not use to show amount to user
+                                        //and do not use the quotation id anymore.
+                                        if (typeof(Storage) !== "undefined") {
+                                            window.localStorage.setItem('Quotation', JSON.stringify(d.data.addQuotation))
+                                        }
+                                    }
+                                    catch(e) { console.log(e) }
+                                    actions.setSubmitting(false)
+                                }}
+                            >
+                            {({ errors, isSubmitting, setFieldValue, dirty, touched, values, status }) => (
+                                <FormikForm>
+                                    <FieldArray name="orders" render={(arrayHelper)=> {
+                                        let r = []
+                                        
+                                        //containerType = 'STANDARD', 'HIGH VALUE', ...
+                                        const containerType = Object.keys(values.containers)
+                                        
                                         for (let i=0; i<containerType.length; i++) {
                                         
                                             //rentMode = 'DAY', 'MONTH', 'YEAR', ...
@@ -295,106 +349,58 @@ class Quotation extends React.Component {
                                                 let duration = Object.keys(values.containers[containerType[i]][rentMode[j]])
                                                 
                                                 for (let k=0; k<duration.length; k++) {
-                                                    if (values.containers[containerType[i]][rentMode[j]][duration[k]]>0) {
-                                                        quotation_lines.push({
-                                                            priceList_id: fullPriceList[containerType[i]]['mode'][rentMode[j]][duration[k]]._id,
-                                                            qty: values.containers[containerType[i]][rentMode[j]][duration[k]],
-                                                            remarks: ''
-                                                        })
-                                                    }
+                                                    
+                                                
+                                                    r.push(<Field
+                                                        name={'containers.' + containerType[i] + '.' + rentMode[j] + '.' + duration[k]}
+                                                        component={TextField}
+                                                        label={c.t(containerType[i]) + ', ' + duration[k] + ' ' + c.t(rentMode[j])}
+                                                        value={values.containers[containerType[i]][rentMode[j]][duration[k]]}
+                                                        key={containerType[i]+'.'+rentMode[j]+'.'+duration[k]}
+                                                        onChange={(e)=> {
+                                                            //if (+e.target.value!== +e.target.value) {//not a value
+                                                            if (!isNaN(parseInt(e.target.value|0, 10))) { this.updateValues(fullPriceList, values, e.target.name, Math.abs(parseInt(e.target.value|0, 10)), setFieldValue) }
+                                                        }}
+                                                    />)
                                                 }
                                             }
-                                        }
-                                        console.log(quotation_lines)
-                                        try {
-                                            const d = await mutate({variables: {
-                                                account_id: this.props.account_id,
-                                                quotationLines: quotation_lines
-                                            }})
-                                            console.log('server return', d)
                                             
-                                            //save the submitted quotation to localStorage
-                                            //The only use of this local stored quotation is for auto filling number of boxes ordered, nothing more.  Do not use to show amount to user
-                                            //and do not use the quotation id anymore.
-                                            if (typeof(Storage) !== "undefined") {
-                                                window.localStorage.setItem('Quotation', JSON.stringify(d.data.addQuotation))
-                                            }
                                         }
-                                        catch(e) { console.log(e) }
-                                        actions.setSubmitting(false)
+                                        return r
                                     }}
-                                >
-                                {({ errors, isSubmitting, setFieldValue, dirty, touched, values, status }) => (
-                                    <FormikForm>
-                                        <FieldArray name="orders" render={(arrayHelper)=> {
-                                            let r = []
-                                            
-                                            //containerType = 'STANDARD', 'HIGH VALUE', ...
-                                            const containerType = Object.keys(values.containers)
-                                            
-                                            for (let i=0; i<containerType.length; i++) {
-                                            
-                                                //rentMode = 'DAY', 'MONTH', 'YEAR', ...
-                                                let rentMode = Object.keys(values.containers[containerType[i]])
-                                                
-                                                for (let j=0; j<rentMode.length; j++) {
-                                                
-                                                    let duration = Object.keys(values.containers[containerType[i]][rentMode[j]])
-                                                    
-                                                    for (let k=0; k<duration.length; k++) {
-                                                        
-                                                    
-                                                        r.push(<Field
-                                                            name={'containers.' + containerType[i] + '.' + rentMode[j] + '.' + duration[k]}
-                                                            component={TextField}
-                                                            label={c.t(containerType[i]) + ', ' + duration[k] + ' ' + c.t(rentMode[j])}
-                                                            value={values.containers[containerType[i]][rentMode[j]][duration[k]]}
-                                                            key={containerType[i]+'.'+rentMode[j]+'.'+duration[k]}
-                                                            onChange={(e)=> {
-                                                                //if (+e.target.value!== +e.target.value) {//not a value
-                                                                if (!isNaN(parseInt(e.target.value|0, 10))) { this.updateValues(fullPriceList, values, e.target.name, Math.abs(parseInt(e.target.value|0, 10)), setFieldValue) }
-                                                            }}
-                                                        />)
-                                                    }
-                                                }
-                                                
-                                            }
-                                            return r
-                                        }}
-                                        />
-                                        <p>Total amount: {values.totalAmt}</p>
-                                        <FormErr>{status}</FormErr>
-                                        <FieldRow>
-                                            <FormButton
-                                                type="submit"
-                                                disabled={isSubmitting || !isEmpty(pickBy(errors)) || !dirty}
-                                            >
-                                                { c.t('Submit')}
-                                            </FormButton>
-                                            
-                                        </FieldRow>
+                                    />
+                                    <p>Total amount: {values.totalAmt}</p>
+                                    <FormErr>{status}</FormErr>
+                                    <FieldRow>
+                                        <FormButton
+                                            type="submit"
+                                            disabled={isSubmitting || !isEmpty(pickBy(errors)) || !dirty}
+                                        >
+                                            { c.t('Submit')}
+                                        </FormButton>
                                         
-                                    </FormikForm>
-                                )}
-                                </Formik>
+                                    </FieldRow>
+                                    
+                                </FormikForm>
                             )}
-                            </Mutation>
-                            <TextField 
-                                field={{
-                                    name: 'couponCodeEntry',
-                                    placeholder: 'Please enter coupon code...',
-                                    value: this.state.couponCodeEntry
-                                    }}
-                                form={{}} 
-                                ignoreTouch={true}
-                                label='Coupon Code'
-                                onChange={this.updateCouponCodeEntry}
-                                err={this.state.couponErr}
-                            />
-                            <FormButton onClick={()=>this.getCouponPriceList(gqlClient, c.t)}>{ c.t('Update')}</FormButton>
+                            </Formik>
+                        )}
+                        </Mutation>
+                        <TextField 
+                            field={{
+                                name: 'couponCodeEntry',
+                                placeholder: 'Please enter coupon code...',
+                                value: this.state.couponCodeEntry
+                                }}
+                            form={{}} 
+                            ignoreTouch={true}
+                            label='Coupon Code'
+                            onChange={this.updateCouponCodeEntry}
+                            err={this.state.couponErr}
+                        />
+                        <FormButton onClick={()=>this.getCouponPriceList(gqlClient, c.t)}>{ c.t('Update')}</FormButton>
 
-                        </div>
-                    )
+                    </div>)
                 }}</Query>
             </ApolloProvider>
     )}

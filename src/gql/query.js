@@ -175,8 +175,8 @@ export const getPriceListByCode = gql`
 
 
 export const addQuotation = gql`
-    mutation ($account_id: String!, $quotationLines: [quotationLines!]!) {
-        addQuotation(account_id: $account_id, quotationLines: $quotationLines) {
+    mutation ($account_id: String!, $quotationLines: [quotationLines!]!, $couponCode: String!) {
+        addQuotation(account_id: $account_id, quotationLines: $quotationLines, couponCode: $couponCode) {
             _id
             version
             status

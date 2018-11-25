@@ -43,9 +43,9 @@ class QuotationPage extends React.Component {
         const c = this.props.i18n
         return (                                                                                      
             <Background>
-                {/* if not logined, show QuoationForm without empty account_id */}
+                {/* if not logined, show QuoationForm with empty account_id */}
                 {/* else, show a selector and account_id */}
-                {c.state.isLogined && (this.state.acctList.length > 1) &&
+                {g.state.isLogined && (this.state.acctList.length > 1) &&
                     <MultiSelect 
                         field={{
                             name: 'acct',

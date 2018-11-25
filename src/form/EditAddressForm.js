@@ -1,6 +1,5 @@
 import React from "react"
 import { Formik, Field } from 'formik'
-import isMobilePhone from 'validator/lib/isMobilePhone'
 import FormikForm, { MultiSelect, TextField, FormButton, FormErr, FormIcon, RadioButtonGroup, RadioButton, CheckBox, InputGroup, DropDown } from '../component/FormikForm.js'
 import { I18n } from 'react-i18next'
 
@@ -8,17 +7,17 @@ import isEmpty from 'lodash/isEmpty'
 import pickBy from 'lodash/pickBy'
 import omitBy from 'lodash/omitBy'
 import isUndefined from 'lodash/isUndefined'
-import merge from 'lodash/merge'
 
 import { ApolloProvider, Mutation } from 'react-apollo'
-import { addAddress } from '../gql/query.js'
+import { updateAddress } from '../gql/query.js'
 
 import GqlApi from '../stateContainer/GqlApi.js'
-import LocaleApi from '../stateContainer/LocaleApi.js'
 import parseApolloErr from '../util/parseErr.js'
 
-class AddNewAddressForm extends React.Component {
-    
+// Store user address details that come from props
+let user = {};
+
+class EditAddressForm extends React.Component {
     constructor(props) {
         super(props)
         this.validate = this.validate.bind(this)
@@ -37,8 +36,9 @@ class AddNewAddressForm extends React.Component {
             addressRegion1: ({addressRegion1}) => (addressRegion1.length>0 && addressRegion1.length<50)? undefined : 'Please provide a valid region',
             addressRegion2: ({addressRegion2}) => (addressRegion2.length>0 && addressRegion2.length<50)? undefined : 'Please provide a valid region',
             addressCountry: ({addressCountry}) => (addressCountry && addressCountry.length>0)? undefined : 'Please choose address Country',
-            addressType: () => undefined,
             account_id: () => undefined,
+            _id: () => undefined,
+            disable: () => undefined,
             telephone: ({telephone}) => (telephone.length==8)? undefined: 'Please provide a valid phone number'
         }
         const keyArr = Object.keys(v)
@@ -53,22 +53,22 @@ class AddNewAddressForm extends React.Component {
 
     render(){ return(
         <ApolloProvider client={GqlApi.getGqlClient()}>
-            <Mutation mutation={addAddress} errorPolicy="all">
+            <Mutation mutation={updateAddress} errorPolicy="all">
             {(mutate, {loading, err})=>(
                 <I18n>
-                {(t) => {
-                    if (err) return (<div>{err}</div>)
-                    else return(
+                {(t) => ( 
                     <Formik
+                        enableReinitialize={true}
                         initialValues={{
-                            addressType: 'CUSTOMER',
-                            legalName: '',
-                            addressCountry: ' ',
-                            addressRegion1: '',
-                            addressRegion2: '',
-                            streetAddress: '',
-                            telephone: '',
-                            account_id: this.props.account_id
+                            _id: this.props.address._id || '',
+                            legalName: this.props.address.legalName || '',
+                            addressCountry: this.props.address.addressCountry || '',
+                            addressRegion1: this.props.address.addressRegion1 || '',
+                            addressRegion2: this.props.address.addressRegion2 || '',
+                            streetAddress: this.props.address.streetAddress || '',
+                            telephone: this.props.address.telephone || '',
+                            account_id: this.props.account_id || '',
+                            disable: false,
                         }}
                         validate={this.validate}
                         onSubmit={ async(values, actions) => {
@@ -79,22 +79,20 @@ class AddNewAddressForm extends React.Component {
                             console.log('validate ok, now submit.');
                             try {
                                 const vars = {
-                                    account_id: this.props.account_id,
-                                    addressType: values.addressType,
+                                    _id: values._id,
+                                    //account_id: values.account_id,  //can enable later
                                     legalName: values.legalName,
                                     addressCountry: values.addressCountry,
                                     addressRegion1: values.addressRegion1,
                                     addressRegion2: values.addressRegion2,
                                     streetAddress: values.streetAddress,
-                                    telephone: values.telephone
+                                    telephone: values.telephone,
+                                    isActive: !values.disable
                                 }
                                 console.log('vars=', vars)
                                 const d = await mutate({variables: vars})
                                 console.log('server return', d)
-                                if(this.props.onSubmitSuccess) {
-                                    actions.resetForm({})
-                                    this.props.onSubmitSuccess(d.data.addAddress)
-                                }
+                                if(this.props.onSubmitSuccess){this.props.onSubmitSuccess(d.data.updateAddress)}
                             } catch(er) { 
                                 console.log('submit err', er, er.message)
                                 const errStack = parseApolloErr(er, t)
@@ -102,8 +100,10 @@ class AddNewAddressForm extends React.Component {
                                 for (let i=0; i<errStack.length; i++) {
                                     if (errStack[i].key) { 
                                         console.log('err key =', errStack[i].key)
-                                        
-                                        actions.setFieldError(errStack[i].key, errStack[i].message)
+                                        let k = errStack[i].key
+                                        if (k==='address') { k='disable'}
+
+                                        actions.setFieldError(k, errStack[i].message)
                                     }
                                     else {
                                         actions.setStatus(errStack[i].message)
@@ -113,7 +113,7 @@ class AddNewAddressForm extends React.Component {
                             }                        
                         }}                    
                     >
-                    {({ errors, isSubmitting, touched, values, status }) => {
+                    {({ errors, isSubmitting, dirty, values, status }) => {
                         return (
                             <FormikForm>
                                 <Field
@@ -124,6 +124,7 @@ class AddNewAddressForm extends React.Component {
                                     err={errors.legalName}
                                     value={values.legalName}
                                     placeholder="Input your address"
+                                    ignoreTouch={true}
                                 />
                                 <Field
                                     name="streetAddress"
@@ -132,6 +133,7 @@ class AddNewAddressForm extends React.Component {
                                     label={t('Address')}
                                     value={values.streetAddress}
                                     err={errors.streetAddress}
+                                    ignoreTouch={true}
                                 />
                                 <Field
                                     name="addressRegion1"
@@ -141,15 +143,23 @@ class AddNewAddressForm extends React.Component {
                                     value={values.addressRegion1}
                                     err={errors.addressRegion1}
                                     placeholder="First Address Region"
+                                    ignoreTouch={true}
                                 />
                                 <Field
                                     name="addressRegion2"
                                     type="text"
-                                    component={TextField}
+                                    component={MultiSelect}
                                     label={t('Address Region2')}
                                     value={values.addressRegion2}
                                     err={errors.addressRegion2}
                                     placeholder="Second Address Region"
+                                    options={[
+                                        {value: t('屯門'), label: t('屯門')},
+                                        {value: t('HONG KONG ISLAND'), label: t('HONG KONG ISLAND')},
+                                        {value: t('NEW TERRITORIES'), label: t('NEW TERRITORIES')},
+                                        {value: t('LANTAU'), label: t('LANTAU')}
+                                    ]}
+                                    ignoreTouch={true}
                                 />
                                 <Field
                                     name="addressCountry"
@@ -164,6 +174,7 @@ class AddNewAddressForm extends React.Component {
                                         {value: t('NEW TERRITORIES'), label: t('NEW TERRITORIES')},
                                         {value: t('LANTAU'), label: t('LANTAU')}
                                     ]}
+                                    ignoreTouch={true}
                                 />
                                 <Field
                                     name="telephone"
@@ -172,20 +183,29 @@ class AddNewAddressForm extends React.Component {
                                     label={t('Phone')}
                                     value={values.telephone}
                                     err={errors.telephone}
+                                    ignoreTouch={true}
                                 />
-                                <FormErr>{status && status.form}</FormErr>
+                                <Field
+                                    name="disable"
+                                    key="disable"
+                                    component={CheckBox}
+                                    checked={values.disable}
+                                    err={errors.disable}
+                                    ignoreTouch={true}
+                                >{t('Disable This Address')}</Field>
                                 <FormButton
                                     type="submit"
-                                    disabled={isSubmitting || !isEmpty(pickBy(errors)) || loading }
-                                >
+                                    disabled={!dirty || isSubmitting || !isEmpty(pickBy(errors)) }
+                                    >
                                         {t('Submit')}
                                 </FormButton>
+                                <FormErr>{status && status.form}</FormErr>
                                 
                             </FormikForm>
                         )}
                     }
-                    </Formik>)
-                }}
+                    </Formik>
+                )}
                 </I18n>
             )}
             </Mutation>
@@ -194,4 +214,4 @@ class AddNewAddressForm extends React.Component {
     
 }
 
-export default AddNewAddressForm
+export default EditAddressForm

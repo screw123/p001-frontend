@@ -1,7 +1,7 @@
 import React from "react"
 import { Formik, Field } from 'formik'
 import FormikForm, { TextField, FormButton, FormErr, FormIcon } from '../component/FormikForm.js'
-import {StraightRow } from '../component/Background.js'
+import {StraightRow } from '../component/BasicComponents.js'
 
 import GqlApi, { GqlApiSubscriber } from '../stateContainer/GqlApi.js'
 import { ApolloProvider, Mutation } from 'react-apollo'

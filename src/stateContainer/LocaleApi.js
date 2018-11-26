@@ -29,10 +29,11 @@ class LocaleContainer extends Container {
                 },
                 react: {
                 }
-})
+            })
+
         if (i18next.language==='zh-HK') { moment.locale('zh-HK') }
         this.state = {
-            moment: moment ,
+            moment: moment,
             i18n: i18next
         }
     }

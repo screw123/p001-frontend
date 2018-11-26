@@ -1,17 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import { AutoSizer, List, WindowScroller } from "react-virtualized";
-
-const SectionHeader = styled.div`
-    font-weight: 600;
-    font-size: 1.5em;
-    padding: 1em;
-    display: inline-block;
-`;
-
-const HeaderText = styled.span`
-    padding: 1em;
-`;
+import React from 'react'
+import styled from 'styled-components'
+import { AutoSizer, List, WindowScroller  } from 'react-virtualized';
+import {Section} from './Section.js'
 
 const DefaultListComponent = (a, data) => (
     <div key={a.key} style={a.style}>
@@ -30,11 +20,11 @@ export class InfoList extends React.Component {
     render() {
         return (
             <div>
-                <SectionHeader>
-                    {this.props.headerIconLeft}
-                    <HeaderText>{this.props.headerText}</HeaderText>
-                    {this.props.headerIconRight}
-                </SectionHeader>
+                <Section 
+                    headerIconLeft={this.props.headerIconLeft}
+                    headerIconRight={this.props.headerIconRight}
+                    headerText={this.props.headerText}
+                />
                 <AutoSizer disableHeight>
                     {({ width }) => (
                         <WindowScroller>

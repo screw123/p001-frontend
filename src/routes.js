@@ -1,21 +1,23 @@
-import LoginPage from "./page/LoginPage.js";
-import IndexPage from "./page/IndexPage.js";
-import UserDashboardPage from "./page/UserDashboardPage.js";
-import SignUpWorkflow from "./page/SignUpWorkflow.js";
-import ResetPasswordPage from "./page/ResetPasswordPage.js";
-import UserActivationPage from "./page/UserActivationPage.js";
-import TermsAndConditionPage from "./page/TermsAndConditionPage.js";
-import QuotationPage from "./page/QuotationPage.js";
-import SalesOrderConfirmPage from "./page/SalesOrderConfirmPage.js";
-import TestPage from "./page/TestPage.js";
-import GalleryPage from "./page/GalleryPage";
+import LoginPage from './page/LoginPage.js'
+import IndexPage from './page/IndexPage.js'
+import UserDashboardPage from './page/UserDashboardPage.js'
+import SignUpWorkflow from './page/SignUpWorkflow.js'
+import ResetPasswordPage from './page/ResetPasswordPage.js'
+import UserActivationPage from './page/UserActivationPage.js'
+import TermsAndConditionPage from './page/TermsAndConditionPage.js'
+import QuotationPage from './page/QuotationPage.js'
+import SalesOrderConfirmPage from './page/SalesOrderConfirmPage.js'
+import UserProfilePage from './page/UserProfilePage.js'
+import TestPage from './page/TestPage.js'
 
 const routes = [
     {
-        path: "/login",
-        menuName: "Login",
+        path: "/login",  //this should be removed as Login should be a right side icon item
+        menuName: 'Login',
         component: LoginPage,
         navbar: {
+            firstLevel: true,
+            itemId: 2,
             showBeforeLogin: true,
             showAfterLogin: false
         },
@@ -24,15 +26,26 @@ const routes = [
         }
     },
     {
-        path: "/signup",
-        menuName: "Sign Up",
+        path: "/signup",  //this should be removed as sign up is right side icon item
+        menuName: 'Sign Up',
         component: SignUpWorkflow,
         navbar: {
+            itemId: 3,
+            firstLevel: true,
             showBeforeLogin: true,
             showAfterLogin: false
         },
         router: {
             requireLogin: false
+        }
+    },
+    {
+        menuName: 'My Keep',
+        navbar: {
+            itemId: 100,
+            firstLevel: true,
+            showBeforeLogin: false,
+            showAfterLogin: true
         }
     },
     {
@@ -40,6 +53,9 @@ const routes = [
         menuName: "Dashboard",
         component: UserDashboardPage,
         navbar: {
+            itemId: 101,
+            parentId: 100,
+            firstLevel: false,
             showBeforeLogin: false,
             showAfterLogin: true
         },
@@ -48,10 +64,13 @@ const routes = [
         }
     },
     {
-        path: "/userActivation/:_id?/:verificationPIN?",
-        menuName: "User Activation",
+        path: "/userActivation/:_id?/:verificationPIN?",  //will not show in NavBar
+        linkURL: "/userActivation",
+        menuName: 'User Activation',
         component: UserActivationPage,
         navbar: {
+            itemId: 901,
+            firstLevel: false,
             showBeforeLogin: false,
             showAfterLogin: false
         },
@@ -60,12 +79,15 @@ const routes = [
         }
     },
     {
-        path: "/terms",
+        path: "/terms",  //is temp, will update and change
         exact: true,
         menuName: "Terms And Condition",
         component: TermsAndConditionPage,
         navbar: {
-            showBeforeLogin: true,
+            itemId: 701,
+            parentId: 100,
+            firstLevel: false,
+            showBeforeLogin: false,
             showAfterLogin: true
         },
         router: {
@@ -73,25 +95,29 @@ const routes = [
         }
     },
     {
-        path: "/",
+        path: "/",  //main page
         exact: true,
-        menuName: "Welcome to P001",
+        menuName: 'Home',
         component: IndexPage,
         navbar: {
+            itemId: 1,
+            firstLevel: true,
             showBeforeLogin: true,
-            showAfterLogin: true
+            showAfterLogin: false
         },
         router: {
             requireLogin: false
         }
     },
     {
-        path: "/resetPassword",
+        path: "/resetPassword",  //this should be removed as reset password should only be shown in login page
         exact: true,
         menuName: "Reset Your Password",
         component: ResetPasswordPage,
         navbar: {
-            showBeforeLogin: false,
+            itemId: 702,
+            firstLevel: true,
+            showBeforeLogin: true,
             showAfterLogin: false
         },
         router: {
@@ -100,10 +126,13 @@ const routes = [
     },
     {
         path: "/quotation/:quotation_id?",
+        linkURL: "/quotation",
         exact: true,
         menuName: "Quotation",
         component: QuotationPage,
         navbar: {
+            itemId: 201,
+            firstLevel: true,
             showBeforeLogin: true,
             showAfterLogin: true
         },
@@ -112,11 +141,13 @@ const routes = [
         }
     },
     {
-        path: "/confirmSalesOrder",
+        path: "/confirmSalesOrder",  //should be removed???
         exact: true,
         menuName: "Confirm Sales Order",
         component: SalesOrderConfirmPage,
         navbar: {
+            itemId: 901,
+            firstLevel: true,
             showBeforeLogin: false,
             showAfterLogin: true
         },
@@ -130,6 +161,8 @@ const routes = [
         menuName: "Testing Zone",
         component: TestPage,
         navbar: {
+            itemId: 999,
+            firstLevel: true,
             showBeforeLogin: true,
             showAfterLogin: true
         },
@@ -138,18 +171,21 @@ const routes = [
         }
     },
     {
-        path: "/gallery",
+        path: "/editUser",
         exact: true,
-        menuName: "Gallery",
-        component: GalleryPage,
+        menuName: '更改登入資料',
+        component: UserProfilePage,
         navbar: {
-            showBeforeLogin: true,
+            itemId: 112,
+            parentId: 100,
+            firstLevel: false,
+            showBeforeLogin: false,
             showAfterLogin: true
         },
         router: {
-            requireLogin: false
+            requireLogin: true
         }
     }
-];
+]
 
 export default routes;

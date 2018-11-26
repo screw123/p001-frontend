@@ -1,69 +1,52 @@
 import React from "react"
 import { getMyself } from '../gql/query.js'
-import Background from '../component/Background.js'
+import Background from '../component/BasicComponents.js'
 
-import GqlApi from '../stateContainer/GqlApi.js'
+import { GqlApiSubscriber } from '../stateContainer/GqlApi.js'
+import { LocaleApiSubscriber } from '../stateContainer/LocaleApi.js'
 import { ApolloProvider, Query } from "react-apollo"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {BigLoadingScreen} from '../component/Loading.js'
 import AddNewAddressForm from '../form/AddNewAddressForm'
+import UserProfileForm from '../form/UserProfileForm.js'
+import {Section} from '../component/Section.js'
+
 
 class UserDashboardPage extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { loadData: false }
-        this.loadData = this.loadData.bind(this)
-      }
-    
-    loadData() {
-        console.log('loadData=', this.state.loadData)
-        this.setState({loadData: true})
-        console.log('loadData=', this.state.loadData)
+        this.toggleUserProfileForm = this.toggleUserProfileForm.bind(this)
+        this.state = {showUserProfileForm: false}
     }
 
-    render() {
-        const makePretty = (d) => {
-            return(
+    toggleUserProfileForm = () => {
+        this.setState(prevState=> {return {showUserProfileForm: !prevState.showUserProfileForm} } )
+    }
+
+    genUserProfile = ({t, myself}) => (
+        <div>
+            <Section headerText={t('User Profile')} />
+            <div>{t('Hello, user!', {name: myself.firstName + ' ' + myself.lastName}) }</div>
+            <button onclick={this.toggleUserProfileForm}>Edit</button>
+            {this.state.userUserProfileForm && <UserProfileForm />}
+        </div>
+    )
+
+    render() { return (
+        <GqlApiSubscriber>
+        {(g)=>(
+            <LocaleApiSubscriber>
+            {(c)=>(
                 <div>
-                    <h2>Welcome {d.firstName + ' ' + d.lastName}</h2>
-                    
-                    <h3>Your list of accounts:</h3>
-                    <p><b>{d.accountOwn_id[0].name}</b>({d._id}) {d.accountOwn_id[0].isActive? "Active": "SUSPENDED"}<br />
-                    Current Balance: {d.accountOwn_id[0].balance} <br />
-                    </p>
+                    {this.genUserProfile({t: c.t, myself:g.state.myself})}
+                    <ApolloProvider client={g.getGqlClient()}><Query query={getMyself}>
+                    {({ loading, error, data }) => (
+                        <div>1</div>
+                    )}</Query></ApolloProvider>
                 </div>
-            )
-        }
-
-        return (
-            <ApolloProvider client={GqlApi.getGqlClient()}>
-                <Background>
-                    <Query query={getMyself}>
-                    {({ client, loading, error, data, refetch }) => {
-                        if (loading) return (<BigLoadingScreen/>)
-                        if (error) {
-                            console.log(error)
-                            return (<p>Error :(</p>)
-                        }
-                        
-                        if (data.getMyself.length==0) return (<button onClick={() => {
-                            refetch()
-                            }}>Load data after login</button>)
-
-                        return(
-                            <div>
-                            <button onClick={() => {
-                                GqlApi.logout()
-                                }}>Logout</button>
-                               
-                                {makePretty(data.getMyself)}                                 
-                            </div>
-                        )
-                    }}
-                    </Query>
-                </Background>
-            </ApolloProvider>
-        )
-    }
+            )}</LocaleApiSubscriber>
+        )}</GqlApiSubscriber>
+    )}
 }
 
 export default UserDashboardPage

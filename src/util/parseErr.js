@@ -45,6 +45,9 @@ const parseApolloErr = (err, t) => {
                 case 'PASSWORD_NOT_MATCH':
                     errObj['message'] = t('Wrong password.  Please check your input and try again')
                     break
+                case 'CANNOT_DISABLE_LAST_ONE':
+                    errObj['message'] = t('This is the last item, you cannot disable it', {object: t(errObj['key']) })
+                    break
                 default:
                     errObj['message'] = t(errObj['key']) + t('cannot be') + err.graphQLErrors[i].data[errObj['key']]
             }

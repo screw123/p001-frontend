@@ -2,7 +2,7 @@ import React from "react"
 import ResetPasswordForm from '../form/ResetPasswordForm.js'
 import { I18n } from 'react-i18next'
 
-import Background from '../component/Background.js'
+import Background from '../component/BasicComponents.js'
 
 class ResetPasswordPage extends React.Component {
     

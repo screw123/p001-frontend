@@ -129,4 +129,8 @@ export const LoadingIcon = ({...props}) => (
 )
 
 
+export const LoadingPlaceHolder = ({...props}) => (
+    <div>1</div>
+)
+
 export default LoadingAnim

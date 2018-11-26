@@ -31,7 +31,7 @@ const Title = styled.h3`
     padding: 1em 2em;
 `
 
-const ModalContent = styled.div`
+const Content = styled.div`
     padding: 2em;
 `
 
@@ -41,7 +41,7 @@ const IconDiv = styled.div`
     cursor: pointer;
 `
 
-const ModalFooter = styled.div`
+const Footer = styled.div`
     padding: 1em;
     justify-content: center;
     background-color: lime;
@@ -60,13 +60,13 @@ const Modal = ({component, content, title, closeModal, footerButtons, ...props})
                 {title}
                 {closeModal && <CloseIcon onClick={closeModal} />}
             </Title>
-            <ModalContent>
+            <Content>
                 {component}
                 {content}
-            </ModalContent>
-            <ModalFooter>
+            </Content>
+            <Footer>
                 {footerButtons}
-            </ModalFooter>
+            </Footer>
         </ModalBody>
     </ModalBG>
 )

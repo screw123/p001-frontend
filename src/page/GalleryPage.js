@@ -93,13 +93,14 @@ class GalleryPage extends React.Component {
             data: data,
             imageSize: 200,
 
-            selectMode: false,
+            selectMode: true,
             onSelect: this.onSelect,
             selectedValue: this.state.selectedValue,
             icons: ""
         };
         return (
             <Background>
+                <p>{'Selected = ' + this.state.selectedValue}</p>
                 <Gallery {...props} />
             </Background>
         );

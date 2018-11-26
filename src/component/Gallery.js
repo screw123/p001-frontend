@@ -56,7 +56,7 @@ export default class Gallery extends React.Component {
 
     handleImageClick = data => {
         if (this.props.selectMode) {
-            this.props.onSelect(data._id);
+            this.props.onSelect(data)
         } else {
             this.setState({
                 image: data.URL,

@@ -32,12 +32,13 @@ class App extends React.Component {
         for (var i = 0; i < routes.length; i++) {
             if (routes[i].path) {
                 let Com = routes[i].component
-                if (routes[i].requireLogin) {
+                if (routes[i].router.requireLogin) {
                     c.push(<PrivateRoute
-                        render={(props) => <Com {...props} {...stateContainer} />}
+                        component={Com}
                         exact={routes[i].exact}
                         path={routes[i].path}
                         key={i}
+                        stateContainer={stateContainer}
                     />)
                 }
                 else {

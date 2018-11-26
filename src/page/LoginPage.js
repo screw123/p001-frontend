@@ -20,13 +20,12 @@ class LoginPage extends React.Component {
     render() {
         const g = this.props.login
         const c = this.props.i18n
-        const { from } = this.props.location.state || { from: { pathname: "/dash" } }
+        console.log('state=', this.props.location.state)
+        const { from, ...otherProps } = this.props.location.state || { from: "/dash" }
+
 
         if (g.state.isLogined) {
-            return <Redirect to={from} />
-        }
-        else if (this.state.redirect===true) {
-            return <Redirect to={this.state.path} />
+            return <Redirect to={{pathname: from, state: {...otherProps}}} />
         }
         else { return (
             <Background>

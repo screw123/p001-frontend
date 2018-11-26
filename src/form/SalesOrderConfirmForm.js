@@ -31,8 +31,6 @@ class SalesOrderConfirmForm extends React.Component {
 		}
 	}
 	
-	
-	
 	backToQuotationForm = () => {
 		console.log('backToQuotationForm')
 	}
@@ -58,7 +56,7 @@ class SalesOrderConfirmForm extends React.Component {
         const c = this.props.i18n
 		return (
             <ApolloProvider client={g.getGqlClient()}>
-                <Query query={getQuotationById} variables={{quotation_id: this.props.quotation_id, account_id: this.props.account_id}}>
+				<Query query={getQuotationById} variables={{quotation_id: this.props.quotation_id, account_id: this.props.account_id}}>
                 {({ client, loading: queryLoading, error: queryErr, data, refetch }) => (
                     <Mutation mutation={addRentalOrder} errorPolicy="all">
                     {(mutate, {loading: mutateLoading, err: mutateErr})=>{

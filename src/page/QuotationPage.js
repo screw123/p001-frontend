@@ -1,13 +1,10 @@
 import React from "react"
-import { I18n } from 'react-i18next'
 
 import QuotationForm from '../form/QuotationForm.js'
-import SalesOrderConfirmForm from '../form/SalesOrderConfirmForm.js'
 
 import { MultiSelect } from '../component/FormikForm.js'
 import Background from '../component/BasicComponents.js'
-
-import GqlApi, {GqlApiSubscriber} from '../stateContainer/GqlApi.js'
+import { Redirect } from "react-router-dom"
 
 import union from 'lodash/union'
 
@@ -16,6 +13,7 @@ class QuotationPage extends React.Component {
     constructor(props) {
         super(props)
         this.changeAcct = this.changeAcct.bind(this)
+        this.quotationCreated = this.quotationCreated.bind(this)
         const acctList = union(
             (this.props.login.state.myself.accountOwn_id===null) ? 
                 [] : 
@@ -30,7 +28,8 @@ class QuotationPage extends React.Component {
         )
         this.state = {
             selectedAcct: ((acctList.length>0) ? acctList[0].value : ''),
-            acctList: acctList
+            acctList: acctList,
+            quotation: undefined
         }
     }
     
@@ -38,6 +37,8 @@ class QuotationPage extends React.Component {
         this.setState({selectedAcct: v})
     }
     
+    quotationCreated = (q) => this.setState({quotation: q})
+
     render() {
         const g = this.props.login
         const c = this.props.i18n
@@ -59,7 +60,13 @@ class QuotationPage extends React.Component {
                         options={this.state.acctList}
                     />
                 }
-                <QuotationForm account_id={this.state.selectedAcct} {...this.props} />
+                {!this.state.quotation && <QuotationForm account_id={this.state.selectedAcct} onAddQuotationSuccess={this.quotationCreated} {...this.props} /> }
+                {this.state.quotation && !g.state.isLogined &&
+                    <Redirect push to={{
+                        pathname: '/login',
+                        state: {quotation: this.state.quotation, from: '/confirmSalesOrder'}
+                    }} />
+                }
             </Background>
         )
     }

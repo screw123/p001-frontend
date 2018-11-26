@@ -16,6 +16,15 @@ import isEqual from 'lodash/isEqual'
 import pickBy from 'lodash/pickBy'
 import { throwServerError } from "apollo-link-http-common";
 
+/*
+Prop list:
+account_id
+g = this.props.login
+c = this.props.i18n
+onAddQuotationSuccess = function after quote is created, return quotation object
+*/
+
+
 class Quotation extends React.Component {
     constructor(props) {
         super(props)
@@ -313,13 +322,7 @@ class Quotation extends React.Component {
                                             couponCode: (this.state.couponCode==='') ? undefined: this.state.couponCode
                                         }})
                                         console.log('server return', d)
-                                        
-                                        //save the submitted quotation to localStorage
-                                        //The only use of this local stored quotation is for auto filling number of boxes ordered, nothing more.  Do not use to show amount to user
-                                        //and do not use the quotation id anymore.
-                                        if (typeof(Storage) !== "undefined") {
-                                            window.localStorage.setItem('Quotation', JSON.stringify(d.data.addQuotation))
-                                        }
+                                        if (this.props.onAddQuotationSuccess) { this.props.onAddQuotationSuccess(d.data.addQuotation)}
                                     }
                                     catch(e) { console.log(e) }
                                     actions.setSubmitting(false)

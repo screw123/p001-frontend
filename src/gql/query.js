@@ -175,7 +175,7 @@ export const getPriceListByCode = gql`
 
 
 export const addQuotation = gql`
-    mutation ($account_id: String!, $quotationLines: [quotationLines!]!, $couponCode: String!) {
+    mutation ($account_id: String!, $quotationLines: [quotationLines!]!, $couponCode: String) {
         addQuotation(account_id: $account_id, quotationLines: $quotationLines, couponCode: $couponCode) {
             _id
             version
@@ -194,8 +194,7 @@ export const addQuotation = gql`
             account_id {
                 _id
             }
-            originalPrice
-            discountedPrice
+            totalPrice
             updateDateTime
         }
     }`
@@ -221,9 +220,7 @@ export const getQuotationById = gql`
                 rentMode
                 duration
                 rent_unitPrice
-                rent_originalLineTotal
-                rent_unitDiscount
-                rent_discountedLineTotal
+                rent_lineTotal
                 remarks
             }
             account_id {
@@ -232,8 +229,7 @@ export const getQuotationById = gql`
             }
             accountType
             priceList
-            originalPrice
-            discountedPrice
+            totalPrice
             createDateTime
         }
         getAccountById(_id: $account_id) {

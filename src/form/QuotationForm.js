@@ -257,21 +257,15 @@ class Quotation extends React.Component {
                         return (<p>Error :(</p>)
                     }
                     //Full price list converts what DB sends back into {priceList: {box: {rentMode: }}}
-                    const fullPriceList = this.transformPriceList(data)
-
-                    let coms, initialValue
-
                     //if couponCode is not available, use result from getPriceListByAcct
-                    if (this.state.couponCode==='') { ({coms, initialValue} = this.genQuotationFromPriceList(fullPriceList, c.t)) }
-
                     //if couponCode is entered and accepted, coupon price list will be stored in state.  use price list in state
 
                     //Fixme change later that, if couponCode is accepted, do not load price list from server, use coupon pricelist directly
-                    else { ({coms, initialValue} = this.genQuotationFromPriceList(this.state.couponPriceList, c.t)) }
 
-
+                    const fullPriceList = (this.state.couponCode==='') ? this.transformPriceList(data) : this.state.couponPriceList
+                    
                     //coms is the list of components.  InitialValue is the structure for Formik
-                    console.log('initialValue=', initialValue)
+                    const {coms, initialValue} = this.genQuotationFromPriceList(fullPriceList, c.t)
 
                     return(<div>
                         {coms}
@@ -374,7 +368,7 @@ class Quotation extends React.Component {
                                     <FieldRow>
                                         <FormButton
                                             type="submit"
-                                            disabled={isSubmitting || !isEmpty(pickBy(errors)) || !dirty}
+                                            disabled={isSubmitting || !isEmpty(pickBy(errors)) || (values.totalAmt <= 0) }
                                         >
                                             { c.t('Submit')}
                                         </FormButton>

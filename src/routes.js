@@ -50,7 +50,7 @@ const routes = [
     },
     {
         path: "/dash",
-        menuName: 'Dashboard',
+        menuName: "Dashboard",
         component: UserDashboardPage,
         navbar: {
             itemId: 101,
@@ -81,7 +81,7 @@ const routes = [
     {
         path: "/terms",  //is temp, will update and change
         exact: true,
-        menuName: 'Terms And Condition',
+        menuName: "Terms And Condition",
         component: TermsAndConditionPage,
         navbar: {
             itemId: 701,
@@ -112,7 +112,7 @@ const routes = [
     {
         path: "/resetPassword",  //this should be removed as reset password should only be shown in login page
         exact: true,
-        menuName: 'Reset Your Password',
+        menuName: "Reset Your Password",
         component: ResetPasswordPage,
         navbar: {
             itemId: 702,
@@ -128,7 +128,7 @@ const routes = [
         path: "/quotation/:quotation_id?",
         linkURL: "/quotation",
         exact: true,
-        menuName: 'Quotation',
+        menuName: "Quotation",
         component: QuotationPage,
         navbar: {
             itemId: 201,
@@ -143,7 +143,7 @@ const routes = [
     {
         path: "/confirmSalesOrder",  //should be removed???
         exact: true,
-        menuName: 'Confirm Sales Order',
+        menuName: "Confirm Sales Order",
         component: SalesOrderConfirmPage,
         navbar: {
             itemId: 901,
@@ -153,12 +153,12 @@ const routes = [
         },
         router: {
             requireLogin: true
-        }    
+        }
     },
     {
         path: "/testPage",
         exact: true,
-        menuName: 'Testing Zone',
+        menuName: "Testing Zone",
         component: TestPage,
         navbar: {
             itemId: 999,
@@ -188,4 +188,4 @@ const routes = [
     }
 ]
 
-export default routes
+export default routes;

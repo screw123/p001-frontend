@@ -21,11 +21,10 @@ class LoginPage extends React.Component {
         const g = this.props.login
         const c = this.props.i18n
         console.log('state=', this.props.location.state)
-        const { from, ...otherProps } = this.props.location.state || { from: "/dash" }
-
+        const { nextPath, passOnState } = this.props.location.state || { nextPath: "/dash" }
 
         if (g.state.isLogined) {
-            return <Redirect to={{pathname: from, state: {...otherProps}}} />
+            return <Redirect to={{pathname: nextPath, state: passOnState}} />
         }
         else { return (
             <Background>

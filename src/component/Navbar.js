@@ -184,15 +184,12 @@ class Navbar extends React.PureComponent {
 
     gen2ndLevel = ({parentId, t, g}) => {
         const children = this.props.routes.filter(v=> v.navbar.parentId===parentId)
-        console.log('children of ', parentId, children)
         if (children.length===0) {return undefined}
         let c = []
 
         for(let i=0;i<children.length;i++) {
             const r = children[i]
             const toPath = r.linkURL||r.path
-
-            console.log(`2ndLevel node, name=${r.menuName}, itemId=${r.navbar.itemId}, r.navbar.showAfterLogin=${r.navbar.showAfterLogin}, r.navbar.showBeforeLogin=${r.navbar.showBeforeLogin}`)
 
             if  ((r.navbar.showAfterLogin===g.state.isLogined) || (r.navbar.showBeforeLogin===!g.state.isLogined)) {
                 c.push(<MenuLink to={toPath} key={`${parentId}-${i}`}>{t(r.menuName)}</MenuLink>)

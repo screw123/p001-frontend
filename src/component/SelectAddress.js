@@ -122,6 +122,7 @@ class SelectAddress extends React.Component{
                             title={c.t('Add New Address')}
                         />
                     }
+                    {this.props.err && <p>{c.t(this.props.err)}</p>}
                 </div>
             )}
         }}

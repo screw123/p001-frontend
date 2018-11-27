@@ -16,6 +16,8 @@ import request from 'superagent'
 
 import {getMyself} from '../gql/query.js'
 
+import union from 'lodash/union'
+
 
 class ApolloContainer extends Container {
     constructor() {
@@ -76,6 +78,21 @@ class ApolloContainer extends Container {
         else { return this.state.gqlClientPublic }
     }
     
+    getAllAccounts() {
+        return union([],
+            this.state.myself.accountOwn_id,
+            this.state.myself.accountManage_id,
+            this.state.myself.accountView_id
+        )
+    }
+
+    getManagedAccounts() {
+        return union([],
+            this.state.myself.accountOwn_id,
+            this.state.myself.accountManage_id
+        )
+    }
+
     async checkLogined() {
         if (this.state.isLogined===undefined) {
             this.setState({isLogined: new Promise(async (resolve) => {

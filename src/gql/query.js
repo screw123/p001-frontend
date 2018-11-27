@@ -186,21 +186,54 @@ export const addQuotation = gql`
                 }
                 SKU_id {
                     _id
+                    name
+                    iconPicURL
+                    lengthM
+                    widthM
+                    heightM
                 }
                 qty
                 rentMode
                 duration
+                rent_unitPrice
+                rent_lineTotal
+                remarks
             }
             account_id {
                 _id
             }
             totalPrice
-            updateDateTime
         }
     }`
 
+export const getAccountById = gql`
+    query ($account_id: String!){
+        getAccountById(_id: $account_id) {
+            _id
+            name
+            address_id {
+                _id
+                addressType
+                legalName
+                streetAddress
+                addressRegion1
+                addressRegion2
+                addressCountry
+                telephone
+            }
+            defaultBillingAddress_id {
+                _id
+            }
+            defaultShippingAddress_id {
+                _id
+            }
+            stripeCustomerObject
+        }
+    }
+`
+
 export const getQuotationById = gql`
-    query ($quotation_id: String!, $account_id: String!){
+    query ($quotation_id: String!){
         getQuotationById(quotation_id: $quotation_id) {
             _id
             status
@@ -227,11 +260,12 @@ export const getQuotationById = gql`
                 _id
                 name
             }
-            accountType
-            priceList
             totalPrice
-            createDateTime
         }
+    }`
+
+export const getQuotationAndAccountById = gql`
+    query ($account_id: String, $quotation_id: String){
         getAccountById(_id: $account_id) {
             _id
             name
@@ -253,7 +287,36 @@ export const getQuotationById = gql`
             }
             stripeCustomerObject
         }
-    }`
+        getQuotationById(_id: $quotation_id) {
+            _id
+            status
+            quotationDetails {
+                priceList_id {
+                    _id
+                }
+                SKU_id {
+                    _id
+                    name
+                    iconPicURL
+                    lengthM
+                    widthM
+                    heightM
+                }
+                qty
+                rentMode
+                duration
+                rent_unitPrice
+                rent_lineTotal
+                remarks
+            }
+            account_id {
+                _id
+                name
+            }
+            totalPrice
+        }
+    }
+`
 
 export const addRentalOrder = gql`
     mutation ($quotation_id: String!) {

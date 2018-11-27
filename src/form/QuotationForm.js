@@ -61,17 +61,13 @@ class Quotation extends React.Component {
     }
 
     getCouponPriceList = async (gqlClient, t) => {
-        console.log('getCouponPriceList')
         this.setState({couponLoading: true})
         try {
-            console.log('getCouponPriceList2')
             const d = await gqlClient.query({
                 query: getPriceListByCode,
                 variables: {account_id: this.props.account_id || '', code: this.state.couponCodeEntry}
             })
-            console.log('getCouponPriceList3', d)
             const fullPriceList = this.transformPriceList(d.data)
-            console.log(fullPriceList)
             this.setState({couponPriceList: fullPriceList, couponLoading: false, couponCode: this.state.couponCodeEntry, couponErr: undefined})
         }
         catch(e) {
@@ -82,8 +78,6 @@ class Quotation extends React.Component {
                 }
             }
         }
-        
-
     }
 
     transformPriceList = (d) => { //to transform a single priceList
@@ -262,7 +256,6 @@ class Quotation extends React.Component {
                     if (queryLoading || this.state.couponLoading) return( <BigLoadingScreen text={'Getting your best price...'}/> )
 
                     if (queryErr) {
-                        console.log('QuotationForm', queryErr, this.props.account_id)
                         return (<p>Error :(</p>)
                     }
                     //Full price list converts what DB sends back into {priceList: {box: {rentMode: }}}

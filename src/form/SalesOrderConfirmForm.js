@@ -10,13 +10,23 @@ import GqlApi from '../stateContainer/GqlApi.js'
 import {LocaleApiSubscriber} from '../stateContainer/LocaleApi.js'
 import { ApolloProvider, Query, Mutation } from "react-apollo"
 
-import { getQuotationById, addRentalOrder } from '../gql/query.js'
+import { getQuotationById, getAccountById, getQuotationAndAccountById, addRentalOrder } from '../gql/query.js'
 import parseApolloErr from '../util/parseErr.js'
 import {BigLoadingScreen} from '../component/Loading.js'
 
 import { QuotationDisplay } from '../component/QuotationDisplay.js'
 
 import SelectAddress from '../component/SelectAddress.js'
+
+/*
+Props:
+Quotation object: this.props.location.state.quotation || this.props.quotation
+Account object: this.props.location.state.account || this.props.account
+Quotation_id: this.props.quotation_id
+account_id: this.props.account_id
+
+*/
+
 
 class SalesOrderConfirmForm extends React.Component {
 	
@@ -27,10 +37,10 @@ class SalesOrderConfirmForm extends React.Component {
 		this.handleBillingAddressChange = this.handleBillingAddressChange.bind(this)
 		this.state = {
 			submitting: false,
-			selectedBillingAddress: undefined
+			selectedBillingAddress: undefined,
 		}
 	}
-	
+
 	backToQuotationForm = () => {
 		console.log('backToQuotationForm')
 	}
@@ -45,44 +55,73 @@ class SalesOrderConfirmForm extends React.Component {
 	handleBillingAddressChange(id) {
 		this.setState({selectedBillingAddress: id})
 	}
-	
-	validate() {
-		return {}
-	}
 
-    //props= quotation_id
+
     render(){
 		const g = this.props.login
-        const c = this.props.i18n
+		const c = this.props.i18n
+
+		let quotation = this.props.location.state.quotation || this.props.quotation || undefined
+		let quotation_id= this.props.quotation_id || this.props.match.params.quotation_id || undefined
+		if ((quotation===undefined) && (quotation_id===undefined)) {
+			return (<p>{'Error: Quotation is not available'}</p>)
+		}
+		
+		let account_id = this.props.location.state.quotation.account_id._id || this.props.location.state.account_id || this.props.account_id || undefined
+		if (account_id===undefined) { 
+			//fixme should show an account selector instead of assuming to use first account
+			const acctList = g.getManagedAccounts()
+			if (acctList.length>0) { account_id = acctList[0]._id }
+			else { return (<p>{'Error: Account is not available'}</p>) }
+		}
+
+		let query_gql
+		let query_var = {}
+
+		if (quotation) {
+			query_gql = getAccountById
+			query_var= {account_id: account_id}
+		}
+		else {
+			query_gql = getQuotationAndAccountById
+			query_var = {quotation_id: quotation_id, account_id: account_id}
+		}
+
 		return (
             <ApolloProvider client={g.getGqlClient()}>
-				<Query query={getQuotationById} variables={{quotation_id: this.props.quotation_id, account_id: this.props.account_id}}>
-                {({ client, loading: queryLoading, error: queryErr, data, refetch }) => (
-                    <Mutation mutation={addRentalOrder} errorPolicy="all">
-                    {(mutate, {loading: mutateLoading, err: mutateErr})=>{
-                    
-                        if (queryLoading) return (<BigLoadingScreen text={'Getting your best price'}/>)
-                        
-                        if (queryErr) {
-                            console.log('SalesOrderConfirmForm', queryErr, this.props.quotation_id)
-                            return (<p>{parseApolloErr(queryErr, c.t)}(</p>)
-                        }
-                    	console.log('data=', data)
-                    	const quote = data.getQuotationById
-						
-						return(
+				<Query query={query_gql} variables={query_var}>
+				{({ loading: queryLoading, error: queryErr, data, refetch }) => {
+
+					if (queryLoading) return (<BigLoadingScreen text={'Loading...'}/>)
+					if (queryErr) {
+						console.log('SalesOrderConfirmForm', queryErr, this.props.quotation_id)
+						return (<p>{'Error :('}</p>)
+					}
+
+					const q = quotation||data.getQuotationById
+					const a = data.getAccountById
+
+					return (<div>
+						<Mutation mutation={addRentalOrder} errorPolicy="all">
+						{(mutate, {loading: mutateLoading, err: mutateErr})=>{ return(
 							<Formik
 								initialValues={{
-									billingAddress: [data.getAccountById.defaultBillingAddress_id._id],
-									quotation_id: this.props.quotation_id
+									billingAddress: a.defaultBillingAddress_id._id || '',
+									quotation_id: q._id,
+									account_id: a._id
 								}}
-								validate={this.validate}
+								validate={(v)=> {
+									if ((v.billingAddress==='') || (v.billingAddress===undefined)) {
+										return {billingAddress : 'Please provide a billing address'}
+									}
+									else return {}
+								}}
 								onSubmit={async (values, actions) => {
 									actions.setStatus('')
 									actions.setSubmitting(false)
 								}}
 							>
-							{({ errors, isSubmitting, dirty, touched, values, status, initialValues, setFieldValue }) => (
+							{({ errors, isSubmitting, dirty, touched, values, status, setFieldValue }) => (
 								<div>
 									<FormikForm>
 										
@@ -93,14 +132,14 @@ class SalesOrderConfirmForm extends React.Component {
 											label={c.t('Billing Address')}
 											value={values.billingAddress}
 											placeholder={c.t('Please choose your billing address')}
-											account_id= {this.props.account_id}
-											addresses={data.getAccountById.address_id}
+											account_id= {a._id}
+											addresses={a.address_id}
 											onChange={(v)=>setFieldValue('billingAddress', v._id)}
 											allowAddAddress={true}
 											onAddNewAddress={(v)=>refetch()}
-											multiSelect={true}
+											multiSelect={false}
 										/>
-										<QuotationDisplay quotation={quote} />
+										<QuotationDisplay quotation={q} account={a} />
 										<p>Is everything ok?</p>
 										<FormButton onClick={()=>this.addSalesOrderClient(mutate, this.props.quotation_id)}>
 											{c.t('Submit')}
@@ -111,12 +150,14 @@ class SalesOrderConfirmForm extends React.Component {
 								</div>
 							)}
 							</Formik>
-                            
-                        )
-                    }}
-                    </Mutation>
-                )}
-                </Query>
+						) }}
+						</Mutation>
+						
+					</div>)
+				}}
+				</Query>}
+				
+				
             </ApolloProvider>
     )}
                 

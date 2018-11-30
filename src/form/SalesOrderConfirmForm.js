@@ -18,6 +18,7 @@ import { QuotationDisplay } from '../component/QuotationDisplay.js'
 
 import SelectAddress from '../component/SelectAddress.js'
 
+import get from 'lodash/get'
 /*
 Props:
 Quotation object: this.props.location.state.quotation || this.props.quotation
@@ -34,10 +35,8 @@ class SalesOrderConfirmForm extends React.Component {
 		super(props) //Fixme props should pass whole account object instead of just account_id
 		this.addSalesOrderClient = this.addSalesOrderClient.bind(this)
 		this.backToQuotationForm = this.backToQuotationForm.bind(this)
-		this.handleBillingAddressChange = this.handleBillingAddressChange.bind(this)
 		this.state = {
-			submitting: false,
-			selectedBillingAddress: undefined,
+			submitting: false
 		}
 	}
 
@@ -51,23 +50,18 @@ class SalesOrderConfirmForm extends React.Component {
         }})
         console.log('server return', d)
 	}
-	
-	handleBillingAddressChange(id) {
-		this.setState({selectedBillingAddress: id})
-	}
-
 
     render(){
 		const g = this.props.login
 		const c = this.props.i18n
 
-		let quotation = this.props.location.state.quotation || this.props.quotation || undefined
+		let quotation = get(this.props, 'location.state.quotation', undefined) || this.props.quotation || undefined
 		let quotation_id= this.props.quotation_id || this.props.match.params.quotation_id || undefined
 		if ((quotation===undefined) && (quotation_id===undefined)) {
 			return (<p>{'Error: Quotation is not available'}</p>)
 		}
 		
-		let account_id = this.props.location.state.quotation.account_id._id || this.props.location.state.account_id || this.props.account_id || undefined
+		let account_id = get(this.props, 'location.state.quotation.account_id._id', undefined) || get(this.props, 'location.state.account_id', undefined) || this.props.account_id || undefined
 		if (account_id===undefined) { 
 			//fixme should show an account selector instead of assuming to use first account
 			const acctList = g.getManagedAccounts()
@@ -89,8 +83,8 @@ class SalesOrderConfirmForm extends React.Component {
 
 		return (
             <ApolloProvider client={g.getGqlClient()}>
-				<Query query={query_gql} variables={query_var}>
-				{({ loading: queryLoading, error: queryErr, data, refetch }) => {
+				<Query query={query_gql} variables={query_var} notifyOnNetworkStatusChange>
+				{({ loading: queryLoading, error: queryErr, data, refetch, networkStatus }) => {
 
 					if (queryLoading) return (<BigLoadingScreen text={'Loading...'}/>)
 					if (queryErr) {
@@ -100,13 +94,14 @@ class SalesOrderConfirmForm extends React.Component {
 
 					const q = quotation||data.getQuotationById
 					const a = data.getAccountById
+					console.log('data.getAccountById, ', a)
 
 					return (<div>
 						<Mutation mutation={addRentalOrder} errorPolicy="all">
 						{(mutate, {loading: mutateLoading, err: mutateErr})=>{ return(
 							<Formik
 								initialValues={{
-									billingAddress: a.defaultBillingAddress_id._id || '',
+									billingAddress: get(a, 'defaultBillingAddress_id._id', undefined) || '',
 									quotation_id: q._id,
 									account_id: a._id
 								}}
@@ -118,6 +113,19 @@ class SalesOrderConfirmForm extends React.Component {
 								}}
 								onSubmit={async (values, actions) => {
 									actions.setStatus('')
+									try {
+                                        const d = await mutate({variables: {
+                                            billingAddress_id: values.billingAddress,
+                                            quotation_id: values.quotation_id,
+                                            account_id: values.account_id
+                                        }})
+                                        console.log('server return', d)
+                                        if (this.props.onConfirmSuccess) { this.props.onConfirmSuccess(d.data.addRentalOrder)}
+                                    }
+                                    catch(e) { console.log(e) }
+
+
+
 									actions.setSubmitting(false)
 								}}
 							>
@@ -130,7 +138,6 @@ class SalesOrderConfirmForm extends React.Component {
 											type="text"
 											component={SelectAddress}
 											label={c.t('Billing Address')}
-											value={values.billingAddress}
 											placeholder={c.t('Please choose your billing address')}
 											account_id= {a._id}
 											addresses={a.address_id}
@@ -138,6 +145,8 @@ class SalesOrderConfirmForm extends React.Component {
 											allowAddAddress={true}
 											onAddNewAddress={(v)=>refetch()}
 											multiSelect={false}
+											isLoading={networkStatus===4}
+											err={errors['billingAddress']}
 										/>
 										<QuotationDisplay quotation={q} account={a} />
 										<p>Is everything ok?</p>

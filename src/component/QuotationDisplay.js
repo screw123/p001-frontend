@@ -9,7 +9,7 @@ export const QuotationDisplay = ({quotation, account}) => { return(
 			<p>{c.t('Account')+' : ' + account.name + ' (' + account._id + ')'}</p>
 			<p>{c.t('Quotation date') + ' : ' + c.moment(quotation.createDateTime).format('YYYY-MM-DD HH:mm')}</p>
 			{genQuotationLines(quotation.quotationDetails, c.t)}
-			<h3>{c.t('Total Price')+ ' : ' + quotation.discountedPrice}</h3>
+			<h3>{c.t('Total Price')+ ' : ' + quotation.totalPrice}</h3>
 		</div>
 	)}
 	</LocaleApiSubscriber>

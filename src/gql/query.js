@@ -281,9 +281,11 @@ export const getQuotationAndAccountById = gql`
             }
             defaultBillingAddress_id {
                 _id
+                legalName
             }
             defaultShippingAddress_id {
                 _id
+                legalName
             }
             stripeCustomerObject
         }
@@ -319,8 +321,8 @@ export const getQuotationAndAccountById = gql`
 `
 
 export const addRentalOrder = gql`
-    mutation ($quotation_id: String!) {
-        addRentalOrder(quotation_id: $quotation_id) {
+    mutation ($quotation_id: String!, $account_id: String!, $billingAddress_id: String!) {
+        addRentalOrderFromQuotation(quotation_id: $quotation_id, account_id: $account_id, billingAddress_id: $billingAddress_id) {
             _id
         }
     }`

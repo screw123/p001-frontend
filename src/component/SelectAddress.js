@@ -4,15 +4,14 @@
 
 import React from 'react'
 import styled from 'styled-components'
-import { FieldLabel } from './FormikForm.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {LocaleApiSubscriber} from '../stateContainer/LocaleApi.js'
 import AddNewAddressForm from '../form/AddNewAddressForm.js'
 import Modal from '../component/Modal.js'
 import { MultiSelect } from '../component/FormikForm.js'
+import { FieldLabel, ErrorLabel } from './Formik-Basic.js'
 
 const AddressDisplay = ({data, key, selected, onClick, disabled, innerProps, ...props}) => {
-    console.log('addressDisplay', data, innerProps)
     return (
         <AddressBlock key={key} selected={selected} onClick={onClick} disabled={disabled} {...innerProps}>
             <AddressLine>{data.legalName||'DEFAULT'}</AddressLine>
@@ -53,7 +52,6 @@ const AddressMultiValueLabelDiv = styled.div`
 `
 
 const AddressMultiValueLabel = ({data, innerProps}) => {
-    console.log('innerProps=', innerProps)
     let a = (data.legalName||'DEFAULT') + ': ' + (data.streetAddress.substring(0,9)) + '...' + (data.addressCountry||'N/A') + (' / Tel: ' + data.telephone)
     return (<AddressMultiValueLabelDiv>{a}</AddressMultiValueLabelDiv>)
 }
@@ -72,12 +70,10 @@ class SelectAddress extends React.Component{
     }
 
     toggleAddNewAddressModal = () => {
-        console.log('toggling')
         this.setState(prevState=>({showAddNewAddressModal: (prevState.showAddNewAddressModal? false: true) }))
     }
 
     render(){
-        console.log('SelectAddress.addresses=', this.props.addresses)
         const options = this.props.addresses.map((v)=>{
             let a = (v.legalName||'DEFAULT') + ': ' + (v.streetAddress) + ', ' + (v.addressRegion1) + (v.addressRegion2) + (v.addressCountry||'N/A') + (' / Tel: ' + v.telephone)
             return Object.assign({value: v._id, label: a}, v)
@@ -113,7 +109,6 @@ class SelectAddress extends React.Component{
                             component={<AddNewAddressForm
                                 account_id={this.props.account_id}
                                 onSubmitSuccess={(address)=> {
-                                    console.log('Modal onSubmitSuccess')
                                     this.toggleAddNewAddressModal()
                                     this.props.onAddNewAddress(address)
                                 }}
@@ -122,7 +117,7 @@ class SelectAddress extends React.Component{
                             title={c.t('Add New Address')}
                         />
                     }
-                    {this.props.err && <p>{c.t(this.props.err)}</p>}
+                    {this.props.err && <ErrorLabel>{c.t(this.props.err)}</ErrorLabel>}
                 </div>
             )}
         }}

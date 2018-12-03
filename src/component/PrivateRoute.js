@@ -6,9 +6,12 @@ import { Route, Redirect } from "react-router-dom"
 import { GqlApiSubscriber } from '../stateContainer/GqlApi.js'
 
 const PrivateRoute = ({ component: Component, stateContainer: stateContainer, ...rest }) => {
+    
     return (
     <GqlApiSubscriber>
-    {(c) => (
+    {(c) => {
+        console.log('Private Route, c.state.isLogined=', c.state.isLogined)
+        return (
         <Route
             {...rest}
             render={({location: {pathname, state}, ...props}) => {
@@ -20,7 +23,7 @@ const PrivateRoute = ({ component: Component, stateContainer: stateContainer, ..
                 /> )
             }}
         />
-    )}
+    )}}
     </GqlApiSubscriber>
 )}
 

@@ -126,8 +126,7 @@ const routes = [
         }
     },
     {
-        path: "/quotation/:quotation_id?",
-        linkURL: "/quotation",
+        path: "/quotation",
         exact: true,
         menuName: 'Quotation',
         component: QuotationPage,
@@ -142,14 +141,15 @@ const routes = [
         }
     },
     {
-        path: "/confirmSalesOrder",  //should be removed???
+        path: "/confirmSalesOrder/:quotation_id?",  //should be removed???
+        linkURL: "/confirmSalesOrder",
         exact: true,
         menuName: 'Confirm Sales Order',
         component: SalesOrderConfirmPage,
         navbar: {
             itemId: 901,
             firstLevel: true,
-            showBeforeLogin: false,
+            showBeforeLogin: true,
             showAfterLogin: true
         },
         router: {

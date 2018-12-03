@@ -234,7 +234,7 @@ export const getAccountById = gql`
 
 export const getQuotationById = gql`
     query ($quotation_id: String!){
-        getQuotationById(quotation_id: $quotation_id) {
+        getQuotationById(_id: $quotation_id) {
             _id
             status
             quotationDetails {

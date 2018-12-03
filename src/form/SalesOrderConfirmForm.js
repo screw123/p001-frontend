@@ -35,6 +35,9 @@ class SalesOrderConfirmForm extends React.Component {
 		super(props) //Fixme props should pass whole account object instead of just account_id
 		this.addSalesOrderClient = this.addSalesOrderClient.bind(this)
 		this.backToQuotationForm = this.backToQuotationForm.bind(this)
+
+		console.log('loaded SalesOrderConfirmForm')
+
 		this.state = {
 			submitting: false
 		}
@@ -57,6 +60,7 @@ class SalesOrderConfirmForm extends React.Component {
 
 		let quotation = get(this.props, 'location.state.quotation', undefined) || this.props.quotation || undefined
 		let quotation_id= this.props.quotation_id || this.props.match.params.quotation_id || undefined
+		console.log(quotation, quotation_id)
 		if ((quotation===undefined) && (quotation_id===undefined)) {
 			return (<p>{'Error: Quotation is not available'}</p>)
 		}
@@ -88,7 +92,7 @@ class SalesOrderConfirmForm extends React.Component {
 
 					if (queryLoading) return (<BigLoadingScreen text={'Loading...'}/>)
 					if (queryErr) {
-						console.log('SalesOrderConfirmForm', queryErr, this.props.quotation_id)
+						console.log('SalesOrderConfirmForm', queryErr)
 						return (<p>{'Error :('}</p>)
 					}
 

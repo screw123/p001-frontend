@@ -25,8 +25,7 @@ const routes = [
         }
     },
     {
-        path: "/signup/:quotation_id?",  //this should be removed as sign up is right side icon item
-        linkURL: "/signup",
+        path: "/signup",  //this should be removed as sign up is right side icon item
         menuName: 'Sign Up',
         component: SignUpWorkflow,
         navbar: {

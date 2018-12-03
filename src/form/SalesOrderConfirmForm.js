@@ -93,7 +93,12 @@ class SalesOrderConfirmForm extends React.Component {
 					if (queryLoading) return (<BigLoadingScreen text={'Loading...'}/>)
 					if (queryErr) {
 						console.log('SalesOrderConfirmForm', queryErr)
-						return (<p>{'Error :('}</p>)
+						const errStack = parseApolloErr(queryErr)
+						return (
+							<div>
+								{errStack.forEach(v=>{ return(<p>{v.message}</p>) }) }
+							</div>	
+						)
 					}
 
 					const q = quotation||data.getQuotationById

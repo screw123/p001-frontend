@@ -92,7 +92,13 @@ class SignUpWorkflow extends React.Component {
     render() {
         const g = this.props.login
         const c = this.props.i18n
-        if (g.state.isLogined) return (<Redirect to='/dash' />)
+        const { nextPath, passOnState } = this.props.location.state || { nextPath: "/dash" }
+
+        console.log('nextPath, passOnState=', nextPath, passOnState)
+        if (g.state.isLogined) {
+            return <Redirect to={{pathname: nextPath, state: passOnState}} />
+        }
+
         return(
         <div>
             {this.state.loading && <BigLoadingScreen />}

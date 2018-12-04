@@ -48,6 +48,9 @@ const parseApolloErr = (err, t) => {
                 case 'CANNOT_DISABLE_LAST_ONE':
                     errObj['message'] = t('This is the last item, you cannot disable it', {object: t(errObj['key']) })
                     break
+                case 'NO_PAYMENT_INFO':
+                    errObj['message'] = t('NO_PAYMENT_INFO')
+                    break
                 default:
                     errObj['message'] = t(errObj['key']) + t('cannot be') + err.graphQLErrors[i].data[errObj['key']]
             }

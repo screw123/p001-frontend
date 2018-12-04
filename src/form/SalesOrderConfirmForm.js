@@ -17,6 +17,7 @@ import {BigLoadingScreen} from '../component/Loading.js'
 import { QuotationDisplay } from '../component/QuotationDisplay.js'
 
 import SelectAddress from '../component/SelectAddress.js'
+import PaymentInfoForm from './PaymentInfoForm.js'
 
 import get from 'lodash/get'
 /*
@@ -35,11 +36,13 @@ class SalesOrderConfirmForm extends React.Component {
 		super(props) //Fixme props should pass whole account object instead of just account_id
 		this.addSalesOrderClient = this.addSalesOrderClient.bind(this)
 		this.backToQuotationForm = this.backToQuotationForm.bind(this)
+		this.togglePaymentInfoComponent = this.togglePaymentInfoComponent.bind(this)
 
 		console.log('loaded SalesOrderConfirmForm')
 
 		this.state = {
-			submitting: false
+			submitting: false,
+			showPaymentInfoComponent: false
 		}
 	}
 
@@ -47,6 +50,8 @@ class SalesOrderConfirmForm extends React.Component {
 		console.log('backToQuotationForm')
 	}
 	
+	togglePaymentInfoComponent = () => this.setState(prevState=>({showPaymentInfoComponent: (prevState.showPaymentInfoComponent? false: true) }))
+
 	addSalesOrderClient = async (mutate, quotation_id) => {
 		const d = await mutate({variables: {
             quotation_id: this.props.quotation_id
@@ -87,6 +92,7 @@ class SalesOrderConfirmForm extends React.Component {
 
 		return (
             <ApolloProvider client={g.getGqlClient()}>
+				{this.state.showPaymentInfoComponent && <PaymentInfoForm />}
 				<Query query={query_gql} variables={query_var} notifyOnNetworkStatusChange>
 				{({ loading: queryLoading, error: queryErr, data, refetch, networkStatus }) => {
 
@@ -131,7 +137,25 @@ class SalesOrderConfirmForm extends React.Component {
                                         console.log('server return', d)
                                         if (this.props.onConfirmSuccess) { this.props.onConfirmSuccess(d.data.addRentalOrder)}
                                     }
-                                    catch(e) { console.log(e) }
+                                    catch(e) {
+										const errStack = parseApolloErr(e, c.t)
+										for (let i=0; i<errStack.length; i++) {
+											if (errStack[i].type==='NO_PAYMENT_INFO') {
+												console.log('togglePaymentInfoComponent')
+												this.togglePaymentInfoComponent()
+												continue
+											}
+											if (errStack[i].key) { 
+												console.log('err key =', errStack[i].key)
+												
+												actions.setFieldError(errStack[i].key, errStack[i].message)
+											}
+											else {
+												actions.setStatus(errStack[i].message)
+											}
+										}
+										console.log(errStack)
+									}
 
 
 

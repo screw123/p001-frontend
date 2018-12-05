@@ -1,9 +1,6 @@
 import React from "react"
 
-import { Formik, Field } from 'formik'
-import FormikForm, { FormButton, FormErr } from '../component/FormikForm.js'
-
-import { ApolloProvider, Query, Mutation } from "react-apollo"
+import { ApolloProvider,Mutation } from "react-apollo"
 
 import parseApolloErr from '../util/parseErr.js'
 import {BigLoadingScreen} from '../component/Loading.js'
@@ -12,29 +9,62 @@ import { injectStripe, Elements, StripeProvider} from 'react-stripe-elements';
 
 import {StripeCardNumberInput, StripeCardExpiryInput, StripeCardCVCInput} from '../component/StripeComponents.js'
 
-
+import {addStripeCustomer} from '../gql/query.js'
+import { t } from "i18next/dist/commonjs";
 
 class StripePaymentInfo extends React.Component {
 	
 	constructor(props) {
-		super(props) //Fixme props should pass whole account object instead of just account_id
-		this.submit = this.submit.bind(this);
+		super(props)
+		this.submit = this.submit.bind(this)
+		this.state = {
+			stripeSourceCreateErr: undefined
+		}
 	}
 
-	async submit(ev) {
-		ev.preventDefault();
+	async submit(e, mutate, t) {
+		e.preventDefault();
 
-    	this.props.stripe.createToken({name: 'Jenny Rosen'}).then(({token}) => {
-			  console.log('Received Stripe token:', token)
+		let {source, error} = await this.props.stripe.createSource({
+			type: 'card'
 		})
+		console.log(source, error)
+		if (source) {
+			try {
+				const d = await mutate({variables: {token: source.id, account_id: this.props.account_id } })
+				console.log(d)
+				if (this.props.onSuccess) { this.props.onSuccess(source)}
+			}
+			catch(e) {
+				const errStack = parseApolloErr(e, t)
+				console.log(e)
+				this.setState({stripeSourceCreateErr: errStack[0].message})
+			}
+		}
+		if (error) {
+			console.log(error)
+			this.setState({stripeSourceCreateErr: error.message})
+		}
 	}
+
 
 	render() {
-		return (<div>
-			<StripeCardNumberInput />
-  			<StripeCardExpiryInput />
-			<StripeCardCVCInput />
-		</div>)
+		const g = this.props.login
+		const c = this.props.i18n
+
+		return (
+			<ApolloProvider client={g.getGqlClient()}>
+                <Mutation mutation={addStripeCustomer} errorPolicy="all">
+                {(mutate, {loading, err})=>(<div>
+					<StripeCardNumberInput />
+					<StripeCardExpiryInput />
+					<StripeCardCVCInput />
+					<p>{c.t(this.state.stripeSourceCreateErr)}</p>
+					<button onClick={(e)=>this.submit(e, mutate, c.t)}>Send</button>
+				</div>)}
+				</Mutation>
+			</ApolloProvider>
+		)
 	}
 
 }
@@ -45,23 +75,24 @@ const StripeForm = injectStripe(StripePaymentInfo)
 class PaymentInfoForm extends React.Component {
 	
 	constructor(props) {
-		super(props) //Fixme props should pass whole account object instead of just account_id
+		super(props)
 	}
 
 	render() {
+
+
 		return (
 			<div>
 				<p>Would you like to complete the purchase?</p>
 				<StripeProvider apiKey="pk_test_XzSSEvQVVZoHYGnUDaOMXj3d">
 					<Elements>
-						<StripeForm />
+						<StripeForm {...this.props} />
 					</Elements>
 				</StripeProvider>
-				<button onClick={this.submit}>Send</button>
+				
 			</div>
 		)
 	}
-
 }
 
 export default PaymentInfoForm

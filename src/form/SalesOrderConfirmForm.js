@@ -92,7 +92,7 @@ class SalesOrderConfirmForm extends React.Component {
 
 		return (
             <ApolloProvider client={g.getGqlClient()}>
-				{this.state.showPaymentInfoComponent && <PaymentInfoForm />}
+				{this.state.showPaymentInfoComponent && <PaymentInfoForm {...this.props} account_id={account_id} onSuccess={this.togglePaymentInfoComponent} />}
 				<Query query={query_gql} variables={query_var} notifyOnNetworkStatusChange>
 				{({ loading: queryLoading, error: queryErr, data, refetch, networkStatus }) => {
 

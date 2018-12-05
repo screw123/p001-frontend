@@ -435,4 +435,16 @@ export const updateUserDetails = gql`
     }
 `
 
+export const addStripeCustomer = gql`
+    mutation (
+        $token: String!,
+        $account_id: String!
+    ) {
+        addStripeCustomer(token: $token, account_id: $account_id) {
+            _id
+            stripeCustomerObject
+        }
+    }
+`
+
 export default {}

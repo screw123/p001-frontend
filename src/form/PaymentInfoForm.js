@@ -8,7 +8,11 @@ import { ApolloProvider, Query, Mutation } from "react-apollo"
 import parseApolloErr from '../util/parseErr.js'
 import {BigLoadingScreen} from '../component/Loading.js'
 
-import {CardElement, injectStripe, Elements, StripeProvider} from 'react-stripe-elements';
+import { injectStripe, Elements, StripeProvider} from 'react-stripe-elements';
+
+import {StripeCardNumberInput, StripeCardExpiryInput, StripeCardCVCInput} from '../component/StripeComponents.js'
+
+
 
 class StripePaymentInfo extends React.Component {
 	
@@ -18,15 +22,24 @@ class StripePaymentInfo extends React.Component {
 	}
 
 	async submit(ev) {
-		// User clicked submit
+		ev.preventDefault();
+
+    	this.props.stripe.createToken({name: 'Jenny Rosen'}).then(({token}) => {
+			  console.log('Received Stripe token:', token)
+		})
 	}
 
 	render() {
-		return (<CardElement />)
+		return (<div>
+			<StripeCardNumberInput />
+  			<StripeCardExpiryInput />
+			<StripeCardCVCInput />
+		</div>)
 	}
 
 }
 
+//Populate child with this.props.stripe
 const StripeForm = injectStripe(StripePaymentInfo)
 
 class PaymentInfoForm extends React.Component {

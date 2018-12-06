@@ -15,6 +15,7 @@ import parseApolloErr from '../util/parseErr.js'
 import {BigLoadingScreen} from '../component/Loading.js'
 
 import { QuotationDisplay } from '../component/QuotationDisplay.js'
+import { CreditCardInfo } from '../component/CreditCardInfo.js'
 
 import SelectAddress from '../component/SelectAddress.js'
 import PaymentInfoForm from './PaymentInfoForm.js'
@@ -37,12 +38,12 @@ class SalesOrderConfirmForm extends React.Component {
 		this.addSalesOrderClient = this.addSalesOrderClient.bind(this)
 		this.backToQuotationForm = this.backToQuotationForm.bind(this)
 		this.togglePaymentInfoComponent = this.togglePaymentInfoComponent.bind(this)
-
-		console.log('loaded SalesOrderConfirmForm')
+		this.togglePaymentInfo = this.togglePaymentInfo.bind(this)
 
 		this.state = {
 			submitting: false,
-			showPaymentInfoComponent: false
+			showPaymentInfoComponent: false,
+			showPaymentInfo: false
 		}
 	}
 
@@ -51,6 +52,8 @@ class SalesOrderConfirmForm extends React.Component {
 	}
 	
 	togglePaymentInfoComponent = () => this.setState(prevState=>({showPaymentInfoComponent: (prevState.showPaymentInfoComponent? false: true) }))
+
+	togglePaymentInfo = () => this.setState(prevState=>({showPaymentInfo: (prevState.showPaymentInfo? false: true) }))
 
 	addSalesOrderClient = async (mutate, quotation_id) => {
 		const d = await mutate({variables: {
@@ -92,7 +95,6 @@ class SalesOrderConfirmForm extends React.Component {
 
 		return (
             <ApolloProvider client={g.getGqlClient()}>
-				{this.state.showPaymentInfoComponent && <PaymentInfoForm {...this.props} account_id={account_id} onSuccess={this.togglePaymentInfoComponent} />}
 				<Query query={query_gql} variables={query_var} notifyOnNetworkStatusChange>
 				{({ loading: queryLoading, error: queryErr, data, refetch, networkStatus }) => {
 
@@ -109,9 +111,25 @@ class SalesOrderConfirmForm extends React.Component {
 
 					const q = quotation||data.getQuotationById
 					const a = data.getAccountById
-					console.log('data.getAccountById, ', a)
+
+					let stripeCusObj = null
+					if (a.stripeCustomerObject) {
+						stripeCusObj = JSON.parse(a.stripeCustomerObject)
+						console.log('stripeCusObj', !!stripeCusObj, !stripeCusObj, stripeCusObj, stripeCusObj.sources, stripeCusObj.sources.data)
+					}
 
 					return (<div>
+						{stripeCusObj.sources.data.forEach(v=> {
+											console.log('forEach', v)
+											return(<p>haha</p>)
+										})}
+						<QuotationDisplay quotation={q} account={a} />
+						{!this.state.showPaymentInfo && <p>Is everything ok?</p>}
+						{!this.state.showPaymentInfo && <FormButton onClick={()=>this.togglePaymentInfo()}>
+							{c.t('Yes, all fine!')}
+						</FormButton>}
+
+						{this.state.showPaymentInfo && 
 						<Mutation mutation={addRentalOrder} errorPolicy="all">
 						{(mutate, {loading: mutateLoading, err: mutateErr})=>{ return(
 							<Formik
@@ -181,8 +199,11 @@ class SalesOrderConfirmForm extends React.Component {
 											isLoading={networkStatus===4}
 											err={errors['billingAddress']}
 										/>
-										<QuotationDisplay quotation={q} account={a} />
-										<p>Is everything ok?</p>
+										{!stripeCusObj && <PaymentInfoForm {...this.props} account_id={account_id} onSuccess={this.togglePaymentInfoComponent} />}
+										{!!stripeCusObj && stripeCusObj.sources.data.forEach(v=> {
+											console.log('forEach', v)
+											return(<CreditCardInfo source={v} />)
+										})}
 										<FormButton onClick={()=>this.addSalesOrderClient(mutate, this.props.quotation_id)}>
 											{c.t('Submit')}
 										</FormButton>
@@ -193,7 +214,7 @@ class SalesOrderConfirmForm extends React.Component {
 							)}
 							</Formik>
 						) }}
-						</Mutation>
+						</Mutation>}
 						
 					</div>)
 				}}

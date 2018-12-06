@@ -85,7 +85,7 @@ class PaymentInfoForm extends React.Component {
 			<div>
 				<p>Would you like to complete the purchase?</p>
 				<StripeProvider apiKey="pk_test_XzSSEvQVVZoHYGnUDaOMXj3d">
-					<Elements>
+					<Elements fonts={[{cssSrc:'https://fonts.googleapis.com/css?family=Source+Code+Pro'}]}>
 						<StripeForm {...this.props} />
 					</Elements>
 				</StripeProvider>

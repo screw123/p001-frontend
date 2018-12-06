@@ -316,6 +316,8 @@ export const getQuotationAndAccountById = gql`
                 name
             }
             totalPrice
+            createDateTime
+            updateDateTime
         }
     }
 `

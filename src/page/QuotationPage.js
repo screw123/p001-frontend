@@ -61,7 +61,7 @@ class QuotationPage extends React.Component {
                     />
                 }
                 {!this.state.quotation && <QuotationForm account_id={this.state.selectedAcct} onAddQuotationSuccess={this.quotationCreated} {...this.props} /> }
-                {this.state.quotation && !g.state.isLogined &&
+                {this.state.quotation &&
                     <Redirect push to={{
                         pathname: '/confirmSalesOrder',
                         state: { quotation: this.state.quotation }

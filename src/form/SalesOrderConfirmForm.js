@@ -1,24 +1,19 @@
 import React from "react"
 
-import isEmpty from 'lodash/isEmpty'
-import pickBy from 'lodash/pickBy'
-
 import { Formik, Field } from 'formik'
 import FormikForm, { FormButton, FormErr } from '../component/FormikForm.js'
 
-import GqlApi from '../stateContainer/GqlApi.js'
-import {LocaleApiSubscriber} from '../stateContainer/LocaleApi.js'
 import { ApolloProvider, Query, Mutation } from "react-apollo"
 
-import { getQuotationById, getAccountById, getQuotationAndAccountById, addRentalOrder } from '../gql/query.js'
+import { getAccountById, getQuotationAndAccountById, addRentalOrder } from '../gql/query.js'
 import parseApolloErr from '../util/parseErr.js'
 import {BigLoadingScreen} from '../component/Loading.js'
 
 import { QuotationDisplay } from '../component/QuotationDisplay.js'
-import { CreditCardInfo } from '../component/CreditCardInfo.js'
+import CreditCardForm from '../component/SelectCreditCard.js'
 
 import SelectAddress from '../component/SelectAddress.js'
-import PaymentInfoForm from './PaymentInfoForm.js'
+import SelectCreditCard from '../component/SelectCreditCard.js'
 
 import get from 'lodash/get'
 /*
@@ -194,16 +189,18 @@ class SalesOrderConfirmForm extends React.Component {
 											addresses={a.address_id}
 											onChange={(v)=>setFieldValue('billingAddress', v._id)}
 											allowAddAddress={true}
-											onAddNewAddress={(v)=>refetch()}
+											onAddNewAddress={()=>refetch()}
 											multiSelect={false}
 											isLoading={networkStatus===4}
 											err={errors['billingAddress']}
 										/>
-										{!stripeCusObj && <PaymentInfoForm {...this.props} account_id={account_id} onSuccess={this.togglePaymentInfoComponent} />}
-										{!!stripeCusObj && stripeCusObj.sources.data.forEach(v=> {
-											console.log('forEach', v)
-											return(<CreditCardInfo source={v} />)
-										})}
+										{<SelectCreditCard
+											allowAddCard={true}
+											disabled={false}
+											account_id={a._id}
+											{...this.props}
+										/>}
+
 										<FormButton onClick={()=>this.addSalesOrderClient(mutate, this.props.quotation_id)}>
 											{c.t('Submit')}
 										</FormButton>

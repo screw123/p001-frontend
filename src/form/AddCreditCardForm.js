@@ -1,16 +1,12 @@
 import React from "react"
-
 import { ApolloProvider,Mutation } from "react-apollo"
 
 import parseApolloErr from '../util/parseErr.js'
-import {BigLoadingScreen} from '../component/Loading.js'
 
 import { injectStripe, Elements, StripeProvider} from 'react-stripe-elements';
-
 import {StripeCardNumberInput, StripeCardExpiryInput, StripeCardCVCInput} from '../component/StripeComponents.js'
 
-import {addStripeCustomer} from '../gql/query.js'
-import { t } from "i18next/dist/commonjs";
+import {addStripeSource} from '../gql/query.js'
 
 class StripePaymentInfo extends React.Component {
 	
@@ -54,7 +50,7 @@ class StripePaymentInfo extends React.Component {
 
 		return (
 			<ApolloProvider client={g.getGqlClient()}>
-                <Mutation mutation={addStripeCustomer} errorPolicy="all">
+                <Mutation mutation={addStripeSource} errorPolicy="all">
                 {(mutate, {loading, err})=>(<div>
 					<StripeCardNumberInput />
 					<StripeCardExpiryInput />
@@ -72,7 +68,7 @@ class StripePaymentInfo extends React.Component {
 //Populate child with this.props.stripe
 const StripeForm = injectStripe(StripePaymentInfo)
 
-class PaymentInfoForm extends React.Component {
+class AddCreditCardForm extends React.Component {
 	
 	constructor(props) {
 		super(props)
@@ -83,16 +79,15 @@ class PaymentInfoForm extends React.Component {
 
 		return (
 			<div>
-				<p>Would you like to complete the purchase?</p>
+				<p>Please provide your credit card info:</p>
 				<StripeProvider apiKey="pk_test_XzSSEvQVVZoHYGnUDaOMXj3d">
 					<Elements fonts={[{cssSrc:'https://fonts.googleapis.com/css?family=Source+Code+Pro'}]}>
 						<StripeForm {...this.props} />
 					</Elements>
 				</StripeProvider>
-				
 			</div>
 		)
 	}
 }
 
-export default PaymentInfoForm
+export default AddCreditCardForm

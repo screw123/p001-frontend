@@ -122,9 +122,9 @@ export const BigLoadingScreen = ({text}) => (
     </FullHeightDiv>
 )
 
-export const LoadingIcon = ({...props}) => (
+export const LoadingIcon = ({size, ...props}) => (
     <InlineDiv>
-        <LoadingAnim size={1} {...props}/>
+        <LoadingAnim size={size || 1} {...props}/>
     </InlineDiv>
 )
 

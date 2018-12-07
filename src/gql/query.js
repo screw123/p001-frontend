@@ -232,6 +232,15 @@ export const getAccountById = gql`
     }
 `
 
+export const getStripeCusObj = gql`
+    query ($account_id: String!){
+        getAccountById(_id: $account_id) {
+            _id
+            stripeCustomerObject
+        }
+    }
+`
+
 export const getQuotationById = gql`
     query ($quotation_id: String!){
         getQuotationById(_id: $quotation_id) {
@@ -437,12 +446,12 @@ export const updateUserDetails = gql`
     }
 `
 
-export const addStripeCustomer = gql`
+export const addStripeSource = gql`
     mutation (
         $token: String!,
         $account_id: String!
     ) {
-        addStripeCustomer(token: $token, account_id: $account_id) {
+        addStripeSource(token: $token, account_id: $account_id) {
             _id
             stripeCustomerObject
         }

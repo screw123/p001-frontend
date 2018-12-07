@@ -6,16 +6,16 @@ import FormikForm, { FormButton, FormErr } from '../component/FormikForm.js'
 import { ApolloProvider, Query, Mutation } from "react-apollo"
 
 import parseApolloErr from '../util/parseErr.js'
-import {BigLoadingScreen} from '../component/Loading.js'
+import { BigLoadingScreen } from '../component/Loading.js'
 
-import { injectStripe, Elements, StripeProvider} from 'react-stripe-elements';
+import { injectStripe, Elements, StripeProvider } from 'react-stripe-elements';
 
-import {StripeCardNumberInput, StripeCardExpiryInput, StripeCardCVCInput} from '../component/StripeComponents.js'
+import { Container, Label, Wrapper, StripeCardNumberInput, StripeCardExpiryInput, StripeCardCVCInput } from '../component/StripeComponents.js'
 
 
 
 class StripePaymentInfo extends React.Component {
-	
+
 	constructor(props) {
 		super(props) //Fixme props should pass whole account object instead of just account_id
 		this.submit = this.submit.bind(this);
@@ -24,16 +24,31 @@ class StripePaymentInfo extends React.Component {
 	async submit(ev) {
 		ev.preventDefault();
 
-    	this.props.stripe.createToken({name: 'Jenny Rosen'}).then(({token}) => {
-			  console.log('Received Stripe token:', token)
+		this.props.stripe.createToken({ name: 'Jenny Rosen' }).then(({ token }) => {
+			console.log('Received Stripe token:', token)
 		})
 	}
 
 	render() {
 		return (<div>
-			<StripeCardNumberInput />
-  			<StripeCardExpiryInput />
-			<StripeCardCVCInput />
+			<Container>
+				<Label>Card Number</Label>
+				<Wrapper>
+					<StripeCardNumberInput />
+				</Wrapper>
+			</Container>
+			<Container>
+				<Label>Expires</Label>
+				<Wrapper>
+					<StripeCardExpiryInput />
+				</Wrapper>
+			</Container>
+			<Container>
+				<Label>Card Code</Label>
+				<Wrapper>
+					<StripeCardCVCInput />
+				</Wrapper>
+			</Container>
 		</div>)
 	}
 
@@ -43,7 +58,7 @@ class StripePaymentInfo extends React.Component {
 const StripeForm = injectStripe(StripePaymentInfo)
 
 class PaymentInfoForm extends React.Component {
-	
+
 	constructor(props) {
 		super(props) //Fixme props should pass whole account object instead of just account_id
 	}

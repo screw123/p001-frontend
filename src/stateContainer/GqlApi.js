@@ -14,7 +14,7 @@ import isEmpty from 'lodash/isEmpty'
 
 import request from 'superagent'
 
-import {getMyself} from '../gql/query.js'
+import { getMyself } from '../gql/query.js'
 
 import union from 'lodash/union'
 
@@ -22,14 +22,14 @@ import union from 'lodash/union'
 class ApolloContainer extends Container {
     constructor() {
         super()
-        
+
         // The state will be available to any component we inject
         // the Container instance into
         this.state = {
             gqlClient: {},
             gqlClientPublic: {},
             isLogined: undefined,
-            history: {push:()=>{}}, //this should go to its own container, fixme later
+            history: { push: () => { } }, //this should go to its own container, fixme later
             myself: {
                 _id: '',
                 firstName: '',
@@ -51,7 +51,7 @@ class ApolloContainer extends Container {
     }
     // These methods will also be avaiable anywhere we inject our
     // container context
-    
+
     getGqlClient() {
         if (isEmpty(this.state.gqlClient)) {
             const gqlClient = new ApolloClient({
@@ -59,25 +59,25 @@ class ApolloContainer extends Container {
                 cache: new InMemoryCache(),
                 onError: (e) => { console.log("Apollo Client Error:", e) }
             })
-            this.setState({gqlClient: gqlClient})
+            this.setState({ gqlClient: gqlClient })
             return gqlClient
         }
         else { return this.state.gqlClient }
     }
-    
+
     getGqlClientPublic() {
         if (isEmpty(this.state.gqlClientPublic)) {
             const gqlClientPublic = new ApolloClient({
-                link: new BatchHttpLink({ uri: "https://wisekeep.hk/api/gqlPublic"}),
+                link: new BatchHttpLink({ uri: "https://wisekeep.hk/api/gqlPublic" }),
                 cache: new InMemoryCache(),
                 onError: (e) => { console.log("Apollo Public Client Error:", e) }
             })
-            this.setState({gqlClientPublic: gqlClientPublic})
+            this.setState({ gqlClientPublic: gqlClientPublic })
             return gqlClientPublic
         }
         else { return this.state.gqlClientPublic }
     }
-    
+
     getAllAccounts() {
         return union([],
             this.state.myself.accountOwn_id,
@@ -94,79 +94,83 @@ class ApolloContainer extends Container {
     }
 
     async checkLogined() {
-        if (this.state.isLogined===undefined) {
-            this.setState({isLogined: new Promise(async (resolve) => {
-                try {
-                    const res = await request.get('https://wisekeep.hk/api/checkl').withCredentials()
-                    console.log('checkl res=', res)
-                    if (res.statusCode===200) { 
-                        const a = await this.updateMyself({})
-                        this.setState({isLogined: true})
-                        console.log('200, login=true')
-                        return resolve(true)
+        if (this.state.isLogined === undefined) {
+            this.setState({
+                isLogined: new Promise(async (resolve) => {
+                    try {
+                        const res = await request.get('https://wisekeep.hk/api/checkl').withCredentials()
+                        console.log('checkl res=', res)
+                        if (res.statusCode === 200) {
+                            const a = await this.updateMyself({})
+                            this.setState({ isLogined: true })
+                            console.log('200, login=true')
+                            return resolve(true)
+                        }
+                        else {
+                            console.log('not 200, login=false')
+                            this.setState({ isLogined: false })
+                            return resolve(false)
+                        }
                     }
-                    else {
-                        console.log('not 200, login=false')
-                        this.setState({isLogined: false})
+                    catch (e) {
+                        console.log('error, login=false', e)
+                        this.setState({ isLogined: false })
                         return resolve(false)
                     }
-                }
-                catch(e) {
-                    console.log('error, login=false', e)
-                    this.setState({isLogined: false})
-                    return resolve(false)
-                }
-                
-            })})
+
+                })
+            })
         }
         return this.state.isLogined
     }
-    
+
     async login(userPWObj) {
         //userPWObj = {user: aaa, password: bbb}
         try {
-            const res = await request.post('https://wisekeep.hk/api/l').withCredentials().type('form').query(userPWObj).ok(()=>true)
+            const res = await request.post('https://wisekeep.hk/api/l').withCredentials().type('form').query(userPWObj).ok(() => true)
             console.log('login.res=', res)
-            if (res.statusCode===200) {
+            if (res.statusCode === 200) {
                 const a = await this.updateMyself({})
-                this.setState({isLogined: true})
+                this.setState({ isLogined: true })
                 return new Promise((resolve, reject) => resolve(true))
             }
-            else if (res.statusCode===401){ 
+            else if (res.statusCode === 401) {
                 console.log('statusCode=401')
-                return new Promise((resolve, reject) => resolve(401)) }
-            else { 
+                return new Promise((resolve, reject) => resolve(401))
+            }
+            else {
                 console.log('statusCode unknown')
-                return new Promise((resolve, reject) => resolve(500)) }
-        } catch(e) {
-            console.log('caught error, ',e)
+                return new Promise((resolve, reject) => resolve(500))
+            }
+        } catch (e) {
+            console.log('caught error, ', e)
             return new Promise((resolve, reject) => resolve(500))
         }
     }
-    
+
     async logout() {
         const res = await request.get('https://wisekeep.hk/api/logout').withCredentials()
-        if (res.statusCode===200) {
-            this.setState({isLogined: false})
-            this.setState({gqlClient: {}})
-            this.setState({gqlClientPublic: {}})
+        if (res.statusCode === 200) {
+            this.setState({ isLogined: false })
+            this.setState({ gqlClient: {} })
+            this.setState({ gqlClientPublic: {} })
             this.state.history.push('/')
         }
     }
-    
+
     async updateMyself(myself) {
-        const q = await this.getGqlClient().query({query: getMyself})
-        this.setState({myself: q.data.getMyself})
+        const q = await this.getGqlClient().query({ query: getMyself })
+        this.setState({ myself: q.data.getMyself })
     }
-    
+
     setHistoryObj(obj) {
-        this.setState({history: obj})
+        this.setState({ history: obj })
     }
 
     redirect(path) {
         this.state.history.push(path)
     }
-    
+
 }
 
 const GqlApi = new ApolloContainer()
@@ -177,25 +181,25 @@ const GqlApi = new ApolloContainer()
 // to import Unstated and/or create React Contexts  manually in the
 // places that we want to Provide/Subscribe to the API Service.
 export const GqlApiProvider = props => {
-  // We leave the injector flexible, so you can inject a new dependency
-  // at any time, eg: snapshot testing
-  return <Provider inject={props.inject || [GqlApi]}>{props.children}</Provider>;
+    // We leave the injector flexible, so you can inject a new dependency
+    // at any time, eg: snapshot testing
+    return <Provider inject={props.inject || [GqlApi]}>{props.children}</Provider>;
 };
 
 export const GqlApiSubscriber = props => {
-  // We also leave the subscribe "to" flexible, so you can have full
-  // control over your subscripton from outside of the module
-  return <Subscribe to={props.to || [GqlApi]}>{props.children}</Subscribe>;
+    // We also leave the subscribe "to" flexible, so you can have full
+    // control over your subscripton from outside of the module
+    return <Subscribe to={props.to || [GqlApi]}>{props.children}</Subscribe>;
 }
 
 export default GqlApi;
 
-class DummyPassHistoryObj extends React.PureComponent  {
+class DummyPassHistoryObj extends React.PureComponent {
     constructor(props) {
         super(props)
         GqlApi.setHistoryObj(this.props.history)
     }
-    render() { return (' ')}
+    render() { return (' ') }
 }
 
 export const DummyPassHistory = new withRouter(DummyPassHistoryObj)

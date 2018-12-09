@@ -114,10 +114,7 @@ class SalesOrderConfirmForm extends React.Component {
 					}
 
 					return (<div>
-						{stripeCusObj.sources.data.forEach(v=> {
-											console.log('forEach', v)
-											return(<p>haha</p>)
-										})}
+
 						<QuotationDisplay quotation={q} account={a} />
 						{!this.state.showPaymentInfo && <p>Is everything ok?</p>}
 						{!this.state.showPaymentInfo && <FormButton onClick={()=>this.togglePaymentInfo()}>
@@ -194,12 +191,12 @@ class SalesOrderConfirmForm extends React.Component {
 											isLoading={networkStatus===4}
 											err={errors['billingAddress']}
 										/>
-										{<SelectCreditCard
+										<SelectCreditCard
 											allowAddCard={true}
 											disabled={false}
 											account_id={a._id}
 											{...this.props}
-										/>}
+										/>
 
 										<FormButton onClick={()=>this.addSalesOrderClient(mutate, this.props.quotation_id)}>
 											{c.t('Submit')}

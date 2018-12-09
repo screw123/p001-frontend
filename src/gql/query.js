@@ -232,6 +232,15 @@ export const getAccountById = gql`
     }
 `
 
+export const getStripeCusObj = gql`
+    query ($account_id: String!){
+        getAccountById(_id: $account_id) {
+            _id
+            stripeCustomerObject
+        }
+    }
+`
+
 export const getQuotationById = gql`
     query ($quotation_id: String!){
         getQuotationById(_id: $quotation_id) {
@@ -316,6 +325,8 @@ export const getQuotationAndAccountById = gql`
                 name
             }
             totalPrice
+            createDateTime
+            updateDateTime
         }
     }
 `
@@ -431,6 +442,18 @@ export const updateUserDetails = gql`
                 accountType
                 isActive
             }
+        }
+    }
+`
+
+export const addStripeSource = gql`
+    mutation (
+        $token: String!,
+        $account_id: String!
+    ) {
+        addStripeSource(token: $token, account_id: $account_id) {
+            _id
+            stripeCustomerObject
         }
     }
 `

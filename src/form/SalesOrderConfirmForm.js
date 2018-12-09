@@ -1,23 +1,19 @@
 import React from "react"
 
-import isEmpty from 'lodash/isEmpty'
-import pickBy from 'lodash/pickBy'
-
 import { Formik, Field } from 'formik'
 import FormikForm, { FormButton, FormErr } from '../component/FormikForm.js'
 
-import GqlApi from '../stateContainer/GqlApi.js'
-import {LocaleApiSubscriber} from '../stateContainer/LocaleApi.js'
 import { ApolloProvider, Query, Mutation } from "react-apollo"
 
-import { getQuotationById, getAccountById, getQuotationAndAccountById, addRentalOrder } from '../gql/query.js'
+import { getAccountById, getQuotationAndAccountById, addRentalOrder } from '../gql/query.js'
 import parseApolloErr from '../util/parseErr.js'
 import {BigLoadingScreen} from '../component/Loading.js'
 
 import { QuotationDisplay } from '../component/QuotationDisplay.js'
+import CreditCardForm from '../component/SelectCreditCard.js'
 
 import SelectAddress from '../component/SelectAddress.js'
-import PaymentInfoForm from './PaymentInfoForm.js'
+import SelectCreditCard from '../component/SelectCreditCard.js'
 
 import get from 'lodash/get'
 /*
@@ -37,12 +33,12 @@ class SalesOrderConfirmForm extends React.Component {
 		this.addSalesOrderClient = this.addSalesOrderClient.bind(this)
 		this.backToQuotationForm = this.backToQuotationForm.bind(this)
 		this.togglePaymentInfoComponent = this.togglePaymentInfoComponent.bind(this)
-
-		console.log('loaded SalesOrderConfirmForm')
+		this.togglePaymentInfo = this.togglePaymentInfo.bind(this)
 
 		this.state = {
 			submitting: false,
-			showPaymentInfoComponent: false
+			showPaymentInfoComponent: false,
+			showPaymentInfo: false
 		}
 	}
 
@@ -51,6 +47,8 @@ class SalesOrderConfirmForm extends React.Component {
 	}
 	
 	togglePaymentInfoComponent = () => this.setState(prevState=>({showPaymentInfoComponent: (prevState.showPaymentInfoComponent? false: true) }))
+
+	togglePaymentInfo = () => this.setState(prevState=>({showPaymentInfo: (prevState.showPaymentInfo? false: true) }))
 
 	addSalesOrderClient = async (mutate, quotation_id) => {
 		const d = await mutate({variables: {
@@ -92,7 +90,6 @@ class SalesOrderConfirmForm extends React.Component {
 
 		return (
             <ApolloProvider client={g.getGqlClient()}>
-				{this.state.showPaymentInfoComponent && <PaymentInfoForm />}
 				<Query query={query_gql} variables={query_var} notifyOnNetworkStatusChange>
 				{({ loading: queryLoading, error: queryErr, data, refetch, networkStatus }) => {
 
@@ -109,9 +106,22 @@ class SalesOrderConfirmForm extends React.Component {
 
 					const q = quotation||data.getQuotationById
 					const a = data.getAccountById
-					console.log('data.getAccountById, ', a)
+
+					let stripeCusObj = null
+					if (a.stripeCustomerObject) {
+						stripeCusObj = JSON.parse(a.stripeCustomerObject)
+						console.log('stripeCusObj', !!stripeCusObj, !stripeCusObj, stripeCusObj, stripeCusObj.sources, stripeCusObj.sources.data)
+					}
 
 					return (<div>
+
+						<QuotationDisplay quotation={q} account={a} />
+						{!this.state.showPaymentInfo && <p>Is everything ok?</p>}
+						{!this.state.showPaymentInfo && <FormButton onClick={()=>this.togglePaymentInfo()}>
+							{c.t('Yes, all fine!')}
+						</FormButton>}
+
+						{this.state.showPaymentInfo && 
 						<Mutation mutation={addRentalOrder} errorPolicy="all">
 						{(mutate, {loading: mutateLoading, err: mutateErr})=>{ return(
 							<Formik
@@ -176,13 +186,18 @@ class SalesOrderConfirmForm extends React.Component {
 											addresses={a.address_id}
 											onChange={(v)=>setFieldValue('billingAddress', v._id)}
 											allowAddAddress={true}
-											onAddNewAddress={(v)=>refetch()}
+											onAddNewAddress={()=>refetch()}
 											multiSelect={false}
 											isLoading={networkStatus===4}
 											err={errors['billingAddress']}
 										/>
-										<QuotationDisplay quotation={q} account={a} />
-										<p>Is everything ok?</p>
+										<SelectCreditCard
+											allowAddCard={true}
+											disabled={false}
+											account_id={a._id}
+											{...this.props}
+										/>
+
 										<FormButton onClick={()=>this.addSalesOrderClient(mutate, this.props.quotation_id)}>
 											{c.t('Submit')}
 										</FormButton>
@@ -193,7 +208,7 @@ class SalesOrderConfirmForm extends React.Component {
 							)}
 							</Formik>
 						) }}
-						</Mutation>
+						</Mutation>}
 						
 					</div>)
 				}}

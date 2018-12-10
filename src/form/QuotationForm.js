@@ -12,9 +12,7 @@ import parseApolloErr from '../util/parseErr.js'
 import merge from 'lodash/merge'
 import omit from 'lodash/omit'
 import isEmpty from 'lodash/isEmpty'
-import isEqual from 'lodash/isEqual'
 import pickBy from 'lodash/pickBy'
-import { throwServerError } from "apollo-link-http-common";
 
 /*
 Prop list:
@@ -54,7 +52,6 @@ class Quotation extends React.Component {
     removeCouponCode = () => this.setState({couponCode: ''})
 
     checkAccountChange = () => {
-        console.log('checkAccountChange' ,this.state.currentAcct_id, this.props.account_id)
         if (this.state.currentAcct_id !== this.props.account_id) {
             this.setState({currentAcct_id: this.props.account_id, couponCode: '', couponCodeEntry: ''})
         }
@@ -199,7 +196,6 @@ class Quotation extends React.Component {
     }
     
     updateValues = (priceList, values, fieldName, fieldValue, setFieldValue) => { //setFieldValue for container type and totalAmt
-        console.time('updateValues')
         let totalAmt = 0
         const qty = values.containers
         setFieldValue(fieldName, fieldValue) //setFieldValue for container type first
@@ -207,7 +203,6 @@ class Quotation extends React.Component {
         //Calculate total amt below
         totalAmt = this.calcTotalAmt(qty, fieldName, fieldValue, priceList)
         setFieldValue('totalAmt', totalAmt)
-        console.timeEnd('updateValues')
     }
     
     calcTotalAmt = (qty, fieldName, fieldValue, priceList) => {
@@ -245,7 +240,6 @@ class Quotation extends React.Component {
     render(){ 
         const g = this.props.login
         const c = this.props.i18n
-        const q = (this.state.couponCode==='') ? getPriceListByAccount: getPriceListByCode
         const gqlClient = (g.state.isLogined)? g.getGqlClient() : g.getGqlClientPublic()
         this.checkAccountChange()
 
@@ -314,7 +308,6 @@ class Quotation extends React.Component {
                                             quotationLines: quotation_lines,
                                             couponCode: (this.state.couponCode==='') ? undefined: this.state.couponCode
                                         }})
-                                        console.log('server return', d)
                                         if (this.props.onAddQuotationSuccess) { this.props.onAddQuotationSuccess(d.data.addQuotation)}
                                     }
                                     catch(e) { console.log(e) }

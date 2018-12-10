@@ -8,7 +8,6 @@ import TermsAndConditionPage from './page/TermsAndConditionPage.js'
 import QuotationPage from './page/QuotationPage.js'
 import SalesOrderConfirmPage from './page/SalesOrderConfirmPage.js'
 import TestPage from './page/TestPage.js'
-import PaymentInfoForm from './form/PaymentInfoForm'
 
 const routes = [
     {
@@ -170,21 +169,7 @@ const routes = [
         router: {
             requireLogin: false
         }
-    },
-    {
-        path: "/stripe",
-        exact: true,
-        component: PaymentInfoForm,
-        navbar: {
-            itemId: 991,
-            firstLevel: true,
-            showBeforeLogin: true,
-            showAfterLogin: true
-        },
-        router: {
-            requireLogin: false
-        }
-    },
+    }
 ]
 
 export default routes

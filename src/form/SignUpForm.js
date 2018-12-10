@@ -7,8 +7,6 @@ import TermsAndConditionPage from '../page/TermsAndConditionPage.js'
 import Modal from '../component/Modal.js'
 import {StraightRow, ClickableText } from '../component/BasicComponents.js'
 
-import { I18n } from 'react-i18next'
-
 import isEmpty from 'lodash/isEmpty'
 import pickBy from 'lodash/pickBy'
 import omitBy from 'lodash/omitBy'

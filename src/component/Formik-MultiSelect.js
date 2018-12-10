@@ -57,7 +57,7 @@ const updateSelect = ({setFieldValue, name, currentValue, value, multiSelect, is
 export const MultiSelect = ({
     field: { name, value, ...fields },
     form: { setFieldValue },
-    touched, classNames, err, options, disabled, label, multiSelect, isLoading, hidden, customOption, customMultiValueLabel, defaultValue, placeholder, ...props }) => {
+    touched, classNames, err, options, disabled, label, multiSelect, isLoading, hidden, customOption, customMultiValueLabel, customSingleValueLabel, defaultValue, placeholder, ...props }) => {
     /*  Radio by default, will change to select if options > 3
         if multi-select, will change radio to checkbox
         field.name = internal name used by code
@@ -68,6 +68,7 @@ export const MultiSelect = ({
     let customComponentsMS = {}
     if (customOption) {customComponentsMS['Option'] = customOption}
     if (customMultiValueLabel) {customComponentsMS['MultiValueLabel'] = customMultiValueLabel}
+    if (customSingleValueLabel) {customComponentsMS['SingleValue'] = customSingleValueLabel}
 
     if (hidden) 
         return null

@@ -99,15 +99,12 @@ class ApolloContainer extends Container {
                 isLogined: new Promise(async (resolve) => {
                     try {
                         const res = await request.get('https://wisekeep.hk/api/checkl').withCredentials()
-                        console.log('checkl res=', res)
                         if (res.statusCode === 200) {
                             const a = await this.updateMyself({})
                             this.setState({ isLogined: true })
-                            console.log('200, login=true')
                             return resolve(true)
                         }
                         else {
-                            console.log('not 200, login=false')
                             this.setState({ isLogined: false })
                             return resolve(false)
                         }
@@ -128,7 +125,6 @@ class ApolloContainer extends Container {
         //userPWObj = {user: aaa, password: bbb}
         try {
             const res = await request.post('https://wisekeep.hk/api/l').withCredentials().type('form').query(userPWObj).ok(() => true)
-            console.log('login.res=', res)
             if (res.statusCode === 200) {
                 const a = await this.updateMyself({})
                 this.setState({ isLogined: true })

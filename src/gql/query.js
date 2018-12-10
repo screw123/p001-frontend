@@ -332,8 +332,8 @@ export const getQuotationAndAccountById = gql`
 `
 
 export const addRentalOrder = gql`
-    mutation ($quotation_id: String!, $account_id: String!, $billingAddress_id: String!) {
-        addRentalOrderFromQuotation(quotation_id: $quotation_id, account_id: $account_id, billingAddress_id: $billingAddress_id) {
+    mutation ($quotation_id: String!, $account_id: String!, $billingAddress_id: String!, $cardId: String!) {
+        addRentalOrderFromQuotation(quotation_id: $quotation_id, account_id: $account_id, billingAddress_id: $billingAddress_id, cardId: $cardId) {
             _id
         }
     }`

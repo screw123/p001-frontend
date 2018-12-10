@@ -1,7 +1,5 @@
 import React from 'react'
-import { Form } from 'formik'
 import styled from 'styled-components'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { FieldDiv, FieldLabel, ErrorLabel } from './Formik-Basic.js'
 

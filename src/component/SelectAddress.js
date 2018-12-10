@@ -30,7 +30,7 @@ const AddressLine = styled.div`
     text-overflow: ellipsis;
 `
 
-const AddressBlock = styled.div`
+export const AddressBlock = styled.div`
     border: 0.1em solid ${props => props.disabled ? `rgba(128, 128, 128, 0.2)` : `White`};
     border-radius: 0.25em;
     display: block;
@@ -43,7 +43,7 @@ const AddressBlock = styled.div`
     ${({selected}) => selected? `background-color: rgba(255, 64, 112, 0.2);` : ``}
 `
 
-const AddAddressButton = styled.button`
+export const AddAddressButton = styled.button`
 
 `
 
@@ -62,6 +62,8 @@ class SelectAddress extends React.Component{
     onChange(required): function, return addressList number;
     addressLine(required): array of addresses
     defaultSelected(required): id of selected address
+    hidden: boolean
+
     */
     constructor(props) {
         super(props)

@@ -1,126 +1,35 @@
 import React from 'react'
-import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { ApolloProvider, Query, Mutation } from "react-apollo"
+import { ApolloProvider, Query } from "react-apollo"
+import {LocaleApiSubscriber} from '../stateContainer/LocaleApi.js'
 
 import parseApolloErr from '../util/parseErr.js'
 import {LoadingIcon} from './Loading.js'
 import AddCreditCardForm from '../form/AddCreditCardForm.js'
+import { MultiSelect } from '../component/FormikForm.js'
 
 import { getStripeCusObj } from '../gql/query.js'
+
+import {AddressBlock as CardBlock, AddAddressButton as AddCardButton} from './SelectAddress.js'
+import { FieldLabel, ErrorLabel } from './Formik-Basic.js'
 
 /*
 props:
 allowAddCard: boolean
-account + refetch or account_id
+account or refetch + account_id
 disabled
+hidden
 g
 c
+onChange(required): function, return source_id
+cardList(required): array of cards (required if )
+defaultSelected(required): id of selected card
 */
 
-class SelectCreditCard extends React.Component {
-	constructor(props) {
-		super(props)
-		this.state={showAddNewCard: false}
-		this.toggleAddNewCard=this.toggleAddNewCard.bind(this)
-	}
-
-	toggleAddNewCard=()=> this.setState(prevState=>({showAddNewCard: (prevState.showAddNewCard? false: true) }))
-
-	render() {
-		const g = this.props.login
-		const c = this.props.i18n
-
-		if (this.props.account_id) {
-			return(
-				<ApolloProvider client={g.getGqlClient()}>
-					<Query query={getStripeCusObj} variables={{account_id: this.props.account_id}} notifyOnNetworkStatusChange>
-					{({ loading, error, data, refetch, networkStatus }) => {
-						if (loading) return (<LoadingIcon size={3}/>)
-						if (error) {
-							const errStack = parseApolloErr(error)
-							return (<div>
-								{errStack.forEach(v=>{ return(<p>{v.message}</p>) }) }
-							</div>)
-						}
-						return(<div>
-							{!this.state.showAddNewCard && <CreditCardList
-								stripeCustomerObject={data.getAccountById.stripeCustomerObject}
-								toggleAddNewCard={this.toggleAddNewCard}
-								{...this.props}
-							/>}
-							{!!this.state.showAddNewCard && <AddCreditCardForm
-								onSuccess={()=>{
-									refetch()
-									this.toggleAddNewCard()
-								}}
-								{...this.props}
-							/>}
-						</div>)
-
-						
-					}}
-					</Query>
-				</ApolloProvider>
-			)
-		}
-		else if (this.props.account) {
-			return(<div>
-				{!this.state.showAddNewCard && <CreditCardList
-					stripeCustomerObject={this.props.account.stripeCustomerObject}
-					toggleAddNewCard={this.toggleAddNewCard}
-					{...this.props}
-				/>}
-				{!!this.state.showAddNewCard && <AddCreditCardForm
-					account_id={this.props.account._id}
-					onSuccess={()=>{
-						this.props.refetch()
-						this.toggleAddNewCard()
-					}}
-					{...this.props}
-				/>}
-			</div>)
-		}
-
-	}
-}
-
-const CreditCardList = (props) =>{
-	const c = props.i18n
-	return(
-		<div>
-			<p>Please choose a credit card:</p>
-			{props.allowAddCard && <AddCardButton onClick={props.toggleAddNewCard} disabled={props.disabled}>
-				<FontAwesomeIcon icon='plus-circle'/>
-				{c.t('Add New Card')}
-			</AddCardButton>}
-			{getCards(props.stripeCustomerObject, c.t)}
-		</div>
-	)
-}
-
-const getCards = (stripeCusObj, t)=> {
-		
-	if (!stripeCusObj) { return (<span>{t('You have no credit card registered with us.')}</span>) }
-
-	let returnHTML = []
-	const s = JSON.parse(stripeCusObj)
-	
-	if (s.sources.data.length===0) {
-		returnHTML.push(<span>{t('You have no credit card registered with us.')}</span>)
-	}
-	for(let i=0;i<s.sources.data.length;i++) {
-		returnHTML.push(genCreditCardInfo(s.sources.data[i]))
-	}
-	
-	return returnHTML
-}
-
-
-export const genCreditCardInfo = (source) => {
+const CreditCardDisplay = ({data, key, selected, onClick, disabled, innerProps, ...props}) => {
 	let cardIcon
 
-	switch(source.card.brand) {
+	switch(data.card.brand) {
 		case 'Visa':
 			cardIcon = ['fab', 'cc-visa']
 			break
@@ -135,24 +44,120 @@ export const genCreditCardInfo = (source) => {
 	}
 
 	return(
-		<CardDiv>
+		<CardBlock key={props.key} selected={selected} onClick={onClick} disabled={disabled} {...innerProps}>
 			<span></span>
 			<FontAwesomeIcon icon={cardIcon} size='2x' />
-			<span>{'XXXX XXXX XXXX ' + source.card.last4}</span><br />
-			<span>{source.card.exp_month + ' / ' + source.card.exp_year}</span>
-		</CardDiv>
+			<span>{'XXXX XXXX XXXX ' + data.card.last4}</span><br />
+			<span>{data.card.exp_month + ' / ' + data.card.exp_year}</span>
+		</CardBlock>
 	)
 }
 
-export const CardDiv = styled.div`
-    display: block
-    box-sizing:border-box;
-    padding: 1em;
-    min-width: 220px;
-`
+class SelectCreditCard extends React.Component {
+	constructor(props) {
+		super(props)
+		this.state={
+			showAddNewCard: false,
+			err: undefined
+		}
+		this.toggleAddNewCard=this.toggleAddNewCard.bind(this)
+		this.renderMainDiv = this.renderMainDiv.bind(this)
+	}
 
-const AddCardButton = styled.button`
+	toggleAddNewCard=(e)=> {
+		e.preventDefault()
+		this.setState(prevState=>({showAddNewCard: (prevState.showAddNewCard? false: true) }))
+	}
 
-`
+	renderMainDiv=(stripeCusObjString, onAddCard, props)=> {
+		let no_of_card = 0
+		let stripeCusObj
+		if (stripeCusObjString) {
+			stripeCusObj = JSON.parse(stripeCusObjString)
+			if (stripeCusObj.sources) {
+				no_of_card = stripeCusObj.sources.data.length
+			}
+		}
+		let options = stripeCusObj.sources.data.map(v=>Object.assign({value: v.id}, v) )
+
+		return (<LocaleApiSubscriber>
+			{c=>(<div>
+				{/* !showAddNewCard = show card selector.  No card is available */}
+				{!this.state.showAddNewCard && (!stripeCusObj || no_of_card===0) && 
+					<span>{c.t('You have no credit card registered with us.')}</span>
+				}
+
+				{/* !showAddNewCard = show card selector. Have 1+ cards */}
+				{!this.state.showAddNewCard && !!stripeCusObj && 
+					<div>
+						<p>Please choose a credit card:</p>
+						<MultiSelect
+							field={props.field}
+							form={props.form}
+							options={options}
+							multiSelect={props.multiSelect}
+							placeholder={props.placeholder}
+							isLoading={props.isLoading}
+							disabled={props.disabled}
+							customOption={CreditCardDisplay}
+							customSingleValueLabel={CreditCardDisplay}
+						/>
+					</div>
+				}
+
+				{/*show add card button */}
+				{!this.state.showAddNewCard && props.allowAddCard &&
+					<AddCardButton onClick={this.toggleAddNewCard} disabled={props.disabled}>
+						<FontAwesomeIcon icon='plus-circle'/>
+						{c.t('Add New Card')}
+					</AddCardButton>
+				}
+
+				{/* showAddNewCard = show add card form.  When show add card form, hide card selector */}
+				{!!this.state.showAddNewCard && <AddCreditCardForm
+					account_id={props.account_id || props.account._id}
+					onSuccess={()=>{
+						onAddCard()
+						this.toggleAddNewCard()
+					}}
+					{...props}
+				/>}
+				{props.err && <ErrorLabel>{c.t(props.err)}</ErrorLabel>}
+				{this.state.err && <ErrorLabel>{c.t(this.state.err)}</ErrorLabel>}
+			</div>)}
+		</LocaleApiSubscriber>)
+	}
+
+	render() {
+		if (this.props.hidden) {return null}
+		const g = this.props.login
+
+		if (this.props.account_id) {
+			return(
+				<ApolloProvider client={g.getGqlClient()}>
+					<Query query={getStripeCusObj} variables={{account_id: this.props.account_id}} notifyOnNetworkStatusChange>
+					{({ loading, error, data, refetch, networkStatus }) => {
+
+						if (loading) return (<LoadingIcon size={3}/>)
+
+						if (error) {
+							const errStack = parseApolloErr(error)
+							return (<div>
+								{errStack.map(v=>{ return(<p>{v.message}</p>) }) }
+							</div>)
+						}
+
+						return this.renderMainDiv(data.getAccountById.stripeCustomerObject, refetch, this.props)
+					}}
+					</Query>
+				</ApolloProvider>
+			)
+		}
+		else if (this.props.account) {
+			return this.renderMainDiv(this.props.account.stripeCustomerObject, this.props.onAddCard, this.props)
+		}
+
+	}
+}
 
 export default SelectCreditCard

@@ -1,16 +1,16 @@
 import React from "react"
 
+import { Redirect } from "react-router-dom"
+import { ApolloProvider, Query, Mutation } from "react-apollo"
+
 import { Formik, Field } from 'formik'
 import FormikForm, { FormButton, FormErr } from '../component/FormikForm.js'
-
-import { ApolloProvider, Query, Mutation } from "react-apollo"
 
 import { getAccountById, getQuotationAndAccountById, addRentalOrder } from '../gql/query.js'
 import parseApolloErr from '../util/parseErr.js'
 import {BigLoadingScreen} from '../component/Loading.js'
 
 import { QuotationDisplay } from '../component/QuotationDisplay.js'
-import CreditCardForm from '../component/SelectCreditCard.js'
 
 import SelectAddress from '../component/SelectAddress.js'
 import SelectCreditCard from '../component/SelectCreditCard.js'
@@ -38,12 +38,13 @@ class SalesOrderConfirmForm extends React.Component {
 		this.state = {
 			submitting: false,
 			showPaymentInfoComponent: false,
-			showPaymentInfo: false
+			showPaymentInfo: false,
+			redirectToQuotation: false
 		}
 	}
 
 	backToQuotationForm = () => {
-		console.log('backToQuotationForm')
+		this.setState({redirectToQuotation: true})
 	}
 	
 	togglePaymentInfoComponent = () => this.setState(prevState=>({showPaymentInfoComponent: (prevState.showPaymentInfoComponent? false: true) }))
@@ -58,12 +59,13 @@ class SalesOrderConfirmForm extends React.Component {
 	}
 
     render(){
+		if (this.state.redirectToQuotation) { return (<Redirect to={{pathname: '/quotation'}} />) }
+
 		const g = this.props.login
 		const c = this.props.i18n
 
 		let quotation = get(this.props, 'location.state.quotation', undefined) || this.props.quotation || undefined
 		let quotation_id= this.props.quotation_id || this.props.match.params.quotation_id || undefined
-		console.log(quotation, quotation_id)
 		if ((quotation===undefined) && (quotation_id===undefined)) {
 			return (<p>{'Error: Quotation is not available'}</p>)
 		}
@@ -96,10 +98,11 @@ class SalesOrderConfirmForm extends React.Component {
 					if (queryLoading) return (<BigLoadingScreen text={'Loading...'}/>)
 					if (queryErr) {
 						console.log('SalesOrderConfirmForm', queryErr)
-						const errStack = parseApolloErr(queryErr)
+						const errStack = parseApolloErr(queryErr, c.t)
+
 						return (
 							<div>
-								{errStack.forEach(v=>{ return(<p>{v.message}</p>) }) }
+								{errStack.map(v=>{ return <p>{v.message}</p> }) }
 							</div>	
 						)
 					}
@@ -108,10 +111,7 @@ class SalesOrderConfirmForm extends React.Component {
 					const a = data.getAccountById
 
 					let stripeCusObj = null
-					if (a.stripeCustomerObject) {
-						stripeCusObj = JSON.parse(a.stripeCustomerObject)
-						console.log('stripeCusObj', !!stripeCusObj, !stripeCusObj, stripeCusObj, stripeCusObj.sources, stripeCusObj.sources.data)
-					}
+					if (a.stripeCustomerObject) { stripeCusObj = JSON.parse(a.stripeCustomerObject) }
 
 					return (<div>
 
@@ -120,19 +120,26 @@ class SalesOrderConfirmForm extends React.Component {
 						{!this.state.showPaymentInfo && <FormButton onClick={()=>this.togglePaymentInfo()}>
 							{c.t('Yes, all fine!')}
 						</FormButton>}
+						{!this.state.showPaymentInfo && <FormButton onClick={()=>this.backToQuotationForm()}>
+							{c.t('I want to make changes')}
+						</FormButton>}
 
 						{this.state.showPaymentInfo && 
 						<Mutation mutation={addRentalOrder} errorPolicy="all">
 						{(mutate, {loading: mutateLoading, err: mutateErr})=>{ return(
 							<Formik
 								initialValues={{
-									billingAddress: get(a, 'defaultBillingAddress_id._id', undefined) || '',
+									billingAddress: get(a, 'defaultBillingAddress_id._id', undefined),
 									quotation_id: q._id,
-									account_id: a._id
+									account_id: a._id,
+									cardId: get(stripeCusObj, 'default_source', undefined) 
 								}}
 								validate={(v)=> {
 									if ((v.billingAddress==='') || (v.billingAddress===undefined)) {
 										return {billingAddress : 'Please provide a billing address'}
+									}
+									if ((v.cardId==='') || (v.cardId===undefined)) {
+										return {cardId : 'Please choose a credit card'}
 									}
 									else return {}
 								}}
@@ -142,7 +149,8 @@ class SalesOrderConfirmForm extends React.Component {
                                         const d = await mutate({variables: {
                                             billingAddress_id: values.billingAddress,
                                             quotation_id: values.quotation_id,
-                                            account_id: values.account_id
+											account_id: values.account_id,
+											cardId: values.cardId
                                         }})
                                         console.log('server return', d)
                                         if (this.props.onConfirmSuccess) { this.props.onConfirmSuccess(d.data.addRentalOrder)}
@@ -164,7 +172,7 @@ class SalesOrderConfirmForm extends React.Component {
 												actions.setStatus(errStack[i].message)
 											}
 										}
-										console.log(errStack)
+										console.log(e, errStack)
 									}
 
 
@@ -191,13 +199,20 @@ class SalesOrderConfirmForm extends React.Component {
 											isLoading={networkStatus===4}
 											err={errors['billingAddress']}
 										/>
-										<SelectCreditCard
+										<Field
+											name="cardId"
+											type="text"
+											component={SelectCreditCard}
+											label={c.t('Credit Card')}
+											placeholder={c.t('Please choose your credit card')}
+											account={a}
+											onChange={(v)=>setFieldValue('card_id', v.cardId)}
 											allowAddCard={true}
-											disabled={false}
-											account_id={a._id}
-											{...this.props}
+											onAddCard={()=>refetch()}
+											multiSelect={false}
+											isLoading={networkStatus===4}
+											err={errors['cardId']}
 										/>
-
 										<FormButton onClick={()=>this.addSalesOrderClient(mutate, this.props.quotation_id)}>
 											{c.t('Submit')}
 										</FormButton>
@@ -221,3 +236,13 @@ class SalesOrderConfirmForm extends React.Component {
 }
 
 export default SalesOrderConfirmForm
+
+/*
+										<SelectCreditCard
+											allowAddCard={true}
+											disabled={false}
+											account_id={a._id}
+											defaultSelected={values.card_id}
+											{...this.props}
+										/>
+										*/

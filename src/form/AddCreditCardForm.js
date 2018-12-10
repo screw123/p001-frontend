@@ -3,10 +3,14 @@ import { ApolloProvider,Mutation } from "react-apollo"
 
 import parseApolloErr from '../util/parseErr.js'
 
+import {LocaleApiSubscriber} from '../stateContainer/LocaleApi.js'
+import GqlApi, { GqlApiSubscriber } from '../stateContainer/GqlApi.js'
+
 import { injectStripe, Elements, StripeProvider} from 'react-stripe-elements';
-import {StripeCardNumberInput, StripeCardExpiryInput, StripeCardCVCInput} from '../component/StripeComponents.js'
+import {Container, Label, Wrapper, StripeCardNumberInput, StripeCardExpiryInput, StripeCardCVCInput} from '../component/StripeComponents.js'
 
 import {addStripeSource} from '../gql/query.js'
+import {LoadingIcon} from '../component/Loading.js'
 
 class StripePaymentInfo extends React.Component {
 	
@@ -45,21 +49,42 @@ class StripePaymentInfo extends React.Component {
 
 
 	render() {
-		const g = this.props.login
-		const c = this.props.i18n
-
 		return (
-			<ApolloProvider client={g.getGqlClient()}>
-                <Mutation mutation={addStripeSource} errorPolicy="all">
-                {(mutate, {loading, err})=>(<div>
-					<StripeCardNumberInput />
-					<StripeCardExpiryInput />
-					<StripeCardCVCInput />
-					<p>{c.t(this.state.stripeSourceCreateErr)}</p>
-					<button onClick={(e)=>this.submit(e, mutate, c.t)}>Send</button>
-				</div>)}
-				</Mutation>
-			</ApolloProvider>
+			<GqlApiSubscriber>
+			{g => (
+				<LocaleApiSubscriber>
+				{c=>(
+					<ApolloProvider client={g.getGqlClient()}>
+						<Mutation mutation={addStripeSource} errorPolicy="all">
+						{(mutate, {loading, err})=>(<div>
+							<Container>
+								<Label>Card Number</Label>
+								<Wrapper>
+									<StripeCardNumberInput />
+								</Wrapper>
+							</Container>
+							<Container>
+								<Label>Expires</Label>
+								<Wrapper>
+									<StripeCardExpiryInput />
+								</Wrapper>
+							</Container>
+							<Container>
+								<Label>Card Code</Label>
+								<Wrapper>
+									<StripeCardCVCInput />
+								</Wrapper>
+							</Container>
+							<p>{c.t(this.state.stripeSourceCreateErr)}</p>
+							<button onClick={(e)=>this.submit(e, mutate, c.t)} disabled={loading}>Send</button>
+							{loading && <LoadingIcon size={2} />}
+						</div>)}
+						</Mutation>
+					</ApolloProvider>
+				)}
+				</LocaleApiSubscriber>
+			)}
+			</GqlApiSubscriber>
 		)
 	}
 

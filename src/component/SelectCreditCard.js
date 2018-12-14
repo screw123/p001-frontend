@@ -72,23 +72,28 @@ class SelectCreditCard extends React.Component {
 	renderMainDiv=(stripeCusObjString, onAddCard, props)=> {
 		let no_of_card = 0
 		let stripeCusObj
-		if (stripeCusObjString) {
+
+		if (stripeCusObjString) {  //if user already have a stripeObject
 			stripeCusObj = JSON.parse(stripeCusObjString)
 			if (stripeCusObj.sources) {
 				no_of_card = stripeCusObj.sources.data.length
 			}
 		}
+		else { //a brand new user, or he never input any payment info, then we make up an empty object to avoid error
+			stripeCusObj={sources:{data:[]}}
+		}
 		let options = stripeCusObj.sources.data.map(v=>Object.assign({value: v.id}, v) )
 
+		console.log('SelectCreditCard.render', (!stripeCusObj || no_of_card===0), !!stripeCusObj)
 		return (<LocaleApiSubscriber>
 			{c=>(<div>
 				{/* !showAddNewCard = show card selector.  No card is available */}
-				{!this.state.showAddNewCard && (!stripeCusObj || no_of_card===0) && 
+				{!this.state.showAddNewCard && (no_of_card===0) && 
 					<span>{c.t('You have no credit card registered with us.')}</span>
 				}
 
 				{/* !showAddNewCard = show card selector. Have 1+ cards */}
-				{!this.state.showAddNewCard && !!stripeCusObj && 
+				{!this.state.showAddNewCard && (no_of_card>0) && 
 					<div>
 						<p>Please choose a credit card:</p>
 						<MultiSelect
@@ -116,10 +121,11 @@ class SelectCreditCard extends React.Component {
 				{/* showAddNewCard = show add card form.  When show add card form, hide card selector */}
 				{!!this.state.showAddNewCard && <AddCreditCardForm
 					account_id={props.account_id || props.account._id}
-					onSuccess={()=>{
+					onSuccess={e=>{
 						onAddCard()
-						this.toggleAddNewCard()
+						this.toggleAddNewCard(e)
 					}}
+					onCancel={e=>this.toggleAddNewCard(e)}
 					{...props}
 				/>}
 				{props.err && <ErrorLabel>{c.t(props.err)}</ErrorLabel>}

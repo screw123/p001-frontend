@@ -30,6 +30,9 @@ const parseApolloErr = (err, t) => {
                 case 'USER_ALREADY_ACTIVATED':
                     errObj['message'] = t('Your user login is already activated, redirecting to login page...')
                     break
+                case 'SPECIAL':
+                    errObj['message'] = t(err.graphQLErrors[i].data[errObj['key']])
+                    break
                 case 'SUSPENDED':
                     errObj['message'] = t('Your login/account is not activated.  If you have already activated your account, please contact our support team.')
                     break

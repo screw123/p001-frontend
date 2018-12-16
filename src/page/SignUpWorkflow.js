@@ -4,11 +4,6 @@ import SignUpForm from '../form/SignUpForm.js'
 import UserActivationForm from '../form/UserActivationForm.js'
 import LoginForm from '../form/LoginForm.js'
 
-import GqlApi from '../stateContainer/GqlApi.js'
-import LocaleApi from '../stateContainer/LocaleApi.js'
-
-import { I18n } from 'react-i18next'
-
 import Background from '../component/BasicComponents.js'
 import {BigLoadingScreen } from '../component/Loading.js'
 
@@ -89,42 +84,47 @@ class SignUpWorkflow extends React.Component {
     
     async loginAfterVerified() {
         console.log('SignUpWorkflow.loginAfterVerified')
-        const isLoginSuccess = await GqlApi.login({user: this.state.user._id, password: this.state.user.password})
+        const isLoginSuccess = await this.props.login.login({user: this.state.user._id, password: this.state.user.password})
         if (isLoginSuccess===true) { return new Promise((resolve, reject) => resolve(true)) }
-        else { this.setState({errMsg: LocaleApi.t("System is currently busy, please wait for 1 minute and try again")}) }
+        else { this.setState({errMsg: "System is currently busy, please wait for 1 minute and try again"}) }
     }
     
     render() {
-        if (GqlApi.state.isLogined) return (<Redirect to='/dash' />)
-        
+        const g = this.props.login
+        const c = this.props.i18n
+        const { nextPath, passOnState } = this.props.location.state || { nextPath: "/dash" }
+
+        console.log('nextPath, passOnState=', nextPath, passOnState)
+        if (g.state.isLogined) {
+            return <Redirect to={{pathname: nextPath, state: passOnState}} />
+        }
+
         return(
         <div>
             {this.state.loading && <BigLoadingScreen />}
-            {!this.state.loading && <I18n>
-                {(t, { i18n }) => (
-                    <Background>
-                        {!(this.state.userCreated) &&
-                            <div>
-                                <h1>{t('Sign Up')}</h1>
-                                <SignUpForm onUserCreated={this.onUserCreated} />
-                            </div>
-                        }
-                        {this.state.userCreated && !(this.state.userVerified) &&
-                            <div>
-                                <h1>{t('User Activation')}</h1>
-                                <UserActivationForm match={{params: {}}} user={this.state.user} onVerifySuccess={this.onUserVerified}/>
-                            </div>
-                        }
-                        {this.state.userVerified && !(GqlApi.state.isLogined) &&
-                            <div>
-                                <h1>{t('Please login to continue')}</h1>
-                                <LoginForm user={this.state.user} />
-                            </div>
-                        }
-                    </Background>
-                )}
-            </I18n>}
-            {this.state.errMsg && <p>{this.state.errMsg}</p>}
+            {!this.state.loading && 
+                <Background>
+                    {!(this.state.userCreated) &&
+                        <div>
+                            <h1>{c.t('Sign Up')}</h1>
+                            <SignUpForm onUserCreated={this.onUserCreated} {...this.props} />
+                        </div>
+                    }
+                    {this.state.userCreated && !(this.state.userVerified) &&
+                        <div>
+                            <h1>{c.t('User Activation')}</h1>
+                            <UserActivationForm match={{params: {}}} user={this.state.user} onVerifySuccess={this.onUserVerified} {...this.props} />
+                        </div>
+                    }
+                    {this.state.userVerified && !(g.state.isLogined) &&
+                        <div>
+                            <h1>{c.t('Please login to continue')}</h1>
+                            <LoginForm user={this.state.user} {...this.props} />
+                        </div>
+                    }
+                </Background>
+            }
+            {this.state.errMsg && <p>{c.t(this.state.errMsg)}</p>}
         </div>
 
     )}

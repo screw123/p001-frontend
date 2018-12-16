@@ -118,16 +118,19 @@ class TestPage extends React.Component {
 
     handleAddressChange = (n, v) => this.setState({address: v})
 
-    render() { return(
-        <GqlApiSubscriber>
-        {(g)=>(
+    render() {
+        const g = this.props.login
+        const c = this.props.i18n
+        return(
             <ApolloProvider client={GqlApi.getGqlClient()}>
                 <Query query={getMyAccount}>
                 {({ client, loading, error, data, refetch }) => {
                     if (loading) {return (<p>loading</p>)}
                     if (error) {
                         console.log("err: ",error)
-                    return (<p>Err</p>)}
+                        return (<p>Err</p>)
+                    }
+                    console.log('data=',data)
                     return (
                         <div>
                             <SelectAddress
@@ -146,8 +149,8 @@ class TestPage extends React.Component {
                     )
                 }}</Query>
             </ApolloProvider>
-        )}</GqlApiSubscriber>
-     )}
+        )
+    }
 }
 
 export default TestPage;

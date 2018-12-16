@@ -27,26 +27,25 @@ class UserDashboardPage extends React.Component {
         <div>
             <Section headerText={t('User Profile')} />
             <div>{t('Hello, user!', {name: myself.firstName + ' ' + myself.lastName}) }</div>
-            <button onclick={this.toggleUserProfileForm}>Edit</button>
-            {this.state.userUserProfileForm && <UserProfileForm />}
+            {!this.state.showUserProfileForm && <button onClick={this.toggleUserProfileForm}>Edit</button>}
+            {this.state.showUserProfileForm && <UserProfileForm {...this.props} />}
         </div>
     )
+    
+    render() { 
+        const g = this.props.login
+        const c = this.props.i18n
+        return (
+            <div>
+                {this.genUserProfile({t: c.t, myself:g.state.myself})}
 
-    render() { return (
-        <GqlApiSubscriber>
-        {(g)=>(
-            <LocaleApiSubscriber>
-            {(c)=>(
-                <div>
-                    {this.genUserProfile({t: c.t, myself:g.state.myself})}
-                    <ApolloProvider client={g.getGqlClient()}><Query query={getMyself}>
-                    {({ loading, error, data }) => (
-                        <div>1</div>
-                    )}</Query></ApolloProvider>
-                </div>
-            )}</LocaleApiSubscriber>
-        )}</GqlApiSubscriber>
-    )}
+                <ApolloProvider client={g.getGqlClient()}><Query query={getMyself}>
+                {({ loading, error, data }) => (
+                    <div>1</div>
+                )}</Query></ApolloProvider>
+            </div>
+        )
+    }
 }
 
 export default UserDashboardPage

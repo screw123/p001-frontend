@@ -76,7 +76,8 @@ class UserActivationForm extends React.Component {
     
     render(){ 
         const resendButton1 = (this.state.resendCountDown!=0) && (<p>{this.state.resendCountDown} mins before press resend again</p>)
-        const resendButton2 = (this.state.resendCountDown==0) && (<ApolloProvider client={GqlApi.getGqlClientPublic()}>
+        const resendButton2 = (this.state.resendCountDown==0) && (
+            <ApolloProvider client={GqlApi.getGqlClientPublic()}>
                 <Mutation mutation={resendVerification} errorPolicy="all">
                 {(mutate, {loading, err})=>{
                     if (err) { return <p>{LocaleApi.t('Server Error.  Please retry in 1 minute.')}</p> }

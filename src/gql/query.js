@@ -110,7 +110,7 @@ export const resetPassword = gql`
 `
 
 export const getPriceListByAccount = gql`
-    query ($account_id: String!){
+    query ($account_id: String){
         getPriceListByAccount(account_id: $account_id) {
             _id
             code
@@ -141,36 +141,44 @@ export const getPriceListByAccount = gql`
         }
     }`
 
-export const addQuotation = gql`
-    mutation ($account_id: String!, $quotationLines: [quotationLines!]!) {
-        addQuotation(account_id: $account_id, quotationLines: $quotationLines) {
+export const getPriceListByCode = gql`
+    query ($code: String, $account_id: String){
+        getPriceListByCode(code: $code, account_id: $account_id) {
             _id
-            version
-            status
-            quotationDetails {
-                priceList_id {
-                    _id
-                }
-                SKU_id {
-                    _id
-                }
-                qty
-                rentMode
-                duration
-            }
-            account_id {
+            code
+            SKU_id {
                 _id
+                SKUType
+                shortCode
+                name
+                longDesc
+                iconPicURL
+                smallPicURL
+                largePicURL
+                lengthM
+                widthM
+                heightM
             }
-            originalPrice
-            discountedPrice
-            updateDateTime
+            rentMode
+            rent
+            duration
+            ship_in_base
+            ship_in_perPiece
+            ship_out_base
+            ship_out_perPiece
+            ship_first_base
+            ship_first_perPiece
+            ship_last_base
+            ship_last_perPiece
         }
     }`
 
-export const getQuotationById = gql`
-    query ($quotation_id: String!, $account_id: String!){
-        getQuotationById(quotation_id: $quotation_id) {
+
+export const addQuotation = gql`
+    mutation ($account_id: String!, $quotationLines: [quotationLines!]!, $couponCode: String) {
+        addQuotation(account_id: $account_id, quotationLines: $quotationLines, couponCode: $couponCode) {
             _id
+            version
             status
             quotationDetails {
                 priceList_id {
@@ -188,21 +196,18 @@ export const getQuotationById = gql`
                 rentMode
                 duration
                 rent_unitPrice
-                rent_originalLineTotal
-                rent_unitDiscount
-                rent_discountedLineTotal
+                rent_lineTotal
                 remarks
             }
             account_id {
                 _id
-                name
             }
-            accountType
-            priceList
-            originalPrice
-            discountedPrice
-            createDateTime
+            totalPrice
         }
+    }`
+
+export const getAccountById = gql`
+    query ($account_id: String!){
         getAccountById(_id: $account_id) {
             _id
             name
@@ -224,11 +229,111 @@ export const getQuotationById = gql`
             }
             stripeCustomerObject
         }
+    }
+`
+
+export const getStripeCusObj = gql`
+    query ($account_id: String!){
+        getAccountById(_id: $account_id) {
+            _id
+            stripeCustomerObject
+        }
+    }
+`
+
+export const getQuotationById = gql`
+    query ($quotation_id: String!){
+        getQuotationById(_id: $quotation_id) {
+            _id
+            status
+            quotationDetails {
+                priceList_id {
+                    _id
+                }
+                SKU_id {
+                    _id
+                    name
+                    iconPicURL
+                    lengthM
+                    widthM
+                    heightM
+                }
+                qty
+                rentMode
+                duration
+                rent_unitPrice
+                rent_lineTotal
+                remarks
+            }
+            account_id {
+                _id
+                name
+            }
+            totalPrice
+        }
     }`
 
+export const getQuotationAndAccountById = gql`
+    query ($account_id: String, $quotation_id: String){
+        getAccountById(_id: $account_id) {
+            _id
+            name
+            address_id {
+                _id
+                addressType
+                legalName
+                streetAddress
+                addressRegion1
+                addressRegion2
+                addressCountry
+                telephone
+            }
+            defaultBillingAddress_id {
+                _id
+                legalName
+            }
+            defaultShippingAddress_id {
+                _id
+                legalName
+            }
+            stripeCustomerObject
+        }
+        getQuotationById(_id: $quotation_id) {
+            _id
+            status
+            quotationDetails {
+                priceList_id {
+                    _id
+                }
+                SKU_id {
+                    _id
+                    name
+                    iconPicURL
+                    lengthM
+                    widthM
+                    heightM
+                }
+                qty
+                rentMode
+                duration
+                rent_unitPrice
+                rent_lineTotal
+                remarks
+            }
+            account_id {
+                _id
+                name
+            }
+            totalPrice
+            createDateTime
+            updateDateTime
+        }
+    }
+`
+
 export const addRentalOrder = gql`
-    mutation ($quotation_id: String!) {
-        addRentalOrder(quotation_id: $quotation_id) {
+    mutation ($quotation_id: String!, $account_id: String!, $billingAddress_id: String!, $cardId: String!) {
+        addRentalOrderFromQuotation(quotation_id: $quotation_id, account_id: $account_id, billingAddress_id: $billingAddress_id, cardId: $cardId) {
             _id
         }
     }`
@@ -337,6 +442,18 @@ export const updateUserDetails = gql`
                 accountType
                 isActive
             }
+        }
+    }
+`
+
+export const addStripeSource = gql`
+    mutation (
+        $token: String!,
+        $account_id: String!
+    ) {
+        addStripeSource(token: $token, account_id: $account_id) {
+            _id
+            stripeCustomerObject
         }
     }
 `

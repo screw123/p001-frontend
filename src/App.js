@@ -1,7 +1,9 @@
 import React from 'react'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faEye, faEyeSlash, faPlusCircle, faWindowClose, faBell, faUser, faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faEyeSlash, faPlusCircle, faWindowClose, faBell, faUser, faEdit, faTrashAlt, faCreditCard } from '@fortawesome/free-solid-svg-icons'
+import { faCcVisa, faCcMastercard, faCcAmex } from '@fortawesome/free-brands-svg-icons'
 import styled from 'styled-components'
+import { I18n } from 'react-i18next'
 
 
 import { BrowserRouter, Route } from 'react-router-dom'
@@ -14,6 +16,7 @@ import Background from './component/BasicComponents.js'
 import {BigLoadingScreen } from './component/Loading.js'
 
 import GqlApi, { GqlApiProvider, DummyPassHistory, GqlApiSubscriber } from './stateContainer/GqlApi.js'
+import {LocaleApiProvider, LocaleApiSubscriber} from './stateContainer/LocaleApi.js'
 
 const MainContainer = styled.div`
     display: grid;
@@ -24,24 +27,26 @@ const MainContainer = styled.div`
 class App extends React.Component {
     componentDidMount() {
         GqlApi.checkLogined()
-        library.add(faEye, faEyeSlash, faPlusCircle, faWindowClose, faBell, faUser, faEdit, faTrashAlt)
+        library.add(faEye, faEyeSlash, faPlusCircle, faWindowClose, faBell, faUser, faEdit, faTrashAlt,  faCcVisa, faCcMastercard, faCcAmex, faCreditCard)
     }
     
-    genItems = (routes) => {
+    genItems = ({routes, stateContainer}) => {
         let c = []
         for (var i = 0; i < routes.length; i++) {
             if (routes[i].path) {
-                if (routes[i].requireLogin) {
+                let Com = routes[i].component
+                if (routes[i].router.requireLogin) {
                     c.push(<PrivateRoute
-                        component={routes[i].component}
+                        component={Com}
                         exact={routes[i].exact}
                         path={routes[i].path}
                         key={i}
+                        stateContainer={stateContainer}
                     />)
                 }
                 else {
                     c.push(<Route
-                        component={routes[i].component}
+                        render={(props) => <Com {...props} {...stateContainer} />}
                         exact={routes[i].exact}
                         path={routes[i].path}
                         key={i}
@@ -55,16 +60,20 @@ class App extends React.Component {
         return (
             <BrowserRouter><GqlApiProvider><GqlApiSubscriber>
             {(g)=>(
-                <Background>
-                    {((g.state.isLogined===true)||(g.state.isLogined===false)) && <MainContainer>
-                        <DummyPassHistory />  {/*Load this to add the history obj into GqpApi state */}
-                        {this.genItems(routes)}  {/* Put routes.js all into react-router */}
-                        <Navbar routes={routes} />  {/* Generate NavBar Component */}
-                    </MainContainer>}
-                    {(!((g.state.isLogined===true)||(g.state.isLogined===false))) && <div>
-                        <BigLoadingScreen />
-                    </div>}
-                </Background>
+                <LocaleApiProvider><LocaleApiSubscriber>
+                {(c) =>(
+                    <div>
+                        {((g.state.isLogined===true)||(g.state.isLogined===false)) && <MainContainer>
+                            <DummyPassHistory />  {/*Load this to add the history obj into GqpApi state */}
+                            {this.genItems({routes: routes, stateContainer: {login: g, i18n: c}})}  {/* Put routes.js all into react-router */}
+                            <Navbar routes={routes} />   {/*Generate NavBar Component */}
+                        </MainContainer>}
+                        {(!((g.state.isLogined===true)||(g.state.isLogined===false))) && <div>
+                            <BigLoadingScreen />
+                        </div>}
+                    </div>
+                )}
+                </LocaleApiSubscriber></LocaleApiProvider>
             )}
             </GqlApiSubscriber></GqlApiProvider></BrowserRouter>
         )

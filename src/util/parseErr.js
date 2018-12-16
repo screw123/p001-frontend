@@ -30,6 +30,9 @@ const parseApolloErr = (err, t) => {
                 case 'USER_ALREADY_ACTIVATED':
                     errObj['message'] = t('Your user login is already activated, redirecting to login page...')
                     break
+                case 'SPECIAL':
+                    errObj['message'] = t(err.graphQLErrors[i].data[errObj['key']])
+                    break
                 case 'SUSPENDED':
                     errObj['message'] = t('Your login/account is not activated.  If you have already activated your account, please contact our support team.')
                     break
@@ -47,6 +50,9 @@ const parseApolloErr = (err, t) => {
                     break
                 case 'CANNOT_DISABLE_LAST_ONE':
                     errObj['message'] = t('This is the last item, you cannot disable it', {object: t(errObj['key']) })
+                    break
+                case 'NO_PAYMENT_INFO':
+                    errObj['message'] = t('NO_PAYMENT_INFO')
                     break
                 default:
                     errObj['message'] = t(errObj['key']) + t('cannot be') + err.graphQLErrors[i].data[errObj['key']]

@@ -100,14 +100,8 @@ class AddNewAddressForm extends React.Component {
                                 const errStack = parseApolloErr(er, t)
                                 console.log('errStack=', errStack)
                                 for (let i=0; i<errStack.length; i++) {
-                                    if (errStack[i].key) { 
-                                        console.log('err key =', errStack[i].key)
-                                        
-                                        actions.setFieldError(errStack[i].key, errStack[i].message)
-                                    }
-                                    else {
-                                        actions.setStatus(errStack[i].message)
-                                    }
+                                    if (errStack[i].key) { actions.setFieldError(errStack[i].key, errStack[i].message) }
+                                    else { actions.setStatus(errStack[i].message) }
                                 }
                                 actions.setSubmitting(false)
                             }                        

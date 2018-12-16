@@ -2,12 +2,10 @@ import React from "react"
 import { Formik, Field } from 'formik'
 import isMobilePhone from 'validator/lib/isMobilePhone'
 import isEmail from 'validator/lib/isEmail'
-import FormikForm, { TextField, FormButton, FormErr, FormIcon, RadioButtonGroup, RadioButton, CheckBox2 } from '../component/FormikForm.js'
+import FormikForm, { TextField, FormButton, FormErr, FormIcon, CheckBox2, MultiSelect } from '../component/FormikForm.js'
 import TermsAndConditionPage from '../page/TermsAndConditionPage.js'
 import Modal from '../component/Modal.js'
 import {StraightRow, ClickableText } from '../component/BasicComponents.js'
-
-import { I18n } from 'react-i18next'
 
 import isEmpty from 'lodash/isEmpty'
 import pickBy from 'lodash/pickBy'
@@ -18,8 +16,6 @@ import merge from 'lodash/merge'
 import { ApolloProvider, Mutation } from 'react-apollo'
 import { addUser } from '../gql/query.js'
 
-import GqlApi from '../stateContainer/GqlApi.js'
-import LocaleApi from '../stateContainer/LocaleApi.js'
 import parseApolloErr from '../util/parseErr.js'
 import passwordTest from '../util/passwordTest.js'
 
@@ -68,181 +64,167 @@ class SignUpForm extends React.Component {
     
     
     
-    render(){return(
-    <ApolloProvider client={GqlApi.getGqlClientPublic()}>
-        <Mutation mutation={addUser} errorPolicy="all">
-        {(mutate, {loading, err})=>(
-            <I18n>
-            {(t) => (
-                <Formik
-                    initialValues={{
-                        email:'',
-                        password:'',
-                        firstName: '',
-                        lastName: '',
-                        mobilePhone: '',
-                        verifyBySMS: 'Email',
-                        agreeTerms: false,
-                    }}
-                    validate={this.validate}
-                    onSubmit={ async(values, actions) => {
-                        actions.setStatus('')
-                        //submit to server
-                        console.log('validate ok, now submit')
-                        try {
-                            const vars = {
-                                firstName: values.firstName,
-                                lastName: values.lastName,
-                                email: values.email,
-                                password: values.password,
-                                mobilePhone: values.mobilePhone,
-                                verifyBySMS: (values.verifyBySMS==='SMS')? true: false,
-                                language: LocaleApi.getCurrentLangForGql()
-                            }
-                            console.log('vars=', vars)
-                            const d = await mutate({variables: vars})
-                            console.log('server return', d)
-                            if (this.props.onUserCreated) { this.props.onUserCreated(merge({password: values.password}, d.data.addUser)) }
-                        } catch(e) { 
-                            console.log('submit err', e)
-                            const errStack = parseApolloErr(e, t)
-                            console.log('errStack=', errStack)
-                            for (let i=0; i<errStack.length; i++) {
-                                if (errStack[i].key) { 
-                                    console.log('err key =', errStack[i].key)
-                                    
-                                    actions.setFieldError(errStack[i].key, errStack[i].message)
+    render() {
+        const g = this.props.login
+        const c = this.props.i18n
+        return(
+            <ApolloProvider client={g.getGqlClientPublic()}>
+                <Mutation mutation={addUser} errorPolicy="all">
+                {(mutate, {loading, err})=>(
+                    <Formik
+                        initialValues={{
+                            email:'',
+                            password:'',
+                            firstName: '',
+                            lastName: '',
+                            mobilePhone: '',
+                            verifyBySMS: 'Email',
+                            agreeTerms: false,
+                        }}
+                        validate={this.validate}
+                        onSubmit={ async(values, actions) => {
+                            actions.setStatus('')
+                            //submit to server
+                            console.log('validate ok, now submit')
+                            try {
+                                const vars = {
+                                    firstName: values.firstName,
+                                    lastName: values.lastName,
+                                    email: values.email,
+                                    password: values.password,
+                                    mobilePhone: values.mobilePhone,
+                                    verifyBySMS: (values.verifyBySMS==='SMS')? true: false,
+                                    language: c.getCurrentLangForGql()
                                 }
-                                else {
-                                    actions.setStatus(errStack[i].message)
+                                console.log('vars=', vars)
+                                const d = await mutate({variables: vars})
+                                console.log('server return', d)
+                                if (this.props.onUserCreated) { this.props.onUserCreated(merge({password: values.password}, d.data.addUser)) }
+                            } catch(e) { 
+                                console.log('submit err', e)
+                                const errStack = parseApolloErr(e, c.t)
+                                console.log('errStack=', errStack)
+                                for (let i=0; i<errStack.length; i++) {
+                                    if (errStack[i].key) { 
+                                        console.log('err key =', errStack[i].key)
+                                        
+                                        actions.setFieldError(errStack[i].key, errStack[i].message)
+                                    }
+                                    else {
+                                        actions.setStatus(errStack[i].message)
+                                    }
                                 }
+                                actions.setSubmitting(false)
                             }
-                            actions.setSubmitting(false)
-                        }
-                    }}
-                    
-                >
-                {({ errors, handleSubmit, setValues, isSubmitting, touched, values, status }) => {
-                return (
-                    <FormikForm>
-                        <Field
-                            name="firstName"
-                            type="text"
-                            component={TextField}
-                            label={t('First Name')}
-                            err={errors.firstName}
-                            value={values.firstName}
-                        />
-                        <Field
-                            name="lastName"
-                            type="text"
-                            component={TextField}
-                            label={t('Last Name')}
-                            value={values.lastName}
-                            err={errors.lastName}
-                        />
-                        <Field
-                            name="email"
-                            type="text"
-                            component={TextField}
-                            label={t('Email')}
-                            value={values.email}
-                            err={errors.email}
-                        />
-                        <Field
-                            name="mobilePhone"
-                            type="text"
-                            component={TextField}
-                            label={t('Hong Kong Mobile Number')}
-                            value={values.mobilePhone}
-                            err={errors.mobilePhone}
-                        />
-                        <Field
-                            name="password"
-                            type={(this.state.showPw)? 'text': 'password'}
-                            component={TextField}
-                            label={t('Password')}
-                            placeholder={t('8 characters with uppercase and lowercase letters')}
-                            value={values.password}
-                            err={errors.password}
-                            rightIcon={[<FormIcon icon={(this.state.showPw)? 'eye': 'eye-slash'} key="showPw" onClick={ this.toggleShowPw}/>]}
-                        />
-                        <RadioButtonGroup
-                            name="verifyBySMS"
-                            label={t('How do you want to verify your account?')}
-                            value={values.verifyBySMS}
-                            err={errors.verifyBySMS}
-                            touched={touched}
-                        >
-                            <Field
-                                component={RadioButton}
-                                name="verifyBySMS"
-                                value="SMS"
-                                label="SMS"
-                                checked={values.verifyBySMS==="SMS"}
-                            />
-                            <Field
-                                component={RadioButton}
-                                name="verifyBySMS"
-                                value="Email"
-                                label="Email"
-                                checked={values.verifyBySMS==="Email"}
-                            />
-                        </RadioButtonGroup>
-                        <Field
-                            component={CheckBox2}
-                            name="agreeTerms"
-                            value="agreeTerms"
-                            key="agreeTerms"
-                            checked={values.agreeTerms===true}
-                            err={errors.agreeTerms}
-                        >
-                            <div>
-                                {t("I have already review and agree on ")}
-                                <ClickableText onClick={this.toggleShowTC}>
-                                    {t('Terms of Condition')}
-                                </ClickableText>
-                            </div>
-                        </Field>
+                        }}
                         
-                        <FormErr>{status && status.form}</FormErr>
-                        <FormButton
-                            type="submit"
-                            disabled={isSubmitting || !isEmpty(pickBy(errors)) || loading }
-                        >
-                            <StraightRow>
-                                {t('Submit')}
-                                
-                            </StraightRow>
-                        </FormButton>
-                        <Modal
-                            show={this.state.showTC}
-                            component={<TermsAndConditionPage/>}
-                            title={t('Terms and Conditions')}
-                            footerButtons={[
-                                <FormButton type="button" key='agree' onClick={()=> {
-                                    setValues({agreeTerms: true})
-                                    this.toggleShowTC()
-                                }}>
-                                    {t('I Agree')}
-                                </FormButton>,
-                                <FormButton type="button" key='disagree' onClick={()=> {
-                                    setValues({agreeTerms: false})
-                                    this.toggleShowTC()
-                                }}>
-                                    {t('I Disagree')}
-                                </FormButton>
-                            ]}
-                        />
-                    </FormikForm>
-                )}}
-                </Formik>
-            )}
-            </I18n>
-        )}
-        </Mutation>
-    </ApolloProvider>
-    )}
+                    >
+                    {({ errors, handleSubmit, setValues, isSubmitting, touched, values, status }) => {
+                    return (
+                        <FormikForm>
+                            <Field
+                                name="firstName"
+                                type="text"
+                                component={TextField}
+                                label={c.t('First Name')}
+                                err={errors.firstName}
+                                value={values.firstName}
+                            />
+                            <Field
+                                name="lastName"
+                                type="text"
+                                component={TextField}
+                                label={c.t('Last Name')}
+                                value={values.lastName}
+                                err={errors.lastName}
+                            />
+                            <Field
+                                name="email"
+                                type="text"
+                                component={TextField}
+                                label={c.t('Email')}
+                                value={values.email}
+                                err={errors.email}
+                            />
+                            <Field
+                                name="mobilePhone"
+                                type="text"
+                                component={TextField}
+                                label={c.t('Hong Kong Mobile Number')}
+                                value={values.mobilePhone}
+                                err={errors.mobilePhone}
+                            />
+                            <Field
+                                name="password"
+                                type={(this.state.showPw)? 'text': 'password'}
+                                component={TextField}
+                                label={c.t('Password')}
+                                placeholder={c.t('8 characters with uppercase and lowercase letters')}
+                                value={values.password}
+                                err={errors.password}
+                                rightIcon={[<FormIcon icon={(this.state.showPw)? 'eye': 'eye-slash'} key="showPw" onClick={ this.toggleShowPw}/>]}
+                            />
+                            <Field
+                                name="verifyBySMS"
+                                component={MultiSelect}
+                                label={c.t('How do you want to verify your account?')}
+                                value={values.verifyBySMS}
+                                err={errors.verifyBySMS}
+                                options={[{value: 'Email', label: 'Email'}, {value: 'SMS', label: 'SMS'}]}
+                            />
+                            <Field
+                                component={CheckBox2}
+                                name="agreeTerms"
+                                value="agreeTerms"
+                                key="agreeTerms"
+                                checked={values.agreeTerms===true}
+                                err={errors.agreeTerms}
+                            >
+                                <div>
+                                    {c.t("I have already review and agree on ")}
+                                    <ClickableText onClick={this.toggleShowTC}>
+                                        {c.t('Terms of Condition')}
+                                    </ClickableText>
+                                </div>
+                            </Field>
+                            
+                            <FormErr>{status && status.form}</FormErr>
+                            <FormButton
+                                type="submit"
+                                disabled={isSubmitting || !isEmpty(pickBy(errors)) || loading }
+                            >
+                                <StraightRow>
+                                    {c.t('Submit')}
+                                    
+                                </StraightRow>
+                            </FormButton>
+                            <Modal
+                                show={this.state.showTC}
+                                component={<TermsAndConditionPage/>}
+                                title={c.t('Terms and Conditions')}
+                                footerButtons={[
+                                    <FormButton type="button" key='agree' onClick={()=> {
+                                        setValues({agreeTerms: true})
+                                        this.toggleShowTC()
+                                    }}>
+                                        {c.t('I Agree')}
+                                    </FormButton>,
+                                    <FormButton type="button" key='disagree' onClick={()=> {
+                                        setValues({agreeTerms: false})
+                                        this.toggleShowTC()
+                                    }}>
+                                        {c.t('I Disagree')}
+                                    </FormButton>
+                                ]}
+                            />
+                        </FormikForm>
+                    )}}
+                    </Formik>
+                )}
+                </Mutation>
+            </ApolloProvider>
+        )
+    }
     
 }
 

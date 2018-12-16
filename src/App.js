@@ -5,11 +5,13 @@ import { faCcVisa, faCcMastercard, faCcAmex } from '@fortawesome/free-brands-svg
 import styled from 'styled-components'
 import { I18n } from 'react-i18next'
 
+
 import { BrowserRouter, Route } from 'react-router-dom'
 import routes from './routes.js'
 
 import Navbar from './component/Navbar.js'
 import PrivateRoute from './component/PrivateRoute.js'
+import Background from './component/BasicComponents.js'
 
 import {BigLoadingScreen } from './component/Loading.js'
 

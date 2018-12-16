@@ -160,7 +160,7 @@ const MenuLink = styled(Link)`
 class Navbar extends React.PureComponent {
     genMenu = (g, t) => {
         let c = []
-        const firstLevelNode = this.props.routes.filter(v=>v.navbar.firstLevel===true)
+        const firstLevelNode = this.props.routes.filter(v=>v.navbar.firstLevel===true).sort((a,b)=>a.navbar.itemId-b.navbar.itemId)
 
         for (let i = 0; i < firstLevelNode.length; i++) {
 
@@ -168,7 +168,7 @@ class Navbar extends React.PureComponent {
 
             if ((r.navbar.firstLevel) & ((r.navbar.showAfterLogin===g.state.isLogined) || (r.navbar.showBeforeLogin===!g.state.isLogined))) { //If it's a first Lv item, generate, else skip
                 if (r.path) { //if have path, means it's a link.  Link should not have 2nd level menu
-                    c.push(<FirstLevelContainer><FirstLevelLink to={r.linkURL||r.path} key={r.navbar.itemID} >{t(r.menuName)}</FirstLevelLink></FirstLevelContainer>)
+                    c.push(<FirstLevelContainer><FirstLevelLink to={r.linkURL||r.path} key={r.navbar.itemID} >{r.navbar.itemId+' '+t(r.menuName)}</FirstLevelLink></FirstLevelContainer>)
                 }
                 else {  //if no patt, means it's text, thus use FirstLevelText.  If link should use FirstLevelLink
                     c.push(<FirstLevelContainer><FirstLevelText displayText={t(r.menuName)} key={r.navbar.itemID}>
@@ -183,7 +183,8 @@ class Navbar extends React.PureComponent {
     }
 
     gen2ndLevel = ({parentId, t, g}) => {
-        const children = this.props.routes.filter(v=> v.navbar.parentId===parentId)
+        const children = this.props.routes.filter(v=> v.navbar.parentId===parentId).sort((a,b)=>a.navbar.itemId-b.navbar.itemId)
+
         if (children.length===0) {return undefined}
         let c = []
 
@@ -192,7 +193,7 @@ class Navbar extends React.PureComponent {
             const toPath = r.linkURL||r.path
 
             if  ((r.navbar.showAfterLogin===g.state.isLogined) || (r.navbar.showBeforeLogin===!g.state.isLogined)) {
-                c.push(<MenuLink to={toPath} key={`${parentId}-${i}`}>{t(r.menuName)}</MenuLink>)
+                c.push(<MenuLink to={toPath} key={`${parentId}-${i}`}>{r.navbar.itemId+' '+t(r.menuName)}</MenuLink>)
             }
         }
         if (c.length===0) {return undefined}
@@ -243,7 +244,7 @@ class Navbar extends React.PureComponent {
                             </RightMenu>
                         </RightSideIcon>
                     </FirstLevelContainer>}
-                    {!g.state.isLogined && <FirstLevelContainer>Sign Up</FirstLevelContainer>}
+                    {!g.state.isLogined && <FirstLevelContainer><FirstLevelLink to={'/login'}>{t('Sign In')}</FirstLevelLink></FirstLevelContainer>}
                 </RightContainer>
             )}</I18n>
         )}</GqlApiSubscriber>

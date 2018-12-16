@@ -7,6 +7,7 @@ import UserActivationPage from './page/UserActivationPage.js'
 import TermsAndConditionPage from './page/TermsAndConditionPage.js'
 import QuotationPage from './page/QuotationPage.js'
 import SalesOrderConfirmPage from './page/SalesOrderConfirmPage.js'
+import UserProfilePage from './page/UserProfilePage.js'
 import TestPage from './page/TestPage.js'
 
 const routes = [
@@ -49,7 +50,7 @@ const routes = [
     },
     {
         path: "/dash",
-        menuName: 'Dashboard',
+        menuName: "Dashboard",
         component: UserDashboardPage,
         navbar: {
             itemId: 101,
@@ -80,7 +81,7 @@ const routes = [
     {
         path: "/terms",  //is temp, will update and change
         exact: true,
-        menuName: 'Terms And Condition',
+        menuName: "Terms And Condition",
         component: TermsAndConditionPage,
         navbar: {
             itemId: 701,
@@ -111,14 +112,13 @@ const routes = [
     {
         path: "/resetPassword",  //this should be removed as reset password should only be shown in login page
         exact: true,
-        menuName: 'Reset Your Password',
+        menuName: "Reset Your Password",
         component: ResetPasswordPage,
         navbar: {
             itemId: 702,
-            parentId: 100,
-            firstLevel: false,
-            showBeforeLogin: false,
-            showAfterLogin: true
+            firstLevel: true,
+            showBeforeLogin: true,
+            showAfterLogin: false
         },
         router: {
             requireLogin: false
@@ -127,10 +127,10 @@ const routes = [
     {
         path: "/quotation",
         exact: true,
-        menuName: 'Quotation',
+        menuName: "Quotation",
         component: QuotationPage,
         navbar: {
-            itemId: 101,
+            itemId: 201,
             firstLevel: true,
             showBeforeLogin: true,
             showAfterLogin: true
@@ -143,7 +143,7 @@ const routes = [
         path: "/confirmSalesOrder/:quotation_id?",  //should be removed???
         linkURL: "/confirmSalesOrder",
         exact: true,
-        menuName: 'Confirm Sales Order',
+        menuName: "Confirm Sales Order",
         component: SalesOrderConfirmPage,
         navbar: {
             itemId: 901,
@@ -158,7 +158,7 @@ const routes = [
     {
         path: "/testPage",
         exact: true,
-        menuName: 'Testing Zone',
+        menuName: "Testing Zone",
         component: TestPage,
         navbar: {
             itemId: 999,
@@ -169,7 +169,23 @@ const routes = [
         router: {
             requireLogin: false
         }
+    },
+    {
+        path: "/editUser",
+        exact: true,
+        menuName: '更改登入資料',
+        component: UserProfilePage,
+        navbar: {
+            itemId: 112,
+            parentId: 100,
+            firstLevel: false,
+            showBeforeLogin: false,
+            showAfterLogin: true
+        },
+        router: {
+            requireLogin: true
+        }
     }
 ]
 
-export default routes
+export default routes;

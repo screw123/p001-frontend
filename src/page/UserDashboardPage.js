@@ -2,14 +2,15 @@ import React from "react"
 import { getMyself } from '../gql/query.js'
 import Background from '../component/BasicComponents.js'
 
-import { I18n } from 'react-i18next'
 import { GqlApiSubscriber } from '../stateContainer/GqlApi.js'
 import { LocaleApiSubscriber } from '../stateContainer/LocaleApi.js'
 import { ApolloProvider, Query } from "react-apollo"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {BigLoadingScreen} from '../component/Loading.js'
 import AddNewAddressForm from '../form/AddNewAddressForm'
 import UserProfileForm from '../form/UserProfileForm.js'
 import {Section} from '../component/Section.js'
+
 
 class UserDashboardPage extends React.Component {
     constructor(props) {
@@ -30,7 +31,7 @@ class UserDashboardPage extends React.Component {
             {this.state.showUserProfileForm && <UserProfileForm {...this.props} />}
         </div>
     )
-
+    
     render() { 
         const g = this.props.login
         const c = this.props.i18n

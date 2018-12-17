@@ -12,6 +12,10 @@ const ToolTipBox = styled.div`
 	position: relative;
 	display: inline-block;
 	border-bottom: 1px dotted black;
+
+	// If you want to make it full width:
+	// width: 100%;
+	// text-align: center;
 `;
 
 const ToolTipText = styled.span`

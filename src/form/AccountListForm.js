@@ -2,9 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import InfoList from '../component/InfoList.js'
 
-import GqlApi, { GqlApiSubscriber } from '../stateContainer/GqlApi.js'
+import {ToolTip} from '../component/Tooltip.js'
+
 import { ApolloProvider, Mutation } from 'react-apollo'
-import { I18n } from 'react-i18next'
 
 const AL = styled.div`
     display: flex
@@ -19,7 +19,7 @@ const Btn = styled.button`
     border: 2px solid grey; 
     padding: 5px 8px;
 `
-const Item = styled.p`
+const Item = styled.div`
 
 `
 const HD = styled.h2`
@@ -35,18 +35,18 @@ const AccountBoxCount = (props) => {
     )
 }
 
-const AccountLine = (props) => {
+const AccountLine = ({rowObj, data}) => {
     let { 
         _id, 
         name, 
         accountType,
         balance, 
-        isActive, 
+        isActive,
         accessRight
-    } = props
+    } = data
 
-    if (typeof (balance) == 'undefined') 
-        balance = ""
+    if (typeof (balance) === 'undefined') 
+        balance = 0
 
     let icons;
     if (accessRight=='Own') {
@@ -57,19 +57,13 @@ const AccountLine = (props) => {
                 <Btn>Close</Btn>
             </Right>
         )
-    } else {
-        icons =  (
-            <Right>
-                <Btn>View</Btn>
-            </Right>
-        )
     }
 
     return (
         <AL>
             <Left>
-                <Item>Id: {_id}</Item>
-                <Item>Name: {name}</Item>
+                <ToolTip mainText={'Name: '} tip={_id} />
+                
                 <Item>AccontType: {accountType}</Item>
                 <Item>Balance: {balance}</Item>
                 <Item>Is Active: {isActive}</Item>
@@ -82,47 +76,39 @@ const AccountLine = (props) => {
 export default class AccountListForm extends React.Component {
 
     render() {
-        return(
-            <ApolloProvider client={GqlApi.getGqlClient()}> 
-                <I18n>
-                {(t) => (
-                    <GqlApiSubscriber>
-                    {(c) => {
-                        let myself = c.state.myself
-                        let propsData = {
-                            headerIconLeft: "Left Icon",
-                            headerText: "Header",
-                            headerIconRight: "Right Icon",
-                            width: '100%',
-                            height: 600,
-                            itemSize: 50
-                        }
-                        (
-                            <HD>Account Own Information</HD>
-                            <InfoList 
-                                {...propsData} 
-                                data={myself.accountOwn_id} 
-                                renderComponent={AccountLine}    
-                            />
-                            <HD>Account Manage Information</HD>
-                            <InfoList 
-                                {...propsData} 
-                                data={myself.accountManage_id}
-                                renderComponent={AccountLine}    
-                            />
-                            <HD>Account View Information</HD>
-                            <InfoList 
-                                {...propsData} 
-                                data={myself.accountView_id}
-                                renderComponent={AccountLine}    
-                            />
-                        )
-                    }}
-                    </GqlApiSubscriber>
-                )}
-                </I18n>
-        </ApolloProvider>
-        )
+        const g = this.props.login
+        const c = this.props.i18n
+        
+        let myself = g.state.myself
+
+        let propsData = {
+            headerIconLeft: "Left Icon",
+            headerText: "Header",
+            headerIconRight: "Right Icon",
+            width: '100%',
+            height: 600,
+            itemSize: 50
+        }
+        return(<div>
+            <HD>Account Own Information</HD>
+            <InfoList 
+                headerText={c.t('Your accounts')}
+                data={myself.accountOwn_id || []} 
+                listComponent={AccountLine}    
+            />
+            <HD>Account Manage Information</HD>
+            <InfoList 
+                {...propsData} 
+                data={myself.accountManage_id || []}
+                listComponent={AccountLine}    
+            />
+            <HD>Account View Information</HD>
+            <InfoList 
+                {...propsData} 
+                data={myself.accountView_id || []}
+                listComponent={AccountLine}    
+            />
+        </div>)
     }
 
 }

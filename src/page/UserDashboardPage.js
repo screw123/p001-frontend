@@ -2,13 +2,12 @@ import React from "react"
 import { getMyself } from '../gql/query.js'
 import Background from '../component/BasicComponents.js'
 
-import { GqlApiSubscriber } from '../stateContainer/GqlApi.js'
-import { LocaleApiSubscriber } from '../stateContainer/LocaleApi.js'
 import { ApolloProvider, Query } from "react-apollo"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {BigLoadingScreen} from '../component/Loading.js'
-import AddNewAddressForm from '../form/AddNewAddressForm'
 import UserProfileForm from '../form/UserProfileForm.js'
+import AccountListForm from '../form/AccountListForm.js'
+
 import {Section} from '../component/Section.js'
 
 
@@ -16,7 +15,10 @@ class UserDashboardPage extends React.Component {
     constructor(props) {
         super(props)
         this.toggleUserProfileForm = this.toggleUserProfileForm.bind(this)
-        this.state = {showUserProfileForm: false}
+        this.state = {
+            showUserProfileForm: false,
+            showAccountListForm: true
+        }
     }
 
     toggleUserProfileForm = () => {
@@ -27,8 +29,9 @@ class UserDashboardPage extends React.Component {
         <div>
             <Section headerText={t('User Profile')} />
             <div>{t('Hello, user!', {name: myself.firstName + ' ' + myself.lastName}) }</div>
-            {!this.state.showUserProfileForm && <button onClick={this.toggleUserProfileForm}>Edit</button>}
+            {!this.state.showUserProfileForm && <button onClick={this.toggleUserProfileForm}>Edit Profile</button>}
             {this.state.showUserProfileForm && <UserProfileForm {...this.props} />}
+            {this.state.showAccountListForm && <AccountListForm {...this.props} />}
         </div>
     )
     

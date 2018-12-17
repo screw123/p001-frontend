@@ -43,23 +43,17 @@ export class InfoList extends React.Component {
                                         onScroll={onChildScroll}
                                         scrollTop={scrollTop}
                                         rowCount={this.props.data.length}
-                                        rowHeight={({ index }) =>
-                                            Object.keys(this.props.data[index])
-                                                .length *
-                                                20 +
-                                            20
-                                        }
+                                        rowHeight={({ index }) => {
+                                            if (this.props.rowHeightCalc) { return this.props.rowHeightCalc(index) }
+                                            return (Object.keys(this.props.data[index]).length * 20 + 20)
+                                        }}
+
                                         rowRenderer={a => {
+                                            console.log( this.props.data[a.index])
                                             if (this.props.listComponent) {
-                                                return this.props.listComponent(
-                                                    a,
-                                                    this.props.data[a.index]
-                                                );
+                                                return this.props.listComponent({ rowObj: a, data: this.props.data[a.index]} )
                                             }
-                                            return DefaultListComponent(
-                                                a,
-                                                this.props.data[a.index]
-                                            );
+                                            return DefaultListComponent({rowObj: a, data: this.props.data[a.index]} )
                                         }}
                                     />
                                 );

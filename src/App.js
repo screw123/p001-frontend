@@ -1,6 +1,7 @@
 import React from 'react'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faEye, faEyeSlash, faPlusCircle, faWindowClose, faBell, faUser, faEdit, faTrashAlt, faCreditCard } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faEyeSlash, faPlusCircle, faWindowClose, faBell, faUser, faEdit, faTrashAlt, faCreditCard, faSearch } from '@fortawesome/free-solid-svg-icons'
+import { faAddressCard } from '@fortawesome/free-regular-svg-icons'
 import { faCcVisa, faCcMastercard, faCcAmex } from '@fortawesome/free-brands-svg-icons'
 import styled from 'styled-components'
 import { I18n } from 'react-i18next'
@@ -27,7 +28,7 @@ const MainContainer = styled.div`
 class App extends React.Component {
     componentDidMount() {
         GqlApi.checkLogined()
-        library.add(faEye, faEyeSlash, faPlusCircle, faWindowClose, faBell, faUser, faEdit, faTrashAlt,  faCcVisa, faCcMastercard, faCcAmex, faCreditCard)
+        library.add(faEye, faEyeSlash, faPlusCircle, faWindowClose, faBell, faUser, faEdit, faTrashAlt,  faCcVisa, faCcMastercard, faCcAmex, faCreditCard, faAddressCard, faSearch)
     }
     
     genItems = ({routes, stateContainer}) => {

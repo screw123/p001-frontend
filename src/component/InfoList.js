@@ -20,46 +20,35 @@ export class InfoList extends React.Component {
     render() {
         return (
             <div>
-                <Section 
-                    headerIconLeft={this.props.headerIconLeft}
-                    headerIconRight={this.props.headerIconRight}
-                    headerText={this.props.headerText}
-                />
+                <Section {...this.props}/>
                 <AutoSizer disableHeight>
-                    {({ width }) => (
-                        <WindowScroller>
-                            {({
-                                height,
-                                isScrolling,
-                                onChildScroll,
-                                scrollTop
-                            }) => {
-                                return (
-                                    <List
-                                        autoHeight
-                                        width={width}
-                                        height={height}
-                                        isScrolling={isScrolling}
-                                        onScroll={onChildScroll}
-                                        scrollTop={scrollTop}
-                                        rowCount={this.props.data.length}
-                                        rowHeight={({ index }) => {
-                                            if (this.props.rowHeightCalc) { return this.props.rowHeightCalc(index) }
-                                            return (Object.keys(this.props.data[index]).length * 20 + 20)
-                                        }}
-
-                                        rowRenderer={a => {
-                                            console.log( this.props.data[a.index])
-                                            if (this.props.listComponent) {
-                                                return this.props.listComponent({ rowObj: a, data: this.props.data[a.index]} )
-                                            }
-                                            return DefaultListComponent({rowObj: a, data: this.props.data[a.index]} )
-                                        }}
-                                    />
-                                );
+                {({ width }) => (
+                    <WindowScroller>
+                    {({ height, isScrolling, onChildScroll, scrollTop }) => (
+                        <List
+                            autoHeight
+                            width={width}
+                            height={height}
+                            isScrolling={isScrolling}
+                            onScroll={onChildScroll}
+                            scrollTop={scrollTop}
+                            rowCount={this.props.data.length}
+                            rowHeight={({ index }) => {
+                                if (this.props.rowHeightCalc) { return this.props.rowHeightCalc(index) }
+                                return (Object.keys(this.props.data[index]).length * 20 + 20)
                             }}
-                        </WindowScroller>
+
+                            rowRenderer={a => {
+                                console.log( this.props.data[a.index])
+                                if (this.props.listComponent) {
+                                    return this.props.listComponent({ rowObj: a, data: this.props.data[a.index]} )
+                                }
+                                return DefaultListComponent({rowObj: a, data: this.props.data[a.index]} )
+                            }}
+                        />
                     )}
+                    </WindowScroller>
+                )}
                 </AutoSizer>
             </div>
         );

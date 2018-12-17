@@ -18,11 +18,12 @@ import SelectAddress from '../component/SelectAddress.js'
 
 import { ApolloProvider, Query, Mutation } from "react-apollo"
 
-import { getMyAccount} from '../gql/query.js'
+import { getMyAccount } from '../gql/query.js'
 
-import GqlApi, {GqlApiSubscriber} from '../stateContainer/GqlApi.js'
+import GqlApi, { GqlApiSubscriber } from '../stateContainer/GqlApi.js'
 import InfoList from "../component/InfoList.js";
 import Gallery from "../component/Gallery.js";
+import EditAccountForm from "../form/EditAccountForm"
 
 const data = [
     {
@@ -95,28 +96,191 @@ const props = {
 };
 
 // For Edit AddressForm check
-const demoUser = {
-    "_id":"5ba0b52cec46627f7930b9ba",
-    "legalName":"My Office",
-    "addressCountry":"KOWLOON",
-    "streetAddress":"Flat B2, 3/F, Ching Cheong Ind. Bldg., 1 Kwai Cheong Rd,",
-    "addressRegion1":"So Kwun Wat",
-    "addressRegion2":"屯門",
-    "telephone":"99911122",
-    "account_id":"5b518c4c031c7d0179e23b6a",
-    "isActive":true,
-    "addressType":"CUSTOMER",
-    "creationDateTime":"2018-09-18T08:19:56.673Z",
-    "updateDateTime":"2018-09-18T08:19:56.673Z"
+const account = {
+    "_id": "5b518c4c031c7d0179e23b6a",
+    "accountType": "PERSONAL",
+    "address_id": [
+        {
+            "_id": "5c016b1837b0254610f40125",
+            "account_id": "5b518c4c031c7d0179e23b6a",
+            "addressCountry": "HONG KONG ISLAND",
+            "addressRegion1": "sdfdsfdsf",
+            "addressRegion2": "dsfsdf",
+            "addressType": "CUSTOMER",
+            "creationDateTime": "2018-11-30T16:53:44.240Z",
+            "isActive": true,
+            "legalName": "ssd",
+            "streetAddress": "sfsdfdf",
+            "telephone": "54545454",
+            "updateDateTime": "2018-11-30T16:53:44.240Z"
+        },
+        {
+            "_id": "5c07a1b08660035032b66e8e",
+            "account_id": "5b518c4c031c7d0179e23b6a",
+            "addressCountry": "NEW TERRITORIES",
+            "addressRegion1": "ddd",
+            "addressRegion2": "ddd",
+            "addressType": "CUSTOMER",
+            "creationDateTime": "2018-12-05T10:00:16.761Z",
+            "isActive": true,
+            "legalName": "ddd",
+            "streetAddress": "ddddd",
+            "telephone": "50505050",
+            "updateDateTime": "2018-12-05T10:00:16.761Z"
+        },
+        {
+            "_id": "5c0d0136b10b307cbc2bbc00",
+            "account_id": "5c0d0110b10b307cbc2bbbfd",
+            "addressCountry": "LANTAU",
+            "addressRegion1": " kk kkkk",
+            "addressRegion2": "oommomo",
+            "addressType": "CUSTOMER",
+            "creationDateTime": "2018-12-09T11:49:10.270Z",
+            "isActive": true,
+            "legalName": "e k kk",
+            "streetAddress": "k k k k ",
+            "telephone": "61616161",
+            "updateDateTime": "2018-12-09T11:49:10.270Z"
+        }
+    ],
+    "balance": 0,
+    "creationDateTime": "2018-07-20T07:16:28.117Z",
+    "defaultBillingAddress_id": {
+        "_id": "5c016b1837b0254610f40125",
+        "account_id": "5b518c4c031c7d0179e23b6a",
+        "addressCountry": "HONG KONG ISLAND",
+        "addressRegion1": "sdfdsfdsf",
+        "addressRegion2": "dsfsdf",
+        "addressType": "CUSTOMER",
+        "creationDateTime": "2018-11-30T16:53:44.240Z",
+        "isActive": true,
+        "legalName": "ssd",
+        "streetAddress": "sfsdfdf",
+        "telephone": "54545454",
+        "updateDateTime": "2018-11-30T16:53:44.240Z"
+    },
+    "defaultShippingAddress_id": {
+        "_id": "5c016b1837b0254610f40125",
+        "account_id": "5b518c4c031c7d0179e23b6a",
+        "addressCountry": "HONG KONG ISLAND",
+        "addressRegion1": "sdfdsfdsf",
+        "addressRegion2": "dsfsdf",
+        "addressType": "CUSTOMER",
+        "creationDateTime": "2018-11-30T16:53:44.240Z",
+        "isActive": true,
+        "legalName": "ssd",
+        "streetAddress": "sfsdfdf",
+        "telephone": "54545454",
+        "updateDateTime": "2018-11-30T16:53:44.240Z"
+    },
+    "isActive": true,
+    "name": "DEFAULT",
+    "owner_id": "5b518c4b031c7d0179e23b69",
+    "paymentTerm": "COD",
+    "priceList": "VIP",
+    "stripeCustomerObject": {
+        "default_source": "src_1Deh6gDHUPkMBbUNxYOyjjMk",
+        "id": "cus_E6uwVCSDYE8ruK",
+        "sources": {
+            "data": [
+                {
+                    "amount": null,
+                    "card": {
+                        "address_line1_check": null,
+                        "address_zip_check": null,
+                        "brand": "Visa",
+                        "country": "US",
+                        "cvc_check": "pass",
+                        "dynamic_last4": null,
+                        "exp_month": 11,
+                        "exp_year": 2022,
+                        "fingerprint": "tUgDuFPsRVyGq2ON",
+                        "funding": "credit",
+                        "last4": "4242",
+                        "name": null,
+                        "three_d_secure": "optional",
+                        "tokenization_method": null
+                    },
+                    "client_secret": "src_client_secret_E6uwFsUepUi6PYiVNMhUiNMB",
+                    "created": 1544180574,
+                    "currency": null,
+                    "customer": "cus_E6uwVCSDYE8ruK",
+                    "flow": "none",
+                    "id": "src_1Deh6gDHUPkMBbUNxYOyjjMk",
+                    "livemode": false,
+                    "metadata": {},
+                    "object": "source",
+                    "owner": {
+                        "address": null,
+                        "email": null,
+                        "name": null,
+                        "phone": null,
+                        "verified_address": null,
+                        "verified_email": null,
+                        "verified_name": null,
+                        "verified_phone": null
+                    },
+                    "statement_descriptor": null,
+                    "status": "chargeable",
+                    "type": "card",
+                    "usage": "reusable"
+                },
+                {
+                    "amount": null,
+                    "card": {
+                        "address_line1_check": null,
+                        "address_zip_check": null,
+                        "brand": "Visa",
+                        "country": "US",
+                        "cvc_check": "pass",
+                        "dynamic_last4": null,
+                        "exp_month": 11,
+                        "exp_year": 2022,
+                        "fingerprint": "tUgDuFPsRVyGq2ON",
+                        "funding": "credit",
+                        "last4": "4242",
+                        "name": null,
+                        "three_d_secure": "optional",
+                        "tokenization_method": null
+                    },
+                    "client_secret": "src_client_secret_E7vl9WI1JmTHTxRlN3UFalVL",
+                    "created": 1544414255,
+                    "currency": null,
+                    "customer": "cus_E6uwVCSDYE8ruK",
+                    "flow": "none",
+                    "id": "src_1DfftjDHUPkMBbUNmudItQxZ",
+                    "livemode": false,
+                    "metadata": {},
+                    "object": "source",
+                    "owner": {
+                        "address": null,
+                        "email": null,
+                        "name": null,
+                        "phone": null,
+                        "verified_address": null,
+                        "verified_email": null,
+                        "verified_name": null,
+                        "verified_phone": null
+                    },
+                    "statement_descriptor": null,
+                    "status": "chargeable",
+                    "type": "card",
+                    "usage": "reusable"
+                }
+            ],
+            "total_count": 2
+        }
+    },
+    "updateDateTime": "2018-07-20T07:16:28.117Z"
 }
 
 class TestPage extends React.Component {
     constructor(props) {
         super(props)
-        this.state={address: ''}
+        this.state = { address: '' }
     }
 
-    handleAddressChange = (n, v) => this.setState({address: v})
+    handleAddressChange = (n, v) => this.setState({ address: v })
 
     render() {
         const g = this.props.login

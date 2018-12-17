@@ -9,6 +9,7 @@ import QuotationPage from './page/QuotationPage.js'
 import SalesOrderConfirmPage from './page/SalesOrderConfirmPage.js'
 import UserProfilePage from './page/UserProfilePage.js'
 import TestPage from './page/TestPage.js'
+import EditAccountPage from './page/EditAccountPage.js'
 
 const routes = [
     {
@@ -181,6 +182,23 @@ const routes = [
             firstLevel: false,
             showBeforeLogin: false,
             showAfterLogin: true
+        },
+        router: {
+            requireLogin: true
+        }
+    },
+    {
+        path: "/editAccount/:_id?/",
+        linkURL: "/editAccount",
+        exact: true,
+        menuName: '更改帳戶資料',
+        component: EditAccountPage,
+        navbar: {
+            itemId: 113,
+            parentId: 100,
+            firstLevel: false,
+            showBeforeLogin: false,
+            showAfterLogin: false
         },
         router: {
             requireLogin: true

@@ -1,18 +1,18 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
+import styled from 'styled-components';
 
 export const ToolTip = (props) => (
 	<ToolTipBox>
 		{props.mainText}
 		<ToolTipText>{props.tip}</ToolTipText>
 	</ToolTipBox>
-)
+);
 
 const ToolTipBox = styled.div`
 	position: relative;
 	display: inline-block;
 	border-bottom: 1px dotted black;
-`
+`;
 
 const ToolTipText = styled.span`
 	visibility: hidden;
@@ -39,7 +39,7 @@ const ToolTipText = styled.span`
 		border-color: black transparent transparent transparent;
 	}
 
-	${ToolTipBox}.hover & {
+	${ToolTipBox}:hover & {
 		visibility: visible;
 	}
-`
+`;

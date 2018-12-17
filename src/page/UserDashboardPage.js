@@ -2,13 +2,12 @@ import React from "react"
 import { getMyself } from '../gql/query.js'
 import Background from '../component/BasicComponents.js'
 
-import { GqlApiSubscriber } from '../stateContainer/GqlApi.js'
-import { LocaleApiSubscriber } from '../stateContainer/LocaleApi.js'
 import { ApolloProvider, Query } from "react-apollo"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {BigLoadingScreen} from '../component/Loading.js'
-import AddNewAddressForm from '../form/AddNewAddressForm'
 import UserProfileForm from '../form/UserProfileForm.js'
+import AccountListForm from '../form/AccountListForm.js'
+
 import {Section} from '../component/Section.js'
 
 
@@ -16,7 +15,10 @@ class UserDashboardPage extends React.Component {
     constructor(props) {
         super(props)
         this.toggleUserProfileForm = this.toggleUserProfileForm.bind(this)
-        this.state = {showUserProfileForm: false}
+        this.state = {
+            showUserProfileForm: false,
+            showAccountListForm: true
+        }
     }
 
     toggleUserProfileForm = () => {
@@ -27,26 +29,26 @@ class UserDashboardPage extends React.Component {
         <div>
             <Section headerText={t('User Profile')} />
             <div>{t('Hello, user!', {name: myself.firstName + ' ' + myself.lastName}) }</div>
-            <button onclick={this.toggleUserProfileForm}>Edit</button>
-            {this.state.userUserProfileForm && <UserProfileForm />}
+            {!this.state.showUserProfileForm && <button onClick={this.toggleUserProfileForm}>Edit Profile</button>}
+            {this.state.showUserProfileForm && <UserProfileForm {...this.props} />}
+            {this.state.showAccountListForm && <AccountListForm {...this.props} />}
         </div>
     )
+    
+    render() { 
+        const g = this.props.login
+        const c = this.props.i18n
+        return (
+            <div>
+                {this.genUserProfile({t: c.t, myself:g.state.myself})}
 
-    render() { return (
-        <GqlApiSubscriber>
-        {(g)=>(
-            <LocaleApiSubscriber>
-            {(c)=>(
-                <div>
-                    {this.genUserProfile({t: c.t, myself:g.state.myself})}
-                    <ApolloProvider client={g.getGqlClient()}><Query query={getMyself}>
-                    {({ loading, error, data }) => (
-                        <div>1</div>
-                    )}</Query></ApolloProvider>
-                </div>
-            )}</LocaleApiSubscriber>
-        )}</GqlApiSubscriber>
-    )}
+                <ApolloProvider client={g.getGqlClient()}><Query query={getMyself}>
+                {({ loading, error, data }) => (
+                    <div>1</div>
+                )}</Query></ApolloProvider>
+            </div>
+        )
+    }
 }
 
 export default UserDashboardPage

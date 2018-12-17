@@ -14,16 +14,13 @@ class UserActivationPage extends React.Component {
 	redirect = () => this.setState({submitted: true})
 
     render() {
+		const c = this.props.i18n
         return (
-            <I18n>
-            {(t, { i18n }) => (
-				<div>
-                    <h1>{t('Edit User Profile')}</h1>
-					{!this.state.submitted && <UserProfileForm onSubmitSuccess={this.redirect} />}
-					{this.state.submitted && <Redirect to={{pathname: '/dash'}} />}
-				</div>
-            )}
-            </I18n>
+			<div>
+				<h1>{c.t('Edit User Profile')}</h1>
+				{!this.state.submitted && <UserProfileForm onSubmitSuccess={this.redirect} {...this.props} />}
+				{this.state.submitted && <Redirect to={{pathname: '/dash'}} />}
+			</div>
         )
     }
 }

@@ -5,22 +5,26 @@ import { Route, Redirect } from "react-router-dom"
 
 import { GqlApiSubscriber } from '../stateContainer/GqlApi.js'
 
-const PrivateRoute = ({ component: Component, ...rest }) => (
+const PrivateRoute = ({ component: Component, stateContainer: stateContainer, ...rest }) => {
+    
+    return (
     <GqlApiSubscriber>
-    {(c) => (
+    {(c) => {
+        console.log('Private Route, c.state.isLogined=', c.state.isLogined)
+        return (
         <Route
             {...rest}
-            render={props =>
-                c.state.isLogined ? ( <Component {...props} /> ) : ( <Redirect
+            render={({location: {pathname, state}, ...props}) => {
+                return c.state.isLogined ? ( <Component location={{state: state}} {...props} {...stateContainer} /> ) : ( <Redirect
                     to={{
                         pathname: "/login",
-                        state: { from: props.location }
+                        state: { nextPath: pathname, passOnState: state}
                     }}
                 /> )
-            }
+            }}
         />
-    )}
+    )}}
     </GqlApiSubscriber>
-)
+)}
 
 export default PrivateRoute

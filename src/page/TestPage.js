@@ -283,9 +283,36 @@ class TestPage extends React.Component {
     handleAddressChange = (n, v) => this.setState({ address: v })
 
     render() {
-        return (
-
-            <EditAccountForm account={account} />
+        const g = this.props.login
+        const c = this.props.i18n
+        return(
+            <ApolloProvider client={GqlApi.getGqlClient()}>
+                <Query query={getMyAccount}>
+                {({ client, loading, error, data, refetch }) => {
+                    if (loading) {return (<p>loading</p>)}
+                    if (error) {
+                        console.log("err: ",error)
+                        return (<p>Err</p>)
+                    }
+                    console.log('data=',data)
+                    return (
+                        <div>
+                            <SelectAddress
+                                allowAddAddress={false}
+                                account_id={"5b518c4c031c7d0179e23b6a"}
+                                addresses={data.getMyAccount[0].address_id}
+                                field={{name: 'selectaddress', value: this.state.address}}
+                                form={{setFieldValue: this.handleAddressChange}}
+                            />
+                            <EditAddressForm
+                                account_id={"5b518c4c031c7d0179e23b6a"}
+                                address={data.getMyAccount[0].address_id.find((v)=>v._id===this.state.address) || {}}
+                                onSubmitSuccess={refetch}
+                            />
+                        </div>
+                    )
+                }}</Query>
+            </ApolloProvider>
         )
     }
 }

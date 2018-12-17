@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { FieldDiv, FieldLabel, ErrorLabel } from './Formik-Basic.js'
-import { LoadingIcon } from '../component/Loading'
+import { LoadingIcon } from '../component/Loading.js'
 import Select, { components } from 'react-select'
 
 const RadioBlockGroup = styled.div`
@@ -31,7 +31,6 @@ const RadioBlock = styled.div`
 const updateSelect = ({setFieldValue, name, currentValue, value, multiSelect, isSelect}) => {
     let newValue = value
     //selectaddress issues #15, inject a value key for each object in array 
-    console.log("onchange is triggered : "+value)
     if (isSelect) { 
         if (multiSelect) {
             //multiSelect mode react-select returns array of selected key/value pair
@@ -58,7 +57,7 @@ const updateSelect = ({setFieldValue, name, currentValue, value, multiSelect, is
 export const MultiSelect = ({
     field: { name, value, ...fields },
     form: { setFieldValue },
-    touched, classNames, err, options, disabled, label, multiSelect, isLoading, hidden, customOption, customMultiValueLabel, defaultValue, placeholder, ...props }) => {
+    touched, classNames, err, options, disabled, label, multiSelect, isLoading, hidden, customOption, customMultiValueLabel, customSingleValueLabel, defaultValue, placeholder, ...props }) => {
     /*  Radio by default, will change to select if options > 3
         if multi-select, will change radio to checkbox
         field.name = internal name used by code
@@ -69,6 +68,7 @@ export const MultiSelect = ({
     let customComponentsMS = {}
     if (customOption) {customComponentsMS['Option'] = customOption}
     if (customMultiValueLabel) {customComponentsMS['MultiValueLabel'] = customMultiValueLabel}
+    if (customSingleValueLabel) {customComponentsMS['SingleValue'] = customSingleValueLabel}
 
     if (hidden) 
         return null
@@ -107,12 +107,11 @@ export const MultiSelect = ({
         for(let i=0; i<options.length;i++) {
             
             let isSelected
+            if (isLoading) {return <LoadingIcon />}
             if (multiSelect) { isSelected = (value.find(v => {
-                console.log('inside Radiobox, v=', v, ' option[i].value=', options[i].value)
                 return (v===options[i].value)
             }) !== undefined) }
             else { 
-                console.log(`option[i].value= ${options[i].value}, value=${value}, equals=`)
                 isSelected = (options[i].value === value) }
 
             if (disabled) {

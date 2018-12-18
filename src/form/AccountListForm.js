@@ -2,8 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import InfoList from '../component/InfoList.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {Tag} from '../component/BasicComponents.js'
-import {ToolTip} from '../component/Tooltip.js'
+import {Tag, ToolTip} from '../component/BasicComponents.js'
 import { Redirect } from "react-router-dom"
 
 import { ApolloProvider, Mutation } from 'react-apollo'

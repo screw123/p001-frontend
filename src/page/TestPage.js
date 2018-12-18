@@ -21,7 +21,7 @@ import InfoList from '../component/InfoList.js';
 import Gallery from '../component/Gallery.js';
 import EditAccountForm from '../form/EditAccountForm';
 
-import { ToolTip } from '../component/Tooltip';
+import { ToolTip } from '../component/BasicComponents.js';
 
 class TestPage extends React.Component {
 	constructor(props) {

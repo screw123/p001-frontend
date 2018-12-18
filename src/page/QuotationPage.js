@@ -3,7 +3,7 @@ import React from "react"
 import QuotationForm from '../form/QuotationForm.js'
 
 import { MultiSelect } from '../component/FormikForm.js'
-import Background from '../component/BasicComponents.js'
+import {Background} from '../component/BasicComponents.js'
 import { Redirect } from "react-router-dom"
 
 import union from 'lodash/union'

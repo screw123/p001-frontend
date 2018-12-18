@@ -12,35 +12,33 @@ const ToolTipBox = styled.div`
 	position: relative;
 	display: inline-block;
 	border-bottom: 1px dotted black;
+	cursor: pointer;
+	z-index: 1;
 
 	// If you want to make it full width:
 	// width: 100%;
-	// text-align: center;
+	//text-align: center;
 `;
 
 const ToolTipText = styled.span`
 	visibility: hidden;
-	width: 120px;
-	background-color: black;
+	background-color: DimGrey;
 	color: #fff;
 	text-align: center;
-	border-radius: 6px;
-	padding: 5px 0;
+	border-radius: 0.25em;
+	padding: 0.1em 0.5em;
 	position: absolute;
 	z-index: 1;
-	bottom: 150%;
-	left: 50%;
-	margin-left: -60px;
+	left: 100%;
+	margin-left:0.5em;
 
 	&:after {
 		content: "";
 		position: absolute;
-		top: 100%;
-		left: 50%;
-		margin-left: -1em;
-		border-width: 1em;
-		border-style: solid;
-		border-color: black transparent transparent transparent;
+		left: 100%;
+		z-index: 1000;
+		margin-left: 0;
+		margin-bottom: -1em;
 	}
 
 	${ToolTipBox}:hover & {

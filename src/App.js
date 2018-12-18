@@ -12,7 +12,7 @@ import routes from './routes.js'
 
 import Navbar from './component/Navbar.js'
 import PrivateRoute from './component/PrivateRoute.js'
-import Background from './component/BasicComponents.js'
+import {Background} from './component/BasicComponents.js'
 
 import {BigLoadingScreen } from './component/Loading.js'
 

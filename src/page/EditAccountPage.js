@@ -3,7 +3,7 @@ import React from "react"
 import EditAccountForm from '../form/EditAccountForm.js'
 
 
-import Background from '../component/BasicComponents.js'
+import {Background} from '../component/BasicComponents.js'
 
 class EditAccountPage extends React.Component {
     

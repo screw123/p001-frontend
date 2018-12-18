@@ -1,6 +1,6 @@
 import React from "react"
 import { getMyself } from '../gql/query.js'
-import Background from '../component/BasicComponents.js'
+import {Background} from '../component/BasicComponents.js'
 
 import { ApolloProvider, Query } from "react-apollo"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -8,7 +8,7 @@ import {BigLoadingScreen} from '../component/Loading.js'
 import UserProfileForm from '../form/UserProfileForm.js'
 import AccountListForm from '../form/AccountListForm.js'
 
-import {Section} from '../component/Section.js'
+import {Section} from '../component/BasicComponents.js'
 
 
 class UserDashboardPage extends React.Component {

@@ -1,7 +1,7 @@
 import React from "react"
 import LoginForm from '../form/LoginForm.js'
 import { I18n } from 'react-i18next'
-import Background from '../component/BasicComponents.js'
+import {Background} from '../component/BasicComponents.js'
 import { Redirect } from "react-router-dom"
 
 import { GqlApiSubscriber } from '../stateContainer/GqlApi.js'

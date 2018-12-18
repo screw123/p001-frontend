@@ -4,7 +4,7 @@ import SignUpForm from '../form/SignUpForm.js'
 import UserActivationForm from '../form/UserActivationForm.js'
 import LoginForm from '../form/LoginForm.js'
 
-import Background from '../component/BasicComponents.js'
+import {Background} from '../component/BasicComponents.js'
 import {BigLoadingScreen } from '../component/Loading.js'
 
 import { Redirect } from "react-router-dom"

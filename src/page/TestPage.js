@@ -6,7 +6,7 @@ import FormikForm, { MultiSelect, FormButton, FormErr } from '../component/Formi
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import isEmpty from 'lodash/isEmpty';
 import pickBy from 'lodash/pickBy';
-import Background from '../component/BasicComponents.js';
+import {Background} from '../component/BasicComponents.js';
 
 import UserProfileForm from '../form/UserProfileForm.js';
 import EditAddressForm from '../form/EditAddressForm.js';

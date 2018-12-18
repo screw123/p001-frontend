@@ -1,6 +1,6 @@
 import React from "react"
 
-import Background from '../component/BasicComponents.js'
+import {Background} from '../component/BasicComponents.js'
 
 import SalesOrderConfirmForm from '../form/SalesOrderConfirmForm.js'
 

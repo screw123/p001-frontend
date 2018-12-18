@@ -17,12 +17,14 @@ const AL = styled.div`
     grid-template-rows: auto;
     grid-template-columns: [s1] 2.5% [checkbox] ${({multiSelect})=>multiSelect?'5':'0'}% [content] auto [button] 20% [end] 2.5% [s2];
     grid-column-gap: 0.2rem;
+    overflow: visible;
 `
 const Left = styled.div`
-    grid-column: content / button
+    grid-column: content / button;
+    overflow: visible;
 `
 const Right = styled.div`
-    grid-column: button / end
+    grid-column: button / end;
 `
 const Btn = styled.button`
     border: 2px solid grey; 

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { AutoSizer, List, WindowScroller  } from 'react-virtualized';
-import {Section} from './Section.js'
+import {Section} from './BasicComponents'
 
 const DefaultListComponent = (a, data) => (
     <div key={a.key} style={a.style}>

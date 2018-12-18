@@ -6,7 +6,7 @@ import FormikForm, {
     FormErr
 } from "../component/FormikForm.js";
 
-import Background from "../component/Background.js";
+import {Background} from "../component/Background.js";
 import Gallery from "../component/Gallery.js";
 
 const data = [

@@ -188,7 +188,7 @@ const routes = [
         }
     },
     {
-        path: "/editAccount/:_id?/",
+        path: "/editAccount/:account_id?/",
         linkURL: "/editAccount",
         exact: true,
         menuName: '更改帳戶資料',

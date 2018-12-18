@@ -1,38 +1,26 @@
-import React from "react"
+import React from 'react'
 import { Formik, Field } from 'formik'
-import FormikForm, { MultiSelect, TextField, FormButton, FormErr, FormIcon, RadioButtonGroup, RadioButton, CheckBox, InputGroup, DropDown } from '../component/FormikForm.js'
-import { I18n } from 'react-i18next'
-
-import isEmpty from 'lodash/isEmpty'
-import pickBy from 'lodash/pickBy'
-import omitBy from 'lodash/omitBy'
-import isUndefined from 'lodash/isUndefined'
+import FormikForm, { TextField, FormButton, FormErr} from '../component/FormikForm.js'
+import get from 'lodash/get'
 import styled from "styled-components"
 
 import { ApolloProvider, Mutation } from 'react-apollo'
-import { updateAddress } from '../gql/query.js'
 
-import GqlApi from '../stateContainer/GqlApi.js'
 import parseApolloErr from '../util/parseErr.js'
 
 import SelectAddress from "../component/SelectAddress"
 import EditAddressForm from "./EditAddressForm"
 import SelectCreditCard from "../component/SelectCreditCard"
 
-const EAB = styled.button`
-`
-const ECCB = styled.button`
-`
-
 class EditAccountForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { showEditAddress: false }
-  }
+	constructor(props) {
+		super(props);
+		this.state = { showEditAddress: false }
+	}
 
-  handleEditAddress = () => {
-    this.setState({ showEditAddress: !this.state.showEditAddress })
-  }
+	handleEditAddress = () => {
+		this.setState({ showEditAddress: !this.state.showEditAddress })
+	}
 
   // validate(v) {
   //     const validateFunc = {
@@ -56,121 +44,85 @@ class EditAccountForm extends React.Component {
   //     return omitBy(err, isUndefined)
   // }
 
-  render() {
-    let account = this.props.account;
-    let selectAddressProps = {
-      allowAddAddress: true,
-      account_id: account._id,
-      placeholder: "XXX",
-      addresses: account.address_id,
-      onAddNewAddress: "XXX",
-      field: { value: "XXX", name: "XXX" },
-      form: { setFieldValue: ("XXX") }
-    }
+	render() {
+        const g = this.props.login
+        const c = this.props.i18n
+        const account = this.props.account
+        console.log('props=', this.props)
+		return (
 
-    let editAddressFormProps = {
-      address: {
-        "_id": "5ba0b52cec46627f7930b9ba",
-        "legalName": "My Office",
-        "addressCountry": "Hong Kong",
-        "streetAddress": "Flat B2, 3/F, Ching Cheong Ind. Bldg., 1 Kwai Cheong Rd,",
-        "addressRegion1": "So Kwun Wat",
-        "addressRegion2": "屯門",
-        "telephone": "99911122",
-        "account_id": "5b518c4c031c7d0179e23b6a",
-        "isActive": true,
-        "addressType": "CUSTOMER",
-        "creationDateTime": "2018-09-18T08:19:56.673Z",
-        "updateDateTime": "2018-09-18T08:19:56.673Z"
-      }
-    }
+            <Formik
+                enableReinitialize={true}
+                initialValues={{
+                    name: account.name,
+                    accountType: account.accountType,
+                    selectedAddress: account.address_id[0],
+                    lastUpdate: c.moment(account.updateDateTime).calendar()
+                }}
 
-    return (
-      <Formik
-        enableReinitialize={true}
-        initialValues={{
-          name: account.name,
-          accountType: account.accountType,
-          address_id: '',
-          stripeCustomerObject: '',
-          creationDate: account.updateDateTime
-        }}
-        // validate={this.validate}
-        onSubmit={async (values) => {
-          //submit to server
-          console.log('validate ok, now submit.');
+                // validate={this.validate}
+                onSubmit={async (values) => {
+                    //submit to server
+                    console.log('validate ok, now submit.');
+                }}
+            >
+            {({ values, status, setFieldValue, errors }) => (
+                <FormikForm>
+                    <Field
+                        name="name"
+                        type="text"
+                        component={TextField}
+                        label={'Name'}
+                        // err={errors.legalName}
+                        value={values.name}
+                        placeholder="Name"
+                    // ignoreTouch={true}
+                    />
+                    <Field
+                        name="accoutType"
+                        type="text"
+                        component={TextField}
+                        label={'Account Type'}
+                        disabled
+                        value={values.accountType}
+                    />
+                    <Field
+                        name="selectedAddress"
+                        type="text"
+                        component={SelectAddress}
+                        label={'Addresses'}
+                        value={values.selectedAddress}
+                        placeholder={c.t('You have no addresses with us')}
+                        account_id= {account._id}
+                        addresses={account.address_id}
+                        onChange={(v)=>setFieldValue('selectedAddress', v._id)}
+                        allowAddAddress={true}
+                        onAddNewAddress={()=>console.log('refetch')}
+                        multiSelect={false}
+                        err={errors['selectedAddress']}
+                    />
 
-          try {
-            const vars = {
-              name: values.name,
-              accountType: values.accountType,
-              address_id: values.address_id,
-              stripeCustomerObject: values.stripeCustomerObject,
-              creationDate: values.creationDate
-            }
-            console.log('vars=', vars)
-          } catch (er) {
-            console.log('submit err', er, er.message)
-          }
-        }}
-      >
-        {({ values, status }) => {
-          return (
-            <FormikForm>
-              <Field
-                name="name"
-                type="text"
-                component={TextField}
-                label={'Name'}
-                // err={errors.legalName}
-                value={values.name}
-                placeholder="Name"
-              // ignoreTouch={true}
-              />
-              <Field
-                name="accoutType"
-                type="text"
-                component={TextField}
-                label={'Account Type'}
-                disabled
-                value={values.accountType}
-              // err={errors.streetAddress}
-              // ignoreTouch={true}
-              />
+                    <Field
+                        name="lastUpdate"
+                        type="text"
+                        component={TextField}
+                        label={'Last update'}
+                        value={values.lastUpdate}
+                        disabled
+                    />
+                    <FormButton
+                        type="submit"
+                    // disabled={!dirty || isSubmitting || !isEmpty(pickBy(errors))}
+                    >
+                        Submit
+                    </FormButton>
+                    <FormErr>{status && status.form}</FormErr>
 
-              <SelectAddress {...selectAddressProps} />
-              {this.state.showEditAddress ? <EditAddressForm {...editAddressFormProps} /> :
-                <EAB onClick={() => { this.handleEditAddress() }}>Edit Address</EAB>}
-
-              <SelectCreditCard />
-              <ECCB>Edit Credit Card</ECCB>
-
-              <Field
-                name="creationDate"
-                type="text"
-                component={TextField}
-                label={'Creation Date'}
-                value={values.creationDate}
-                disabled
-              // err={errors.telephone}
-              // ignoreTouch={true}
-              />
-              <FormButton
-                type="submit"
-              // disabled={!dirty || isSubmitting || !isEmpty(pickBy(errors))}
-              >
-                Submit
-              </FormButton>
-              <FormErr>{status && status.form}</FormErr>
-
-            </FormikForm>
-          )
-        }
-        }
-      </Formik>
-    )
-  }
-
+                </FormikForm>
+            )}
+            </Formik>
+        )
+	}
 }
 
 export default EditAccountForm

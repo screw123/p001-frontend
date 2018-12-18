@@ -168,10 +168,10 @@ class Navbar extends React.PureComponent {
 
             if ((r.navbar.firstLevel) & ((r.navbar.showAfterLogin===g.state.isLogined) || (r.navbar.showBeforeLogin===!g.state.isLogined))) { //If it's a first Lv item, generate, else skip
                 if (r.path) { //if have path, means it's a link.  Link should not have 2nd level menu
-                    c.push(<FirstLevelContainer><FirstLevelLink to={r.linkURL||r.path} key={r.navbar.itemID} >{r.navbar.itemId+' '+t(r.menuName)}</FirstLevelLink></FirstLevelContainer>)
+                    c.push(<FirstLevelContainer key={r.navbar.itemId}><FirstLevelLink to={r.linkURL||r.path}>{r.navbar.itemId+' '+t(r.menuName)}</FirstLevelLink></FirstLevelContainer>)
                 }
                 else {  //if no patt, means it's text, thus use FirstLevelText.  If link should use FirstLevelLink
-                    c.push(<FirstLevelContainer><FirstLevelText displayText={t(r.menuName)} key={r.navbar.itemID}>
+                    c.push(<FirstLevelContainer key={r.navbar.itemId}><FirstLevelText displayText={t(r.menuName)}>
                         {this.gen2ndLevel({parentId: r.navbar.itemId, t: t, g:g})}
                     </FirstLevelText></FirstLevelContainer>)
                 }

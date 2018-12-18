@@ -211,6 +211,7 @@ export const getAccountById = gql`
         getAccountById(_id: $account_id) {
             _id
             name
+            accountType
             address_id {
                 _id
                 addressType
@@ -228,6 +229,7 @@ export const getAccountById = gql`
                 _id
             }
             stripeCustomerObject
+            updateDateTime
         }
     }
 `

@@ -128,4 +128,4 @@ const ToolTipText = styled.span`
 `
 
 
-export default {}
+export default {Background, WrapRow, StraightRow, ClickableText, Tag, Section, ToolTip }

@@ -6,7 +6,7 @@ import FormikForm, { MultiSelect, FormButton, FormErr } from '../component/Formi
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import isEmpty from 'lodash/isEmpty';
 import pickBy from 'lodash/pickBy';
-import {Background} from '../component/BasicComponents.js';
+import { Background } from '../component/BasicComponents.js';
 
 import UserProfileForm from '../form/UserProfileForm.js';
 import EditAddressForm from '../form/EditAddressForm.js';
@@ -22,6 +22,7 @@ import Gallery from '../component/Gallery.js';
 import EditAccountForm from '../form/EditAccountForm';
 
 import { ToolTip } from '../component/BasicComponents.js';
+import SystemError from '../component/SystemError';
 
 class TestPage extends React.Component {
 	constructor(props) {
@@ -33,8 +34,11 @@ class TestPage extends React.Component {
 
 	render() {
 		return (
-			<div style={{ width: '25%', margin: '15% auto' }}>
-				<ToolTip mainText={'Button'} tip={'You hovered me!'} />
+			<div>
+				<SystemError
+					message={'This is an error message from TestPage'}
+					errorData={{ errorName: 'Demo Error' }}
+				/>
 			</div>
 		);
 	}

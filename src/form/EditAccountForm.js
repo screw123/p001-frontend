@@ -4,15 +4,12 @@ import FormikForm, { TextField, FormButton, FormErr, FormTag} from '../component
 import get from 'lodash/get'
 import styled from "styled-components"
 
-import { ApolloProvider, Mutation } from 'react-apollo'
-
 import parseApolloErr from '../util/parseErr.js'
 
 import SelectAddress from "../component/SelectAddress"
-import EditAddressForm from "./EditAddressForm"
 import SelectCreditCard from "../component/SelectCreditCard"
 
-import {Tag, ToolTip} from '../component/BasicComponents.js'
+import {ToolTip} from '../component/BasicComponents.js'
 
 class EditAccountForm extends React.Component {
 	constructor(props) {
@@ -94,6 +91,7 @@ class EditAccountForm extends React.Component {
                     <Field
                         name="selectedAddress"
                         type="text"
+                        disabled={readonly}
                         component={SelectAddress}
                         label={'Addresses'}
                         value={values.selectedAddress}
@@ -105,11 +103,25 @@ class EditAccountForm extends React.Component {
                         onChange={(v)=>setFieldValue('selectedAddress', v._id)}
                         allowAddAddress={true}
                         allowEditAddress={true}
-                        onAddressUpdate={()=>this.props.onAddressUpdate()}
+                        onAddressUpdate={()=>this.props.onInfoUpdate()}
                         multiSelect={false}
                         err={errors['selectedAddress']}
                     />
-
+                    <Field
+                        name="cardId"
+                        type="text"
+                        component={SelectCreditCard}
+                        label={c.t('Credit Card')}
+                        placeholder={c.t('Select a credit card to update/remove')}
+                        account={this.props.account}
+                        onChange={(v)=>setFieldValue('card_id', v.cardId)}
+                        allowAddCard={true}
+                        allowRemoveCard={true}
+                        onAddCard={()=>this.props.onInfoUpdate()}
+                        multiSelect={false}
+                        isLoading={this.props.gqlNetworkStatus===4}
+                        err={errors['cardId']}
+                    />
                     <Field
                         name="lastUpdate"
                         type="text"

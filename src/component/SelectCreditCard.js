@@ -1,17 +1,16 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { ApolloProvider, Query } from "react-apollo"
+import { ApolloProvider, Query, Mutation } from "react-apollo"
 import {LocaleApiSubscriber} from '../stateContainer/LocaleApi.js'
 
 import parseApolloErr from '../util/parseErr.js'
 import {LoadingIcon} from './Loading.js'
 import AddCreditCardForm from '../form/AddCreditCardForm.js'
-import { MultiSelect, FormButton } from '../component/FormikForm.js'
-
+import { MultiSelect, FormButton, FieldDiv, FieldLabel, ErrorLabel } from '../component/FormikForm.js'
+import Modal from './Modal.js'
 import { getStripeCusObj } from '../gql/query.js'
 
 import {AddressBlock as CardBlock } from './SelectAddress.js'
-import { FieldLabel, ErrorLabel } from './Formik-Basic.js'
 
 /*
 props:
@@ -44,8 +43,7 @@ const CreditCardDisplay = ({data, key, selected, onClick, disabled, innerProps, 
 	}
 
 	return(
-		<CardBlock key={props.key} selected={selected} onClick={onClick} disabled={disabled} {...innerProps}>
-			<span></span>
+		<CardBlock key={key} selected={selected} onClick={onClick} disabled={disabled} {...innerProps}>
 			<FontAwesomeIcon icon={cardIcon} size='2x' />
 			<span>{'XXXX XXXX XXXX ' + data.card.last4}</span><br />
 			<span>{data.card.exp_month + ' / ' + data.card.exp_year}</span>
@@ -58,16 +56,17 @@ class SelectCreditCard extends React.Component {
 		super(props)
 		this.state={
 			showAddNewCard: false,
+			showRemoveCard: false,
 			err: undefined
 		}
 		this.toggleAddNewCard=this.toggleAddNewCard.bind(this)
+		this.toggleRemoveCard = this.toggleRemoveCard.bind(this)
 		this.renderMainDiv = this.renderMainDiv.bind(this)
 	}
 
-	toggleAddNewCard=(e)=> {
-		e.preventDefault()
-		this.setState(prevState=>({showAddNewCard: (prevState.showAddNewCard? false: true) }))
-	}
+	toggleAddNewCard=()=> { this.setState(prevState=>({showAddNewCard: (prevState.showAddNewCard? false: true) })) }
+
+	toggleRemoveCard=()=>{ this.setState(prevState=>({showRemoveCard: (prevState.showRemoveCard? false: true) })) }
 
 	renderMainDiv=(stripeCusObjString, onAddCard, props)=> {
 		let no_of_card = 0
@@ -83,19 +82,42 @@ class SelectCreditCard extends React.Component {
 			stripeCusObj={sources:{data:[]}}
 		}
 		let options = stripeCusObj.sources.data.map(v=>Object.assign({value: v.id}, v) )
+		let selectedCard = options.find(v=>v.value===this.props.field.value)
 
-		console.log('SelectCreditCard.render', (!stripeCusObj || no_of_card===0), !!stripeCusObj)
 		return (<LocaleApiSubscriber>
-			{c=>(<div>
-				{/* !showAddNewCard = show card selector.  No card is available */}
-				{!this.state.showAddNewCard && (no_of_card===0) && 
-					<span>{c.t('You have no credit card registered with us.')}</span>
-				}
+			{c=>(
+				<FieldDiv className={this.props.classNames}>
+					<FieldLabel>{this.props.label}</FieldLabel>
+					
+					{/* !showAddNewCard = show card selector.  No card is available */}
+					{!this.state.showAddNewCard && (no_of_card===0) && 
+						<span>{c.t('You have no credit card registered with us.')}</span>
+					}
 
-				{/* !showAddNewCard = show card selector. Have 1+ cards */}
-				{!this.state.showAddNewCard && (no_of_card>0) && 
-					<div>
-						<p>Please choose a credit card:</p>
+					{/*show add card button */}
+					{!this.state.showAddNewCard && props.allowAddCard &&
+						<FormButton onClick={e=>{
+							e.preventDefault()
+							this.toggleAddNewCard()
+						}} disabled={props.disabled}>
+							<FontAwesomeIcon icon='plus-circle'/>
+							{c.t('Add New Card')}
+						</FormButton>
+					}
+
+					{/*show remove card button */}
+					{props.allowRemoveCard && props.field.value &&
+						<FormButton onClick={e=>{
+							e.preventDefault()
+							this.toggleRemoveCard()
+						}} disabled={props.disabled}>
+							<FontAwesomeIcon icon='trash-alt'/>
+							{c.t('Remove Selected Card')}
+						</FormButton>
+					}
+
+					{/* !showAddNewCard = show card selector. Have 1+ cards */}
+					{!this.state.showAddNewCard && (no_of_card>0) && 
 						<MultiSelect
 							field={props.field}
 							form={props.form}
@@ -106,31 +128,53 @@ class SelectCreditCard extends React.Component {
 							disabled={props.disabled}
 							customOption={CreditCardDisplay}
 							customSingleValueLabel={CreditCardDisplay}
+							isSearchable={false}
+							isClearable={false}
+							backspaceRemovesValue={false}
 						/>
-					</div>
-				}
+					}
 
-				{/*show add card button */}
-				{!this.state.showAddNewCard && props.allowAddCard &&
-					<FormButton onClick={this.toggleAddNewCard} disabled={props.disabled}>
-						<FontAwesomeIcon icon='plus-circle'/>
-						{c.t('Add New Card')}
-					</FormButton>
-				}
+				
 
-				{/* showAddNewCard = show add card form.  When show add card form, hide card selector */}
-				{!!this.state.showAddNewCard && <AddCreditCardForm
-					account_id={props.account_id || props.account._id}
-					onSuccess={e=>{
-						onAddCard()
-						this.toggleAddNewCard(e)
-					}}
-					onCancel={e=>this.toggleAddNewCard(e)}
-					{...props}
-				/>}
-				{props.err && <ErrorLabel>{c.t(props.err)}</ErrorLabel>}
-				{this.state.err && <ErrorLabel>{c.t(this.state.err)}</ErrorLabel>}
-			</div>)}
+					{/* showAddNewCard = show add card form.  When show add card form, hide card selector */}
+					{!!this.state.showAddNewCard && <AddCreditCardForm
+						account_id={props.account_id || props.account._id}
+						onSuccess={e=>{
+							onAddCard()
+							this.toggleAddNewCard(e)
+						}}
+						onCancel={e=>this.toggleAddNewCard(e)}
+						{...props}
+					/>}
+
+					{/* show a "confirm remove card?" window */}
+					{!!this.props.allowRemoveCard && !!this.state.showRemoveCard &&
+						<Modal
+							show={this.state.showRemoveCard}
+							content={'Confirm remove card from '+ selectedCard.card.brand +', card number XXXX ' +selectedCard.card.last4 + '?'}
+							closeModal={this.showRemoveCard}
+							footerButtons={[
+								<FormButton onClick={e=>{
+									e.preventDefault()
+
+									this.toggleRemoveCard()
+								}} disabled={props.disabled}>
+									{c.t('OK')}
+								</FormButton>,
+								<FormButton onClick={e=>{
+									e.preventDefault()
+									this.toggleRemoveCard()
+								}} disabled={props.disabled}>
+									{c.t('Cancel')}
+								</FormButton>
+							]}
+						/>
+					}
+
+					{props.err && <ErrorLabel>{c.t(props.err)}</ErrorLabel>}
+					{this.state.err && <ErrorLabel>{c.t(this.state.err)}</ErrorLabel>}
+				</FieldDiv>
+			)}
 		</LocaleApiSubscriber>)
 	}
 

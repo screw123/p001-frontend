@@ -147,6 +147,7 @@ class SelectAddress extends React.Component{
                         placeholder={this.props.placeholder}
                         isLoading={this.props.isLoading}
                         disabled={this.props.disabled}
+                        backspaceRemovesValue={false}
                         customOption={AddressDisplay}
                         customMultiValueLabel={AddressMultiValueLabel}
                     />

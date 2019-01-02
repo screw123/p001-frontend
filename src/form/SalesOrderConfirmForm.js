@@ -203,7 +203,7 @@ class SalesOrderConfirmForm extends React.Component {
 											name="cardId"
 											type="text"
 											component={SelectCreditCard}
-											label={c.t('Credit Card')}
+											label={c.t('Credit card for payment')}
 											placeholder={c.t('Please choose your credit card')}
 											account={a}
 											onChange={(v)=>setFieldValue('card_id', v.cardId)}

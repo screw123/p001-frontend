@@ -51,7 +51,8 @@ class EditAccountPage extends React.Component {
 						<EditAccountForm 
 							account={data.getAccountById}
 							mode={mode}
-							onAddressUpdate={()=>refetch()}
+							onInfoUpdate={()=>refetch()}
+							gqlNetworkStatus={networkStatus}
 							{...this.props}
 						/>
 					</Background>)

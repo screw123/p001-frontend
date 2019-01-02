@@ -27,7 +27,7 @@ const ModalBody = styled.div`
 `
 
 const Title = styled.h3`
-    background-color: lime;
+    background-color: #f47;
     padding: 1em 2em;
 `
 
@@ -44,7 +44,7 @@ const IconDiv = styled.div`
 const Footer = styled.div`
     padding: 1em;
     justify-content: center;
-    background-color: lime;
+    background-color: #f47;
 `
 
 export const CloseIcon = ({onClick, ...props}) => (

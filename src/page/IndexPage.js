@@ -55,7 +55,7 @@ class IndexPage extends React.Component {
     
     render = () => (
         <div>
-            <BigLoadingScreen text={'testing'}/>
+            <BigLoadingScreen text={'Welcome to Wisekeep!  Our website is under construction!'}/>
             
         
         {false && <I18n>

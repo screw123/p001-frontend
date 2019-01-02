@@ -6,11 +6,11 @@ import {LocaleApiSubscriber} from '../stateContainer/LocaleApi.js'
 import parseApolloErr from '../util/parseErr.js'
 import {LoadingIcon} from './Loading.js'
 import AddCreditCardForm from '../form/AddCreditCardForm.js'
-import { MultiSelect } from '../component/FormikForm.js'
+import { MultiSelect, FormButton } from '../component/FormikForm.js'
 
 import { getStripeCusObj } from '../gql/query.js'
 
-import {AddressBlock as CardBlock, AddAddressButton as AddCardButton} from './SelectAddress.js'
+import {AddressBlock as CardBlock } from './SelectAddress.js'
 import { FieldLabel, ErrorLabel } from './Formik-Basic.js'
 
 /*
@@ -112,10 +112,10 @@ class SelectCreditCard extends React.Component {
 
 				{/*show add card button */}
 				{!this.state.showAddNewCard && props.allowAddCard &&
-					<AddCardButton onClick={this.toggleAddNewCard} disabled={props.disabled}>
+					<FormButton onClick={this.toggleAddNewCard} disabled={props.disabled}>
 						<FontAwesomeIcon icon='plus-circle'/>
 						{c.t('Add New Card')}
-					</AddCardButton>
+					</FormButton>
 				}
 
 				{/* showAddNewCard = show add card form.  When show add card form, hide card selector */}

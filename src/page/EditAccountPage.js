@@ -20,19 +20,21 @@ class EditAccountPage extends React.Component {
 		if ((account===undefined) && (account_id===undefined)) {
 			return (<p>{'Error: Account not specified'}</p>)
 		}
-		console.log(account, account_id)
+
+		let mode = this.props.mode || this.props.match.params.mode || 'view'
+
 		if (account!==undefined) { 
 			console.log('account!==undefined')
 			return(
 			<Background>
 				<h1>Edit Account</h1>
-				<EditAccountForm account={account} {...this.props} />
+				<EditAccountForm account={account} mode={mode} {...this.props} />
 			</Background>
 		)}
 		else {return(
 			<ApolloProvider client={g.getGqlClient()}>
 				<Query query={getAccountById} variables={{account_id: account_id}} notifyOnNetworkStatusChange>
-				{({ loading, error, data, networkStatus }) => {
+				{({ loading, error, data, networkStatus, refetch }) => {
 					if (loading) return (<BigLoadingScreen text={'Loading...'}/>)
 					if (error) {
 						const errStack = parseApolloErr(error, c.t)
@@ -46,7 +48,12 @@ class EditAccountPage extends React.Component {
 
 					return (<Background>
 						<h1>Edit Account</h1>
-						<EditAccountForm account={data.getAccountById} {...this.props} />
+						<EditAccountForm 
+							account={data.getAccountById}
+							mode={mode}
+							onAddressUpdate={()=>refetch()}
+							{...this.props}
+						/>
 					</Background>)
 				}}
 				</Query>

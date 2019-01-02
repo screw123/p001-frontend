@@ -6,21 +6,31 @@ import React from 'react'
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {LocaleApiSubscriber} from '../stateContainer/LocaleApi.js'
-import AddNewAddressForm from '../form/AddNewAddressForm.js'
+import EditAddressForm from '../form/EditAddressForm.js'
 import Modal from '../component/Modal.js'
 import { MultiSelect } from '../component/FormikForm.js'
-import { FieldLabel, ErrorLabel } from './Formik-Basic.js'
+import { FieldDiv, FieldLabel, ErrorLabel, FormButton } from './Formik-Basic.js'
+import {Tag} from './BasicComponents.js'
 
 const AddressDisplay = ({data, key, selected, onClick, disabled, innerProps, ...props}) => {
     return (
-        <AddressBlock key={key} selected={selected} onClick={onClick} disabled={disabled} {...innerProps}>
-            <AddressLine>{data.legalName||'DEFAULT'}</AddressLine>
-            <AddressLine>{data.streetAddress||'N/A'}</AddressLine>
-            <AddressLine>{data.addressRegion1||undefined}</AddressLine>
-            <AddressLine>{data.addressRegion2||undefined}</AddressLine>
-            <AddressLine>{data.addressCountry||'N/A'}</AddressLine>
-            <AddressLine>{data.telephone||undefined}</AddressLine>
-        </AddressBlock>
+        <LocaleApiSubscriber>
+        {c=>(
+            <AddressBlock key={key} selected={selected} onClick={onClick} disabled={disabled} {...innerProps}>
+                <AddressLine>
+                    {data.legalName||c.t('DEFAULT')}
+                    {data.defaultBillingAddress && <Tag float='right'>{c.t('Default Billing')}</Tag>}
+                    {data.defaultShippingAddress && <Tag float='right'>{c.t('Default Shipping')}</Tag>}
+                </AddressLine>
+                <AddressLine>{data.streetAddress||'N/A'}</AddressLine>
+                <AddressLine>{data.addressRegion1||undefined}</AddressLine>
+                <AddressLine>{data.addressRegion2||undefined}</AddressLine>
+                <AddressLine>{data.addressCountry||'N/A'}</AddressLine>
+                <AddressLine>{data.telephone||undefined}</AddressLine>
+            </AddressBlock>
+        )}
+        </LocaleApiSubscriber>
+        
     )
 }
 
@@ -43,10 +53,6 @@ export const AddressBlock = styled.div`
     ${({selected}) => selected? `background-color: rgba(255, 64, 112, 0.2);` : ``}
 `
 
-export const AddAddressButton = styled.button`
-
-`
-
 const AddressMultiValueLabelDiv = styled.div`
     font-size: 0.7em;
 `
@@ -59,7 +65,7 @@ const AddressMultiValueLabel = ({data, innerProps}) => {
 
 class SelectAddress extends React.Component{
     /* props =
-    onChange(required): function, return addressList number;
+    onAddressUpdate(required): function, return addressList number;
     addressLine(required): array of addresses
     defaultSelected(required): id of selected address
     hidden: boolean
@@ -67,18 +73,42 @@ class SelectAddress extends React.Component{
     */
     constructor(props) {
         super(props)
-        this.state = {showAddNewAddressModal: false}
+        this.state = {
+            showEditAddressModal: false,
+            editMode: 'add'
+        }
         this.toggleAddNewAddressModal = this.toggleAddNewAddressModal.bind(this)
+        this.toggleEditAddressModal = this.toggleEditAddressModal.bind(this)
     }
 
     toggleAddNewAddressModal = () => {
-        this.setState(prevState=>({showAddNewAddressModal: (prevState.showAddNewAddressModal? false: true) }))
+        this.setState(prevState=>({
+            showEditAddressModal: (prevState.showEditAddressModal? false: true),
+            editMode: 'add'
+        }))
+    }
+
+    toggleEditAddressModal = () => {
+        this.setState(prevState=>({
+            showEditAddressModal: (prevState.showEditAddressModal? false: true),
+            editMode: 'edit'
+        }))
     }
 
     render(){
         const options = this.props.addresses.map((v)=>{
             let a = (v.legalName||'DEFAULT') + ': ' + (v.streetAddress) + ', ' + (v.addressRegion1) + (v.addressRegion2) + (v.addressCountry||'N/A') + (' / Tel: ' + v.telephone)
-            return Object.assign({value: v._id, label: a}, v)
+
+            let insertVars = {value: v._id, label: a}
+
+            if (this.props.defaultShippingAddress_id===v._id) {
+                insertVars['defaultShippingAddress'] = true
+            }
+            if (this.props.defaultBillingAddress_id===v._id) {
+                insertVars['defaultBillingAddress'] = true
+            }
+            
+            return Object.assign(insertVars, v)
         })
 
         return ( 
@@ -86,14 +116,29 @@ class SelectAddress extends React.Component{
         {(c)=>{
             if (this.props.hidden) {return null}
             else { return(
-                <div className={this.props.classNames}>
+                <FieldDiv className={this.props.classNames}>
                     <FieldLabel>{this.props.label}</FieldLabel>
+
                     {this.props.allowAddAddress && 
-                        <AddAddressButton onClick={this.toggleAddNewAddressModal} disabled={this.props.disabled}>
+                        <FormButton onClick={e=>{
+                            e.preventDefault()
+                            this.toggleAddNewAddressModal()
+                        }} disabled={this.props.disabled}>
                             <FontAwesomeIcon icon='plus-circle'/>
                             {c.t('Add New Address')}
-                        </AddAddressButton> 
+                        </FormButton> 
                     }
+
+                    {this.props.allowEditAddress && this.props.field.value &&
+                        <FormButton onClick={e=>{
+                            e.preventDefault()
+                            this.toggleEditAddressModal()
+                        }} disabled={this.props.disabled}>
+                            <FontAwesomeIcon icon='edit'/>
+                            {c.t('Edit Address')}
+                        </FormButton> 
+                    }
+
                     <MultiSelect
                         field={this.props.field}
                         form={this.props.form}
@@ -105,22 +150,26 @@ class SelectAddress extends React.Component{
                         customOption={AddressDisplay}
                         customMultiValueLabel={AddressMultiValueLabel}
                     />
-                    {this.props.allowAddAddress &&
+                    {this.state.showEditAddressModal &&
                         <Modal
-                            show={this.state.showAddNewAddressModal}
-                            component={<AddNewAddressForm
-                                account_id={this.props.account_id}
-                                onSubmitSuccess={(address)=> {
-                                    this.toggleAddNewAddressModal()
-                                    this.props.onAddNewAddress(address)
-                                }}
-                            />}
+                            show={this.state.showEditAddressModal}
+                            component={
+                                <EditAddressForm
+                                    account_id={this.props.account_id}
+                                    mode={this.state.editMode}
+                                    address={options.find(v=> v._id===this.props.field.value )}
+                                    onSubmitSuccess={(address)=> {
+                                        this.toggleAddNewAddressModal()
+                                        this.props.onAddressUpdate(address)
+                                    }}
+                                />
+                            }
                             closeModal={this.toggleAddNewAddressModal}
-                            title={c.t('Add New Address')}
+                            title={c.t( this.state.editMode==='add' ? 'Add New Address':'Edit Address')}
                         />
                     }
                     {this.props.err && <ErrorLabel>{c.t(this.props.err)}</ErrorLabel>}
-                </div>
+                </FieldDiv>
             )}
         }}
         </LocaleApiSubscriber>

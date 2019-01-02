@@ -2,6 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
+import {Tag, ToolTip} from '../component/BasicComponents.js'
+
 //Field level Error Label.  For form level ErrorLabel use FormErr
 export const ErrorLabel = styled.div`
     color: Red;
@@ -92,7 +94,21 @@ export const FormIcon = ({onClick, ...props}) => (
     </IconDiv>
 )
 
+export const FormTag = ({
+    field: { name, ...fields }, // { name, value, onChange, onBlur }
+    form: { touched }, //also values, handleXXXX, dirty, isValid, status, etc.
+    classNames, label, hidden, background, float, color, value, ...props }) => {
 
+    return (
+        <FieldDiv className={classNames}>
+            <FieldLabel {...props}>
+                {label}
+                <div><Tag background={background} float={float} color={color}>{value}</Tag></div>
+            </FieldLabel>
+        </FieldDiv>
+    )
 
+}
 
-export default {FieldDiv, FieldRow, FieldLabel, ErrorLabel, FormErr, FormIcon, FormButton}
+export default {FieldDiv, FieldRow, FieldLabel, ErrorLabel, FormErr, FormIcon, FormButton, FormTag}
+

@@ -44,7 +44,8 @@ export const ClickableText = styled.div`
 export const Tag = styled.span`
     ${props => props.float && `float: ${props.float}`};
     background: ${props => props.background? props.background : 'Red'};
-    padding: 0.25rem;
+	padding: 0.25rem;
+	margin: 0 0.25rem;
     font-size: 0.7rem;
     border-radius: ${props => props.circle? `50%`:`0.2rem`};
     color: ${props => props.color ? props.color : `White`};

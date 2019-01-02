@@ -37,7 +37,7 @@ const skFoldCubeAngle = keyframes`
 const Cube = styled.div`
     float: left;
     width: 50%;
-    height: 50%;
+    height: 50%  ;
     position: relative;
 
     
@@ -92,7 +92,7 @@ const InlineDiv = styled.div`
 
 const LoadingTextContainer = styled.div`
     display: grid;
-    grid: 3fr 1fr 2fr / 1fr 20fr 1fr;
+    grid: 4fr 1fr 2fr / 1fr 20fr 1fr;
     min-height: 100vh;
     place-items: center / center;
 `
@@ -105,17 +105,17 @@ const LoadingText = styled.p`
 
 const LoadingAnim = (props) => (
     <SkFoldingCube {...props}>
-        <Cube/>
-        <Cube2/>
-        <Cube4/>
-        <Cube3/>
+        <Cube {...props}/>
+        <Cube2 {...props}/>
+        <Cube4 {...props}/>
+        <Cube3 {...props}/>
     </SkFoldingCube>
 
 )
 
 export const BigLoadingScreen = ({text}) => (
     <FullHeightDiv>
-        <LoadingAnim size={6} fullSize/>
+        <LoadingAnim size={6} fullSize haveText={text!==undefined} />
         {text && <LoadingTextContainer>
             <LoadingText>{text}</LoadingText>
         </LoadingTextContainer>}

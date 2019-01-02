@@ -6,7 +6,7 @@ import { faCcVisa, faCcMastercard, faCcAmex } from '@fortawesome/free-brands-svg
 import styled from 'styled-components'
 import { I18n } from 'react-i18next'
 
-
+import get from 'lodash/get'
 import { BrowserRouter, Route } from 'react-router-dom'
 import routes from './routes.js'
 
@@ -60,14 +60,17 @@ class App extends React.Component {
     render() {
         return (
             <BrowserRouter><GqlApiProvider><GqlApiSubscriber>
-            {(g)=>(
+            {(g)=>{
+                console.log(g)
+                return(
                 <LocaleApiProvider><LocaleApiSubscriber>
                 {(c) =>(
                     <div>
                         {((g.state.isLogined===true)||(g.state.isLogined===false)) && <MainContainer>
                             <DummyPassHistory />  {/*Load this to add the history obj into GqpApi state */}
                             {this.genItems({routes: routes, stateContainer: {login: g, i18n: c}})}  {/* Put routes.js all into react-router */}
-                            <Navbar routes={routes} />   {/*Generate NavBar Component */}
+                            {(get(g, 'state.history.location.pathname', undefined) !=='/') && <Navbar routes={routes} />}
+                            {/*<Navbar routes={routes} />   THE ORIGINAL.  USE THIS WHEN GO LIVE Generate NavBar Component */}
                         </MainContainer>}
                         {(!((g.state.isLogined===true)||(g.state.isLogined===false))) && <div>
                             <BigLoadingScreen />
@@ -75,7 +78,7 @@ class App extends React.Component {
                     </div>
                 )}
                 </LocaleApiSubscriber></LocaleApiProvider>
-            )}
+            )}}
             </GqlApiSubscriber></GqlApiProvider></BrowserRouter>
         )
     }

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Formik, Field } from 'formik'
-import FormikForm, { TextField, FormButton, FormErr} from '../component/FormikForm.js'
+import FormikForm, { TextField, FormButton, FormErr, FormTag} from '../component/FormikForm.js'
 import get from 'lodash/get'
 import styled from "styled-components"
 
@@ -11,6 +11,8 @@ import parseApolloErr from '../util/parseErr.js'
 import SelectAddress from "../component/SelectAddress"
 import EditAddressForm from "./EditAddressForm"
 import SelectCreditCard from "../component/SelectCreditCard"
+
+import {Tag, ToolTip} from '../component/BasicComponents.js'
 
 class EditAccountForm extends React.Component {
 	constructor(props) {
@@ -48,6 +50,8 @@ class EditAccountForm extends React.Component {
         const g = this.props.login
         const c = this.props.i18n
         const account = this.props.account
+        const readonly = this.props.mode==='view'
+
         console.log('props=', this.props)
 		return (
 
@@ -56,7 +60,7 @@ class EditAccountForm extends React.Component {
                 initialValues={{
                     name: account.name,
                     accountType: account.accountType,
-                    selectedAddress: account.address_id[0],
+                    selectedAddress: get(account, 'address_id[0]._id', undefined),
                     lastUpdate: c.moment(account.updateDateTime).calendar()
                 }}
 
@@ -76,14 +80,15 @@ class EditAccountForm extends React.Component {
                         // err={errors.legalName}
                         value={values.name}
                         placeholder="Name"
+                        disabled={readonly}
                     // ignoreTouch={true}
                     />
                     <Field
                         name="accoutType"
                         type="text"
-                        component={TextField}
+                        component={FormTag}
                         label={'Account Type'}
-                        disabled
+                        background={(values.accountType==='PERSONAL')? 'LightGreen': 'RoyalBlue'}
                         value={values.accountType}
                     />
                     <Field
@@ -95,9 +100,12 @@ class EditAccountForm extends React.Component {
                         placeholder={c.t('You have no addresses with us')}
                         account_id= {account._id}
                         addresses={account.address_id}
+                        defaultShippingAddress_id={account.defaultShippingAddress_id._id}
+                        defaultBillingAddress_id={account.defaultBillingAddress_id._id}
                         onChange={(v)=>setFieldValue('selectedAddress', v._id)}
                         allowAddAddress={true}
-                        onAddNewAddress={()=>console.log('refetch')}
+                        allowEditAddress={true}
+                        onAddressUpdate={()=>this.props.onAddressUpdate()}
                         multiSelect={false}
                         err={errors['selectedAddress']}
                     />

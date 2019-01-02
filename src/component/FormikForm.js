@@ -2,10 +2,10 @@ import React from 'react'
 import { Form } from 'formik'
 import styled from 'styled-components'
 
-import {FieldDiv, FieldRow, FieldLabel, ErrorLabel, FormErr, FormIcon, FormButton } from './Formik-Basic.js'
+import {FieldDiv, FieldRow, FieldLabel, ErrorLabel, FormErr, FormIcon, FormButton, FormTag } from './Formik-Basic.js'
 
 
-export { FieldDiv, FieldRow, FieldLabel, ErrorLabel, FormErr, FormIcon, FormButton } from './Formik-Basic.js'
+export { FieldDiv, FieldRow, FieldLabel, ErrorLabel, FormErr, FormIcon, FormButton, FormTag } from './Formik-Basic.js'
 export { TextField } from './Formik-TextInput.js'
 export { MultiSelect } from './Formik-MultiSelect.js'
 

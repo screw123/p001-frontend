@@ -72,6 +72,14 @@ export const MultiSelect = ({
 
     if (hidden) 
         return null
+    else if (options.length===0) {
+        return(
+            <FieldDiv className={classNames}>
+                <FieldLabel>{label}</FieldLabel>
+                <div>{placeholder}</div>
+            </FieldDiv>
+        )
+    }
     else if (options.length>3) {
         return (
         <FieldDiv className={classNames}>

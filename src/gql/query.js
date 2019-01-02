@@ -342,14 +342,15 @@ export const addRentalOrder = gql`
 
 export const addAddress = gql`
     mutation (
-        $addressType: String!,
         $account_id: String!,
         $legalName: String!,
         $addressCountry: String!,
         $addressRegion1: String!,
         $addressRegion2: String!,
         $streetAddress: String!,
-        $telephone: String!
+        $telephone: String!,
+        $setDefaultBilling: Boolean,
+        $setDefaultShipping: Boolean
     ) {
         addAddress(
             addressType: $addressType,
@@ -359,7 +360,9 @@ export const addAddress = gql`
             addressRegion1: $addressRegion1,
             addressRegion2: $addressRegion2,
             streetAddress: $streetAddress,
-            telephone: $telephone
+            telephone: $telephone,
+            setDefaultBilling: $setDefaultBilling,
+            setDefaultShipping: $setDefaultShipping
         ) {
             _id
             legalName
@@ -376,26 +379,32 @@ export const addAddress = gql`
     }`
 
     // Initial updateAddress, Fix this
-    export const updateAddress = gql`
+export const updateAddress = gql`
     mutation (
         $_id: String!,
-        $legalName: String!,
-        $addressCountry: String!,
-        $addressRegion1: String!,
-        $addressRegion2: String!,
-        $streetAddress: String!,
-        $telephone: String!,
-        $isActive: Boolean
+        $account_id: String!,
+        $legalName: String,
+        $addressCountry: String,
+        $addressRegion1: String,
+        $addressRegion2: String,
+        $streetAddress: String,
+        $telephone: String,
+        $isActive: Boolean,
+        $setDefaultBilling: Boolean,
+        $setDefaultShipping: Boolean
     ) {
         updateAddress(
             _id: $_id,
+            account_id: $account_id,
             legalName: $legalName,
             addressCountry: $addressCountry,
             addressRegion1: $addressRegion1,
             addressRegion2: $addressRegion2,
             streetAddress: $streetAddress,
             telephone: $telephone,
-            isActive: $isActive
+            isActive: $isActive,
+            setDefaultBilling: $setDefaultBilling,
+            setDefaultShipping: $setDefaultShipping
         ) {
             _id
             legalName

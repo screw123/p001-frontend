@@ -194,7 +194,7 @@ class SalesOrderConfirmForm extends React.Component {
 											addresses={a.address_id}
 											onChange={(v)=>setFieldValue('billingAddress', v._id)}
 											allowAddAddress={true}
-											onAddNewAddress={()=>refetch()}
+											onAddressUpdate={()=>refetch()}
 											multiSelect={false}
 											isLoading={networkStatus===4}
 											err={errors['billingAddress']}

@@ -60,5 +60,19 @@
     "Edit User Profile": "更改登入資訊",
     "This is the last item, you cannot disable it": "帳戶中, 請保留最少一個{{object}}.",
     "address": "地址",
-    "My accounts": "我的帳戶"
+    "My Accounts": "我擁有的帳戶",
+    "Managed Accounts": "可管理的帳戶",
+    "View Only Accounts": "可查看的帳戶",
+    "Please choose your account": "請選擇帳戶",
+    "Edit Account Info": "更新帳戶資料",
+    "Name": "名稱",
+    "Account Type": "帳戶類別",
+    "PERSONAL": "個人",
+    "BUSINESS": "商業",
+    "Credit Card": "信用卡",
+    "Last Update": "最後更新",
+    "Addresses": "地址",
+    "You have no addresses with us": "我們未有你的地址記錄",
+    "Add New Card": "新增信用卡",
+    "Edit Address": "更改此地址"
 }

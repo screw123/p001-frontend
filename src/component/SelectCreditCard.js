@@ -72,7 +72,8 @@ class SelectCreditCard extends React.Component {
 		let no_of_card = 0
 		let stripeCusObj
 
-		if (stripeCusObjString) {  //if user already have a stripeObject
+
+		if (stripeCusObj) {  //if user already have a stripeObject
 			stripeCusObj = JSON.parse(stripeCusObjString)
 			if (stripeCusObj.sources) {
 				no_of_card = stripeCusObj.sources.data.length

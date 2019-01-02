@@ -60,6 +60,19 @@
     "Edit User Profile": "Edit User Profile",
     "This is the last item, you cannot disable it": "We need at least one {{object}} from you, please do not disable the last one.",
     "address": "address",
-    "My accounts": "My accounts"
-
+    "My Accounts": "My Accounts",
+    "Managed Accounts": "Managed Accounts",
+    "View Only Accounts": "View Only Accounts",
+    "Please choose your account": "Please choose your account",
+    "Edit Account Info": "Edit Account Info",
+    "Name": "Name",
+    "Account Type": "Account Type",
+    "PERSONAL": "PERSONAL",
+    "BUSINESS": "BUSINESS",
+    "Credit Card": "Credit Card",
+    "Last Update": "Last Update",
+    "Addresses": "Addresses",
+    "You have no addresses with us": "You have no addresses with us",
+    "Add New Card":"Add New Card",
+    "Edit Address": "Edit Address"
 }

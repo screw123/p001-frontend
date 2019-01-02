@@ -47,7 +47,7 @@ class EditAccountPage extends React.Component {
 					}
 
 					return (<Background>
-						<h1>Edit Account</h1>
+						<h1>{c.t('Edit Account Info')}</h1>
 						<EditAccountForm 
 							account={data.getAccountById}
 							mode={mode}

@@ -469,4 +469,48 @@ export const addStripeSource = gql`
     }
 `
 
+export const removeStripeSource = gql`
+    mutation (
+        $token: String!,
+        $account_id: String!
+    ) {
+        removeStripeSource(token: $token, account_id: $account_id) {
+            _id
+            stripeCustomerObject
+        }
+    }
+`
+
+export const updateAccount = gql`
+    mutation (
+        $account_id: String!,
+        $name: String
+    ) {
+        updateAccount(_id: $account_id, name: $name) {
+            _id
+            name
+            accountType
+            address_id {
+                _id
+                addressType
+                legalName
+                streetAddress
+                addressRegion1
+                addressRegion2
+                addressCountry
+                telephone
+            }
+            defaultBillingAddress_id {
+                _id
+            }
+            defaultShippingAddress_id {
+                _id
+            }
+            stripeCustomerObject
+            updateDateTime
+        }
+    }
+
+`
+
 export default {}

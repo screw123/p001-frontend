@@ -69,19 +69,19 @@ export default class AccountListForm extends React.Component {
         return(<div>
             <InfoList 
                 rowHeightCalc={()=>40}
-                headerText={<div><FontAwesomeIcon icon={['far', 'address-card']}/> {c.t('My accounts')}</div>}
+                headerText={<div><FontAwesomeIcon icon={['far', 'address-card']}/> {c.t('My Accounts')}</div>}
                 data={myself.accountOwn_id || []} 
                 listComponent={this.accountLine}    
             />
             {myself.accountManage_id.length>0 && <InfoList 
                 rowHeightCalc={()=>40}
-                headerText={<div><FontAwesomeIcon icon={['far', 'address-card']}/> {c.t('Accounts you manage')}</div>}
+                headerText={<div><FontAwesomeIcon icon={['far', 'address-card']}/> {c.t('Managed Accounts')}</div>}
                 data={myself.accountManage_id || []}
                 listComponent={this.accountLine}    
             />}
             {myself.accountView_id.length>0 && <InfoList 
                 rowHeightCalc={()=>40}
-                headerText={<div><FontAwesomeIcon icon={['far', 'address-card']}/> {c.t('Accounts you view')}</div>}
+                headerText={<div><FontAwesomeIcon icon={['far', 'address-card']}/> {c.t('View Only Accounts')}</div>}
                 data={myself.accountView_id || []}
                 listComponent={this.accountLine}    
             />}

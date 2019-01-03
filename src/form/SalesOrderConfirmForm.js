@@ -34,19 +34,18 @@ class SalesOrderConfirmForm extends React.Component {
 		this.backToQuotationForm = this.backToQuotationForm.bind(this)
 		this.togglePaymentInfoComponent = this.togglePaymentInfoComponent.bind(this)
 		this.togglePaymentInfo = this.togglePaymentInfo.bind(this)
+		
 
 		this.state = {
 			submitting: false,
 			showPaymentInfoComponent: false,
 			showPaymentInfo: false,
-			redirectToQuotation: false
+			redirectToQuotation: false,
 		}
 	}
 
-	backToQuotationForm = () => {
-		this.setState({redirectToQuotation: true})
-	}
-	
+	backToQuotationForm = () => { this.setState({redirectToQuotation: true}) }
+
 	togglePaymentInfoComponent = () => this.setState(prevState=>({showPaymentInfoComponent: (prevState.showPaymentInfoComponent? false: true) }))
 
 	togglePaymentInfo = () => this.setState(prevState=>({showPaymentInfo: (prevState.showPaymentInfo? false: true) }))
@@ -153,7 +152,7 @@ class SalesOrderConfirmForm extends React.Component {
 											cardId: values.cardId
                                         }})
                                         console.log('server return', d)
-                                        if (this.props.onConfirmSuccess) { this.props.onConfirmSuccess(d.data.addRentalOrder)}
+                                        if (this.props.onConfirmSuccess) { this.props.onConfirmSuccess(d.data.addRentalOrderFromQuotation)}
                                     }
                                     catch(e) {
 										const errStack = parseApolloErr(e, c.t)

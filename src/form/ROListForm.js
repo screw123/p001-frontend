@@ -30,15 +30,16 @@ export default class AccountListForm extends React.Component {
     constructor(props) {
         super(props)
         this.state={account_id: undefined, type: undefined}
-        this.accountLineView = this.accountLineView.bind(this)
-        this.accountLineEdit = this.accountLineEdit.bind(this)
+        this.accountLine = this.accountLine.bind(this)
         this.setRedirect = this.setRedirect.bind(this)
     }
 
     setRedirect = (acctId, type) => this.setState({account_id: acctId, type: type})
 
-    accountLineView = ({rowObj, data}, buttons) => {
+    accountLine = ({rowObj, data}, buttons) => {
         let { _id, name, accountType, balance, isActive} = data
+    
+        if (balance === 'undefined') { balance = 0 }
     
         return (
             <LocaleApiSubscriber>
@@ -47,27 +48,6 @@ export default class AccountListForm extends React.Component {
                     <Row onClick={e=>{
                         e.preventDefault()
                         this.setRedirect(_id, 'view')
-                    }}>
-                        <span>{name}</span>
-                        <Tag background={(accountType==='PERSONAL')? 'LightGreen': 'RoyalBlue'}>{c.t(accountType)}</Tag>
-                        {!isActive && <Tag float='right' background='Gray'>{c.t('INACTIVE')}</Tag>}
-                    </Row>
-                </AL>
-            )}
-            </LocaleApiSubscriber>
-        )
-    }
-
-    accountLineEdit = ({rowObj, data}, buttons) => {
-        let { _id, name, accountType, balance, isActive} = data
-    
-        return (
-            <LocaleApiSubscriber>
-            {(c)=>(
-                <AL key={rowObj.key} style={rowObj.style}>
-                    <Row onClick={e=>{
-                        e.preventDefault()
-                        this.setRedirect(_id, 'edit')
                     }}>
                         <span>{name}</span>
                         <Tag background={(accountType==='PERSONAL')? 'LightGreen': 'RoyalBlue'}>{c.t(accountType)}</Tag>
@@ -91,19 +71,19 @@ export default class AccountListForm extends React.Component {
                 rowHeightCalc={()=>40}
                 headerText={<div><FontAwesomeIcon icon={['far', 'address-card']}/> {c.t('My Accounts')}</div>}
                 data={myself.accountOwn_id || []} 
-                listComponent={this.accountLineEdit}    
+                listComponent={this.accountLine}    
             />
             {myself.accountManage_id.length>0 && <InfoList 
                 rowHeightCalc={()=>40}
                 headerText={<div><FontAwesomeIcon icon={['far', 'address-card']}/> {c.t('Managed Accounts')}</div>}
                 data={myself.accountManage_id || []}
-                listComponent={this.accountLineEdit}    
+                listComponent={this.accountLine}    
             />}
             {myself.accountView_id.length>0 && <InfoList 
                 rowHeightCalc={()=>40}
                 headerText={<div><FontAwesomeIcon icon={['far', 'address-card']}/> {c.t('View Only Accounts')}</div>}
                 data={myself.accountView_id || []}
-                listComponent={this.accountLineView}    
+                listComponent={this.accountLine}    
             />}
         </div>)
     }

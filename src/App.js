@@ -1,10 +1,9 @@
 import React from 'react'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faEye, faEyeSlash, faPlusCircle, faWindowClose, faBell, faUser, faEdit, faTrashAlt, faCreditCard, faSearch } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faEyeSlash, faPlusCircle, faWindowClose, faBell, faUser, faEdit, faTrashAlt, faCreditCard, faSearch, faSignInAlt } from '@fortawesome/free-solid-svg-icons'
 import { faAddressCard } from '@fortawesome/free-regular-svg-icons'
 import { faCcVisa, faCcMastercard, faCcAmex } from '@fortawesome/free-brands-svg-icons'
 import styled from 'styled-components'
-import { I18n } from 'react-i18next'
 
 import get from 'lodash/get'
 import { BrowserRouter, Route } from 'react-router-dom'
@@ -28,7 +27,7 @@ const MainContainer = styled.div`
 class App extends React.Component {
     componentDidMount() {
         GqlApi.checkLogined()
-        library.add(faEye, faEyeSlash, faPlusCircle, faWindowClose, faBell, faUser, faEdit, faTrashAlt,  faCcVisa, faCcMastercard, faCcAmex, faCreditCard, faAddressCard, faSearch)
+        library.add(faEye, faEyeSlash, faPlusCircle, faWindowClose, faBell, faUser, faEdit, faTrashAlt,  faCcVisa, faCcMastercard, faCcAmex, faCreditCard, faAddressCard, faSearch, faSignInAlt)
     }
     
     genItems = ({routes, stateContainer}) => {
@@ -61,7 +60,6 @@ class App extends React.Component {
         return (
             <BrowserRouter><GqlApiProvider><GqlApiSubscriber>
             {(g)=>{
-                console.log(g)
                 return(
                 <LocaleApiProvider><LocaleApiSubscriber>
                 {(c) =>(

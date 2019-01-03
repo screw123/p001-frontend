@@ -38,7 +38,7 @@ export const StraightRow = styled.div`
 
 export const ClickableText = styled.div`
     font-weight: 600;
-    cursor: pointer;
+	cursor: pointer;
 `
 
 export const Tag = styled.span`
@@ -52,13 +52,24 @@ export const Tag = styled.span`
     ${({children})=>children? '': 'visibility: hidden'};
 `
 
+const SectionDiv = styled.div`
+	display: grid;
+	box-sizing:border-box;
+	grid-template-columns: [s1] 2.5% [content] auto [end] 2.5% [s2];
+`
+
+const Div2 = styled.div`
+	grid-column: content / end;
+`
+
 const SectionHeader = styled.div`
     font-weight: 600;
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     box-sizing:border-box;
 	display: grid;
 	padding: 1rem 0;
-	grid-template-columns: [s1] 2.5% [iconLeft] ${({headerIconLeft})=>headerIconLeft?'12.5':'0'}% [content] auto [iconRight] ${({headerIconRight})=>headerIconRight?'12.5':'0'}% [end] 2.5% [s2];
+	grid-column: content / end;
+	grid-template-columns: [iconLeft] ${({headerIconLeft})=>headerIconLeft?'12.5':'0'}% [content] auto [iconRight] ${({headerIconRight})=>headerIconRight?'12.5':'0'}% [end];
 `
 
 const HeaderText = styled.div`
@@ -73,15 +84,23 @@ const HeaderIconRight = styled.div`
 	grid-column: iconRight / end;
 `
 
+const SectionContent = styled.div`
+	display: flex;
+	> 
+`
+
 export const Section = (props) => {
-	console.log(props)
 	return(
-	<SectionHeader {...props}>
-		<HeaderIconLeft {...props}>{props.headerIconLeft}</HeaderIconLeft>
-		<HeaderText {...props}>{props.headerText}</HeaderText>
-		<HeaderIconRight {...props}>{props.headerIconRight}</HeaderIconRight>
-	</SectionHeader>
-)}
+		<SectionDiv><Div2>
+			<SectionHeader {...props}>
+				<HeaderIconLeft {...props}>{props.headerIconLeft}</HeaderIconLeft>
+				<HeaderText {...props}>{props.headerText}</HeaderText>
+				<HeaderIconRight {...props}>{props.headerIconRight}</HeaderIconRight>
+			</SectionHeader>
+			<SectionContent>{props.children}</SectionContent>
+		</Div2></SectionDiv>
+	)
+}
 
 export const ToolTip = (props) => (
 	<ToolTipBox>
@@ -129,4 +148,4 @@ const ToolTipText = styled.span`
 `
 
 
-export default {Background, WrapRow, StraightRow, ClickableText, Tag, Section, ToolTip }
+export default {Background, WrapRow, StraightRow, ClickableText, Tag, Section, SectionContent, ToolTip }

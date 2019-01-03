@@ -24,13 +24,14 @@ class EditAccountPage extends React.Component {
 		let mode = this.props.mode || this.props.match.params.mode || 'view'
 
 		if (account!==undefined) { 
-			console.log('account!==undefined')
+
 			return(
-			<Background>
-				<h1>Edit Account</h1>
-				<EditAccountForm account={account} mode={mode} {...this.props} />
-			</Background>
-		)}
+				<Background>
+					<h1>Edit Account</h1>
+					<EditAccountForm account={account} mode={mode} {...this.props} />
+				</Background>
+			)
+		}
 		else {return(
 			<ApolloProvider client={g.getGqlClient()}>
 				<Query query={getAccountById} variables={{account_id: account_id}} notifyOnNetworkStatusChange>

@@ -174,7 +174,7 @@ const routes = [
     {
         path: "/editUser",
         exact: true,
-        menuName: '更改登入資料',
+        menuName: 'Edit User',
         component: UserProfilePage,
         navbar: {
             itemId: 112,
@@ -191,7 +191,7 @@ const routes = [
         path: "/editAccount/:account_id?/:mode?",
         linkURL: "/editAccount",
         exact: true,
-        menuName: '更改帳戶資料',
+        menuName: 'Edit Account',
         component: EditAccountPage,
         navbar: {
             itemId: 113,

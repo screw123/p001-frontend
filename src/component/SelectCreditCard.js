@@ -72,9 +72,9 @@ class SelectCreditCard extends React.Component {
 		let no_of_card = 0
 		let stripeCusObj
 
-
-		if (stripeCusObj) {  //if user already have a stripeObject
+		if (stripeCusObjString!==null) {  //if user already have a stripeObject
 			stripeCusObj = JSON.parse(stripeCusObjString)
+			console.log(stripeCusObj)
 			if (stripeCusObj.sources) {
 				no_of_card = stripeCusObj.sources.data.length
 			}
@@ -84,6 +84,8 @@ class SelectCreditCard extends React.Component {
 		}
 		let options = stripeCusObj.sources.data.map(v=>Object.assign({value: v.id}, v) )
 		let selectedCard = options.find(v=>v.value===this.props.field.value)
+		
+		console.log('no_of_card=', no_of_card)
 
 		return (<LocaleApiSubscriber>
 			{c=>(
@@ -134,8 +136,6 @@ class SelectCreditCard extends React.Component {
 							backspaceRemovesValue={false}
 						/>
 					}
-
-				
 
 					{/* showAddNewCard = show add card form.  When show add card form, hide card selector */}
 					{!!this.state.showAddNewCard && <AddCreditCardForm

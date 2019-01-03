@@ -74,5 +74,7 @@
     "Addresses": "Addresses",
     "You have no addresses with us": "You have no addresses with us",
     "Add New Card":"Add New Card",
-    "Edit Address": "Edit Address"
+    "Edit Address": "Edit Address",
+    "Edit User": "Edit Login Info",
+    "Edit Account": "Edit Account Info"
 }

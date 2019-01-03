@@ -48,6 +48,12 @@ class EditAccountForm extends React.Component {
         const account = this.props.account
         const readonly = this.props.mode==='view'
 
+        let role = 'viewer'
+        if (g.state.myself.accountOwn_id.find(v=>v._id===account._id)) { role='owner'}
+        if (g.state.myself.accountManage_id.find(v=>v._id===account._id)) { role='manager'}
+
+        console.log('role=', role)
+
 		return (
             <ApolloProvider client={g.getGqlClient()}>
                 <Mutation mutation={updateAccount} errorPolicy="all">
@@ -101,24 +107,24 @@ class EditAccountForm extends React.Component {
                                 type="text"
                                 component={TextField}
                                 label={'Name'}
-                                // err={errors.legalName}
+                                err={errors.name}
                                 value={values.name}
                                 placeholder="Name"
-                                disabled={readonly}
-                            // ignoreTouch={true}
+                                disabled={readonly && (role==='owner')}
+                                ignoreTouch={true}
                             />
                             <Field
                                 name="accoutType"
                                 type="text"
                                 component={FormTag}
                                 label={'Account Type'}
-                                background={(values.accountType==='PERSONAL')? 'LightGreen': 'RoyalBlue'}
-                                value={values.accountType}
+                                background={(account.accountType==='PERSONAL')? 'LightGreen': 'RoyalBlue'}
+                                value={account.accountType}
                             />
                             <Field
                                 name="selectedAddress"
                                 type="text"
-                                disabled={readonly}
+                                disabled={readonly && (role!=='viewer')}
                                 component={SelectAddress}
                                 label={'Addresses'}
                                 value={values.selectedAddress}
@@ -134,7 +140,7 @@ class EditAccountForm extends React.Component {
                                 multiSelect={false}
                                 err={errors['selectedAddress']}
                             />
-                            <Field
+                            {(role==='owner') && <Field
                                 name="cardId"
                                 type="text"
                                 component={SelectCreditCard}
@@ -149,7 +155,7 @@ class EditAccountForm extends React.Component {
                                 isLoading={this.props.gqlNetworkStatus===4}
                                 err={errors['cardId']}
                                 disabled={readonly}
-                            />
+                            />}
                             <Field
                                 name="lastUpdate"
                                 type="text"

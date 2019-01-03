@@ -19,9 +19,13 @@ const AL = styled.div`
     overflow: visible;
 `
 const Row = styled.div`
-    grid-column: content / button;
+    grid-column: content / end;
     overflow: visible;
+`
+
+const Content = styled.div`
     cursor: pointer;
+    display: inline-block
 `
 
 
@@ -44,14 +48,14 @@ export default class AccountListForm extends React.Component {
             <LocaleApiSubscriber>
             {(c)=>(
                 <AL key={rowObj.key} style={rowObj.style}>
-                    <Row onClick={e=>{
+                    <Row><Content onClick={e=>{
                         e.preventDefault()
                         this.setRedirect(_id, 'view')
                     }}>
                         <span>{name}</span>
                         <Tag background={(accountType==='PERSONAL')? 'LightGreen': 'RoyalBlue'}>{c.t(accountType)}</Tag>
                         {!isActive && <Tag float='right' background='Gray'>{c.t('INACTIVE')}</Tag>}
-                    </Row>
+                    </Content></Row>
                 </AL>
             )}
             </LocaleApiSubscriber>
@@ -65,14 +69,14 @@ export default class AccountListForm extends React.Component {
             <LocaleApiSubscriber>
             {(c)=>(
                 <AL key={rowObj.key} style={rowObj.style}>
-                    <Row onClick={e=>{
+                    <Row><Content onClick={e=>{
                         e.preventDefault()
-                        this.setRedirect(_id, 'edit')
+                        this.setRedirect(_id, 'view')
                     }}>
                         <span>{name}</span>
                         <Tag background={(accountType==='PERSONAL')? 'LightGreen': 'RoyalBlue'}>{c.t(accountType)}</Tag>
                         {!isActive && <Tag float='right' background='Gray'>{c.t('INACTIVE')}</Tag>}
-                    </Row>
+                    </Content></Row>
                 </AL>
             )}
             </LocaleApiSubscriber>

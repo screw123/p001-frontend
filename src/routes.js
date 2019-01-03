@@ -11,6 +11,7 @@ import UserProfilePage from './page/UserProfilePage.js'
 import TestPage from './page/TestPage.js'
 import EditAccountPage from './page/EditAccountPage.js'
 import ROListPage from './page/ROListPage.js'
+import ThankYouForOrderPage from './page/ThankYouForOrderPage.js'
 
 const routes = [
     {
@@ -149,9 +150,8 @@ const routes = [
         component: SalesOrderConfirmPage,
         navbar: {
             itemId: 901,
-            firstLevel: true,
-            showBeforeLogin: true,
-            showAfterLogin: true
+            showBeforeLogin: false,
+            showAfterLogin: false
         },
         router: {
             requireLogin: true
@@ -219,7 +219,20 @@ const routes = [
         router: {
             requireLogin: true
         }
-    }
+    },
+    {
+        path: "/ThankYou",
+        menuName: 'Thank you for your order',
+        component: ThankYouForOrderPage,
+        navbar: {
+            itemId: 902,
+            showBeforeLogin: false,
+            showAfterLogin: false
+        },
+        router: {
+            requireLogin: true
+        }
+    },
 ]
 
 export default routes;

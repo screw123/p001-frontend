@@ -24,7 +24,6 @@ const Row = styled.div`
     cursor: pointer;
 `
 
-
 export default class ROListForm extends React.Component {
 
     constructor(props) {

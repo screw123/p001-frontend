@@ -191,8 +191,10 @@ class Navbar extends React.PureComponent {
         for(let i=0;i<children.length;i++) {
             const r = children[i]
             const toPath = r.linkURL||r.path
+            
+            console.log('r=', r.menuName, r.navbar.showBeforeLogin, !g.state.isLogined, (r.navbar.showBeforeLogin===!g.state.isLogined))
 
-            if  ((r.navbar.showAfterLogin===g.state.isLogined) || (r.navbar.showBeforeLogin===!g.state.isLogined)) {
+            if ((g.state.isLogined && r.navbar.showAfterLogin) || (!g.state.isLogined && r.navbar.showBeforeLogin)) {
                 c.push(<MenuLink to={toPath} key={`${parentId}-${i}`}>{r.navbar.itemId+' '+t(r.menuName)}</MenuLink>)
             }
         }

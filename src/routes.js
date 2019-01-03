@@ -10,6 +10,7 @@ import SalesOrderConfirmPage from './page/SalesOrderConfirmPage.js'
 import UserProfilePage from './page/UserProfilePage.js'
 import TestPage from './page/TestPage.js'
 import EditAccountPage from './page/EditAccountPage.js'
+import ROListPage from './page/ROListPage.js'
 
 const routes = [
     {
@@ -199,6 +200,21 @@ const routes = [
             firstLevel: false,
             showBeforeLogin: false,
             showAfterLogin: false
+        },
+        router: {
+            requireLogin: true
+        }
+    },
+    {
+        path: "/ROList",
+        menuName: 'Box Rental Record',
+        component: ROListPage,
+        navbar: {
+            itemId: 201,
+            parentId: 100,
+            firstLevel: false,
+            showBeforeLogin: false,
+            showAfterLogin: true
         },
         router: {
             requireLogin: true

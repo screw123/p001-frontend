@@ -25,7 +25,7 @@ const Row = styled.div`
 `
 
 
-export default class AccountListForm extends React.Component {
+export default class ROListForm extends React.Component {
 
     constructor(props) {
         super(props)
@@ -36,7 +36,7 @@ export default class AccountListForm extends React.Component {
 
     setRedirect = (acctId, type) => this.setState({account_id: acctId, type: type})
 
-    accountLine = ({rowObj, data}, buttons) => {
+    ROLine = ({rowObj, data}, buttons) => {
         let { _id, name, accountType, balance, isActive} = data
     
         if (balance === 'undefined') { balance = 0 }
@@ -64,27 +64,16 @@ export default class AccountListForm extends React.Component {
         const c = this.props.i18n
         let myself = g.state.myself
         
-        if (this.state.account_id) {return(<Redirect push to={{pathname: '/editAccount/'+ this.state.account_id+'/'+this.state.type}} />)}
+        if (this.state.account_id) {return(<Redirect push to={{pathname: '/viewRO/'+ this.state.RO_id}} />)}
 
         return(<div>
             <InfoList 
                 rowHeightCalc={()=>40}
                 headerText={<div><FontAwesomeIcon icon={['far', 'address-card']}/> {c.t('My Accounts')}</div>}
                 data={myself.accountOwn_id || []} 
-                listComponent={this.accountLine}    
+                listComponent={this.accountLine}
             />
-            {myself.accountManage_id.length>0 && <InfoList 
-                rowHeightCalc={()=>40}
-                headerText={<div><FontAwesomeIcon icon={['far', 'address-card']}/> {c.t('Managed Accounts')}</div>}
-                data={myself.accountManage_id || []}
-                listComponent={this.accountLine}    
-            />}
-            {myself.accountView_id.length>0 && <InfoList 
-                rowHeightCalc={()=>40}
-                headerText={<div><FontAwesomeIcon icon={['far', 'address-card']}/> {c.t('View Only Accounts')}</div>}
-                data={myself.accountView_id || []}
-                listComponent={this.accountLine}    
-            />}
+            
         </div>)
     }
 

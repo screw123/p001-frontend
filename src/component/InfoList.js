@@ -10,7 +10,42 @@ const DefaultListComponent = (a, data) => (
         ))}
         <div>------------</div>
     </div>
-);
+)
+
+const OuterWrapper = styled.div`
+    box-sizing:border-box;
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: [s1] 2.5% [checkbox] ${({multiSelect})=>multiSelect?'5':'0'}% [content] auto [end] 2.5% [s2];
+    grid-column-gap: 0.2rem;
+    overflow: hidden;
+    min-width: 300px;
+`
+const ContentRow = styled.div`
+    grid-column: content / end;
+    overflow: visible;
+`
+
+const ContentDiv = styled.div`
+    display: ${({occupyFullRow})=>occupyFullRow? 'block':'inline-block'};
+    cursor: pointer;
+`
+
+const CheckboxDiv = styled.div`
+    grid-column: checkbox / content;
+    overflow: visible;
+`
+
+export const InfoListStandardLine = ({key1, style, checkbox, content, checkboxOnClick, contentOnClick, occupyFullRow}) => {
+    return(<OuterWrapper key={key1} style={style}>
+        {checkbox && <CheckboxDiv onClick={checkboxOnClick}>
+            {checkbox}
+        </CheckboxDiv>}
+        <ContentRow><ContentDiv onClick={contentOnClick} occupyFullRow={occupyFullRow}>
+            {content}
+        </ContentDiv></ContentRow>
+    </OuterWrapper>)
+}
 
 export class InfoList extends React.Component {
     constructor(props) {
@@ -37,9 +72,7 @@ export class InfoList extends React.Component {
                                 if (this.props.rowHeightCalc) { return this.props.rowHeightCalc(index) }
                                 return (Object.keys(this.props.data[index]).length * 20 + 20)
                             }}
-
                             rowRenderer={a => {
-                                console.log( this.props.data[a.index])
                                 if (this.props.listComponent) {
                                     return this.props.listComponent({ rowObj: a, data: this.props.data[a.index]} )
                                 }

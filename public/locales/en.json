@@ -77,5 +77,14 @@
     "Edit Address": "Edit Address",
     "Edit User": "Edit Login Info",
     "Edit Account": "Edit Account Info",
-    "Box Rental Record": "Box Rental Record"
+    "Box Rental Record": "Box Rental Record",
+    "Record Number": "Record Number",
+    "INIT" : "Just Created",
+    "PROCESSING_PAID": "Processing / Paid",
+    "PROCESSING_UNPAID": "Processing / Un-Paid",
+    "COMPLETED_PAID": "Completed / Paid",
+    "COMPLETED_UNPAID": "Completed / Un-Paid",
+    "HOLD": "On-hold",
+    "CANCELLED": "Cancelled",
+    "Box Rental Date": "Rent Date"
 }

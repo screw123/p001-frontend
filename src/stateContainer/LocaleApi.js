@@ -34,7 +34,8 @@ class LocaleContainer extends Container {
         if (i18next.language==='zh-HK') { moment.locale('zh-HK') }
         this.state = {
             moment: moment,
-            i18n: i18next
+            i18n: i18next,
+            defaultHeight: parseFloat(getComputedStyle(document.body).fontSize)
         }
     }
     

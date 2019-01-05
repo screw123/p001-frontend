@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import InfoList from '../component/InfoList.js'
+import InfoList, {InfoListStandardLine} from '../component/InfoList.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {Tag, ToolTip} from '../component/BasicComponents.js'
 import { Redirect } from "react-router-dom"
@@ -9,25 +9,6 @@ import { ApolloProvider, Mutation } from 'react-apollo'
 
 
 import {LocaleApiSubscriber} from '../stateContainer/LocaleApi.js'
-
-const AL = styled.div`
-    box-sizing:border-box;
-    display: grid;
-    grid-template-rows: auto;
-    grid-template-columns: [s1] 2.5% [checkbox] ${({multiSelect})=>multiSelect?'5':'0'}% [content] auto [end] 2.5% [s2];
-    grid-column-gap: 0.2rem;
-    overflow: visible;
-`
-const Row = styled.div`
-    grid-column: content / end;
-    overflow: visible;
-`
-
-const Content = styled.div`
-    cursor: pointer;
-    display: inline-block
-`
-
 
 export default class AccountListForm extends React.Component {
 
@@ -47,16 +28,19 @@ export default class AccountListForm extends React.Component {
         return (
             <LocaleApiSubscriber>
             {(c)=>(
-                <AL key={rowObj.key} style={rowObj.style}>
-                    <Row><Content onClick={e=>{
+                <InfoListStandardLine
+                    key={rowObj.key}
+                    style={rowObj.style}
+                    contentOnClick={e=>{
                         e.preventDefault()
                         this.setRedirect(_id, 'view')
-                    }}>
+                    }}
+                    content={<div>
                         <span>{name}</span>
                         <Tag background={(accountType==='PERSONAL')? 'LightGreen': 'RoyalBlue'}>{c.t(accountType)}</Tag>
                         {!isActive && <Tag float='right' background='Gray'>{c.t('INACTIVE')}</Tag>}
-                    </Content></Row>
-                </AL>
+                    </div>}
+                />
             )}
             </LocaleApiSubscriber>
         )
@@ -68,16 +52,19 @@ export default class AccountListForm extends React.Component {
         return (
             <LocaleApiSubscriber>
             {(c)=>(
-                <AL key={rowObj.key} style={rowObj.style}>
-                    <Row><Content onClick={e=>{
+                <InfoListStandardLine
+                    key={rowObj.key}
+                    style={rowObj.style}
+                    contentOnClick={e=>{
                         e.preventDefault()
-                        this.setRedirect(_id, 'view')
-                    }}>
+                        this.setRedirect(_id, 'edit')
+                    }}
+                    content={<div >
                         <span>{name}</span>
                         <Tag background={(accountType==='PERSONAL')? 'LightGreen': 'RoyalBlue'}>{c.t(accountType)}</Tag>
                         {!isActive && <Tag float='right' background='Gray'>{c.t('INACTIVE')}</Tag>}
-                    </Content></Row>
-                </AL>
+                    </div>}
+                />
             )}
             </LocaleApiSubscriber>
         )

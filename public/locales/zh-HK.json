@@ -77,5 +77,14 @@
     "Edit Address": "更改此地址",
     "Edit User": "更改登入資訊",
     "Edit Account": "更改帳戶資訊",
-    "Box Rental Record": "租箱記錄"
+    "Box Rental Record": "租箱記錄",
+    "Record Number": "記錄號碼",
+    "INIT" : "剛建立",
+    "PROCESSING_PAID": "處理中 / 已付款",
+    "PROCESSING_UNPAID": "處理中 / 未付款",
+    "COMPLETED_PAID": "完成 / 已付款",
+    "COMPLETED_UNPAID": "完成 / 未付款",
+    "HOLD": "待處理",
+    "CANCELLED": "已取消",
+    "Box Rental Date": "租用日期"
 }

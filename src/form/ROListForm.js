@@ -130,7 +130,6 @@ export default class ROListForm extends React.Component {
                 data={this.props.ROlist || []} 
                 listComponent={this.ROLine}
                 refreshRowHeight={true}
-                multiSelect={true}
             />
             
         </div>)

@@ -11,6 +11,7 @@ import UserProfilePage from './page/UserProfilePage.js'
 import TestPage from './page/TestPage.js'
 import EditAccountPage from './page/EditAccountPage.js'
 import ROListPage from './page/ROListPage.js'
+import RODetailsPage from './page/RODetailsPage.js'
 import ThankYouForOrderPage from './page/ThankYouForOrderPage.js'
 
 const routes = [
@@ -215,6 +216,21 @@ const routes = [
             firstLevel: false,
             showBeforeLogin: false,
             showAfterLogin: true
+        },
+        router: {
+            requireLogin: true
+        }
+    },
+    {
+        path: "/RODetails/:id?",
+        menuName: 'Box Rental Record',
+        component: RODetailsPage,
+        navbar: {
+            itemId: 202,
+            parentId: 100,
+            firstLevel: false,
+            showBeforeLogin: false,
+            showAfterLogin: false
         },
         router: {
             requireLogin: true

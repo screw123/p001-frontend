@@ -21,7 +21,8 @@ const BG2 = styled.div`
 export const Background = ({children}) => (
     <BG>
         <BG2>
-            {children}
+			{children}
+			<p></p>
         </BG2>
     </BG>
 )

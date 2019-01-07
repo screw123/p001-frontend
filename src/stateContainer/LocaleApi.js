@@ -28,15 +28,22 @@ class LocaleContainer extends Container {
                     loadPath: '/locales/{{lng}}.json',
                 },
                 react: {
-                }
+                },
+                debug: true
             })
 
         if (i18next.language==='zh-HK') { moment.locale('zh-HK') }
         this.state = {
             moment: moment,
             i18n: i18next,
-            defaultHeight: parseFloat(getComputedStyle(document.body).fontSize)
+            defaultHeight: parseFloat(getComputedStyle(document.body).fontSize),
+            width:0,
+            height: 0
         }
+    }
+
+    updateWindowDimensions() {
+        this.setState({ width: window.innerWidth, height: window.innerHeight });
     }
     
     t = (...props) => {

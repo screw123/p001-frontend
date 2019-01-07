@@ -5,6 +5,8 @@ import {Tag, ToolTip} from '../component/BasicComponents.js'
 
 import c from '../stateContainer/LocaleApi.js'
 
+export const singleContainerDisplaySize = 180
+
 const TextNoWrap = styled.div`
 	font-size: 1rem;
 	white-space: nowrap;
@@ -36,30 +38,16 @@ const IDDiv = styled.div`
 
 const ContainerDisplayGrid = styled.div`
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(${singleContainerDisplaySize}px, 1fr));
+	padding: 0.25rem 0;
 `
 
 const SingleContainerDisplay = styled.div`
 	box-sizing:border-box;
-	padding: 1em;
 	display: flex;
+	align-items: center;
 	flex-wrap: nowrap;
-
-	@media (max-width: 480px) {
-		width: 48%
-	}
-
-	@media (min-width: 481px) and (max-width: 768px) {
-		width: 31%
-	}
-
-	@media (min-width: 769px) and (max-width: 1024px) {
-		width: 24%;
-	}
-
-	@media (min-width: 1025px) {
-		width: 19%;
-	}
+	width: 100%
 `
 
 const Text = ({t, l})=>(
@@ -99,7 +87,6 @@ const SmallPic = ({t, url, width, height})=>(
 )
 
 const ContainerSummary = ({docLines, l}) => {
-	console.time('ContainerSummary')
 	let summary = {}
 	let displayCom = []
 	for(let i=0;i<docLines.length;i++) {
@@ -119,35 +106,10 @@ const ContainerSummary = ({docLines, l}) => {
 				<Text l={summaryKeys[i]} t={summary[summaryKeys[i]].qty} />
 			</SingleContainerDisplay>
 		)
-		displayCom.push(
-			<SingleContainerDisplay key={summaryKeys[i]+'2'}>
-				<SmallPic url={summary[summaryKeys[i]].URL} width={c.state.defaultHeight*2} height={c.state.defaultHeight*2} />
-				<Text l={summaryKeys[i]} t={summary[summaryKeys[i]].qty} />
-			</SingleContainerDisplay>
-		)
-		displayCom.push(
-			<SingleContainerDisplay key={summaryKeys[i]+'13'}>
-				<SmallPic url={summary[summaryKeys[i]].URL} width={c.state.defaultHeight*2} height={c.state.defaultHeight*2} />
-				<Text l={summaryKeys[i]} t={summary[summaryKeys[i]].qty} />
-			</SingleContainerDisplay>
-		)
-		displayCom.push(
-			<SingleContainerDisplay key={summaryKeys[i]+'4'}>
-				<SmallPic url={summary[summaryKeys[i]].URL} width={c.state.defaultHeight*2} height={c.state.defaultHeight*2} />
-				<Text l={summaryKeys[i]} t={summary[summaryKeys[i]].qty} />
-			</SingleContainerDisplay>
-		)
-		displayCom.push(
-			<SingleContainerDisplay key={summaryKeys[i]+'5'}>
-				<SmallPic url={summary[summaryKeys[i]].URL} width={c.state.defaultHeight*2} height={c.state.defaultHeight*2} />
-				<Text l={summaryKeys[i]} t={summary[summaryKeys[i]].qty} />
-			</SingleContainerDisplay>
-		)
 
 	}
-	console.timeEnd('ContainerSummary')
 	return (<ContainerDisplayGrid>{displayCom}</ContainerDisplayGrid>)
 
 }
 
-export default {Text, LongText, ID, Status, YesNo, DateOnly, DateTime, Amount, SmallPic, ContainerSummary}
+export default {Text, LongText, ID, Status, YesNo, DateOnly, DateTime, Amount, SmallPic, ContainerSummary, singleContainerDisplaySize}

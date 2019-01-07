@@ -9,8 +9,7 @@ import { ApolloProvider, Mutation } from 'react-apollo'
 
 import {LocaleApiSubscriber} from '../stateContainer/LocaleApi.js'
 
-/*
-{
+/*{
     "_id": "5c2df683c3287648fca2fe03",
     "account_id": "5b518c4c031c7d0179e23b6a",
     "accountType": "PERSONAL",
@@ -57,8 +56,7 @@ import {LocaleApiSubscriber} from '../stateContainer/LocaleApi.js'
     "updateBy_id": "5b518c4b031c7d0179e23b69",
     "updateDateTime": "2019-01-03T11:48:23.475Z",
     "version": "1.0"
-}
-*/
+}*/
 
 const getROStatusColor = (status) =>{
     switch(status) {
@@ -92,11 +90,12 @@ export default class ROListForm extends React.Component {
 
     setRedirect = (RO) => this.setState({RO: RO})
 
-    ROLine = ({rowObj, data}, buttons) => {
+    ROLine = ({rowObj, data, multiSelect}, buttons) => {
         let { _id, billedAmt, status, paidAmt, createDateTime, docLines} = data
         return (
             <InfoListStandardLine
                 occupyFullRow={true}
+                multiSelect={multiSelect}
                 key={rowObj.key}
                 key1={rowObj.key}
                 style={rowObj.style}
@@ -121,13 +120,19 @@ export default class ROListForm extends React.Component {
         if (this.state.RO) {return(<Redirect push to={{pathname: '/ROdetails', state: {RO: this.state.RO} }} />)}
         return(<div>
             <InfoList 
-                rowHeightCalc={()=>c.state.defaultHeight*1.5*4+c.state.defaultHeight*0.5}
+                rowHeightCalc={(i, width)=>{
+                    const fixed_field_lines = 2
+                    const containerSummary_lines = new Set(this.props.ROlist[i].docLines.map(v=>v.SKU_id.name)).size
+
+                    return c.state.defaultHeight*1.5*fixed_field_lines + containerSummary_lines*32*1.1 / Math.floor(width*.95/DocLine.singleContainerDisplaySize) + c.state.defaultHeight
+                }}
                 headerText={<div><FontAwesomeIcon icon='file-invoice' /> {c.t('Box Rental Record')}</div>}
                 data={this.props.ROlist || []} 
                 listComponent={this.ROLine}
+                refreshRowHeight={true}
+                multiSelect={true}
             />
             
         </div>)
     }
-
 }

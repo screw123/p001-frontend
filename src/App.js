@@ -16,7 +16,7 @@ import {Background} from './component/BasicComponents.js'
 import {BigLoadingScreen } from './component/Loading.js'
 
 import GqlApi, { GqlApiProvider, DummyPassHistory, GqlApiSubscriber } from './stateContainer/GqlApi.js'
-import {LocaleApiProvider, LocaleApiSubscriber} from './stateContainer/LocaleApi.js'
+import LocaleApi, {LocaleApiProvider, LocaleApiSubscriber} from './stateContainer/LocaleApi.js'
 
 const MainContainer = styled.div`
     display: grid;
@@ -25,11 +25,24 @@ const MainContainer = styled.div`
 `
 
 class App extends React.Component {
+    constructor(props) {
+        super(props)
+        this.updateWindowDimensions = this.updateWindowDimensions.bind(this)
+    }
+
     componentDidMount() {
         GqlApi.checkLogined()
+        this.updateWindowDimensions()
+        window.addEventListener('resize', this.updateWindowDimensions)
         library.add(faEye, faEyeSlash, faPlusCircle, faWindowClose, faBell, faUser, faEdit, faTrashAlt,  faCcVisa, faCcMastercard, faCcAmex, faCreditCard, faAddressCard, faSearch, faSignInAlt, faFileInvoice)
     }
-    
+      
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateWindowDimensions)
+    }
+
+    updateWindowDimensions = () => LocaleApi.updateWindowDimensions({ width: window.innerWidth, height: window.innerHeight })
+
     genItems = ({routes, stateContainer}) => {
         let c = []
         for (var i = 0; i < routes.length; i++) {
@@ -56,6 +69,7 @@ class App extends React.Component {
         }
         return c
     }
+
     render() {
         return (
             <BrowserRouter><GqlApiProvider><GqlApiSubscriber>

@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { I18n } from 'react-i18next'
 import { GqlApiSubscriber } from '../stateContainer/GqlApi.js'
-import LocaleApi from '../stateContainer/LocaleApi.js'
+import LocaleApi, { LocaleApiSubscriber } from '../stateContainer/LocaleApi.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const StickyDiv = styled.div`
@@ -23,26 +23,33 @@ const StickyDiv = styled.div`
     grid-column-gap: 10px;
     box-shadow: 0px 4px 4px 0px rgba(0,0,0,0.1);
     @media (max-width: 768px) {
-        grid-template-columns: 100px auto auto;
+        grid-template-columns: 50px auto 150px;
     }
     @media (min-width: 769px) {
-        grid-template-columns: 100px auto auto;
+        grid-template-columns: 100px auto 200px;
     }
 `
 
-const LeftSideContainer = styled.div`
+const LeftContainer = styled.div`
     justify-self: center;
     align-self: center;
-    padding: 0.3rem;
 `
 
-const MainMenu = styled.div`
+const MiddleContainer = styled.div`
     display: flex;
     flex-flow: row wrap;
     justify-self: center;
     align-self: center;
-    padding: 0.3rem;
 `
+
+const RightContainer = styled.div`
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: ${props=>props.isLogined? '1fr 1fr 1fr': '1fr 2fr'};
+    justify-self: center;
+    align-self: center;
+`
+
 const FirstLevelContainer = styled.div`
     display: inline-block;
     padding: 0.3rem 0.5rem;
@@ -86,6 +93,9 @@ const RightSideIcon = styled(({icon, haveMenu, ...props}) => (
     display: inline-block;
     cursor: pointer;
     font-size: 1.3rem;
+    @media (max-width: 768px) {
+        font-size: 1.1rem;
+    }
     justify-self: center;
     align-self: center;
     &:hover {
@@ -94,17 +104,8 @@ const RightSideIcon = styled(({icon, haveMenu, ...props}) => (
     ${haveMenu => haveMenu? '&:after { content: "▾"; }': ''}
 `
 
-const RightContainer = styled.div`
-    display: grid;
-    grid-template-rows: auto;
-    grid-template-columns: ${props=>props.isLogined? '1fr 1fr 1fr': '1fr 2fr'};
-    justify-self: center;
-    align-self: center;
-    padding: 0.1rem;
-`
-
 const LangSelector = styled.span`
-    font-size: ${props=>(props.fontsize)? props.fontsize: 1}em;
+    font-size: ${props=>(props.fontsize)? props.fontsize: 1}rem;
     display: inline-block;
     justify-self: center;
     align-self: center;
@@ -219,52 +220,42 @@ class Navbar extends React.PureComponent {
             }
     */
 
-    getRightSideMenu = () => (
-        <GqlApiSubscriber>
-        {(g) => (
-            <I18n>
-            {(t) => (
-                <RightContainer isLogined={g.state.isLogined}>
-                    {!(LocaleApi.state.i18n.language==='en') && <LangSelector fontsize={1.2} onClick={() => LocaleApi.changeLanguage('en')}>EN</LangSelector>}
-                    {(LocaleApi.state.i18n.language==='en') && <LangSelector fontsize={1.4} onClick={() => LocaleApi.changeLanguage('zh-HK') }>中</LangSelector>}
-
-                    {g.state.isLogined && <FirstLevelContainer>
-                        <RightSideIcon icon='bell' >
-                            <RightMenu>
-                                <MenuText>You have no new messages</MenuText>
-                            </RightMenu>
-                        </RightSideIcon>
-                    </FirstLevelContainer>}
-                    {g.state.isLogined && <FirstLevelContainer>
-                        <RightSideIcon icon='user' haveMenu>
-                            <RightMenu>
-                                <MenuText>{t('Hello, user!', {name: g.state.myself.firstName + ' ' + g.state.myself.lastName}) }</MenuText>
-                                <Separator/>
-                                <MenuFunction onClick={()=> g.logout()}> {t('Logout')} </MenuFunction>
-                            </RightMenu>
-                        </RightSideIcon>
-                    </FirstLevelContainer>}
-                    {!g.state.isLogined && <FirstLevelContainer><FirstLevelLink to={'/login'}>{t('Sign In')}</FirstLevelLink></FirstLevelContainer>}
-                </RightContainer>
-            )}</I18n>
-        )}</GqlApiSubscriber>
-    )
-
     render() { return (
         <GqlApiSubscriber>
         {(g) => (
-            <I18n>
-            {(t) => (
+            <LocaleApiSubscriber>
+            {(c) => (
                 <StickyDiv>
-                    <LeftSideContainer>Logo</LeftSideContainer>
+                    <LeftContainer>{(LocaleApi.state.width<=768)? 'Menu': 'Logo'}</LeftContainer>
 
-                    <MainMenu>{this.genMenu(g, t)}</MainMenu>
+                    <MiddleContainer>{(LocaleApi.state.width<=768)? 'Logo': this.genMenu(g, c.t)}</MiddleContainer>
 
-                    {this.getRightSideMenu()}
+                    <RightContainer isLogined={g.state.isLogined}>
+                        {!(LocaleApi.state.i18n.language==='en') && <LangSelector fontsize={1.2} onClick={() => LocaleApi.changeLanguage('en')}>EN</LangSelector>}
+                        {(LocaleApi.state.i18n.language==='en') && <LangSelector fontsize={1.4} onClick={() => LocaleApi.changeLanguage('zh-HK') }>中</LangSelector>}
+
+                        {g.state.isLogined && <FirstLevelContainer>
+                            <RightSideIcon icon='bell' >
+                                <RightMenu>
+                                    <MenuText>You have no new messages</MenuText>
+                                </RightMenu>
+                            </RightSideIcon>
+                        </FirstLevelContainer>}
+                        {g.state.isLogined && <FirstLevelContainer>
+                            <RightSideIcon icon='user' haveMenu>
+                                <RightMenu>
+                                    <MenuText>{c.t('Hello, user!', {name: g.state.myself.firstName + ' ' + g.state.myself.lastName}) }</MenuText>
+                                    <Separator/>
+                                    <MenuFunction onClick={()=> g.logout()}> {c.t('Logout')} </MenuFunction>
+                                </RightMenu>
+                            </RightSideIcon>
+                        </FirstLevelContainer>}
+                        {!g.state.isLogined && <FirstLevelContainer><FirstLevelLink to={'/login'}>{c.t('Sign In')}</FirstLevelLink></FirstLevelContainer>}
+                    </RightContainer>
                     
                 </StickyDiv>
             )}
-            </I18n>
+            </LocaleApiSubscriber>
         )}
         </GqlApiSubscriber>
     )}

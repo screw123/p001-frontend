@@ -86,5 +86,15 @@
     "COMPLETED_UNPAID": "完成 / 未付款",
     "HOLD": "待處理",
     "CANCELLED": "已取消",
-    "Box Rental Date": "租用日期"
+    "Box Rental Date": "租用日期",
+    "Existing Password": "現在密碼",
+    "8 characters with uppercase and lowercase letters": "需8位英數字或符號, 必需包含大小寫英文字母",
+    "New Password": "新密碼",
+    "Select a credit card to update/remove": "選取一張信用卡作更新/移除",
+    "Cancel": "取消",
+    "Default Shipping": "預設派送地址",
+    "Organization / Contact Person Name": "公司 / 聯絡人姓名",
+    "Address": "地址",
+    "Phone": "電話",
+    "Default Billing": "預設帳單地址"
 }

@@ -86,5 +86,15 @@
     "COMPLETED_UNPAID": "Completed / Un-Paid",
     "HOLD": "On-hold",
     "CANCELLED": "Cancelled",
-    "Box Rental Date": "Rent Date"
+    "Box Rental Date": "Rent Date",
+    "Existing Password": "Existing Password",
+    "8 characters with uppercase and lowercase letters": "8 characters with uppercase and lowercase letters",
+    "New Password": "New Password",
+    "Select a credit card to update/remove": "Select a credit card to update/remove",
+    "Cancel": "Cancel",
+    "Default Shipping": "Default Shipping",
+    "Organization / Contact Person Name": "Organization / Contact Person Name",
+    "Address": "Address",
+    "Phone": "Phone",
+    "Default Billing": "Default Billing"
 }

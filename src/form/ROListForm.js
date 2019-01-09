@@ -117,7 +117,7 @@ export default class ROListForm extends React.Component {
         const g = this.props.login
         const c = this.props.i18n
         
-        if (this.state.RO) {return(<Redirect push to={{pathname: '/ROdetails', state: {RO: this.state.RO} }} />)}
+        if (this.state.RO) {return(<Redirect push to={{pathname: '/ROdetails', state: {RO_id: this.state.RO._id} }} />)}
         return(<div>
             <InfoList 
                 rowHeightCalc={(i, width)=>{

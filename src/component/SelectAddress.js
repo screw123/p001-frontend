@@ -12,7 +12,7 @@ import { MultiSelect } from '../component/FormikForm.js'
 import { FieldDiv, FieldLabel, ErrorLabel, FormButton } from './Formik-Basic.js'
 import {Tag} from './BasicComponents.js'
 
-const AddressDisplay = ({data, key, selected, onClick, disabled, innerProps, ...props}) => {
+export const AddressDisplay = ({data, key, selected, onClick, disabled, innerProps, ...props}) => {
     return (
         <LocaleApiSubscriber>
         {c=>(

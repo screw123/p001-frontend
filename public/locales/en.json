@@ -96,5 +96,8 @@
     "Organization / Contact Person Name": "Organization / Contact Person Name",
     "Address": "Address",
     "Phone": "Phone",
-    "Default Billing": "Default Billing"
+    "Default Billing": "Default Billing",
+    "RentalOrder": "Box Rental Record",
+    "updateDateTime": "Last Update",
+    "totalAmt": "Total Amount"
 }

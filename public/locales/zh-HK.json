@@ -96,5 +96,8 @@
     "Organization / Contact Person Name": "公司 / 聯絡人姓名",
     "Address": "地址",
     "Phone": "電話",
-    "Default Billing": "預設帳單地址"
+    "Default Billing": "預設帳單地址",
+    "RentalOrder": "租箱記錄",
+    "updateDateTime": "最後更新",
+    "totalAmt": "總金額"
 }

@@ -7,7 +7,7 @@ const parseApolloErr = (err, t) => {
         for (let i=0;i<err.graphQLErrors.length;i++) {
             let errObj = {}
             errObj['type'] = err.graphQLErrors[i].message
-            errObj['key'] = Object.keys(err.graphQLErrors[i].data)[0]
+            errObj['key'] = (typeof err.graphQLErrors[i].data==='string') ? undefined : Object.keys(err.graphQLErrors[i].data)[0]
             switch(errObj.type) {
                 case 'INVALID': 
                     errObj['message'] = t(errObj['key']) +' '+ t('cannot be') + ' '+ err.graphQLErrors[i].data[errObj['key']]

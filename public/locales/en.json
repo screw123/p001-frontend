@@ -113,5 +113,6 @@
     "Your": "Your",
     "Your login/account is not activated.  If you have already activated your account, please contact our support team.": "Your login/account is not activated.  If you have already activated your account, please contact our support team.",
     "Your user login is already activated, redirecting to login page, please wait...": "Your user login is already activated, redirecting to login page, please wait...",
-    "Status": "Status"
+    "Status": "Status",
+    "Your card is expired": "Your card is expired.  Please check the expiry date."
 }

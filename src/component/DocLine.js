@@ -42,7 +42,7 @@ const ContainerDisplayGrid = styled.div`
 	padding: 0.25rem 0;
 `
 
-const SingleContainerDisplay = styled.div`
+export const SingleContainerDisplay = styled.div`
 	box-sizing:border-box;
 	display: flex;
 	align-items: center;
@@ -82,7 +82,7 @@ const Amount = ({t, l})=>(
 	<IDDiv>{c.t(l) + ' : '+t}</IDDiv>
 )
 
-const SmallPic = ({t, url, width, height})=>(
+export const SmallPic = ({t, url, width, height})=>(
 	<img src={url} width={width} height={height} />
 )
 

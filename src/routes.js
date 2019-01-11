@@ -13,7 +13,6 @@ import EditAccountPage from "./page/EditAccountPage.js";
 import ROListPage from "./page/ROListPage.js";
 import RODetailsPage from "./page/RODetailsPage.js";
 import ThankYouForOrderPage from "./page/ThankYouForOrderPage.js";
-import RemoveCreditCardForm from "./form/RemoveCreditCardForm";
 
 const routes = [
   {
@@ -163,7 +162,7 @@ const routes = [
     path: "/testPage",
     exact: true,
     menuName: "Testing Zone",
-    component: RemoveCreditCardForm,
+    component: TestPage,
     navbar: {
       itemId: 999,
       firstLevel: true,

@@ -1,9 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import accounting from 'accounting'
-
-import {Tag, ToolTip} from '../component/BasicComponents.js'
-
+import {AutoSizer} from 'react-virtualized'
+import {Tag} from '../component/BasicComponents.js'
 import c from '../stateContainer/LocaleApi.js'
 import {SmallPic } from './DocLine.js'
 
@@ -92,6 +91,13 @@ export const Dollar = ({title, data}) =>(
 	</FieldWrapper>
 )
 
+export const Status = ({title, data, color, background, float})=>(
+	<FieldWrapper>
+		<FieldTitle>{c.t(title)}</FieldTitle>
+		<Tag color={color} background={background} float={float}>{c.t(data)}</Tag>
+	</FieldWrapper>
+)
+
 export const DollarFixedPos = ({title, data}) =>(
 	<FieldWrapper>
 		<FieldTitle>{c.t(title)}</FieldTitle>
@@ -112,51 +118,84 @@ export const Address = ({title, data}) => (
 )
 
 export const DocLines = ({title, data}) => {
-	let summary = {}
 	let displayCom = []
 	for(let i=0;i<data.length;i++) {
+		console.log(accounting.formatColumn([data[i].rent_unitPrice, 9999999],'$ ' , 1))
+
+
+
 		displayCom.push(
 			<DocLineRow key={'docLines'+i}>
 				<SingleContainerDisplay>
 					<SmallPic url={data[i].SKU_id.iconPicURL} width={c.state.defaultHeight*3} height={c.state.defaultHeight*3} />
 					<TextNoWrap>{c.t(data[i].SKUName)}</TextNoWrap>
 				</SingleContainerDisplay>
-				<TextNoWrap>{data[i].duration + c.t(data[i].rentMode) + ' X ' + data[i].qty + c.t('pcs')}</TextNoWrap>
-				<SingleContainerDisplay>{c.t('Unit Price')+': '}<DollarSpan>{accounting.formatMoney(data[i].rent_unitPrice)}</DollarSpan> </SingleContainerDisplay>
-				<SingleContainerDisplay>{c.t('Line Total')+': '}<DollarSpan>{accounting.formatMoney(data[i].rent_lineTotal)}</DollarSpan> </SingleContainerDisplay>
+				<DocLineField>{data[i].duration + ' ' + c.t(data[i].rentMode, {count: data[i].duration})}</DocLineField>
+				<DocLineField>{data[i].qty + c.t('pcs')}</DocLineField>
+				<DocLineField><DollarSpan>{accounting.formatColumn([data[i].rent_unitPrice, 99999],'$ ' , 1)[0]}</DollarSpan></DocLineField>
+				<DocLineField><DollarSpan>{accounting.formatColumn([data[i].rent_lineTotal, 99999],'$ ' , 1)[0]}</DollarSpan> </DocLineField>
 			</DocLineRow>
 		)
 	}
-
-	return (<DocLineDiv>
-		<Title>{c.t('Rental Details')}</Title>
-		{displayCom}
-	</DocLineDiv>)
-
+	return (
+		<DocLineWrapper>
+			<Title>{c.t(title)}</Title>
+			<AutoSizer disableHeight>
+			{({width}) => (
+				<DocLineRowsDiv width={width}>
+					<DocLineRow>
+						<FieldTitleGrid width={180}>{c.t('Box Type')}</FieldTitleGrid>
+						<FieldTitleGrid width={100}>{c.t('Rent Mode')}</FieldTitleGrid>
+						<FieldTitleGrid width={100}>{c.t('Quantity')}</FieldTitleGrid>
+						<FieldTitleGrid width={100}>{c.t('Unit Price')}</FieldTitleGrid>
+						<FieldTitleGrid width={100}>{c.t('Total Price')}</FieldTitleGrid>
+					</DocLineRow>
+					{displayCom}
+				</DocLineRowsDiv>
+			)}
+			</AutoSizer>
+			
+		</DocLineWrapper>
+	)
 }
 
+const DocLineRowsDiv = styled.div`
+	display: block;
+	overflow: auto;
+	width: ${({width})=>width}px;
+`
+
+const DocLineRow = styled.div`
+	flex-wrap: nowrap;
+	display: grid;
+    overflow: hidden;
+	grid-template-columns: 180px 100px 100px 100px 100px;
+	width: 580px;
+	align-items: center;
+`
+
 export const SingleContainerDisplay = styled.div`
-	grid-column: span 2;
 	box-sizing:border-box;
 	display: flex;
 	align-items: center;
 	flex-wrap: nowrap;
-	width: 100%
+	width: 180px
 `
 
-const DocLineDiv = styled.div`
+const DocLineField = styled.div`
+	font-size: 1rem;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	text-align: center;
+`
+
+const DocLineWrapper = styled.div`
 	grid-column: content / end;
 	grid-row: content / docline;
-	display: block;
 	padding: 0.5rem 0;
 `
 
-const DocLineRow = styled.div`
-	display: grid
-	grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
-	align-items: center;
-	grid-gap: 0.75rem 0.25rem;
-`
+
 
 
 const FieldWrapper = styled.div`
@@ -168,6 +207,12 @@ const FieldTitle = styled.div`
 	font-size: 0.8rem;
 	font-weight: 600;
 	text-transform: uppercase;
+`
+
+const FieldTitleGrid = styled(FieldTitle)`
+	padding: 1rem 0;
+	${({width})=>width? 'width: '+width+'px': ''}
+	text-align: center;
 `
 
 const TextNoWrap = styled.div`
@@ -182,7 +227,7 @@ const AddressText = styled.div`
 	text-overflow: ellipsis;
 ` 
 
-const DollarSpan = styled.span`
+const DollarSpan = styled.pre`
 	font-family: 'Inconsolata', monospace;
 `
 
@@ -197,9 +242,14 @@ const ID = styled.span`
 	text-transform: uppercase;
 `
 
+export const DocEvents = ({title, data}) => {
+	return (<p>{title}</p>)
+}
+
+
 
 export default {
 	Container, ButtonsDiv, FieldsDiv,
 	RecordID,
-	DateOnly, DateTime, Text, Num, Dollar, Address, DocLines
+	DateOnly, DateTime, Text, Num, Dollar, Address, DocLines, Status
 }

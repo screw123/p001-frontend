@@ -27,6 +27,9 @@ class LocaleContainer extends Container {
                 backend: {
                     loadPath: '/locales/{{lng}}.json',
                 },
+                interpolation: {
+                    escapeValue: false // react already safes from xss
+                },
                 react: {
                 },
                 debug: true

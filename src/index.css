@@ -1,6 +1,11 @@
 html {
 	font-size: 1em;
 	scroll-behavior: smooth;
+	scrollbar-width: thin;
+}
+
+body::-webkit-scrollbar {
+    width: 3px;
 }
 
 

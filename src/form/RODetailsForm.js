@@ -2,8 +2,9 @@ import React from 'react'
 import get from 'lodash/get'
 import styled from "styled-components"
 
-import { Container, ButtonsDiv, FieldsDiv, RecordID, DateOnly, DateTime, Text, Num, Dollar, Address, DocLines} from '../component/DocDetails.js'
+import { Container, ButtonsDiv, FieldsDiv, RecordID, DateOnly, DateTime, Text, Num, Dollar, Address, DocLines, Status} from '../component/DocDetails.js'
 import SystemError from '../component/SystemError.js'
+import {getROStatusColor} from './ROListForm.js'
 
 /*{
     "_id": "5c2df683c3287648fca2fe03",
@@ -69,15 +70,16 @@ class RODetailsForm extends React.PureComponent {
 		return (<Container>
             <RecordID id={RO._id} docType='RentalOrder' />
             <ButtonsDiv>
-                <button>Submit</button>
+                
             </ButtonsDiv>
             <FieldsDiv>
                 <DateOnly title='createDateTime' data={RO.createDateTime} />
                 <DateOnly title='updateDateTime' data={RO.updateDateTime} />
                 <Dollar title='totalAmt' data={RO.totalAmt} />
                 <Address title='billingAddress' data={RO.billingAddress} />
+                <Status title='Status' data={RO.status} {...getROStatusColor(RO.status)} />
             </FieldsDiv>
-            <DocLines data={RO.docLines} /> 
+            <DocLines data={RO.docLines} title='Rental Details' /> 
         </Container>)
 	}
 }

@@ -58,7 +58,7 @@ import {LocaleApiSubscriber} from '../stateContainer/LocaleApi.js'
     "version": "1.0"
 }*/
 
-const getROStatusColor = (status) =>{
+export const getROStatusColor = (status) =>{
     switch(status) {
         case 'INIT':
             return {background: 'DeepSkyBlue', color: 'Black'}
@@ -124,7 +124,9 @@ export default class ROListForm extends React.Component {
                     const fixed_field_lines = 2
                     const containerSummary_lines = new Set(this.props.ROlist[i].docLines.map(v=>v.SKU_id.name)).size
 
-                    return c.state.defaultHeight*1.5*fixed_field_lines + containerSummary_lines*32*1.1 / Math.floor(width*.95/DocLine.singleContainerDisplaySize) + c.state.defaultHeight
+                    //per field line * 1.5, per container line * 1.25, + 1.5line of buffer
+                    return c.state.defaultHeight*1.5*fixed_field_lines + containerSummary_lines*32*1.25 / Math.floor(width*.95/DocLine.singleContainerDisplaySize) + c.state.defaultHeight*1.5
+
                 }}
                 headerText={<div><FontAwesomeIcon icon='file-invoice' /> {c.t('Box Rental Record')}</div>}
                 data={this.props.ROlist || []} 

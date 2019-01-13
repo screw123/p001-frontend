@@ -2,6 +2,7 @@ import React from "react"
 import { ApolloProvider,Mutation } from "react-apollo"
 
 import parseApolloErr from '../util/parseErr.js'
+import {FormErr} from '../component/Formik-Basic.js'
 
 import {LocaleApiSubscriber} from '../stateContainer/LocaleApi.js'
 import GqlApi, { GqlApiSubscriber } from '../stateContainer/GqlApi.js'
@@ -25,10 +26,12 @@ class StripePaymentInfo extends React.Component {
 	async submit(e, mutate, t) {
 		e.preventDefault();
 
+		//create source using client side stripe library
 		let {source, error} = await this.props.stripe.createSource({
 			type: 'card'
 		})
-		console.log(source, error)
+		console.log('StripePaymentInfo.submit', source, error)
+		//if can create source, send to backend to add to customer obj
 		if (source) {
 			try {
 				const d = await mutate({variables: {token: source.id, account_id: this.props.account_id } })
@@ -41,6 +44,7 @@ class StripePaymentInfo extends React.Component {
 				this.setState({stripeSourceCreateErr: errStack[0].message})
 			}
 		}
+		//if not even able to create source at client side, directly display error
 		if (error) {
 			console.log(error)
 			this.setState({stripeSourceCreateErr: error.message})
@@ -75,7 +79,7 @@ class StripePaymentInfo extends React.Component {
 									<StripeCardCVCInput />
 								</Wrapper>
 							</Container>
-							<p>{c.t(this.state.stripeSourceCreateErr)}</p>
+							<FormErr>{c.t(this.state.stripeSourceCreateErr)}</FormErr>
 							<button onClick={(e)=>this.submit(e, mutate, c.t)} disabled={loading}>{c.t('Submit')}</button>
 							<button onClick={e=>this.props.onCancel(e)} disabled={loading}>{c.t('Cancel')}</button>
 							{loading && <LoadingIcon size={2} />}

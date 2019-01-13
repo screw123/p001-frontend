@@ -114,5 +114,9 @@
     "Your login/account is not activated.  If you have already activated your account, please contact our support team.": "你的用戶/帳戶未啟用.  如你確定已啟用過, 請聯絡我們.",
     "Your user login is already activated, redirecting to login page, please wait...": "你的登入用戶已啟用, 將轉到登入頁面, 請稍候...",
     "Status": "狀態",
-    "Your card is expired": "你的信用卡已經過期.  請查看到期日"
+    "Your card is expired": "你的信用卡已經過期.  請查看到期日",
+    "Your CVC code is incorrect": "你的CVC 核對碼不正確. 請更正後再試",
+    "Stripe processing error": "信用卡系統現未能處理, 請稍後再試",
+    "Your card number is invalid.": "你的信用卡號不正確.",
+    "Your card is declined": "你的信用卡不被收款系統接納, 詳情請向你的發卡機構查詢."
 }

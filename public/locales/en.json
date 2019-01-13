@@ -114,5 +114,9 @@
     "Your login/account is not activated.  If you have already activated your account, please contact our support team.": "Your login/account is not activated.  If you have already activated your account, please contact our support team.",
     "Your user login is already activated, redirecting to login page, please wait...": "Your user login is already activated, redirecting to login page, please wait...",
     "Status": "Status",
-    "Your card is expired": "Your card is expired.  Please check the expiry date."
+    "Your card is expired": "Your card is expired.  Please check the expiry date.",
+    "Your CVC code is incorrect": "Your CVC code is incorrect, please correct and retry.",
+    "Stripe processing error": "An error occurred while processing your card. Please try again later.",
+    "Your card number is invalid.": "Your card number is invalid.",
+    "Your card is declined": "Your card is declined.  For more information please contact your card issuer."
 }

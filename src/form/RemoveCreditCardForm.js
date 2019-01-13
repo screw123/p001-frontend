@@ -87,7 +87,7 @@ class StripePaymentInfo extends React.Component {
                       <button onClick={e => this.submit(e, mutate, c.t)} disabled={loading}>
                         {c.t("OK")}
                       </button>
-                      <button onClick={e => this.props.cancelRemoveAction(e)} disabled={loading}>
+                      <button onClick={e => this.props.closeModal(e)} disabled={loading}>
                         {c.t("Cancel")}
                       </button>
                       {loading && <LoadingIcon size={2} />}

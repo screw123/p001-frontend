@@ -72,11 +72,13 @@ class SelectCreditCard extends React.Component {
     this.renderMainDiv = this.renderMainDiv.bind(this);
   }
 
-  toggleAddNewCard = () => {
+  toggleAddNewCard = (e) => {
+    e.preventDefault()
     this.setState(prevState => ({ showAddNewCard: prevState.showAddNewCard ? false : true }));
   };
 
-  toggleRemoveCard = () => {
+  toggleRemoveCard = (e) => {
+    e.preventDefault()
     this.setState(prevState => ({ showRemoveCard: prevState.showRemoveCard ? false : true }));
   };
 
@@ -114,10 +116,7 @@ class SelectCreditCard extends React.Component {
             {/*show add card button */}
             {!this.state.showAddNewCard && props.allowAddCard && (
               <FormButton
-                onClick={e => {
-                  e.preventDefault();
-                  this.toggleAddNewCard();
-                }}
+                onClick={this.toggleAddNewCard}
                 disabled={props.disabled}>
                 <FontAwesomeIcon icon="plus-circle" />
                 {c.t("Add New Card")}
@@ -127,10 +126,7 @@ class SelectCreditCard extends React.Component {
             {/*show remove card button */}
             {props.allowRemoveCard && props.field.value && (
               <FormButton
-                onClick={e => {
-                  e.preventDefault();
-                  this.toggleRemoveCard();
-                }}
+                onClick={this.toggleRemoveCard}
                 disabled={props.disabled}>
                 <FontAwesomeIcon icon="trash-alt" />
                 {c.t("Remove Selected Card")}
@@ -170,30 +166,28 @@ class SelectCreditCard extends React.Component {
 
             {/* show a "confirm remove card?" window */}
             {!!this.props.allowRemoveCard && !!this.state.showRemoveCard && (
-              <Modal
-                show={this.state.showRemoveCard}
-                component={RemoveCreditCardForm}
-                closeModal={this.showRemoveCard}
-                footerButtons={[
-                  <FormButton
-                    onClick={e => {
-                      e.preventDefault();
+              <Mutation mutation={removeStripeSource} errorPolicy="all">
+              {(mutate, { loading, err }) => (
 
-                      this.toggleRemoveCard();
-                    }}
-                    disabled={props.disabled}>
-                    {c.t("OK")}
-                  </FormButton>,
-                  <FormButton
-                    onClick={e => {
-                      e.preventDefault();
-                      this.toggleRemoveCard();
-                    }}
-                    disabled={props.disabled}>
-                    {c.t("Cancel")}
-                  </FormButton>
-                ]}
-              />
+                <Modal
+                  show={this.state.showRemoveCard}
+                  component={<RemoveCreditCardForm source={selectedCard} />}
+                  closeModal={this.toggleRemoveCard}
+                  footerButtons={[
+                    <FormButton
+                      onClick={this.toggleRemoveCard}
+                      disabled={props.disabled}>
+                      {c.t("OK")}
+                    </FormButton>,
+                    <FormButton
+                      onClick={this.toggleRemoveCard}
+                      disabled={props.disabled}>
+                      {c.t("Cancel")}
+                    </FormButton>
+                  ]}
+                />
+              )}
+              </Mutation>
             )}
 
             {props.err && <ErrorLabel>{c.t(props.err)}</ErrorLabel>}

@@ -30,12 +30,14 @@ class EditAccountForm extends React.Component {
             name: ({name}) => (name.length>0)? undefined : 'Please provide a name for this account',
             name: ({name}) => (name.length<255)? undefined : 'Name cannot be longer than 255 characters',
             selectedAddress: () => undefined,
-            lastUpdate: () => undefined
+            lastUpdate: () => undefined,
+            cardId: () => undefined
         }
         const keyArr = Object.keys(v)
         let err = {}
         for (let i=0; i<keyArr.length; i++) {
             const f = keyArr[i]
+            console.log(f)
             const e = validateFunc[keyArr[i]](v)
             err[f] = e
         }

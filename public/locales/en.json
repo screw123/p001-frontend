@@ -96,5 +96,7 @@
     "Organization / Contact Person Name": "Organization / Contact Person Name",
     "Address": "Address",
     "Phone": "Phone",
-    "Default Billing": "Default Billing"
+    "Default Billing": "Default Billing",
+    "Remove Selected Card": "Remove This Card",
+    "You have no credit card registered with us": "You have no credit card registered with us."
 }

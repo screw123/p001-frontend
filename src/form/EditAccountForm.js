@@ -138,7 +138,7 @@ class EditAccountForm extends React.Component {
                                 onChange={(v)=>setFieldValue('selectedAddress', v._id)}
                                 allowAddAddress={true}
                                 allowEditAddress={true}
-                                onAddressUpdate={()=>this.props.onInfoUpdate()}
+                                onAddressUpdate={this.props.onInfoUpdate}
                                 multiSelect={false}
                                 err={errors['selectedAddress']}
                             />
@@ -152,7 +152,7 @@ class EditAccountForm extends React.Component {
                                 onChange={(v)=>setFieldValue('card_id', v.cardId)}
                                 allowAddCard={true}
                                 allowRemoveCard={true}
-                                onAddCard={()=>this.props.onInfoUpdate()}
+                                onInfoUpdate={this.props.onInfoUpdate}
                                 multiSelect={false}
                                 isLoading={this.props.gqlNetworkStatus===4}
                                 err={errors['cardId']}

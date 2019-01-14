@@ -96,5 +96,7 @@
     "Organization / Contact Person Name": "公司 / 聯絡人姓名",
     "Address": "地址",
     "Phone": "電話",
-    "Default Billing": "預設帳單地址"
+    "Default Billing": "預設帳單地址",
+    "Remove Selected Card": "删除此卡",
+    "You have no credit card registered with us": "你還未加入任何信用卡資料"
 }

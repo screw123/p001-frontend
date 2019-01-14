@@ -93,10 +93,9 @@ class SelectCreditCard extends React.Component {
         let no_of_card = 0
 		let stripeCusObj
 
-		if ((stripeCusObjString !== null)&(stripeCusObjString !== 'null')) {
-			//if user already have a stripeObject
+		if ((stripeCusObjString!==null)&(stripeCusObjString!=='null')) {  //if user already have a stripeObject
 			stripeCusObj = JSON.parse(stripeCusObjString)
-			console.log(stripeCusObj)
+			console.log(stripeCusObj, stripeCusObjString==null)
 			if (stripeCusObj.sources) {
 				no_of_card = stripeCusObj.sources.data.length
 			}
@@ -226,12 +225,10 @@ class SelectCreditCard extends React.Component {
 					</Query>
 				</ApolloProvider>
 			)
-		} else if (this.props.account) {
-			return this.renderMainDiv(
-				this.props.account.stripeCustomerObject,
-				this.props.onAddCard,
-				this.props
-			)
+		}
+		else if (this.props.account) {
+			console.log(this.props)
+			return this.renderMainDiv(this.props.account.stripeCustomerObject, this.props.onAddCard, this.props)
 		}
 	}
 }

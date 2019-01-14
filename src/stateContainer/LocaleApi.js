@@ -15,17 +15,25 @@ import { Provider, Subscribe, Container } from 'unstated';
 
 class LocaleContainer extends Container {
     constructor() {
-        super();
-        const i18next = i18n.use(XHR).use(LngDetector).use(reactI18nextModule).init({
-            fallbackLng: 'en',
-            ns: ['common'],
-            defaultNS: 'common',
-            backend: {
-                loadPath: '/locales/{{lng}}.json'
-            },
-            react: {},
-            debug: true
-        });
+        super()
+        const i18next = i18n
+            .use(XHR)
+            .use(LngDetector)
+            .use(reactI18nextModule)
+            .init({
+                fallbackLng: 'en',
+                ns: ['common'],
+                defaultNS: 'common',
+                backend: {
+                    loadPath: '/locales/{{lng}}.json',
+                },
+                interpolation: {
+                    escapeValue: false // react already safes from xss
+                },
+                react: {
+                },
+                debug: true
+            })
 
         if (i18next.language === 'zh-HK') {
             moment.locale('zh-HK');

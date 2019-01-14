@@ -6,8 +6,9 @@ const parseApolloErr = (err, t) => {
     if (err.graphQLErrors) {
         for (let i=0;i<err.graphQLErrors.length;i++) {
             let errObj = {}
+            console.log('parseApolloErr, err=', err.graphQLErrors[i])
             errObj['type'] = err.graphQLErrors[i].message
-            errObj['key'] = Object.keys(err.graphQLErrors[i].data)[0]
+            errObj['key'] = (typeof err.graphQLErrors[i].data==='string') ? undefined : Object.keys(err.graphQLErrors[i].data)[0]
             switch(errObj.type) {
                 case 'INVALID': 
                     errObj['message'] = t(errObj['key']) +' '+ t('cannot be') + ' '+ err.graphQLErrors[i].data[errObj['key']]
@@ -31,7 +32,7 @@ const parseApolloErr = (err, t) => {
                     errObj['message'] = t('Your user login is already activated, redirecting to login page...')
                     break
                 case 'SPECIAL':
-                    errObj['message'] = t(err.graphQLErrors[i].data[errObj['key']])
+                    errObj['message'] = t(err.graphQLErrors[i].data.errmsg)
                     break
                 case 'SUSPENDED':
                     errObj['message'] = t('Your login/account is not activated.  If you have already activated your account, please contact our support team.')

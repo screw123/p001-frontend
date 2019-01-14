@@ -537,9 +537,53 @@ query getRecentROListByUser {
             qty
         }
     }
-}
+}`
 
-
-`
+export const getROById = gql`
+    query getROById (
+        $RO_id: String!
+    ) {
+        getROById (RO_id: $RO_id) {
+            _id
+            status
+            account_id {
+                _id
+            }
+            createDateTime
+            updateDateTime
+            createBy_id {
+                _id
+            }
+            billingAddress {
+                legalName
+                streetAddress
+                addressRegion1
+                addressRegion2
+                addressCountry
+                telephone
+            }
+            totalAmt
+            billedAmt
+            paidAmt
+            docLines {
+                SKU_id {
+                    iconPicURL
+                }
+                SKUName
+                rentMode
+                duration
+                qty
+                rent_unitPrice
+                rent_lineTotal
+                remarks
+            }
+            docEvent_id {
+                docEventType
+                msg
+                userName
+                createDateTime
+            }
+        }
+    }`
 
 export default {}

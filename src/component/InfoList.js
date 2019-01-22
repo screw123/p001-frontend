@@ -19,7 +19,6 @@ const OuterWrapper = styled.div`
     grid-template-columns: [s1] 2.5% [content] auto [end] 2.5% [s2];
     overflow: hidden;
     min-width: 300px;
-    border
 `
 const ContentRow = styled.div`
     grid-column: content / end;
@@ -29,9 +28,9 @@ const ContentRow = styled.div`
 const ContentDiv = styled.div`
     display: ${({occupyFullRow})=>occupyFullRow? 'block':'inline-block'};
     cursor: pointer;
-    border-bottom: Silver;
+    border: Silver;
     border-width: 2px;
-    border-style: hidden hidden solid hidden;
+    border-style: ${({showTopBorder})=>showTopBorder?'solid':'hidden'} hidden ${({showBottomBorder})=>showBottomBorder?'solid':'hidden'} hidden;
 `
 
 const CheckboxDiv = styled.div`
@@ -39,12 +38,12 @@ const CheckboxDiv = styled.div`
     overflow: visible;
 `
 
-export const InfoListStandardLine = ({key1, style, checkbox, content, checkboxOnClick, contentOnClick, occupyFullRow, ...props}) => {
+export const InfoListStandardLine = ({key1, style, checkbox, content, checkboxOnClick, contentOnClick, occupyFullRow, showBottomBorder, ...props}) => {
     return(<OuterWrapper key={key1} style={style} {...props}>
         {checkbox && <CheckboxDiv onClick={checkboxOnClick}>
             {checkbox}
         </CheckboxDiv>}
-        <ContentRow><ContentDiv onClick={contentOnClick} occupyFullRow={occupyFullRow}>
+        <ContentRow><ContentDiv onClick={contentOnClick} occupyFullRow={occupyFullRow} showBottomBorder={showBottomBorder}>
             {content}
         </ContentDiv></ContentRow>
     </OuterWrapper>)

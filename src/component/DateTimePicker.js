@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { Grid, defaultCellRangeRenderer } from 'react-virtualized';
 import {Section} from './BasicComponents'
 
-const firstDay = moment().date(1).day(0)
+const firstDay = moment().date(1).day(0).startOf('day')
 
 const w=40, h=40
 

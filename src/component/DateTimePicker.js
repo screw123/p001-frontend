@@ -26,7 +26,7 @@ export const DateTimePicker = (props) => {
 				<WeekHeaderUnit>Sat</WeekHeaderUnit>
 			</WeekHeader>
 			<Grid
-				cellRenderer={p=> dayRenderer(p, {onClick: props.dayOnClick, c: c, customFormat: props.customFormat})}
+				cellRenderer={p=> dayRenderer(p, {onClick: props.dayOnClick, c: c, customFormat: props.customFormat, disable: props.disable})}
 				columnCount={7}
 				columnWidth={w}
 				height={h*5}
@@ -57,37 +57,38 @@ const dayRenderer = ({
 	isVisible,   // This cell is visible within the grid (eg it is not an overscanned cell)
 	key,         // Unique key within array of cells
 	rowIndex,    // Vertical (row) index of cell
-	style   }, {onClick, c, customFormat=[], ...props}) => {
+	style   }, {onClick, c, customFormat=[], disable, ...props}) => {
 		//customFormat = [{checker(row,col, date), style}]
 
 		const thisDay = c.moment(firstDay).add((columnIndex + rowIndex * 7), 'd')
 		const displayDay = thisDay.get('date')
 
-		let customStyle = undefined
+		let customStyle = ''
 		for(let i=0; i<customFormat.length;i++) {
 			if (customFormat[i].checker(columnIndex, rowIndex, thisDay)===true) {
-				customStyle=customFormat[i].style
+				customStyle=customStyle+customFormat[i].style
 				if (customFormat[i].stop===true) {
 					break
 				}
 			}
 		}
 
-		
+		const isDisabled = disable(thisDay)
 		return(
 			<DaySpan 
 				key={key}
 				customFormat={customStyle}
-				onClick={e=>onClick(e, thisDay)}
+				disable={isDisabled}
+				onClick={e=>(isDisabled)?undefined:onClick(e, thisDay)}
 				style={style}
-					>{((displayDay===1) ?thisDay.format('MMM'):'')+ displayDay}</DaySpan>
+					>{displayDay}</DaySpan>
 		)
 }
 
 const DaySpan = styled.div`
 	${({customFormat})=>customFormat? customFormat:''}
 	text-align: center;
-	cursor: pointer;
+	cursor: ${({disable})=>disable? 'no-drop':'pointer'};
 `
 
 export default DateTimePicker

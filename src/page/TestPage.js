@@ -49,6 +49,7 @@ class TestPage extends React.Component {
         <DateTimePicker
           dayOnClick={this.updateDate}
           i18n={c}
+          disable={d=>d.isBefore(moment())}
           customFormat={[
             {
               //coloring Sunday
@@ -57,10 +58,16 @@ class TestPage extends React.Component {
               stop: false
             },
             {
+              //coloring past days
+              checker: (c,r,d)=>d.isBefore(moment()),
+              style: 'color: Grey;font-style: italic;',
+              stop: false
+            },
+            {
               //test bold every 10 days
-              checker: (c,r,d)=>d.date()%10===1,
-              style: 'font-weight: 900;background: Lime',
-              stop: true
+              checker: (c,r,d)=>d.month()%2===1,
+              style: 'background: LightGrey;',
+              stop: false
             },
           ]}
         />

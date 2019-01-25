@@ -99,6 +99,7 @@ export default class ROListForm extends React.Component {
                 key={rowObj.key}
                 key1={rowObj.key}
                 style={rowObj.style}
+                showBottomBorder={true}
                 contentOnClick={e=>{
                     e.preventDefault()
                     this.setRedirect(data)

@@ -48,9 +48,27 @@ export const DateTimePicker = props => {
         width={w * 7}
         style={{ paddingRight: 21, boxSizing: "content-box" }}
       />
+
+      {props.showTimeSlot && (
+        <TimeSlotWrapper>
+          <TSelect onChange={props.setOffset}>
+            <option value="" disabled selected>
+              Choose a timeslot
+            </option>
+            {props.timeslot.map(slot => (
+              <option value={slot.offset}>{slot.display}</option>
+            ))}
+          </TSelect>
+        </TimeSlotWrapper>
+      )}
     </DatePickerWrapper>
   )
 }
+
+const TimeSlotWrapper = styled.div`
+  margin: 10px 0px;
+`
+const TSelect = styled.select``
 
 const WeekHeader = styled.div`
   width: ${w * 7}px;

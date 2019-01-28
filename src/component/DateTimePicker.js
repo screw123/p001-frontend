@@ -3,66 +3,94 @@ import moment from "moment"
 import styled from "styled-components"
 import { Grid, defaultCellRangeRenderer } from "react-virtualized"
 import { Section } from "./BasicComponents"
+import {RadioSelect} from './RadioSelect.js'
+import {LocaleApiSubscriber} from '../stateContainer/LocaleApi.js'
 
-const firstDay = moment()
-  .date(1)
-  .day(0)
-  .startOf("day")
 
-const w = 40,
-  h = 40
+const firstDay = moment().date(1).day(0).startOf("date")
+const w = 40, h = 40
 
 const DatePickerWrapper = styled.div`
   width: ${w * 7}px;
   overflow: hidden;
 `
 
-export const DateTimePicker = props => {
-  const c = props.i18n
-  return (
-    <DatePickerWrapper>
-      <WeekHeader>
-        <WeekHeaderUnit color="Red">Sun</WeekHeaderUnit>
-        <WeekHeaderUnit>Mon</WeekHeaderUnit>
-        <WeekHeaderUnit>Tue</WeekHeaderUnit>
-        <WeekHeaderUnit>Wed</WeekHeaderUnit>
-        <WeekHeaderUnit>Thu</WeekHeaderUnit>
-        <WeekHeaderUnit>Fri</WeekHeaderUnit>
-        <WeekHeaderUnit>Sat</WeekHeaderUnit>
-      </WeekHeader>
-      <Grid
-        cellRenderer={p =>
-          dayRenderer(p, {
-            onClick: props.dayOnClick,
-            c: c,
-            customFormat: props.customFormat,
-            disable: props.disable,
-            selectedDate: props.selectedDate
-          })
-        }
-        columnCount={7}
-        columnWidth={w}
-        height={h * 5}
-        rowCount={52}
-        rowHeight={h}
-        width={w * 7}
-        style={{ paddingRight: 21, boxSizing: "content-box" }}
-      />
+export class DateTimePicker extends React.Component {
+	constructor(props) {
+		super(props)
+		this.state = {selectedTimeSlotIndex: this.props.showTimeSlot? 0:undefined }
+		this.changeDay = this.changeDay.bind(this)
+		this.changeTimeSlot = this.changeTimeSlot.bind(this)
+	}
 
-      {props.showTimeSlot && (
-        <TimeSlotWrapper>
-          <TSelect onChange={props.setOffset}>
-            <option value="" disabled selected>
-              Choose a timeslot
-            </option>
-            {props.timeslot.map(slot => (
-              <option value={slot.offset}>{slot.display}</option>
-            ))}
-          </TSelect>
-        </TimeSlotWrapper>
-      )}
-    </DatePickerWrapper>
-  )
+	changeDay = (e, d) => {
+		e.preventDefault()
+		this.props.onChange(d.add(this.props.timeslot[this.state.selectedTimeSlotIndex].value, 'h'))
+	}
+
+	changeTimeSlot = (e, i) => {
+		e.preventDefault()
+		this.setState({selectedTimeSlotIndex: i})
+		this.props.onChange(moment(this.props.selectedDate).startOf('day').add(this.props.timeslot[i].value, 'h'))
+	}
+
+	render() {
+		const c = this.props.i18n
+		return (
+			<LocaleApiSubscriber>
+			{c=>(
+				<DatePickerWrapper>
+					<WeekHeader>
+						<WeekHeaderUnit color="Red">{c.t('Sun')}</WeekHeaderUnit>
+						<WeekHeaderUnit>{c.t('Mon')}</WeekHeaderUnit>
+						<WeekHeaderUnit>{c.t('Tue')}</WeekHeaderUnit>
+						<WeekHeaderUnit>{c.t('Wed')}</WeekHeaderUnit>
+						<WeekHeaderUnit>{c.t('Thu')}</WeekHeaderUnit>
+						<WeekHeaderUnit>{c.t('Fri')}</WeekHeaderUnit>
+						<WeekHeaderUnit>{c.t('Sat')}</WeekHeaderUnit>
+					</WeekHeader>
+					<Grid
+						cellRenderer={p =>
+							dayRenderer(p, {
+								onClick: this.changeDay,
+								c: c,
+								customFormat: this.props.customFormat,
+								disable: this.props.disable,
+								selectedDate: this.props.selectedDate
+							})
+						}
+						columnCount={7}
+						columnWidth={w}
+						height={h * 5}
+						rowCount={52}
+						rowHeight={h}
+						width={w * 7}
+						style={{ paddingRight: 21, boxSizing: "content-box", scrollBehavior: "smooth"}}
+					/>
+
+					{!!this.props.showTimeslot && (
+						<TimeSlotWrapper>
+							<RadioSelect
+								value={this.state.selectedTimeSlotIndex}
+								onChange={this.changeTimeSlot}
+								options={this.props.timeslot}
+							/>
+
+					{/* <TSelect onChange={e=> this.changeTimeSlot(e, )}>
+							<option value="" disabled selected>
+								Choose a timeslot
+							</option>
+							{this.props.timeslot.map(slot => (
+								<option value={slot.offset}>{slot.display}</option>
+							))}
+							</TSelect> */}
+						</TimeSlotWrapper>
+					)}
+				</DatePickerWrapper>
+			)}
+			</LocaleApiSubscriber>
+		)
+	}
 }
 
 const TimeSlotWrapper = styled.div`
@@ -75,6 +103,7 @@ const WeekHeader = styled.div`
   box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(${w}px, 1fr));
+  cursor: default;
 `
 
 const WeekHeaderUnit = styled.div`
@@ -111,25 +140,26 @@ const dayRenderer = (
 
   const isDisabled = disable(thisDay)
   return (
-    <DaySpan
+    <DayDiv
       key={key}
       customFormat={customStyle}
       disable={isDisabled}
       onClick={e => (isDisabled ? undefined : onClick(e, thisDay))}
       style={style}
-      selected={thisDay.isSame(props.selectedDate)}
+      selected={thisDay.isSame(props.selectedDate, 'day')}
     >
       {displayDay}
-    </DaySpan>
+    </DayDiv>
   )
 }
 
-const DaySpan = styled.div`
+const DayDiv = styled.div`
   ${({ customFormat }) => (customFormat ? customFormat : "")}
   ${({ selected }) =>
     selected && "background-color: #fd4676; color: white; font-weight: bold"}	
   text-align: center;
   cursor: ${({ disable }) => (disable ? "no-drop" : "pointer")};
+  font-size: 0.9rem;
 `
 
 export default DateTimePicker

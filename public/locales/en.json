@@ -120,5 +120,12 @@
     "Your card number is invalid.": "Your card number is invalid.",
     "Your CVC code is incorrect": "Your CVC code is incorrect, please correct and retry.",
     "Your login/account is not activated.  If you have already activated your account, please contact our support team.": "Your login/account is not activated.  If you have already activated your account, please contact our support team.",
-    "Your user login is already activated, redirecting to login page, please wait...": "Your user login is already activated, redirecting to login page, please wait..."
+    "Your user login is already activated, redirecting to login page, please wait...": "Your user login is already activated, redirecting to login page, please wait...",
+    "Sun": "Sun",
+    "Mon": "Mon",
+    "Tue": "Tue",
+    "Wed": "Wed",
+    "Thu": "Thu",
+    "Fri": "Fri",
+    "Sat": "Sat"
 }

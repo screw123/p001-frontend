@@ -3,12 +3,15 @@ import moment from "moment"
 import styled from "styled-components"
 import { Grid, defaultCellRangeRenderer } from "react-virtualized"
 import { Section } from "./BasicComponents"
-import {RadioSelect} from './RadioSelect.js'
-import {LocaleApiSubscriber} from '../stateContainer/LocaleApi.js'
+import { RadioSelect } from "./RadioSelect.js"
+import { LocaleApiSubscriber } from "../stateContainer/LocaleApi.js"
 
-
-const firstDay = moment().date(1).day(0).startOf("date")
-const w = 31, h = 40
+const firstDay = moment()
+  .date(1)
+  .day(0)
+  .startOf("date")
+const w = 31,
+  h = 40
 
 const DatePickerWrapper = styled.div`
   width: ${w * 7 + 8}px;
@@ -16,68 +19,105 @@ const DatePickerWrapper = styled.div`
 `
 
 export class DateTimePicker extends React.Component {
-	constructor(props) {
-		super(props)
-		this.state = {selectedTimeSlotIndex: this.props.showTimeslot? 0:undefined }
-		this.changeDay = this.changeDay.bind(this)
-		this.changeTimeSlot = this.changeTimeSlot.bind(this)
-	}
+  constructor(props) {
+    super(props)
+    this.state = { selectedTimeSlotIndex: this.props.showTimeslot ? 0 : undefined }
+    this.changeDay = this.changeDay.bind(this)
+    this.changeTimeSlot = this.changeTimeSlot.bind(this)
+  }
 
-	changeDay = (e, d) => {
-		e.preventDefault()
-		this.props.onChange(d.add(this.props.timeslot[this.state.selectedTimeSlotIndex].value, 'h'))
-	}
+  autoScrollOnce = top => {
+    // This function will auto scroll to current date at first
+    // Then it will do nothing when called
+    if (document.getElementById("calGrid")) {
+      document.getElementById("calGrid").scrollTo({ top: top, behavior: "smooth" })
+      this.autoScrollOnce = function() {}
+    }
+  }
 
-	changeTimeSlot = (e, i) => {
-		e.preventDefault()
-		this.setState({selectedTimeSlotIndex: i})
-		this.props.onChange(moment(this.props.selectedDate).startOf('day').add(this.props.timeslot[i].value, 'h'))
-	}
+  scrollByKey(event) {
+    // console.log(event.keyCode)
+    if (event.keyCode === 38) {
+      document.getElementById("calGrid").scrollTop -= 25
+    } else if (event.keyCode === 40) {
+      document.getElementById("calGrid").scrollTop += 25
+    }
+  }
+  componentDidMount() {
+    document.addEventListener("keydown", this.scrollByKey, false)
+  }
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.scrollByKey, false)
+  }
 
-	render() {
-		const c = this.props.i18n
-		return (
-			<LocaleApiSubscriber>
-			{c=>(
-				<DatePickerWrapper>
-					<WeekHeader>
-						<WeekHeaderUnit color="Red">{c.t('Sun')}</WeekHeaderUnit>
-						<WeekHeaderUnit>{c.t('Mon')}</WeekHeaderUnit>
-						<WeekHeaderUnit>{c.t('Tue')}</WeekHeaderUnit>
-						<WeekHeaderUnit>{c.t('Wed')}</WeekHeaderUnit>
-						<WeekHeaderUnit>{c.t('Thu')}</WeekHeaderUnit>
-						<WeekHeaderUnit>{c.t('Fri')}</WeekHeaderUnit>
-						<WeekHeaderUnit>{c.t('Sat')}</WeekHeaderUnit>
-					</WeekHeader>
-					<Grid
-						cellRenderer={p =>
-							dayRenderer(p, {
-								onClick: this.changeDay,
-								c: c,
-								customFormat: this.props.customFormat,
-								disable: this.props.disable,
-								selectedDate: this.props.selectedDate
-							})
-						}
-						columnCount={7}
-						columnWidth={w}
-						height={h * 5}
-						rowCount={52}
-						rowHeight={h}
-						width={w * 7}
-						style={{ paddingRight: 19, boxSizing: "content-box", scrollBehavior: "smooth"}}
-						onScroll={({scrollTop})=>console.log(moment(firstDay).add(Math.round(scrollTop/h), 'w').format('MMM'))}
-					/>
+  changeDay = (e, d) => {
+    e.preventDefault()
+    this.props.onChange(d.add(this.props.timeslot[this.state.selectedTimeSlotIndex].value, "h"))
+  }
 
-					{!!this.props.showTimeslot && (
-						<TimeSlotWrapper>
-							<RadioSelect
-								value={this.state.selectedTimeSlotIndex}
-								onChange={this.changeTimeSlot}
-								options={this.props.timeslot}
-							/>
+  changeTimeSlot = (e, i) => {
+    e.preventDefault()
+    this.setState({ selectedTimeSlotIndex: i })
+    this.props.onChange(
+      moment(this.props.selectedDate)
+        .startOf("day")
+        .add(this.props.timeslot[i].value, "h")
+    )
+  }
 
-					{/* <TSelect onChange={e=> this.changeTimeSlot(e, )}>
+  render() {
+    const c = this.props.i18n
+    return (
+      <LocaleApiSubscriber>
+        {c => (
+          <DatePickerWrapper>
+            <WeekHeader>
+              <WeekHeaderUnit color="Red">{c.t("Sun")}</WeekHeaderUnit>
+              <WeekHeaderUnit>{c.t("Mon")}</WeekHeaderUnit>
+              <WeekHeaderUnit>{c.t("Tue")}</WeekHeaderUnit>
+              <WeekHeaderUnit>{c.t("Wed")}</WeekHeaderUnit>
+              <WeekHeaderUnit>{c.t("Thu")}</WeekHeaderUnit>
+              <WeekHeaderUnit>{c.t("Fri")}</WeekHeaderUnit>
+              <WeekHeaderUnit>{c.t("Sat")}</WeekHeaderUnit>
+            </WeekHeader>
+            <Grid
+              cellRenderer={p =>
+                dayRenderer(p, {
+                  onClick: this.changeDay,
+                  c: c,
+                  customFormat: this.props.customFormat,
+                  disable: this.props.disable,
+                  selectedDate: this.props.selectedDate,
+                  autoScrollOnce: this.autoScrollOnce
+                })
+              }
+              id="calGrid"
+              ref={this.calendarRef}
+              columnCount={7}
+              columnWidth={w}
+              height={h * 5}
+              rowCount={52}
+              rowHeight={h}
+              width={w * 7}
+              style={{ paddingRight: 19, boxSizing: "content-box" }}
+              // onScroll={({ scrollTop }) =>
+              //   console.log(
+              //     moment(firstDay)
+              //       .add(Math.round(scrollTop / h), "w")
+              //       .format("MMM")
+              //   )
+              // }
+            />
+
+            {!!this.props.showTimeslot && (
+              <TimeSlotWrapper>
+                <RadioSelect
+                  value={this.state.selectedTimeSlotIndex}
+                  onChange={this.changeTimeSlot}
+                  options={this.props.timeslot}
+                />
+
+                {/* <TSelect onChange={e=> this.changeTimeSlot(e, )}>
 							<option value="" disabled selected>
 								Choose a timeslot
 							</option>
@@ -85,13 +125,13 @@ export class DateTimePicker extends React.Component {
 								<option value={slot.offset}>{slot.display}</option>
 							))}
 							</TSelect> */}
-						</TimeSlotWrapper>
-					)}
-				</DatePickerWrapper>
-			)}
-			</LocaleApiSubscriber>
-		)
-	}
+              </TimeSlotWrapper>
+            )}
+          </DatePickerWrapper>
+        )}
+      </LocaleApiSubscriber>
+    )
+  }
 }
 
 const TimeSlotWrapper = styled.div`
@@ -141,6 +181,7 @@ const dayRenderer = (
   }
 
   const isDisabled = disable(thisDay)
+
   return (
     <DayDiv
       key={key}
@@ -148,7 +189,8 @@ const dayRenderer = (
       disable={isDisabled}
       onClick={e => (isDisabled ? undefined : onClick(e, thisDay))}
       style={style}
-      selected={thisDay.isSame(props.selectedDate, 'day')}
+      selected={thisDay.isSame(props.selectedDate, "day")}
+      autoScrollOnce={props.autoScrollOnce}
     >
       {displayDay}
     </DayDiv>
@@ -157,8 +199,12 @@ const dayRenderer = (
 
 const DayDiv = styled.div`
   ${({ customFormat }) => (customFormat ? customFormat : "")}
-  ${({ selected }) =>
-    selected && "background-color: #fd4676; color: white; font-weight: bold"}	
+  ${props => {
+    if (props.selected) {
+      props.autoScrollOnce(props.style.top)
+      return props.selected && "background-color: #fd4676; color: white; font-weight: bold"
+    }
+  }}
   text-align: center;
   cursor: ${({ disable }) => (disable ? "no-drop" : "pointer")};
   font-size: 0.9rem;

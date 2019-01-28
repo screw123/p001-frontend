@@ -8,17 +8,17 @@ import {LocaleApiSubscriber} from '../stateContainer/LocaleApi.js'
 
 
 const firstDay = moment().date(1).day(0).startOf("date")
-const w = 40, h = 40
+const w = 31, h = 40
 
 const DatePickerWrapper = styled.div`
-  width: ${w * 7}px;
+  width: ${w * 7 + 8}px;
   overflow: hidden;
 `
 
 export class DateTimePicker extends React.Component {
 	constructor(props) {
 		super(props)
-		this.state = {selectedTimeSlotIndex: this.props.showTimeSlot? 0:undefined }
+		this.state = {selectedTimeSlotIndex: this.props.showTimeslot? 0:undefined }
 		this.changeDay = this.changeDay.bind(this)
 		this.changeTimeSlot = this.changeTimeSlot.bind(this)
 	}
@@ -65,7 +65,8 @@ export class DateTimePicker extends React.Component {
 						rowCount={52}
 						rowHeight={h}
 						width={w * 7}
-						style={{ paddingRight: 21, boxSizing: "content-box", scrollBehavior: "smooth"}}
+						style={{ paddingRight: 19, boxSizing: "content-box", scrollBehavior: "smooth"}}
+						onScroll={({scrollTop})=>console.log(moment(firstDay).add(Math.round(scrollTop/h), 'w').format('MMM'))}
 					/>
 
 					{!!this.props.showTimeslot && (
@@ -110,6 +111,7 @@ const WeekHeaderUnit = styled.div`
 	${({ color }) => (color ? "color: " + color + ";" : "")}
 	width: ${w}px;
 	text-align: center
+	font-size: 0.8rem;
 `
 
 const dayRenderer = (

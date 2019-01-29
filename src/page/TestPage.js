@@ -31,7 +31,7 @@ import moment from "moment"
 class TestPage extends React.Component {
 	constructor(props) {
 		super(props)
-		this.state = { selectedDate: moment() }
+		this.state = { selectedDate: moment().add(1,'days') }
 		this.updateDate = this.updateDate.bind(this)
 	}
 
@@ -77,7 +77,7 @@ class TestPage extends React.Component {
 					]}
 				/>
 				<p>
-					{this.state.selectedDate.format("YYYY-MM-DD HH:MM")}
+					{this.state.selectedDate.format("YYYY-MM-DD HH:mm")}
 				</p>
 			</div>
 		)

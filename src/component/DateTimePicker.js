@@ -26,14 +26,14 @@ export class DateTimePicker extends React.Component {
     this.changeTimeSlot = this.changeTimeSlot.bind(this)
   }
 
-  autoScrollOnce = top => {
+/*   autoScrollOnce = top => {
     // This function will auto scroll to current date at first
     // Then it will do nothing when called
     if (document.getElementById("calGrid")) {
       document.getElementById("calGrid").scrollTo({ top: top, behavior: "smooth" })
       this.autoScrollOnce = function() {}
     }
-  }
+  } */
 
   scrollByKey(event) {
     // console.log(event.keyCode)
@@ -100,6 +100,7 @@ export class DateTimePicker extends React.Component {
               rowHeight={h}
               width={w * 7}
               style={{ paddingRight: 19, boxSizing: "content-box" }}
+              scrollToRow={moment().diff(firstDay, 'weeks')+2}
               // onScroll={({ scrollTop }) =>
               //   console.log(
               //     moment(firstDay)
@@ -201,7 +202,7 @@ const DayDiv = styled.div`
   ${({ customFormat }) => (customFormat ? customFormat : "")}
   ${props => {
     if (props.selected) {
-      props.autoScrollOnce(props.style.top)
+      
       return props.selected && "background-color: #fd4676; color: white; font-weight: bold"
     }
   }}
@@ -211,3 +212,4 @@ const DayDiv = styled.div`
 `
 
 export default DateTimePicker
+//props.autoScrollOnce(props.style.top)

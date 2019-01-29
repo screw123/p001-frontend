@@ -73,21 +73,3 @@ class QuotationPage extends React.Component {
 }
 
 export default QuotationPage
-
-
-/*{c.checkLogined() &&  
-    <DropDown field={{}} form={{}} valueList={
-        union(
-            (c.state.myself.accountOwn_id===null) ? 
-                [] : 
-                c.state.myself.accountOwn_id.map((v)=> {
-                    return {value: v._id, name: v.name}
-                }),
-            (c.state.myself.accountManage_id===null) ? 
-                [] :
-                c.state.myself.accountManage_id.map((v)=> {
-                    return {value: v._id, name: v.name}
-                })
-        )
-    } onChange={(e)=>this.changeAcct(e)}/>
-*/

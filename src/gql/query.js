@@ -586,4 +586,41 @@ export const getROById = gql`
         }
     }`
 
+export const getPickUpOrderInfo = gql`
+    query ($account_id: String!){
+        getAccountById(_id: $account_id) {
+            _id
+            address_id {
+                _id
+                addressType
+                legalName
+                streetAddress
+                addressRegion1
+                addressRegion2
+                addressCountry
+                telephone
+            }
+            defaultBillingAddress_id {
+                _id
+            }
+            defaultShippingAddress_id {
+                _id
+            }
+        }
+        getPickUpContainersByAccount(account_id: $account_id) {
+            _id
+            printId
+            userDefinedName
+        }
+    }
+`
+
+export const addPickUpOrderDraft = gql`
+    mutation ($account_id: String){
+        addPickUpOrderDraft(_id: $account_id) {
+            _id
+        }
+    }
+`
+
 export default {}

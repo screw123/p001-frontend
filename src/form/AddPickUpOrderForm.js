@@ -4,15 +4,17 @@ import { getPickUpOrderInfo, addPickUpOrderDraft } from '../gql/query.js'
 import { Formik, Field, FieldArray } from 'formik'
 import FormikForm, { TextField, FormButton, FormErr, FieldRow } from '../component/FormikForm.js'
 
+import SelectAddress from '../component/SelectAddress.js'
+
 import { ApolloProvider, Query, Mutation } from "react-apollo"
 import {BigLoadingScreen} from '../component/Loading.js'
 
 import parseApolloErr from '../util/parseErr.js'
 
-import merge from 'lodash/merge'
-import omit from 'lodash/omit'
+import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
 import pickBy from 'lodash/pickBy'
+import moment from 'moment'
 
 /*
 Prop list:
@@ -34,7 +36,7 @@ class AddPickUpOrderForm extends React.Component {
         return (
             <ApolloProvider client={g.getGqlClient()}>
                 <Query query={getPickUpOrderInfo} variables={{account_id: this.props.account_id}}>
-                {({ loading: queryLoading, error: queryErr, data, refetch }) => {
+                {({ loading: queryLoading, error: queryErr, data, refetch, networkStatus }) => {
                     if (queryLoading ) return( <BigLoadingScreen text={'Getting your best price...'}/> )
 
                     if (queryErr) {
@@ -42,16 +44,18 @@ class AddPickUpOrderForm extends React.Component {
                         return (<p>Error :(</p>)
                     }
 
-					console.log(data)
+                    console.log(data)
+                    const acct = data.getAccountById
+                    const containers = data.getPickUpContainersByAccount
                     return(
                         <Mutation mutation={addPickUpOrderDraft} errorPolicy="all">
                         {(mutate, {loading: mutateLoading, err: mutateErr})=>(
                             <Formik
                                 enableReinitialize={true}
                                 initialValues={{
-									billingAddress_id: null,
-									shippingAddress_id: null,
-									requestDatetime: null,
+									billingAddress: get(acct, 'defaultBillingAddress_id._id',null),
+									shippingAddress: get(acct, 'defaultShippingAddress_id._id',null),
+									requestDatetime: moment().add(1, 'd'),
 									containerList: []
                                 }}
                                 validate={ (values)=>{
@@ -65,6 +69,39 @@ class AddPickUpOrderForm extends React.Component {
                             >
                             {({ errors, isSubmitting, setFieldValue, dirty, touched, values, status }) => (
                                 <FormikForm>
+                                    <Field
+                                        name="billingAddress"
+                                        type="text"
+                                        component={SelectAddress}
+                                        label={c.t('Billing Address')}
+                                        placeholder={c.t('Please choose your billing address')}
+                                        account_id= {acct._id}
+                                        addresses={acct.address_id}
+                                        onChange={(v)=>setFieldValue('billingAddress', v._id)}
+                                        allowAddAddress={true}
+                                        onAddressUpdate={()=>refetch()}
+                                        multiSelect={false}
+                                        isLoading={networkStatus===4}
+                                        err={errors['billingAddress']}
+                                        defaultBillingAddress_id={get(acct, 'defaultBillingAddress_id._id',null)}
+                                    />
+                                    <Field
+                                        name="shippingAddress"
+                                        type="text"
+                                        component={SelectAddress}
+                                        label={c.t('Shipping Address')}
+                                        placeholder={c.t('Please choose your shipping address')}
+                                        account_id= {acct._id}
+                                        addresses={acct.address_id}
+                                        onChange={(v)=>setFieldValue('shippingAddress', v._id)}
+                                        allowAddAddress={true}
+                                        onAddressUpdate={()=>refetch()}
+                                        multiSelect={false}
+                                        isLoading={networkStatus===4}
+                                        err={errors['shippingAddress']}
+                                        defaultShippingAddress_id={get(acct, 'defaultShippingAddress_id._id',null)}
+                                    />
+                                    
                                     <p>Total amount: {values.totalAmt}</p>
                                     <FormErr>{status}</FormErr>
                                     <FieldRow>

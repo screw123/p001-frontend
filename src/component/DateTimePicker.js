@@ -91,4 +91,19 @@ const DaySpan = styled.div`
 	cursor: ${({disable})=>disable? 'no-drop':'pointer'};
 `
 
+export const DateTimePickerFormik = ({form, field, ...props}) => {
+	return (
+		<DateTimePicker
+			onChange={form.setFieldValue}
+			disable={props.disable}
+			customFormat={props.customFormat}
+			selectedDate={field.value}
+			showTimeslot={props.showTimeslot}
+			timeslot={props.timeslot}
+		/>
+	)
+}
+
+
+
 export default DateTimePicker

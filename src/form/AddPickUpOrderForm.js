@@ -5,6 +5,7 @@ import { Formik, Field, FieldArray } from 'formik'
 import FormikForm, { TextField, FormButton, FormErr, FieldRow } from '../component/FormikForm.js'
 
 import SelectAddress from '../component/SelectAddress.js'
+import ContainerList from '../component/ContainerList.js'
 
 import { ApolloProvider, Query, Mutation } from "react-apollo"
 import {BigLoadingScreen} from '../component/Loading.js'
@@ -46,7 +47,8 @@ class AddPickUpOrderForm extends React.Component {
 
                     console.log(data)
                     const acct = data.getAccountById
-                    const containers = data.getPickUpContainersByAccount
+                    const containers = data.getPickUpContainersByAccount.containers
+                    const SKU = data.getPickUpContainersByAccount.SKU
                     return(
                         <Mutation mutation={addPickUpOrderDraft} errorPolicy="all">
                         {(mutate, {loading: mutateLoading, err: mutateErr})=>(
@@ -101,7 +103,10 @@ class AddPickUpOrderForm extends React.Component {
                                         err={errors['shippingAddress']}
                                         defaultShippingAddress_id={get(acct, 'defaultShippingAddress_id._id',null)}
                                     />
-                                    
+                                    <ContainerList
+                                        containerList={containers}
+                                        SKUInfo={SKU}
+                                    />
                                     <p>Total amount: {values.totalAmt}</p>
                                     <FormErr>{status}</FormErr>
                                     <FieldRow>

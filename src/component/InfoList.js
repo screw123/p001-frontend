@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { AutoSizer, List, WindowScroller  } from 'react-virtualized';
-import {Section} from './BasicComponents'
+import {Section} from './BasicComponents.js'
 
 const DefaultListComponent = (a, data) => (
     <div key={a.key} style={a.style}>
@@ -20,12 +20,10 @@ const OuterWrapper = styled.div`
     overflow: hidden;
     min-width: 300px;
 `
-const ContentRow = styled.div`
-    grid-column: content / end;
-    overflow: visible;
-`
 
 const ContentDiv = styled.div`
+    grid-column: content / end;
+    overflow: visible;
     display: ${({occupyFullRow})=>occupyFullRow? 'block':'inline-block'};
     cursor: pointer;
     border: Silver;
@@ -33,19 +31,11 @@ const ContentDiv = styled.div`
     border-style: ${({showTopBorder})=>showTopBorder?'solid':'hidden'} hidden ${({showBottomBorder})=>showBottomBorder?'solid':'hidden'} hidden;
 `
 
-const CheckboxDiv = styled.div`
-    grid-column: checkbox / content;
-    overflow: visible;
-`
-
-export const InfoListStandardLine = ({key1, style, checkbox, content, checkboxOnClick, contentOnClick, occupyFullRow, showBottomBorder, ...props}) => {
+export const InfoListStandardLine = ({key1, style, content, contentOnClick, occupyFullRow, showBottomBorder, ...props}) => {
     return(<OuterWrapper key={key1} style={style} {...props}>
-        {checkbox && <CheckboxDiv onClick={checkboxOnClick}>
-            {checkbox}
-        </CheckboxDiv>}
-        <ContentRow><ContentDiv onClick={contentOnClick} occupyFullRow={occupyFullRow} showBottomBorder={showBottomBorder}>
+        <ContentDiv onClick={contentOnClick} occupyFullRow={occupyFullRow} showBottomBorder={showBottomBorder}>
             {content}
-        </ContentDiv></ContentRow>
+        </ContentDiv>
     </OuterWrapper>)
 }
 

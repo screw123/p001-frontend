@@ -608,9 +608,20 @@ export const getPickUpOrderInfo = gql`
             }
         }
         getPickUpContainersByAccount(account_id: $account_id) {
-            _id
-            printId
-            userDefinedName
+            containers {
+                _id
+                printId
+                userDefinedName
+                containerType_id {
+                    _id
+                }
+            }
+            SKU {
+                _id
+                shortCode
+                name
+                iconPicURL
+            }
         }
     }
 `

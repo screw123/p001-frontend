@@ -96,7 +96,6 @@ export default class ROListForm extends React.Component {
             <InfoListStandardLine
                 occupyFullRow={true}
                 multiSelect={multiSelect}
-                key={rowObj.key}
                 key1={rowObj.key}
                 style={rowObj.style}
                 showBottomBorder={true}

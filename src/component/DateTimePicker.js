@@ -11,7 +11,7 @@ const firstDay = moment()
   .day(0)
   .startOf("date")
 const w = 31,
-  h = 45
+  h = 50
 
 const DatePickerWrapper = styled.div`
   width: ${w * 7 + 18}px;
@@ -221,20 +221,30 @@ const dayRenderer = (
         displayDay
       ) : (
         <React.Fragment>
-          {displayDay} <br /> <b>{monthMapper[thisDay.month()]} </b>
+          <DayItem>{monthMapper[thisDay.month()]}</DayItem>
+          {displayDay}
+          <DayItem>{thisDay.year()}</DayItem>
         </React.Fragment>
       )}
     </DayDiv>
   )
 }
 
+const DayItem = styled.p`
+  margin: 0;
+  font-size: 0.5rem;
+  font-weight: bold;
+`
+
 const DayDiv = styled.div`
   ${({ customFormat }) => (customFormat ? customFormat : "")}
-  ${({ selected }) =>
-    selected && "background-color: #fd4676; color: white; font-weight: bold"}
-  text-align: center;
+  ${({ selected }) => selected && "background-color: #fd4676; color: white; font-weight: bold"}
   cursor: ${({ disable }) => (disable ? "no-drop" : "pointer")};
-  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
 `
 
 export default DateTimePicker

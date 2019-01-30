@@ -16,6 +16,7 @@ const w = 31,
 const DatePickerWrapper = styled.div`
   width: ${w * 7 + 8}px;
   overflow: hidden;
+  position: relative;
 `
 
 export class DateTimePicker extends React.Component {
@@ -26,7 +27,7 @@ export class DateTimePicker extends React.Component {
     this.changeTimeSlot = this.changeTimeSlot.bind(this)
   }
 
-/*   autoScrollOnce = top => {
+  /*   autoScrollOnce = top => {
     // This function will auto scroll to current date at first
     // Then it will do nothing when called
     if (document.getElementById("calGrid")) {
@@ -98,9 +99,9 @@ export class DateTimePicker extends React.Component {
               height={h * 5}
               rowCount={52}
               rowHeight={h}
-              width={w * 7}
-              style={{ paddingRight: 19, boxSizing: "content-box" }}
-              scrollToRow={moment().diff(firstDay, 'weeks')+2}
+              width={w * 7 + 8}
+              // style={{ position: "relative" }}
+              scrollToRow={moment().diff(firstDay, "weeks") + 2}
               // onScroll={({ scrollTop }) =>
               //   console.log(
               //     moment(firstDay)
@@ -109,6 +110,7 @@ export class DateTimePicker extends React.Component {
               //   )
               // }
             />
+            <ScrollHider />
 
             {!!this.props.showTimeslot && (
               <TimeSlotWrapper>
@@ -125,7 +127,7 @@ export class DateTimePicker extends React.Component {
 							{this.props.timeslot.map(slot => (
 								<option value={slot.offset}>{slot.display}</option>
 							))}
-							</TSelect> */}
+              </TSelect> */}
               </TimeSlotWrapper>
             )}
           </DatePickerWrapper>
@@ -134,6 +136,15 @@ export class DateTimePicker extends React.Component {
     )
   }
 }
+
+const ScrollHider = styled.div`
+  position: absolute;
+  width: 8px;
+  height: 75%;
+  top: 0;
+  right: 0;
+  background: white;
+`
 
 const TimeSlotWrapper = styled.div`
   margin: 10px 0px;
@@ -202,7 +213,6 @@ const DayDiv = styled.div`
   ${({ customFormat }) => (customFormat ? customFormat : "")}
   ${props => {
     if (props.selected) {
-      
       return props.selected && "background-color: #fd4676; color: white; font-weight: bold"
     }
   }}

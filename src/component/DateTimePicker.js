@@ -11,10 +11,10 @@ const firstDay = moment()
   .day(0)
   .startOf("date")
 const w = 31,
-  h = 40
+  h = 45
 
 const DatePickerWrapper = styled.div`
-  width: ${w * 7 + 8}px;
+  width: ${w * 7 + 18}px;
   overflow: hidden;
   position: relative;
 `
@@ -99,8 +99,7 @@ export class DateTimePicker extends React.Component {
               height={h * 5}
               rowCount={52}
               rowHeight={h}
-              width={w * 7 + 8}
-              // style={{ position: "relative" }}
+              width={w * 7 + 18}
               scrollToRow={moment().diff(firstDay, "weeks") + 2}
               // onScroll={({ scrollTop }) =>
               //   console.log(
@@ -139,8 +138,8 @@ export class DateTimePicker extends React.Component {
 
 const ScrollHider = styled.div`
   position: absolute;
-  width: 8px;
-  height: 75%;
+  width: 18px;
+  height: 80%;
   top: 0;
   right: 0;
   background: white;
@@ -193,6 +192,20 @@ const dayRenderer = (
   }
 
   const isDisabled = disable(thisDay)
+  const monthMapper = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ]
 
   return (
     <DayDiv
@@ -204,18 +217,21 @@ const dayRenderer = (
       selected={thisDay.isSame(props.selectedDate, "day")}
       autoScrollOnce={props.autoScrollOnce}
     >
-      {displayDay}
+      {thisDay.date() !== 1 ? (
+        displayDay
+      ) : (
+        <React.Fragment>
+          {displayDay} <br /> <b>{monthMapper[thisDay.month()]} </b>
+        </React.Fragment>
+      )}
     </DayDiv>
   )
 }
 
 const DayDiv = styled.div`
   ${({ customFormat }) => (customFormat ? customFormat : "")}
-  ${props => {
-    if (props.selected) {
-      return props.selected && "background-color: #fd4676; color: white; font-weight: bold"
-    }
-  }}
+  ${({ selected }) =>
+    selected && "background-color: #fd4676; color: white; font-weight: bold"}
   text-align: center;
   cursor: ${({ disable }) => (disable ? "no-drop" : "pointer")};
   font-size: 0.9rem;

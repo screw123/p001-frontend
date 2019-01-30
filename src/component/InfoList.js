@@ -40,6 +40,11 @@ export const InfoListStandardLine = ({key1, style, content, contentOnClick, occu
 }
 
 class InfoList extends React.Component {
+/*
+selected
+*/
+
+
     constructor(props) {
         super(props)
     }
@@ -102,7 +107,7 @@ class InfoListChild extends React.Component {
             }}
             rowRenderer={a => {
                 if (this.props.listComponent) {
-                    return this.props.listComponent({ rowObj: a, data: this.props.data[a.index], multiSelect: this.props.multiSelect} )
+                    return this.props.listComponent({ rowObj: a, data: this.props.data[a.index], selected: this.props.selected} )
                 }
                 return DefaultListComponent({rowObj: a, data: this.props.data[a.index]} )
             }}

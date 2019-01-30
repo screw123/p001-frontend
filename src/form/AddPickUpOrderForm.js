@@ -9,7 +9,7 @@ import ContainerList from '../component/ContainerList.js'
 
 import { ApolloProvider, Query, Mutation } from "react-apollo"
 import {BigLoadingScreen} from '../component/Loading.js'
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import parseApolloErr from '../util/parseErr.js'
 
 import get from 'lodash/get'

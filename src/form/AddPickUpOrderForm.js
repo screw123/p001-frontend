@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import parseApolloErr from '../util/parseErr.js'
 
 import get from 'lodash/get'
+
 import isEmpty from 'lodash/isEmpty'
 import pickBy from 'lodash/pickBy'
 import moment from 'moment'
@@ -29,7 +30,7 @@ class AddPickUpOrderForm extends React.Component {
     constructor(props) {
         super(props)
     }
-    
+
     render(){ 
         const g = this.props.login
         const c = this.props.i18n
@@ -106,6 +107,8 @@ class AddPickUpOrderForm extends React.Component {
                                     <ContainerList
                                         containerList={containers}
                                         SKUInfo={SKU}
+                                        updateSelected={a=> setFieldValue('containerList', a)}
+                                        selected={values['containerList']}
                                     />
                                     <p>Total amount: {values.totalAmt}</p>
                                     <FormErr>{status}</FormErr>

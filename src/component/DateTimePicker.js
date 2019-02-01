@@ -1,8 +1,7 @@
 import React from "react"
 import moment from "moment"
 import styled from "styled-components"
-import { Grid, defaultCellRangeRenderer } from "react-virtualized"
-import { Section } from "./BasicComponents"
+import { Grid } from "react-virtualized"
 import { RadioSelect } from "./RadioSelect.js"
 import { LocaleApiSubscriber } from "../stateContainer/LocaleApi.js"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -39,7 +38,6 @@ export class DateTimePicker extends React.Component {
   } */
 
   onUpArrowClick = () => {
-    console.log("clicked")
     document.getElementById("calGrid").scrollTop += 50
   }
   onDownArrowClick = () => {
@@ -74,6 +72,7 @@ export class DateTimePicker extends React.Component {
               </DHTop>
               <DHBottom>{this.props.selectedDate.locale("en").format("MMMM Do")} </DHBottom>
             </DateHeader>
+
             <DateHeaderCopy toggleHeader={this.props.toggleHeader}>
               <DHTop>
                 <span>{this.props.selectedDate.format("YYYY")}</span>
@@ -81,6 +80,7 @@ export class DateTimePicker extends React.Component {
               </DHTop>
               <DHBottom>{this.props.selectedDate.locale("en").format("MMMM Do")} </DHBottom>
             </DateHeaderCopy>
+
             <WeekHeader>
               <WeekHeaderUnit color="Red">{c.t("Sun")}</WeekHeaderUnit>
               <WeekHeaderUnit>{c.t("Mon")}</WeekHeaderUnit>
@@ -90,6 +90,7 @@ export class DateTimePicker extends React.Component {
               <WeekHeaderUnit>{c.t("Fri")}</WeekHeaderUnit>
               <WeekHeaderUnit>{c.t("Sat")}</WeekHeaderUnit>
             </WeekHeader>
+
             <Grid
               cellRenderer={p =>
                 dayRenderer(p, {
@@ -119,6 +120,7 @@ export class DateTimePicker extends React.Component {
               //   )
               // }
             />
+
             <ScrollHider>
               <IconBar>
                 <IconWrapper onClick={e => this.onUpArrowClick()}>

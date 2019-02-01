@@ -46,7 +46,6 @@ class TestPage extends React.Component {
     return (
       <div>
         <DateTimePicker
-          toggleHeader={this.state.toggleHeader}
           onChange={this.updateDate}
           disable={d => d.isBefore(moment())}
           customFormat={[
@@ -76,6 +75,8 @@ class TestPage extends React.Component {
             { label: "Afternoon: 1pm-6pm", value: 13 },
             { label: "Night: 6pm-10pm", value: 18 }
           ]}
+          // props for header animation( by swithcing position between headers)
+          toggleHeader={this.state.toggleHeader}
         />
         <p>{this.state.selectedDate.format("YYYY-MM-DD HH:mm")}</p>
       </div>

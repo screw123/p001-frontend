@@ -5,6 +5,8 @@ import { Grid, defaultCellRangeRenderer } from "react-virtualized"
 import { Section } from "./BasicComponents"
 import { RadioSelect } from "./RadioSelect.js"
 import { LocaleApiSubscriber } from "../stateContainer/LocaleApi.js"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faArrowAltCircleUp, faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons"
 
 const firstDay = moment()
   .date(1)
@@ -36,19 +38,12 @@ export class DateTimePicker extends React.Component {
     }
   } */
 
-  scrollByKey(event) {
-    // console.log(event.keyCode)
-    if (event.keyCode === 38) {
-      document.getElementById("calGrid").scrollTop -= 25
-    } else if (event.keyCode === 40) {
-      document.getElementById("calGrid").scrollTop += 25
-    }
+  onUpArrowClick = () => {
+    console.log("clicked")
+    document.getElementById("calGrid").scrollTop += 50
   }
-  componentDidMount() {
-    document.addEventListener("keydown", this.scrollByKey, false)
-  }
-  componentWillUnmount() {
-    document.removeEventListener("keydown", this.scrollByKey, false)
+  onDownArrowClick = () => {
+    document.getElementById("calGrid").scrollTop -= 50
   }
 
   changeDay = (e, d) => {
@@ -72,6 +67,20 @@ export class DateTimePicker extends React.Component {
       <LocaleApiSubscriber>
         {c => (
           <DatePickerWrapper>
+            <DateHeader toggleHeader={this.props.toggleHeader}>
+              <DHTop>
+                <span>{this.props.selectedDate.format("YYYY")}</span>
+                <span>{this.props.selectedDate.locale("en").format("dddd")}</span>
+              </DHTop>
+              <DHBottom>{this.props.selectedDate.locale("en").format("MMMM Do")} </DHBottom>
+            </DateHeader>
+            <DateHeaderCopy toggleHeader={this.props.toggleHeader}>
+              <DHTop>
+                <span>{this.props.selectedDate.format("YYYY")}</span>
+                <span>{this.props.selectedDate.locale("en").format("dddd")}</span>
+              </DHTop>
+              <DHBottom>{this.props.selectedDate.locale("en").format("MMMM Do")} </DHBottom>
+            </DateHeaderCopy>
             <WeekHeader>
               <WeekHeaderUnit color="Red">{c.t("Sun")}</WeekHeaderUnit>
               <WeekHeaderUnit>{c.t("Mon")}</WeekHeaderUnit>
@@ -100,6 +109,7 @@ export class DateTimePicker extends React.Component {
               rowCount={52}
               rowHeight={h}
               width={w * 7 + 18}
+              style={{ scrollBehavior: "smooth" }}
               scrollToRow={moment().diff(firstDay, "weeks") + 2}
               // onScroll={({ scrollTop }) =>
               //   console.log(
@@ -109,7 +119,16 @@ export class DateTimePicker extends React.Component {
               //   )
               // }
             />
-            <ScrollHider />
+            <ScrollHider>
+              <IconBar>
+                <IconWrapper onClick={e => this.onUpArrowClick()}>
+                  <UpArrow />
+                </IconWrapper>
+                <IconWrapper onClick={e => this.onDownArrowClick()}>
+                  <DownArrow />
+                </IconWrapper>
+              </IconBar>
+            </ScrollHider>
 
             {!!this.props.showTimeslot && (
               <TimeSlotWrapper>
@@ -136,14 +155,59 @@ export class DateTimePicker extends React.Component {
   }
 }
 
+const DateHeader = styled.div`
+  height: ${h}px;
+  width: ${w * 7}px;
+  position: absolute;
+  margin-right: 18px;
+  color: white;
+  background: #fd4676;
+  transform: ${({ toggleHeader }) => (toggleHeader ? "translateX(0%)" : "translateX(100%)")};
+  transition: transform 250ms ease;
+`
+const DateHeaderCopy = styled.div`
+  height: ${h}px;
+  width: ${w * 7}px;
+  position: absolute;
+  margin-right: 18px;
+  color: white;
+  background: #fd4676;
+  transform: ${({ toggleHeader }) => (toggleHeader ? "translateX(-100%)" : "translateX(0%)")};
+  transition: transform 250ms ease;
+`
+const DHTop = styled.div`
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+`
+const DHBottom = styled.div`
+  display: flex;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: bold;
+`
+
 const ScrollHider = styled.div`
   position: absolute;
   width: 18px;
-  height: 80%;
+  height: ${h * 6.55}px;
   top: 0;
   right: 0;
   background: white;
 `
+const IconBar = styled.div`
+  margin-top: ${h * 1.5}px;
+  height: ${h * 5}px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+`
+const IconWrapper = styled.div`
+  color: #fd4676;
+`
+const UpArrow = styled(() => <FontAwesomeIcon icon={faArrowAltCircleUp} />)``
+const DownArrow = styled(() => <FontAwesomeIcon icon={faArrowAltCircleDown} />)``
 
 const TimeSlotWrapper = styled.div`
   margin: 10px 0px;
@@ -152,10 +216,13 @@ const TSelect = styled.select``
 
 const WeekHeader = styled.div`
   width: ${w * 7}px;
+  height: ${h / 2}px;
+  margin-top: ${h}px;
   box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(${w}px, 1fr));
   cursor: default;
+  background: wheat;
 `
 
 const WeekHeaderUnit = styled.div`

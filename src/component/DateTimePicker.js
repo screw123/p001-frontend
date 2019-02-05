@@ -23,7 +23,10 @@ const DatePickerWrapper = styled.div`
 export class DateTimePicker extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { selectedTimeSlotIndex: this.props.showTimeslot ? 0 : undefined }
+    this.state = {
+      selectedTimeSlotIndex: this.props.showTimeslot ? 0 : undefined,
+      toggleHeader: true
+    }
     this.changeDay = this.changeDay.bind(this)
     this.changeTimeSlot = this.changeTimeSlot.bind(this)
   }
@@ -38,14 +41,15 @@ export class DateTimePicker extends React.Component {
   } */
 
   onUpArrowClick = () => {
-    document.getElementById("calGrid").scrollTop += 50
+    document.getElementById("calGrid").scrollTop += h * 4
   }
   onDownArrowClick = () => {
-    document.getElementById("calGrid").scrollTop -= 50
+    document.getElementById("calGrid").scrollTop -= h * 4
   }
 
   changeDay = (e, d) => {
     e.preventDefault()
+    this.setState({ toggleHeader: !this.state.toggleHeader })
     this.props.onChange(d.add(this.props.timeslot[this.state.selectedTimeSlotIndex].value, "h"))
   }
 
@@ -65,21 +69,13 @@ export class DateTimePicker extends React.Component {
       <LocaleApiSubscriber>
         {c => (
           <DatePickerWrapper>
-            <DateHeader toggleHeader={this.props.toggleHeader}>
+            <DateHeader toggleHeader={this.state.toggleHeader}>
               <DHTop>
                 <span>{this.props.selectedDate.format("YYYY")}</span>
                 <span>{this.props.selectedDate.locale("en").format("dddd")}</span>
               </DHTop>
               <DHBottom>{this.props.selectedDate.locale("en").format("MMMM Do")} </DHBottom>
             </DateHeader>
-
-            <DateHeaderCopy toggleHeader={this.props.toggleHeader}>
-              <DHTop>
-                <span>{this.props.selectedDate.format("YYYY")}</span>
-                <span>{this.props.selectedDate.locale("en").format("dddd")}</span>
-              </DHTop>
-              <DHBottom>{this.props.selectedDate.locale("en").format("MMMM Do")} </DHBottom>
-            </DateHeaderCopy>
 
             <WeekHeader>
               <WeekHeaderUnit color="Red">{c.t("Sun")}</WeekHeaderUnit>
@@ -124,10 +120,10 @@ export class DateTimePicker extends React.Component {
             <ScrollHider>
               <IconBar>
                 <IconWrapper onClick={e => this.onUpArrowClick()}>
-                  <UpArrow />
+                  <DownArrow />
                 </IconWrapper>
                 <IconWrapper onClick={e => this.onDownArrowClick()}>
-                  <DownArrow />
+                  <UpArrow />
                 </IconWrapper>
               </IconBar>
             </ScrollHider>
@@ -159,26 +155,16 @@ export class DateTimePicker extends React.Component {
 
 const DateHeader = styled.div`
   height: ${h}px;
-  width: ${w * 7}px;
+  width: 100%;
   position: absolute;
-  margin-right: 18px;
-  color: white;
-  background: #fd4676;
-  transform: ${({ toggleHeader }) => (toggleHeader ? "translateX(0%)" : "translateX(100%)")};
-  transition: transform 250ms ease;
+  color: ${({ toggleHeader }) => (toggleHeader ? "white" : "#fd4676")};
+  background: ${({ toggleHeader }) => (toggleHeader ? "#fd4676" : "white")};
+  transition: all 250ms linear;
 `
-const DateHeaderCopy = styled.div`
-  height: ${h}px;
-  width: ${w * 7}px;
-  position: absolute;
-  margin-right: 18px;
-  color: white;
-  background: #fd4676;
-  transform: ${({ toggleHeader }) => (toggleHeader ? "translateX(-100%)" : "translateX(0%)")};
-  transition: transform 250ms ease;
-`
+
 const DHTop = styled.div`
   display: flex;
+  padding: 3px 5px 0px;
   justify-content: space-between;
   font-size: 0.8rem;
 `
@@ -192,14 +178,13 @@ const DHBottom = styled.div`
 const ScrollHider = styled.div`
   position: absolute;
   width: 18px;
-  height: ${h * 6.55}px;
-  top: 0;
+  height: ${h * 5}px;
+  top: ${h * 1.5}px;
   right: 0;
   background: white;
 `
 const IconBar = styled.div`
-  margin-top: ${h * 1.5}px;
-  height: ${h * 5}px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -224,7 +209,6 @@ const WeekHeader = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(${w}px, 1fr));
   cursor: default;
-  background: wheat;
 `
 
 const WeekHeaderUnit = styled.div`

@@ -31,12 +31,12 @@ import moment from "moment"
 class TestPage extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { selectedDate: moment().add(1, "days"), toggleHeader: true }
+    this.state = { selectedDate: moment().add(1, "days") }
     this.updateDate = this.updateDate.bind(this)
   }
 
   updateDate = d => {
-    this.setState({ selectedDate: d, toggleHeader: !this.state.toggleHeader })
+    this.setState({ selectedDate: d })
   }
 
   render() {
@@ -75,8 +75,6 @@ class TestPage extends React.Component {
             { label: "Afternoon: 1pm-6pm", value: 13 },
             { label: "Night: 6pm-10pm", value: 18 }
           ]}
-          // props for header animation( by swithcing position between headers)
-          toggleHeader={this.state.toggleHeader}
         />
         <p>{this.state.selectedDate.format("YYYY-MM-DD HH:mm")}</p>
       </div>

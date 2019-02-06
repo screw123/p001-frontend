@@ -11,7 +11,7 @@ const firstDay = moment()
   .date(1)
   .day(0)
   .startOf("date")
-const w = 31,
+const w = 29,
   h = 50
 
 const DatePickerWrapper = styled.div`
@@ -25,10 +25,13 @@ export class DateTimePicker extends React.Component {
     super(props)
     this.state = {
       selectedTimeSlotIndex: this.props.showTimeslot ? 0 : undefined,
-      toggleHeader: true
+      scrollTop: 0
     }
     this.changeDay = this.changeDay.bind(this)
     this.changeTimeSlot = this.changeTimeSlot.bind(this)
+    this.onUpArrowClick = this.onUpArrowClick.bind(this)
+    this.onDownArrowClick = this.onDownArrowClick.bind(this)
+    this.setScrollTop = this.setScrollTop.bind(this)
   }
 
   /*   autoScrollOnce = top => {
@@ -40,11 +43,13 @@ export class DateTimePicker extends React.Component {
     }
   } */
 
+  setScrollTop = (i) => this.setState({scrollTop: i})
+
   onUpArrowClick = () => {
-    document.getElementById("calGrid").scrollTop += h * 4
+    this.setState(prevState=> ({scrollTop: Math.max(prevState.scrollTop-4*h, 0)}))
   }
   onDownArrowClick = () => {
-    document.getElementById("calGrid").scrollTop -= h * 4
+    this.setState(prevState=> ({scrollTop: Math.min(prevState.scrollTop+4*h, 47*h)}))
   }
 
   changeDay = (e, d) => {
@@ -72,9 +77,8 @@ export class DateTimePicker extends React.Component {
             <DateHeader toggleHeader={this.state.toggleHeader}>
               <DHTop>
                 <span>{this.props.selectedDate.format("YYYY")}</span>
-                <span>{this.props.selectedDate.locale("en").format("dddd")}</span>
               </DHTop>
-              <DHBottom>{this.props.selectedDate.locale("en").format("MMMM Do")} </DHBottom>
+              <DHBottom>{moment(this.props.selectedDate.toDate()).format("MMM D (ddd)")} </DHBottom>
             </DateHeader>
 
             <WeekHeader>
@@ -98,7 +102,6 @@ export class DateTimePicker extends React.Component {
                   autoScrollOnce: this.autoScrollOnce
                 })
               }
-              id="calGrid"
               ref={this.calendarRef}
               columnCount={7}
               columnWidth={w}
@@ -107,23 +110,17 @@ export class DateTimePicker extends React.Component {
               rowHeight={h}
               width={w * 7 + 18}
               style={{ scrollBehavior: "smooth" }}
-              scrollToRow={moment().diff(firstDay, "weeks") + 2}
-              // onScroll={({ scrollTop }) =>
-              //   console.log(
-              //     moment(firstDay)
-              //       .add(Math.round(scrollTop / h), "w")
-              //       .format("MMM")
-              //   )
-              // }
+              scrollTop={this.state.scrollTop}
+              onScroll={({scrollTop})=>this.setScrollTop(scrollTop)}
             />
 
             <ScrollHider>
               <IconBar>
                 <IconWrapper onClick={e => this.onUpArrowClick()}>
-                  <DownArrow />
+                  <UpArrow />
                 </IconWrapper>
                 <IconWrapper onClick={e => this.onDownArrowClick()}>
-                  <UpArrow />
+                  <DownArrow />
                 </IconWrapper>
               </IconBar>
             </ScrollHider>
@@ -157,8 +154,8 @@ const DateHeader = styled.div`
   height: ${h}px;
   width: 100%;
   position: absolute;
-  color: ${({ toggleHeader }) => (toggleHeader ? "white" : "#fd4676")};
-  background: ${({ toggleHeader }) => (toggleHeader ? "#fd4676" : "white")};
+  color: white;
+  background: #fd4676;
   transition: all 250ms linear;
 `
 

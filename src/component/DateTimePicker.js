@@ -43,18 +43,17 @@ export class DateTimePicker extends React.Component {
     }
   } */
 
-  setScrollTop = (i) => this.setState({scrollTop: i})
+  setScrollTop = i => this.setState({ scrollTop: i })
 
   onUpArrowClick = () => {
-    this.setState(prevState=> ({scrollTop: Math.max(prevState.scrollTop-4*h, 0)}))
+    this.setState(prevState => ({ scrollTop: Math.max(prevState.scrollTop - 4 * h, 0) }))
   }
   onDownArrowClick = () => {
-    this.setState(prevState=> ({scrollTop: Math.min(prevState.scrollTop+4*h, 47*h)}))
+    this.setState(prevState => ({ scrollTop: Math.min(prevState.scrollTop + 4 * h, 47 * h) }))
   }
 
   changeDay = (e, d) => {
     e.preventDefault()
-    this.setState({ toggleHeader: !this.state.toggleHeader })
     this.props.onChange(d.add(this.props.timeslot[this.state.selectedTimeSlotIndex].value, "h"))
   }
 
@@ -74,7 +73,7 @@ export class DateTimePicker extends React.Component {
       <LocaleApiSubscriber>
         {c => (
           <DatePickerWrapper>
-            <DateHeader toggleHeader={this.state.toggleHeader}>
+            <DateHeader>
               <DHTop>
                 <span>{this.props.selectedDate.format("YYYY")}</span>
               </DHTop>
@@ -111,7 +110,7 @@ export class DateTimePicker extends React.Component {
               width={w * 7 + 18}
               style={{ scrollBehavior: "smooth" }}
               scrollTop={this.state.scrollTop}
-              onScroll={({scrollTop})=>this.setScrollTop(scrollTop)}
+              onScroll={({ scrollTop }) => this.setScrollTop(scrollTop)}
             />
 
             <ScrollHider>
@@ -156,7 +155,6 @@ const DateHeader = styled.div`
   position: absolute;
   color: white;
   background: #fd4676;
-  transition: all 250ms linear;
 `
 
 const DHTop = styled.div`

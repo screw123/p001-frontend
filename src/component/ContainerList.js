@@ -27,7 +27,6 @@ class ContainerList extends React.Component {
 
 	toggleSelectedItem = (e, i) => {
 		e.preventDefault()
-		console.log(i)
 		const selectedIndex = this.props.selected.indexOf(i)
 
 		//if cannot find (i.e. index =-1)

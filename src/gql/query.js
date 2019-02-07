@@ -622,6 +622,13 @@ export const getPickUpOrderInfo = gql`
                 name
                 iconPicURL
             }
+            priceList {
+                _id
+                ship_in_base
+                ship_in_perPiece
+                ship_first_base
+                ship_first_perPiece
+            }
         }
     }
 `

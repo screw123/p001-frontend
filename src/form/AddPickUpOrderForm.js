@@ -29,6 +29,15 @@ onAddQuotationSuccess = function after quote is created, return quotation object
 class AddPickUpOrderForm extends React.Component {
     constructor(props) {
         super(props)
+        this.recalcPrice = this.recalcPrice.bind(this)
+        this.state = {
+            base: 0,
+            perPiece: 0
+        }
+    }
+
+    recalcPrice = ({a, SKU, priceList}) => {
+        this.setState({base: 5, perPiece: 5})
     }
 
     render(){ 
@@ -50,6 +59,7 @@ class AddPickUpOrderForm extends React.Component {
                     const acct = data.getAccountById
                     const containers = data.getPickUpContainersByAccount.containers
                     const SKU = data.getPickUpContainersByAccount.SKU
+                    const priceList = data.getPickUpContainersByAccount.priceList
                     return(
                         <Mutation mutation={addPickUpOrderDraft} errorPolicy="all">
                         {(mutate, {loading: mutateLoading, err: mutateErr})=>(
@@ -107,10 +117,16 @@ class AddPickUpOrderForm extends React.Component {
                                     <ContainerList
                                         containerList={containers}
                                         SKUInfo={SKU}
-                                        updateSelected={a=> setFieldValue('containerList', a)}
+                                        updateSelected={a=> {
+                                            setFieldValue('containerList', a)
+                                            this.recalcPrice({selected: a, SKU: SKU, priceList: priceList})
+                                        }}
+
                                         selected={values['containerList']}
                                     />
-                                    <p>Total amount: {values.totalAmt}</p>
+                                    <p>Total base: {this.state.base}</p>
+                                    <p>Total perPiece: {this.state.perPiece}</p>
+                                    <p>Total amount: {this.state.base+this.state.perPiece}</p>
                                     <FormErr>{status}</FormErr>
                                     <FieldRow>
                                         <FormButton
@@ -134,3 +150,4 @@ class AddPickUpOrderForm extends React.Component {
 }
 
 export default AddPickUpOrderForm
+

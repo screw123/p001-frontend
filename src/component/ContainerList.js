@@ -2,50 +2,54 @@ import React from "react"
 import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { List } from "react-virtualized"
-import { Section } from "./BasicComponents.js"
 import { LocaleApiSubscriber } from "../stateContainer/LocaleApi.js"
 
 import { SmallPic } from "./DocLine.js"
 import without from "lodash/without"
 
+const OuterWrapper = styled.div`
+	box-sizing:border-box;
+	display: grid;
+	grid-template-rows: [start] 2rem [info] 2rem [buttons] auto [end];
+	width: 250px;
+	height: 500px;
+`
+
+const HeaderWrapper = styled.div`
+	grid-row: start / info;
+`
+
+const ButtonWrapper = styled.div`
+	grid-row: info / buttons;
+	display: flex;
+
+`
+
+const ListWrapper = styled.div`
+	grid-row: buttons / end;
+`
+
 const ContainerDiv = styled.div`
 	${({ selected }) => (selected ? "background: pink;" : "")}
 	cursor: pointer;
 `
-const SectionContainer = styled.div`
-	width: 100%;
-`
-const TotalContainer = styled.p`
-	text-align: center;
-	margin: 5px 0px;
-`
-const ButtonsWrapper = styled.div`
-	display: flex;
-	justify-content: center;
-`
+
 const Button = styled.div`
 	display: flex;
-	font-size: 1em;
-	margin: 5px 15px;
-	padding: 11px;
 	background: ${props => props.background[0]};
-	color: black;
 	font-weight: bold;
 	cursor: pointer;
 	&:hover {
 		background: ${props => props.background[1]};
 	}
 	transition: background 300ms ease-out;
+	width: 100px;
 `
 
 class ContainerList extends React.Component {
 	constructor(props) {
 		super(props)
-		this.state = {
-			a: 1
-		}
 		this.lineItem = this.lineItem.bind(this)
-
 		this.toggleSelectedItem = this.toggleSelectedItem.bind(this)
 	}
 
@@ -95,30 +99,26 @@ class ContainerList extends React.Component {
 	render() {
 		return (
 			<LocaleApiSubscriber>
-				{c => (
-					<React.Fragment>
-						<Section>
-							<SectionContainer>
-								<TotalContainer>
-									Number of container selected: {this.props.selected.length}
-								</TotalContainer>
-								<ButtonsWrapper>
-									<Button
-										onClick={this.handleSelectAll}
-										background={["rgba(61, 229, 96,0.5)", "rgba(66,232,60,1)"]}
-									>
-										Select All
-									</Button>
-									<Button
-										onClick={this.handleRemoveAll}
-										background={["rgba(237, 73, 73, 0.5)", "rgba(237, 73, 73, 1)"]}
-									>
-										Remove All
-									</Button>
-								</ButtonsWrapper>
-							</SectionContainer>
-						</Section>
-
+			{c => (
+				<OuterWrapper>
+					<HeaderWrapper>
+						Number of container selected: {this.props.selected.length}
+					</HeaderWrapper>
+					<ButtonWrapper>
+						<Button
+							onClick={this.handleSelectAll}
+							background={["rgba(61, 229, 96,0.5)", "rgba(66,232,60,1)"]}
+						>
+							Select All
+						</Button>
+						<Button
+							onClick={this.handleRemoveAll}
+							background={["rgba(237, 73, 73, 0.5)", "rgba(237, 73, 73, 1)"]}
+						>
+							Remove All
+						</Button>
+					</ButtonWrapper>
+					<ListWrapper>
 						<List
 							height={Math.min(5, this.props.containerList.length) * c.state.defaultHeight * 3}
 							rowCount={this.props.containerList.length}
@@ -127,8 +127,9 @@ class ContainerList extends React.Component {
 							rowRenderer={a => this.lineItem({ rowObj: a, c: c })}
 							noRowsRenderer={() => <div>{c.t("There are no boxes pending to ship back")}</div>}
 						/>
-					</React.Fragment>
-				)}
+					</ListWrapper>
+				</OuterWrapper>
+			)}
 			</LocaleApiSubscriber>
 		)
 	}

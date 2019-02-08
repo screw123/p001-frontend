@@ -125,9 +125,12 @@ class AddPickUpOrderForm extends React.Component {
 
                                         selected={values['containerList']}
                                     />
-                                    <p>Total base: {values['base']}</p>
-                                    <p>Total perPiece: {values['perPiece']}</p>
-                                    <p>Total amount: {values['base']+values['perPiece']}</p>
+                                    <div>
+                                        <p>Total base: {values['base']}</p>
+                                        <p>Total perPiece: {values['perPiece']}</p>
+                                        <p>Total amount: {values['base']+values['perPiece']}</p>
+                                        
+                                    </div>
                                     <FormErr>{status}</FormErr>
                                     <FieldRow>
                                         <FormButton

@@ -29,15 +29,16 @@ onAddQuotationSuccess = function after quote is created, return quotation object
 class AddPickUpOrderForm extends React.Component {
     constructor(props) {
         super(props)
-        this.recalcPrice = this.recalcPrice.bind(this)
         this.state = {
             base: 0,
             perPiece: 0
         }
+        this.recalcPrice = this.recalcPrice.bind(this)
     }
 
-    recalcPrice = ({a, SKU, priceList}) => {
-        this.setState({base: 5, perPiece: 5})
+    recalcPrice = ({selected, SKU, priceList, setFieldValue}) => {
+        setFieldValue('base', 6.6, false)
+        setFieldValue('perPiece', 7.7, false)
     }
 
     render(){ 
@@ -69,7 +70,7 @@ class AddPickUpOrderForm extends React.Component {
 									billingAddress: get(acct, 'defaultBillingAddress_id._id',null),
 									shippingAddress: get(acct, 'defaultShippingAddress_id._id',null),
 									requestDatetime: moment().add(1, 'd'),
-									containerList: []
+									containerList: ['5c516ab49d02c45c7131c941']
                                 }}
                                 validate={ (values)=>{
                                     //need to charge minimum
@@ -118,15 +119,15 @@ class AddPickUpOrderForm extends React.Component {
                                         containerList={containers}
                                         SKUInfo={SKU}
                                         updateSelected={a=> {
-                                            setFieldValue('containerList', a)
-                                            this.recalcPrice({selected: a, SKU: SKU, priceList: priceList})
+                                            this.recalcPrice({selected: a, SKU: SKU, priceList: priceList, setFieldValue: setFieldValue})
+                                            setFieldValue('containerList', a, false)
                                         }}
 
                                         selected={values['containerList']}
                                     />
-                                    <p>Total base: {this.state.base}</p>
-                                    <p>Total perPiece: {this.state.perPiece}</p>
-                                    <p>Total amount: {this.state.base+this.state.perPiece}</p>
+                                    <p>Total base: {values['base']}</p>
+                                    <p>Total perPiece: {values['perPiece']}</p>
+                                    <p>Total amount: {values['base']+values['perPiece']}</p>
                                     <FormErr>{status}</FormErr>
                                     <FieldRow>
                                         <FormButton

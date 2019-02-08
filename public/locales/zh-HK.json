@@ -120,5 +120,9 @@
     "Your card number is invalid.": "你的信用卡號不正確.",
     "Your CVC code is incorrect": "你的CVC 核對碼不正確. 請更正後再試",
     "Your login/account is not activated.  If you have already activated your account, please contact our support team.": "你的用戶/帳戶未啟用.  如你確定已啟用過, 請聯絡我們.",
-    "Your user login is already activated, redirecting to login page, please wait...": "你的登入用戶已啟用, 將轉到登入頁面, 請稍候..."
+    "Your user login is already activated, redirecting to login page, please wait...": "你的登入用戶已啟用, 將轉到登入頁面, 請稍候...",
+    "Billing Address": "帳單地址",
+    "Please choose your billing address": "請選擇你的帳單地址",
+    "Shipping Address": "貨物收/派地址",
+    "Please choose your shipping address": "請選擇貨物收/派地址"
 }

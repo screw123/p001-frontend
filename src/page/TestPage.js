@@ -25,14 +25,60 @@ import { ToolTip } from "../component/BasicComponents.js"
 import SystemError from "../component/SystemError"
 import RemoveCreditCardForm from "../form/RemoveCreditCardForm"
 
-import ContainerList from "../component/ContainerList"
+import { DateTimePicker } from "../component/DateTimePicker.js"
+import moment from "moment"
 
 class TestPage extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = { selectedDate: moment().add(1, "days") }
+    this.updateDate = this.updateDate.bind(this)
+  }
+
+  updateDate = d => {
+    this.setState({ selectedDate: d })
+  }
+
   render() {
     const g = this.props.login
     const c = this.props.i18n
 
-    return <ContainerList selected={["id1", "id2", "id3"]} />
+    return (
+      <div>
+        <DateTimePicker
+          onChange={this.updateDate}
+          disable={d => d.isBefore(moment())}
+          customFormat={[
+            {
+              //coloring Sunday
+              checker: (c, r, d) => d.day() === 0,
+              style: "color: Red;",
+              stop: false
+            },
+            {
+              //coloring past days
+              checker: (c, r, d) => d.isBefore(moment()),
+              style: "color: Grey;font-style: italic;",
+              stop: false
+            },
+            {
+              //test bold every 10 days
+              checker: (c, r, d) => d.month() % 2 === 1,
+              style: "background: #EEE;",
+              stop: false
+            }
+          ]}
+          selectedDate={this.state.selectedDate}
+          showTimeslot={true}
+          timeslot={[
+            { label: "Morning: 9am-1pm", value: 9 },
+            { label: "Afternoon: 1pm-6pm", value: 13 },
+            { label: "Night: 6pm-10pm", value: 18 }
+          ]}
+        />
+        <p>{this.state.selectedDate.format("YYYY-MM-DD HH:mm")}</p>
+      </div>
+    )
   }
 }
 

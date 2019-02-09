@@ -124,5 +124,12 @@
     "Billing Address": "Billing Address",
     "Please choose your billing address": "Please choose your billing address",
     "Shipping Address": "Shipping Address",
-    "Please choose your shipping address": "Please choose your shipping address"
+    "Please choose your shipping address": "Please choose your shipping address",
+    "Sun": "Sun",
+    "Mon": "Mon",
+    "Tue": "Tue",
+    "Wed": "Wed",
+    "Thu": "Thu",
+    "Fri": "Fri",
+    "Sat": "Sat"
 }

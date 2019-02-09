@@ -12,7 +12,6 @@ const OuterWrapper = styled.div`
 	display: grid;
 	grid-template-rows: [start] 2rem [info] 2rem [buttons] auto [end];
 	width: 250px;
-	height: 500px;
 `
 
 const HeaderWrapper = styled.div`

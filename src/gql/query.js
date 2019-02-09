@@ -615,6 +615,9 @@ export const getPickUpOrderInfo = gql`
                 containerType_id {
                     _id
                 }
+                priceList_id {
+                    _id
+                }
             }
             SKU {
                 _id

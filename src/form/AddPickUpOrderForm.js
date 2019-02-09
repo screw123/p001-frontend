@@ -36,9 +36,16 @@ class AddPickUpOrderForm extends React.Component {
         this.recalcPrice = this.recalcPrice.bind(this)
     }
 
-    recalcPrice = ({selected, SKU, priceList, setFieldValue}) => {
-        setFieldValue('base', 6.6, false)
-        setFieldValue('perPiece', 7.7, false)
+    recalcPrice = ({selected, containers, priceList, setFieldValue}) => {
+        let base = 0
+        let perPiece = 0
+        for (let i=0;i<selected.length;i++) {
+            const p = priceList.find(w=>w._id=== containers.find(v=>v._id===selected[i]).priceList_id._id )
+            base = Math.max(base, p.ship_in_base)
+            perPiece += p.ship_in_perPiece
+        }
+        setFieldValue('base', base, false)
+        setFieldValue('perPiece', perPiece, false)
     }
 
     render(){ 
@@ -119,7 +126,7 @@ class AddPickUpOrderForm extends React.Component {
                                         containerList={containers}
                                         SKUInfo={SKU}
                                         updateSelected={a=> {
-                                            this.recalcPrice({selected: a, SKU: SKU, priceList: priceList, setFieldValue: setFieldValue})
+                                            this.recalcPrice({selected: a, containers: containers, priceList: priceList, setFieldValue: setFieldValue})
                                             setFieldValue('containerList', a, false)
                                         }}
 

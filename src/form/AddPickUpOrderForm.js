@@ -12,6 +12,7 @@ import {BigLoadingScreen} from '../component/Loading.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import parseApolloErr from '../util/parseErr.js'
 
+import DateTimePicker from '../component/DateTimePicker.js'
 import get from 'lodash/get'
 
 import isEmpty from 'lodash/isEmpty'
@@ -74,6 +75,7 @@ class AddPickUpOrderForm extends React.Component {
                             <Formik
                                 enableReinitialize={true}
                                 initialValues={{
+                                    pickUpDate: moment().add(1, 'd').hour(9),
 									billingAddress: get(acct, 'defaultBillingAddress_id._id',null),
 									shippingAddress: get(acct, 'defaultShippingAddress_id._id',null),
 									requestDatetime: moment().add(1, 'd'),
@@ -90,6 +92,37 @@ class AddPickUpOrderForm extends React.Component {
                             >
                             {({ errors, isSubmitting, setFieldValue, dirty, touched, values, status }) => (
                                 <FormikForm>
+                                    <DateTimePicker
+                                        onChange={v=>setFieldValue('pickUpDate', v)}
+                                        disable={d => d.isBefore(moment())}
+                                        customFormat={[
+                                            {
+                                                //coloring Sunday
+                                                checker: (c, r, d) => d.day() === 0,
+                                                style: "color: Red;",
+                                                stop: false
+                                            },
+                                            {
+                                                //coloring past days
+                                                checker: (c, r, d) => d.isBefore(moment()),
+                                                style: "color: Grey;font-style: italic;",
+                                                stop: false
+                                            },
+                                            {
+                                                //test bold every 10 days
+                                                checker: (c, r, d) => d.month() % 2 === 1,
+                                                style: "background: #EEE;",
+                                                stop: false
+                                            }
+                                        ]}
+                                        selectedDate={values.pickUpDate}
+                                        showTimeslot={true}
+                                        timeslot={[
+                                            { label: "Morning: 9am-1pm", value: 9 },
+                                            { label: "Afternoon: 1pm-6pm", value: 13 },
+                                            { label: "Night: 6pm-10pm", value: 18 }
+                                        ]}
+                                    />
                                     <Field
                                         name="billingAddress"
                                         type="text"

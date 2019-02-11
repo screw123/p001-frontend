@@ -265,32 +265,17 @@ const dayRenderer = (
 
 	const thisDay = c.moment(firstDay).add(columnIndex + rowIndex * 7, "d")
 	const displayDay = thisDay.get("date")
+	const isDisabled = disable(thisDay)
 
 	let customStyle = ""
 	for (let i = 0; i < customFormat.length; i++) {
-		if (customFormat[i].checker(columnIndex, rowIndex, thisDay) === true) {
-			customStyle = customStyle + customFormat[i].style
-			if (customFormat[i].stop === true) {
-				break
-			}
+		const {checker, style, stop} = customFormat[i]
+
+		if (checker(columnIndex, rowIndex, thisDay) === true) {
+			customStyle = customStyle + style
+			if (stop) break
 		}
 	}
-
-	const isDisabled = disable(thisDay)
-	const monthMapper = [
-		"Jan",
-		"Feb",
-		"Mar",
-		"Apr",
-		"May",
-		"Jun",
-		"Jul",
-		"Aug",
-		"Sep",
-		"Oct",
-		"Nov",
-		"Dec"
-	]
 
 	return (
 		<DayDiv
@@ -315,7 +300,4 @@ const dayRenderer = (
 	)
 }
 
-
-
 export default DateTimePicker
-//props.autoScrollOnce(props.style.top)

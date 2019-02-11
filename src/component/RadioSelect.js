@@ -66,7 +66,6 @@ export const RadioSelect = ({value, onChange, touched, err, options, disabled, m
 				)
 			}
 		}
-		console.log(options, items)
         return(
 			<RadioBlockGroup>
 				{items}

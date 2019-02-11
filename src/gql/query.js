@@ -606,6 +606,7 @@ export const getPickUpOrderInfo = gql`
             defaultShippingAddress_id {
                 _id
             }
+            stripeCustomerObject
         }
         getPickUpContainersByAccount(account_id: $account_id) {
             containers {
@@ -636,9 +637,15 @@ export const getPickUpOrderInfo = gql`
     }
 `
 
-export const addPickUpOrderDraft = gql`
-    mutation ($account_id: String){
-        addPickUpOrderDraft(_id: $account_id) {
+export const addPickUpOrder = gql`
+    mutation (
+        $account_id: String!,
+        $pickUpDate: GraphQLDateTime!,
+        $shippingAddress_id: String!,
+        $containerList: [String!]!,
+        $cardId: String!
+    ){
+        addPickUpOrder(account_id: $account_id, pickUpDate: $pickUpDate, shippingAddress_id: $shippingAddress_id, containerList: $containerList, cardId: $cardId) {
             _id
         }
     }

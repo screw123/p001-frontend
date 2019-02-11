@@ -1,11 +1,12 @@
 import React from "react"
-import { getPickUpOrderInfo, addPickUpOrderDraft } from '../gql/query.js'
+import { getPickUpOrderInfo, addPickUpOrder } from '../gql/query.js'
 
 import { Formik, Field} from 'formik'
 import FormikForm, { TextField, FormButton, FormErr, FieldRow } from '../component/FormikForm.js'
 
 import SelectAddress from '../component/SelectAddress.js'
 import ContainerList from '../component/ContainerList.js'
+import SelectCreditCard from '../component/SelectCreditCard.js'
 
 import { ApolloProvider, Query, Mutation } from "react-apollo"
 import {BigLoadingScreen} from '../component/Loading.js'
@@ -64,30 +65,52 @@ class AddPickUpOrderForm extends React.Component {
                         return (<p>Error :(</p>)
                     }
 
-                    console.log(data)
                     const acct = data.getAccountById
                     const containers = data.getPickUpContainersByAccount.containers
                     const SKU = data.getPickUpContainersByAccount.SKU
                     const priceList = data.getPickUpContainersByAccount.priceList
                     return(
-                        <Mutation mutation={addPickUpOrderDraft} errorPolicy="all">
+                        <Mutation mutation={addPickUpOrder} errorPolicy="all">
                         {(mutate, {loading: mutateLoading, err: mutateErr})=>(
                             <Formik
                                 enableReinitialize={true}
                                 initialValues={{
                                     pickUpDate: moment().add(1, 'd').hour(9),
-									billingAddress: get(acct, 'defaultBillingAddress_id._id',null),
 									shippingAddress: get(acct, 'defaultShippingAddress_id._id',null),
-									requestDatetime: moment().add(1, 'd'),
-									containerList: ['5c516ab49d02c45c7131c941']
+                                    containerList: [],
+                                    cardId: null,
+                                    base: 0,
+                                    perPiece: 0
                                 }}
                                 validate={ (values)=>{
                                     //need to charge minimum
                                     return {}
                                 }}
                                 onSubmit={async (values, actions) => {
-                                    console.log("submitted")
-                                    actions.setSubmitting(false)
+                                    try {
+                                        const vars = {
+                                            account_id : this.props.account_id,
+                                            pickUpDate: values['pickUpDate'].toDate(),
+                                            shippingAddress_id: values['shippingAddress'],
+                                            containerList: values['containerList'],
+                                            cardId: values['cardId']
+                                        }
+                                        const d = await mutate({variables: vars})
+                                        console.log('server return', d)
+                                        if(this.props.onSubmitSuccess) {
+                                            this.props.onSubmitSuccess(d.data.addPickUpOrderDraft)
+                                            actions.setSubmitting(false)
+                                        }
+                                    } catch(er) { 
+                                        console.log('submit err', er, er.message)
+                                        const errStack = parseApolloErr(er, c.t)
+                                        console.log('errStack=', errStack)
+                                        for (let i=0; i<errStack.length; i++) {
+                                            if (errStack[i].key) { actions.setFieldError(errStack[i].key, errStack[i].message) }
+                                            else { actions.setStatus(errStack[i].message) }
+                                        }
+                                        actions.setSubmitting(false)
+                                    }
                                 }}
                             >
                             {({ errors, isSubmitting, setFieldValue, dirty, touched, values, status }) => (
@@ -127,22 +150,6 @@ class AddPickUpOrderForm extends React.Component {
                                         ]}
                                     />
                                     <Field
-                                        name="billingAddress"
-                                        type="text"
-                                        component={SelectAddress}
-                                        label={c.t('Billing Address')}
-                                        placeholder={c.t('Please choose your billing address')}
-                                        account_id= {acct._id}
-                                        addresses={acct.address_id}
-                                        onChange={(v)=>setFieldValue('billingAddress', v._id)}
-                                        allowAddAddress={true}
-                                        onAddressUpdate={()=>refetch()}
-                                        multiSelect={false}
-                                        isLoading={networkStatus===4}
-                                        err={errors['billingAddress']}
-                                        defaultBillingAddress_id={get(acct, 'defaultBillingAddress_id._id',null)}
-                                    />
-                                    <Field
                                         name="shippingAddress"
                                         type="text"
                                         component={SelectAddress}
@@ -165,15 +172,27 @@ class AddPickUpOrderForm extends React.Component {
                                             this.recalcPrice({selected: a, containers: containers, priceList: priceList, setFieldValue: setFieldValue})
                                             setFieldValue('containerList', a, false)
                                         }}
-
                                         selected={values['containerList']}
                                     />
                                     <div>
                                         <p>Total base: {values['base']}</p>
                                         <p>Total perPiece: {values['perPiece']}</p>
                                         <p>Total amount: {values['base']+values['perPiece']}</p>
-                                        
                                     </div>
+                                    <Field
+                                        name="cardId"
+                                        type="text"
+                                        component={SelectCreditCard}
+                                        label={c.t('Credit card for payment')}
+                                        placeholder={c.t('Please choose your credit card')}
+                                        account={acct}
+                                        onChange={(v)=>setFieldValue('card_id', v.cardId)}
+                                        allowAddCard={true}
+                                        onAddCard={()=>refetch()}
+                                        multiSelect={false}
+                                        isLoading={networkStatus===4}
+                                        err={errors['cardId']}
+                                    />
                                     <FormErr>{status}</FormErr>
                                     <FieldRow>
                                         <FormButton

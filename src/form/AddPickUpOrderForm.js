@@ -1,7 +1,7 @@
 import React from "react"
 import { getPickUpOrderInfo, addPickUpOrderDraft } from '../gql/query.js'
 
-import { Formik, Field, FieldArray } from 'formik'
+import { Formik, Field} from 'formik'
 import FormikForm, { TextField, FormButton, FormErr, FieldRow } from '../component/FormikForm.js'
 
 import SelectAddress from '../component/SelectAddress.js'
@@ -92,7 +92,10 @@ class AddPickUpOrderForm extends React.Component {
                             >
                             {({ errors, isSubmitting, setFieldValue, dirty, touched, values, status }) => (
                                 <FormikForm>
-                                    <DateTimePicker
+                                    <Field
+                                        name="pickUpDate"
+                                        component={DateTimePicker}
+                                        label={c.t('Pick Up Date')}
                                         onChange={v=>setFieldValue('pickUpDate', v)}
                                         disable={d => d.isBefore(moment())}
                                         customFormat={[

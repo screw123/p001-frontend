@@ -3,21 +3,113 @@ import moment from "moment"
 import styled from "styled-components"
 import { Grid } from "react-virtualized"
 import { RadioSelect } from "./RadioSelect.js"
-import { LocaleApiSubscriber } from "../stateContainer/LocaleApi.js"
+import LocaleApi, { LocaleApiSubscriber } from "../stateContainer/LocaleApi.js"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowAltCircleUp, faArrowAltCircleDown } from "@fortawesome/free-solid-svg-icons"
+
+import { FieldLabel, FieldDiv } from './FormikForm.js'
 
 const firstDay = moment()
 	.date(1)
 	.day(0)
 	.startOf("date")
-const w = 29,
-	h = 50
+const w = 29, h = 45, w_rem = w/LocaleApi.state.defaultHeight, h_rem = h/LocaleApi.state.defaultHeight
 
 const DatePickerWrapper = styled.div`
-	width: ${w * 7 + 18}px;
+	width: ${w_rem * 7 + 1}rem;
 	overflow: hidden;
-	position: relative;
+	display: block;
+`
+
+const DayItem = styled.div`
+	margin: 0;
+	font-size: 0.6rem;
+	font-weight: bold;
+	text-align: center;
+`
+
+const DayDiv = styled.div`
+	${({ customFormat }) => (customFormat ? customFormat : "")}
+	${({ selected }) => selected && "background-color: #fd4676; color: white; font-weight: bold"}
+	cursor: ${({ disable }) => (disable ? "no-drop" : "pointer")};
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	font-size: 0.8rem;
+`
+
+const DateHeader = styled.div`
+	height: ${h_rem}rem;
+	width: 100%;
+	color: white;
+	background: #fd4676;
+`
+
+const DHTop = styled.div`
+	display: flex;
+	padding: 0.25rem 0.3rem 0rem;
+	justify-content: space-between;
+	font-size: 0.8rem;
+`
+
+const DHBottom = styled.div`
+	display: flex;
+	justify-content: center;
+	font-size: 1rem;
+	font-weight: bold;
+`
+
+const ScrollHider = styled.div`
+	width: 1rem;
+	height: ${h_rem * 5}rem;
+	top: ${h_rem * 1.5}rem;
+	right: 0;
+	background: white;
+`
+
+const GridWrapper = styled.div`
+	display: grid;
+	grid-template-columns: ${w_rem*7}rem 1rem;
+`
+const GridInnerWrapper = styled.div`
+	overflow: hidden;
+	width: ${w_rem * 7}rem;
+`
+
+const IconBar = styled.div`
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	cursor: pointer;
+`
+
+const IconWrapper = styled.div`
+	color: #fd4676;
+`
+
+const UpArrow = styled(() => <FontAwesomeIcon icon={faArrowAltCircleUp} />)``
+const DownArrow = styled(() => <FontAwesomeIcon icon={faArrowAltCircleDown} />)``
+
+const TimeSlotWrapper = styled.div`
+	margin: 0.5rem 0rem;
+`
+
+const WeekHeader = styled.div`
+	width: ${w_rem * 7}rem;
+	height: 1rem;
+	box-sizing: border-box;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(${w_rem}rem, 1fr));
+	cursor: default;
+`
+
+const WeekHeaderUnit = styled.div`
+	${({ color }) => (color ? "color: " + color + ";" : "")}
+	width: ${w_rem}rem;
+	text-align: center
+	font-size: 0.7rem;
 `
 
 export class DateTimePicker extends React.Component {
@@ -32,6 +124,7 @@ export class DateTimePicker extends React.Component {
 		this.onUpArrowClick = this.onUpArrowClick.bind(this)
 		this.onDownArrowClick = this.onDownArrowClick.bind(this)
 		this.setScrollTop = this.setScrollTop.bind(this)
+		this.mainRenderer = this.mainRenderer.bind(this)
 	}
 
 	/*   autoScrollOnce = top => {
@@ -67,29 +160,27 @@ export class DateTimePicker extends React.Component {
 		)
 	}
 
-	render() {
-		const c = this.props.i18n
-		return (
-			<LocaleApiSubscriber>
-			{c => (
-				<DatePickerWrapper>
-					<DateHeader>
-						<DHTop>
-							<span>{this.props.selectedDate.format("YYYY")}</span>
-						</DHTop>
-						<DHBottom>{moment(this.props.selectedDate.toDate()).format("MMM D (ddd)")} </DHBottom>
-					</DateHeader>
+	mainRenderer = (c) => (
+		<DatePickerWrapper>
+			{this.props.label && <FieldLabel>{this.props.label}</FieldLabel>}
+			<DateHeader>
+				<DHTop>
+					<span>{this.props.selectedDate.format("YYYY")}</span>
+				</DHTop>
+				<DHBottom>{moment(this.props.selectedDate.toDate()).format("MMM D (ddd)")} </DHBottom>
+			</DateHeader>
 
-					<WeekHeader>
-						<WeekHeaderUnit color="Red">{c.t("Sun")}</WeekHeaderUnit>
-						<WeekHeaderUnit>{c.t("Mon")}</WeekHeaderUnit>
-						<WeekHeaderUnit>{c.t("Tue")}</WeekHeaderUnit>
-						<WeekHeaderUnit>{c.t("Wed")}</WeekHeaderUnit>
-						<WeekHeaderUnit>{c.t("Thu")}</WeekHeaderUnit>
-						<WeekHeaderUnit>{c.t("Fri")}</WeekHeaderUnit>
-						<WeekHeaderUnit>{c.t("Sat")}</WeekHeaderUnit>
-					</WeekHeader>
-
+			<WeekHeader>
+				<WeekHeaderUnit color="Red">{c.t("Sun")}</WeekHeaderUnit>
+				<WeekHeaderUnit>{c.t("Mon")}</WeekHeaderUnit>
+				<WeekHeaderUnit>{c.t("Tue")}</WeekHeaderUnit>
+				<WeekHeaderUnit>{c.t("Wed")}</WeekHeaderUnit>
+				<WeekHeaderUnit>{c.t("Thu")}</WeekHeaderUnit>
+				<WeekHeaderUnit>{c.t("Fri")}</WeekHeaderUnit>
+				<WeekHeaderUnit>{c.t("Sat")}</WeekHeaderUnit>
+			</WeekHeader>
+			<GridWrapper>
+				<GridInnerWrapper>
 					<Grid
 						cellRenderer={p =>
 							dayRenderer(p, {
@@ -101,117 +192,63 @@ export class DateTimePicker extends React.Component {
 								autoScrollOnce: this.autoScrollOnce
 							})
 						}
-						ref={this.calendarRef}
 						columnCount={7}
 						columnWidth={w}
 						height={h * 5}
 						rowCount={52}
 						rowHeight={h}
-						width={w * 7 + 18}
-						style={{ scrollBehavior: "smooth" }}
+						width={w * 7}
+						style={{ scrollBehavior: "smooth", marginRight: "-1rem", overflow: "hidden auto", width: (w_rem*7+1)+"rem" }}
 						scrollTop={this.state.scrollTop}
 						onScroll={({ scrollTop }) => this.setScrollTop(scrollTop)}
 					/>
+				</GridInnerWrapper>
 
-					<ScrollHider>
-						<IconBar>
-							<IconWrapper onClick={e => this.onUpArrowClick()}>
-								<UpArrow />
-							</IconWrapper>
-							<IconWrapper onClick={e => this.onDownArrowClick()}>
-								<DownArrow />
-							</IconWrapper>
-						</IconBar>
-					</ScrollHider>
+				<ScrollHider>
+					<IconBar>
+						<IconWrapper onClick={e => this.onUpArrowClick()}>
+							<UpArrow />
+						</IconWrapper>
+						<IconWrapper onClick={e => this.onDownArrowClick()}>
+							<DownArrow />
+						</IconWrapper>
+					</IconBar>
+				</ScrollHider>
+			</GridWrapper>
 
-					{!!this.props.showTimeslot && (
-						<TimeSlotWrapper>
-							<RadioSelect
-								value={this.state.selectedTimeSlotIndex}
-								onChange={this.changeTimeSlot}
-								options={this.props.timeslot}
-							/>
+			{!!this.props.showTimeslot && 
+			<TimeSlotWrapper>
+				<RadioSelect
+					value={this.state.selectedTimeSlotIndex}
+					onChange={this.changeTimeSlot}
+					options={this.props.timeslot}
+				/>
+			</TimeSlotWrapper>
+			}
+		</DatePickerWrapper>
+	)
 
-							{/* <TSelect onChange={e=> this.changeTimeSlot(e, )}>
-						<option value="" disabled selected>
-							Choose a timeslot
-						</option>
-						{this.props.timeslot.map(slot => (
-							<option value={slot.offset}>{slot.display}</option>
-						))}
-						</TSelect> */}
-						</TimeSlotWrapper>
-					)}
-				</DatePickerWrapper>
-			)}
+	render() {
+		const isFormik = this.props.field && this.props.form
+		return (
+			<LocaleApiSubscriber>
+			{c => {
+				if (this.props.hidden) return null
+				if (isFormik) {
+					return (
+						<FieldDiv>
+							{this.mainRenderer(c)}
+						</FieldDiv>
+					)
+				}
+				else {
+					return this.mainRenderer(c)
+				}
+			}}
 			</LocaleApiSubscriber>
 		)
 	}
 }
-
-const DateHeader = styled.div`
-	height: ${h}px;
-	width: 100%;
-	position: absolute;
-	color: white;
-	background: #fd4676;
-`
-
-const DHTop = styled.div`
-	display: flex;
-	padding: 3px 5px 0px;
-	justify-content: space-between;
-	font-size: 0.8rem;
-`
-const DHBottom = styled.div`
-	display: flex;
-	justify-content: center;
-	font-size: 1rem;
-	font-weight: bold;
-`
-
-const ScrollHider = styled.div`
-	position: absolute;
-	width: 18px;
-	height: ${h * 5}px;
-	top: ${h * 1.5}px;
-	right: 0;
-	background: white;
-`
-const IconBar = styled.div`
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	cursor: pointer;
-`
-const IconWrapper = styled.div`
-	color: #fd4676;
-`
-const UpArrow = styled(() => <FontAwesomeIcon icon={faArrowAltCircleUp} />)``
-const DownArrow = styled(() => <FontAwesomeIcon icon={faArrowAltCircleDown} />)``
-
-const TimeSlotWrapper = styled.div`
-	margin: 10px 0px;
-`
-const TSelect = styled.select``
-
-const WeekHeader = styled.div`
-	width: ${w * 7}px;
-	height: ${h / 2}px;
-	margin-top: ${h}px;
-	box-sizing: border-box;
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(${w}px, 1fr));
-	cursor: default;
-`
-
-const WeekHeaderUnit = styled.div`
-	${({ color }) => (color ? "color: " + color + ";" : "")}
-	width: ${w}px;
-	text-align: center
-	font-size: 0.8rem;
-`
 
 const dayRenderer = (
 	{
@@ -269,7 +306,7 @@ const dayRenderer = (
 				displayDay
 			) : (
 				<React.Fragment>
-					<DayItem>{monthMapper[thisDay.month()]}</DayItem>
+					<DayItem>{moment(thisDay.toDate()).format("MMM")}</DayItem>
 					{displayDay}
 					<DayItem>{thisDay.year()}</DayItem>
 				</React.Fragment>
@@ -278,22 +315,7 @@ const dayRenderer = (
 	)
 }
 
-const DayItem = styled.p`
-	margin: 0;
-	font-size: 0.5rem;
-	font-weight: bold;
-`
 
-const DayDiv = styled.div`
-	${({ customFormat }) => (customFormat ? customFormat : "")}
-	${({ selected }) => selected && "background-color: #fd4676; color: white; font-weight: bold"}
-	cursor: ${({ disable }) => (disable ? "no-drop" : "pointer")};
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	font-size: 1rem;
-`
 
 export default DateTimePicker
 //props.autoScrollOnce(props.style.top)

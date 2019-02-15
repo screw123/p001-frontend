@@ -642,10 +642,11 @@ export const addPickUpOrder = gql`
         $account_id: String!,
         $pickUpDate: GraphQLDateTime!,
         $shippingAddress_id: String!,
-        $containerList: [String!]!,
-        $cardId: String!
+        $containerList_id: [String!]!,
+        $cardId: String!,
+        $estTotal: Float
     ){
-        addPickUpOrder(account_id: $account_id, pickUpDate: $pickUpDate, shippingAddress_id: $shippingAddress_id, containerList: $containerList, cardId: $cardId) {
+        addPickUpOrder(account_id: $account_id, pickUpDate: $pickUpDate, shippingAddress_id: $shippingAddress_id, containerList_id: $containerList_id, cardId: $cardId, estTotal: $estTotal) {
             _id
         }
     }

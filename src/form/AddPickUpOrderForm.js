@@ -75,9 +75,9 @@ class AddPickUpOrderForm extends React.Component {
                             <Formik
                                 enableReinitialize={true}
                                 initialValues={{
-                                    pickUpDate: moment().add(1, 'd').hour(9),
+                                    pickUpDate: moment().add(1, 'd').startOf('hour').hour(9),
 									shippingAddress: get(acct, 'defaultShippingAddress_id._id',null),
-                                    containerList: [],
+                                    containerList_id: [],
                                     cardId: null,
                                     base: 0,
                                     perPiece: 0
@@ -87,13 +87,15 @@ class AddPickUpOrderForm extends React.Component {
                                     return {}
                                 }}
                                 onSubmit={async (values, actions) => {
+                                    actions.setStatus(undefined)
                                     try {
                                         const vars = {
                                             account_id : this.props.account_id,
                                             pickUpDate: values['pickUpDate'].toDate(),
                                             shippingAddress_id: values['shippingAddress'],
-                                            containerList: values['containerList'],
-                                            cardId: values['cardId']
+                                            containerList_id: values['containerList_id'],
+                                            cardId: values['cardId'],
+                                            estTotal: values['base'] + values['perPiece']
                                         }
                                         const d = await mutate({variables: vars})
                                         console.log('server return', d)
@@ -106,7 +108,12 @@ class AddPickUpOrderForm extends React.Component {
                                         const errStack = parseApolloErr(er, c.t)
                                         console.log('errStack=', errStack)
                                         for (let i=0; i<errStack.length; i++) {
-                                            if (errStack[i].key) { actions.setFieldError(errStack[i].key, errStack[i].message) }
+                                            if (errStack[i].key) { 
+                                                
+                                                
+                                                
+                                                
+                                                actions.setFieldError(errStack[i].key, errStack[i].message) }
                                             else { actions.setStatus(errStack[i].message) }
                                         }
                                         actions.setSubmitting(false)
@@ -170,9 +177,9 @@ class AddPickUpOrderForm extends React.Component {
                                         SKUInfo={SKU}
                                         updateSelected={a=> {
                                             this.recalcPrice({selected: a, containers: containers, priceList: priceList, setFieldValue: setFieldValue})
-                                            setFieldValue('containerList', a, false)
+                                            setFieldValue('containerList_id', a, false)
                                         }}
-                                        selected={values['containerList']}
+                                        selected={values['containerList_id']}
                                     />
                                     <div>
                                         <p>Total base: {values['base']}</p>

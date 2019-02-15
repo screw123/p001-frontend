@@ -95,7 +95,6 @@ class SelectCreditCard extends React.Component {
 
 		if ((stripeCusObjString!==null)&(stripeCusObjString!=='null')) {  //if user already have a stripeObject
 			stripeCusObj = JSON.parse(stripeCusObjString)
-			console.log(stripeCusObj, stripeCusObjString==null)
 			if (stripeCusObj.sources) {
 				no_of_card = stripeCusObj.sources.data.length
 			}
@@ -103,12 +102,9 @@ class SelectCreditCard extends React.Component {
 			//a brand new user, or he never input any payment info, then we make up an empty object to avoid error
 			stripeCusObj = { sources: { data: [] } }
         }
-        console.log('stripeCusObj=', stripeCusObj)
 		let options = stripeCusObj.sources.data.map(v => Object.assign({ value: v.id }, v))
 		let selectedCard = options.find(v => v.value === this.props.field.value)
 
-		console.log("no_of_card=", no_of_card)
-        console.log('SelectCredtiCard.state', this.state)
 		return (
 			<LocaleApiSubscriber>
             {c => (
@@ -227,7 +223,6 @@ class SelectCreditCard extends React.Component {
 			)
 		}
 		else if (this.props.account) {
-			console.log(this.props)
 			return this.renderMainDiv(this.props.account.stripeCustomerObject, this.props.onAddCard, this.props)
 		}
 	}

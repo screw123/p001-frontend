@@ -17,10 +17,11 @@ export const RadioBlock = styled.div`
 	border-radius: 0.25rem;
 	display: block;
 	font-size: 0.7rem;
-	padding: 0.5rem;
+	padding: 0.25rem;
 	cursor: pointer;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	text-align: center;
 	color: ${props => props.disabled ? `rgba(128, 128, 128, 0.2)` : `Black`};
 	${({selected}) => selected? `background-color: rgba(255, 64, 112, 0.2);` : ``}
 `
@@ -65,7 +66,6 @@ export const RadioSelect = ({value, onChange, touched, err, options, disabled, m
 				)
 			}
 		}
-		console.log(options, items)
         return(
 			<RadioBlockGroup>
 				{items}

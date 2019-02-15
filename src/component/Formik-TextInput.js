@@ -32,11 +32,11 @@ export const InputGroup = styled.div`
 export const TextField = ({
     field: { name, placeholder, ...fields }, // { name, value, onChange, onBlur }
     form: { touched }, //also values, handleXXXX, dirty, isValid, status, etc.
-    classNames, label, rightIcon, err, hidden, ignoreTouch, ...props }) => {
+    label, rightIcon, err, hidden, ignoreTouch, ...props }) => {
         
         if (hidden) return null
         else return (
-            <FieldDiv className={classNames}>
+            <FieldDiv>
                 <FieldLabel {...props}>
                     {label}
                     <InputRow {...props}>

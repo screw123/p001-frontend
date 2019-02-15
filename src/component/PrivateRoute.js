@@ -10,7 +10,6 @@ const PrivateRoute = ({ component: Component, stateContainer: stateContainer, ..
     return (
     <GqlApiSubscriber>
     {(c) => {
-        console.log('Private Route, c.state.isLogined=', c.state.isLogined)
         return (
         <Route
             {...rest}

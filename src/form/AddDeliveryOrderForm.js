@@ -41,10 +41,14 @@ class AddDeliveryOrderForm extends React.Component {
     recalcPrice = ({selected, containers, priceList, setFieldValue}) => {
         let base = 0
         let perPiece = 0
+
+        
+
         for (let i=0;i<selected.length;i++) {
-            const p = priceList.find(w=>w._id=== containers.find(v=>v._id===selected[i]).priceList_id._id )
-            base = Math.max(base, p.ship_in_base)
-            perPiece += p.ship_in_perPiece
+            const container = containers.find(v=>v._id===selected[i])
+            const p = priceList.find(w=>w._id=== container.priceList_id._id )
+            base = Math.max(base, (container.status==='EMPTY'? p.ship_first_base: p.ship_out_base) )
+            perPiece += (container.status==='EMPTY'? p.ship_first_perPiece: p.ship_out_perPiece)
         }
         setFieldValue('base', base, false)
         setFieldValue('perPiece', perPiece, false)

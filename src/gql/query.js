@@ -652,4 +652,68 @@ export const addPickUpOrder = gql`
     }
 `
 
+export const getDeliveryOrderInfo = gql`
+    query ($account_id: String!){
+        getAccountById(_id: $account_id) {
+            _id
+            address_id {
+                _id
+                addressType
+                legalName
+                streetAddress
+                addressRegion1
+                addressRegion2
+                addressCountry
+                telephone
+            }
+            defaultBillingAddress_id {
+                _id
+            }
+            defaultShippingAddress_id {
+                _id
+            }
+            stripeCustomerObject
+        }
+        getDeliveryContainersByAccount(account_id: $account_id) {
+            containers {
+                _id
+                printId
+                userDefinedName
+                containerType_id {
+                    _id
+                }
+                priceList_id {
+                    _id
+                }
+            }
+            SKU {
+                _id
+                shortCode
+                name
+                iconPicURL
+            }
+            priceList {
+                _id
+                ship_out_base
+                ship_out_perPiece
+            }
+        }
+    }
+`
+
+export const addDeliveryOrder = gql`
+    mutation (
+        $account_id: String!,
+        $deliveryDate: GraphQLDateTime!,
+        $shippingAddress_id: String!,
+        $containerList_id: [String!]!,
+        $cardId: String!,
+        $estTotal: Float
+    ){
+        addDeliveryOrder(account_id: $account_id, deliveryDate: $deliveryDate, shippingAddress_id: $shippingAddress_id, containerList_id: $containerList_id, cardId: $cardId, estTotal: $estTotal) {
+            _id
+        }
+    }
+`
+
 export default {}

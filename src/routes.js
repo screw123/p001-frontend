@@ -1,19 +1,20 @@
-import LoginPage from "./page/LoginPage.js";
-import IndexPage from "./page/IndexPage.js";
-import UserDashboardPage from "./page/UserDashboardPage.js";
-import SignUpWorkflow from "./page/SignUpWorkflow.js";
-import ResetPasswordPage from "./page/ResetPasswordPage.js";
-import UserActivationPage from "./page/UserActivationPage.js";
-import TermsAndConditionPage from "./page/TermsAndConditionPage.js";
-import QuotationPage from "./page/QuotationPage.js";
-import SalesOrderConfirmPage from "./page/SalesOrderConfirmPage.js";
-import UserProfilePage from "./page/UserProfilePage.js";
-import TestPage from "./page/TestPage.js";
-import EditAccountPage from "./page/EditAccountPage.js";
-import ROListPage from "./page/ROListPage.js";
-import RODetailsPage from "./page/RODetailsPage.js";
-import ThankYouForOrderPage from "./page/ThankYouForOrderPage.js";
-import AddPickUpOrderPage from "./page/AddPickUpOrderPage.js";
+import LoginPage from "./page/LoginPage.js"
+import IndexPage from "./page/IndexPage.js"
+import UserDashboardPage from "./page/UserDashboardPage.js"
+import SignUpWorkflow from "./page/SignUpWorkflow.js"
+import ResetPasswordPage from "./page/ResetPasswordPage.js"
+import UserActivationPage from "./page/UserActivationPage.js"
+import TermsAndConditionPage from "./page/TermsAndConditionPage.js"
+import QuotationPage from "./page/QuotationPage.js"
+import SalesOrderConfirmPage from "./page/SalesOrderConfirmPage.js"
+import UserProfilePage from "./page/UserProfilePage.js"
+import TestPage from "./page/TestPage.js"
+import EditAccountPage from "./page/EditAccountPage.js"
+import ROListPage from "./page/ROListPage.js"
+import RODetailsPage from "./page/RODetailsPage.js"
+import ThankYouForOrderPage from "./page/ThankYouForOrderPage.js"
+import AddPickUpOrderPage from "./page/AddPickUpOrderPage.js"
+import AddDeliveryOrderPage from "./page/AddDeliveryOrderPage.js"
 
 const routes = [
 	{
@@ -242,7 +243,22 @@ const routes = [
 		menuName: "Send Box To Us",
 		component: AddPickUpOrderPage,
 		navbar: {
-			itemId: 203,
+			itemId: 301,
+			parentId: 100,
+			firstLevel: false,
+			showBeforeLogin: false,
+			showAfterLogin: true
+		},
+		router: {
+			requireLogin: true
+		}
+	},
+	{
+		path: "/ArrangeDelivery",
+		menuName: "Get your stuff",
+		component: AddDeliveryOrderPage,
+		navbar: {
+			itemId: 302,
 			parentId: 100,
 			firstLevel: false,
 			showBeforeLogin: false,

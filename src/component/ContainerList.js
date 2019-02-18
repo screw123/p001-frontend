@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { List } from "react-virtualized"
 import { LocaleApiSubscriber } from "../stateContainer/LocaleApi.js"
 
+import {Tag} from './BasicComponents.js'
+
 import { SmallPic } from "./DocLine.js"
 import without from "lodash/without"
 
@@ -64,6 +66,7 @@ class ContainerList extends React.Component {
 	lineItem = ({ rowObj, c }) => {
 		const container = this.props.containerList[rowObj.index]
 		const selected = this.props.selected.includes(container._id)
+		const isNew = container.status==='EMPTY'
 
 		return (
 			<ContainerDiv
@@ -82,6 +85,7 @@ class ContainerList extends React.Component {
 						" " +
 						(container.printId !== container.userDefinedName ? "(" + container.printId + ")" : "")}
 				</span>
+				{isNew && <Tag float='right' background='Yellow' color='Green'>{c.t('Just Ordered!')}</Tag>}
 			</ContainerDiv>
 		)
 	}

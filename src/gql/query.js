@@ -630,8 +630,6 @@ export const getPickUpOrderInfo = gql`
                 _id
                 ship_in_base
                 ship_in_perPiece
-                ship_first_base
-                ship_first_perPiece
             }
         }
     }
@@ -685,6 +683,7 @@ export const getDeliveryOrderInfo = gql`
                 priceList_id {
                     _id
                 }
+                status
             }
             SKU {
                 _id
@@ -696,6 +695,8 @@ export const getDeliveryOrderInfo = gql`
                 _id
                 ship_out_base
                 ship_out_perPiece
+                ship_first_base
+                ship_first_perPiece
             }
         }
     }

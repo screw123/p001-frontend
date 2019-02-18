@@ -41,10 +41,14 @@ class AddDeliveryOrderForm extends React.Component {
     recalcPrice = ({selected, containers, priceList, setFieldValue}) => {
         let base = 0
         let perPiece = 0
+
+        
+
         for (let i=0;i<selected.length;i++) {
-            const p = priceList.find(w=>w._id=== containers.find(v=>v._id===selected[i]).priceList_id._id )
-            base = Math.max(base, p.ship_in_base)
-            perPiece += p.ship_in_perPiece
+            const container = containers.find(v=>v._id===selected[i])
+            const p = priceList.find(w=>w._id=== container.priceList_id._id )
+            base = Math.max(base, (container.status==='EMPTY'? p.ship_first_base: p.ship_out_base) )
+            perPiece += (container.status==='EMPTY'? p.ship_first_perPiece: p.ship_out_perPiece)
         }
         setFieldValue('base', base, false)
         setFieldValue('perPiece', perPiece, false)
@@ -75,7 +79,7 @@ class AddDeliveryOrderForm extends React.Component {
                             <Formik
                                 enableReinitialize={true}
                                 initialValues={{
-                                    pickUpDate: moment().add(1, 'd').startOf('hour').hour(9),
+                                    deliveryDate: moment().add(1, 'd').startOf('hour').hour(9),
 									shippingAddress: get(acct, 'defaultShippingAddress_id._id',null),
                                     containerList_id: [],
                                     cardId: null,
@@ -91,7 +95,7 @@ class AddDeliveryOrderForm extends React.Component {
                                     try {
                                         const vars = {
                                             account_id : this.props.account_id,
-                                            pickUpDate: values['pickUpDate'].toDate(),
+                                            deliveryDate: values['deliveryDate'].toDate(),
                                             shippingAddress_id: values['shippingAddress'],
                                             containerList_id: values['containerList_id'],
                                             cardId: values['cardId'],
@@ -123,10 +127,10 @@ class AddDeliveryOrderForm extends React.Component {
                             {({ errors, isSubmitting, setFieldValue, dirty, touched, values, status }) => (
                                 <FormikForm>
                                     <Field
-                                        name="pickUpDate"
+                                        name="deliveryDate"
                                         component={DateTimePicker}
-                                        label={c.t('Pick Up Date')}
-                                        onChange={v=>setFieldValue('pickUpDate', v)}
+                                        label={c.t('Delivery Date')}
+                                        onChange={v=>setFieldValue('deliveryDate', v)}
                                         disable={d => d.isBefore(moment())}
                                         customFormat={[
                                             {
@@ -148,7 +152,7 @@ class AddDeliveryOrderForm extends React.Component {
                                                 stop: false
                                             }
                                         ]}
-                                        selectedDate={values.pickUpDate}
+                                        selectedDate={values.deliveryDate}
                                         showTimeslot={true}
                                         timeslot={[
                                             { label: "Morning: 9am-1pm", value: 9 },

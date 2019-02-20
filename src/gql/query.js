@@ -717,4 +717,30 @@ export const addDeliveryOrder = gql`
     }
 `
 
+export const getRecentPUODOListByUser = gql`
+query getRecentPUODOListByUser {
+    getRecentPUODOListByUser {
+        _id
+        status
+        account_id {
+            _id
+        }
+        createDateTime
+        updateDateTime
+        createBy_id {
+            _id
+        }
+        totalAmt
+        billedAmt
+        paidAmt
+        docLines {
+            SKU_id {
+                name
+                iconPicURL
+            }
+            qty
+        }
+    }
+}`
+
 export default {}

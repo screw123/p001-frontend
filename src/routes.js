@@ -15,6 +15,7 @@ import RODetailsPage from "./page/RODetailsPage.js"
 import ThankYouForOrderPage from "./page/ThankYouForOrderPage.js"
 import AddPickUpOrderPage from "./page/AddPickUpOrderPage.js"
 import AddDeliveryOrderPage from "./page/AddDeliveryOrderPage.js"
+import PUODOListPage from "./page/PUODOListPage.js"
 
 const routes = [
 	{
@@ -259,6 +260,21 @@ const routes = [
 		component: AddDeliveryOrderPage,
 		navbar: {
 			itemId: 302,
+			parentId: 100,
+			firstLevel: false,
+			showBeforeLogin: false,
+			showAfterLogin: true
+		},
+		router: {
+			requireLogin: true
+		}
+	},
+	{
+		path: "/PUODOList",
+		menuName: "Box Movement Record",
+		component: PUODOListPage,
+		navbar: {
+			itemId: 303,
 			parentId: 100,
 			firstLevel: false,
 			showBeforeLogin: false,

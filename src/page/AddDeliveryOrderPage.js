@@ -56,22 +56,18 @@ class AddDeliveryOrderPage extends React.Component {
 
 		return(
 			<Background>
-                {/* if not logined, show QuoationForm with empty account_id */}
-                {/* else, show a selector and account_id */}
-                {g.state.isLogined && 
-                    <MultiSelect 
-                        field={{
-                            name: 'acct',
-                            value: this.state.selectedAcct_id
-                        }}
-                        form={{
-                            setFieldValue: this.changeAcct
-                        }}
-                        multiSelect={false}
-                        label={c.t('Please choose your account')+':'}
-                        options={this.state.acctList}
-                    />
-                }
+                <MultiSelect 
+                    field={{
+                        name: 'acct',
+                        value: this.state.selectedAcct_id
+                    }}
+                    form={{
+                        setFieldValue: this.changeAcct
+                    }}
+                    multiSelect={false}
+                    label={c.t('Please choose your account')+':'}
+                    options={this.state.acctList}
+                />
                 {this.state.selectedAcct_id && <AddDeliveryOrderForm account_id={this.state.selectedAcct_id} {...this.props} />}
             </Background>
 		)

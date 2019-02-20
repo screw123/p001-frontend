@@ -1,11 +1,11 @@
 import React from "react"
 
-import ROListForm from '../form/ROListForm.js'
+import PUODOListForm from '../form/PUODOListForm.js'
 
 import {Background} from '../component/BasicComponents.js'
 
 import { ApolloProvider, Query } from 'react-apollo'
-import { getRecentROListByUser } from '../gql/query.js'
+import { getRecentPUODOListByUser } from '../gql/query.js'
 import parseApolloErr from '../util/parseErr.js'
 
 import {BigLoadingScreen} from '../component/Loading.js'
@@ -13,7 +13,7 @@ import get from 'lodash/get'
 import union from 'lodash/union'
 import { MultiSelect } from '../component/FormikForm.js'
 
-class ROListPage extends React.Component {
+class PUODOListPage extends React.Component {
 
     constructor(props) {
 		super(props)
@@ -44,11 +44,11 @@ class ROListPage extends React.Component {
         
         return (
             <ApolloProvider client={g.getGqlClient()}>
-                <Query query={getRecentROListByUser} notifyOnNetworkStatusChange>
+                <Query query={getRecentPUODOListByUser} notifyOnNetworkStatusChange>
                 {({ loading, error, data, refetch, networkStatus }) => {
 					if (loading) return (<BigLoadingScreen text={'Loading...'}/>)
 					if (error) {
-						console.log('ROListPage', error)
+						console.log('PUODOListPage', error)
 						const errStack = parseApolloErr(error, c.t)
 
 						return (
@@ -73,7 +73,7 @@ class ROListPage extends React.Component {
                             />
                             {this.state.selectedAcct_id && 
                                 <Background>
-                                    <ROListForm ROlist={data.getRecentROListByUser.filter(v=>v.account_id._id===this.state.selectedAcct_id)} {...this.props} />
+                                    <PUODOListForm PUODOlist={data.getRecentPUODOListByUser.filter(v=>v.account_id._id===this.state.selectedAcct_id)} {...this.props} />
                                 </Background>
                             }
                         </React.Fragment>
@@ -85,4 +85,4 @@ class ROListPage extends React.Component {
     }
 }
 
-export default ROListPage
+export default PUODOListPage

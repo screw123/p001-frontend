@@ -42,7 +42,7 @@ export default class PUODOListForm extends React.Component {
     setRedirect = (PUODO) => this.setState({PUODO: PUODO})
 
     PUODOLine = ({rowObj, data, multiSelect}, buttons) => {
-        let { _id, billedAmt, status, paidAmt, createDateTime, docLines} = data
+        let { _id, billedAmt, status, paidAmt, createDateTime, docLines, docType} = data
         return (
             <InfoListStandardLine
                 occupyFullRow={true}
@@ -55,10 +55,10 @@ export default class PUODOListForm extends React.Component {
                     this.setRedirect(data)
                 }}
                 content={<div>
-                    <DocLine.Status t={status} color={getPUODOStatusColor} float='right' />
+					<DocLine.Status t={status} color={getPUODOStatusColor} float='right' />
                     <DocLine.DateTime l='Box Rental Date' t={createDateTime} />
                     <DocLine.ID l='Record Number' t={_id} />
-                    <DocLine.ContainerSummary docLines={docLines} />
+					<DocLine.DocType t={docType} float='right' />
                 </div>}
             />
         )
@@ -68,7 +68,12 @@ export default class PUODOListForm extends React.Component {
         const g = this.props.login
         const c = this.props.i18n
         
-        if (this.state.PUODO) {return(<Redirect push to={{pathname: '/PUODOdetails', state: {PUODO_id: this.state.PUODO._id} }} />)}
+        if (this.state.PUODO) {
+            if (this.state.PUODO.docType==='PickUpOrder') {
+                return(<Redirect push to={{pathname: '/PUOdetails', state: {PUO_id: this.state.PUODO._id} }} />)
+            }
+            return(<Redirect push to={{pathname: '/DOdetails', state: {DO_id: this.state.PUODO._id} }} />)
+        }
         return(<div>
             <InfoList 
                 rowHeightCalc={(i, width)=>{

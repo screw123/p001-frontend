@@ -719,7 +719,7 @@ export const addDeliveryOrder = gql`
 
 export const getRecentPUODOListByUser = gql`
 query getRecentPUODOListByUser {
-    getRecentPUODOListByUser {
+    getRecentPUOListByUser {
         _id
         status
         account_id {
@@ -737,10 +737,169 @@ query getRecentPUODOListByUser {
             SKU_id {
                 name
                 iconPicURL
+                
             }
-            qty
+            container_id {
+                _id
+            }
+            container_printId
         }
+        shippingAddress {
+            legalName
+            addressCountry
+            addressRegion1
+            addressRegion2
+            streetAddress
+            telephone
+        }
+        requestDatetime
+        fulfillDatetime
+    }
+    getRecentDOListByUser {
+        _id
+        status
+        account_id {
+            _id
+        }
+        createDateTime
+        updateDateTime
+        createBy_id {
+            _id
+        }
+        totalAmt
+        billedAmt
+        paidAmt
+        docLines {
+            SKU_id {
+                name
+                iconPicURL
+                
+            }
+            container_id {
+                _id
+            }
+            container_printId
+        }
+        shippingAddress {
+            legalName
+            addressCountry
+            addressRegion1
+            addressRegion2
+            streetAddress
+            telephone
+        }
+        requestDatetime
+        fulfillDatetime
     }
 }`
+
+export const getPUOById = gql`
+    query getPUOById (
+        $PUO_id: String!
+    ) {
+        getPUOById (PUO_id: $PUO_id) {
+            _id
+            status
+            account_id {
+                _id
+            }
+            createDateTime
+            updateDateTime
+            createBy_id {
+                _id
+            }
+            billingAddress {
+                legalName
+                streetAddress
+                addressRegion1
+                addressRegion2
+                addressCountry
+                telephone
+            }
+            shippingAddress {
+                legalName
+                streetAddress
+                addressRegion1
+                addressRegion2
+                addressCountry
+                telephone
+            }
+            totalAmt
+            billedAmt
+            paidAmt
+            docLines {
+                SKU_id {
+                    iconPicURL
+                }
+                SKUName
+                container_id {
+                    _id
+                }
+                container_printId
+                remarks
+            }
+            docEvent_id {
+                docEventType
+                msg
+                userName
+                createDateTime
+            }
+        }
+    }`
+
+export const getDOById = gql`
+    query getDOById (
+        $DO_id: String!
+    ) {
+        getDOById (DO_id: $DO_id) {
+            _id
+            status
+            account_id {
+                _id
+            }
+            createDateTime
+            updateDateTime
+            createBy_id {
+                _id
+            }
+            billingAddress {
+                legalName
+                streetAddress
+                addressRegion1
+                addressRegion2
+                addressCountry
+                telephone
+            }
+            shippingAddress {
+                legalName
+                streetAddress
+                addressRegion1
+                addressRegion2
+                addressCountry
+                telephone
+            }
+            totalAmt
+            billedAmt
+            paidAmt
+            docLines {
+                SKU_id {
+                    iconPicURL
+                }
+                SKUName
+                container_id {
+                    _id
+                }
+                container_printId
+                remarks
+            }
+            docEvent_id {
+                docEventType
+                msg
+                userName
+                createDateTime
+            }
+        }
+    }`
+
 
 export default {}

@@ -16,6 +16,8 @@ import ThankYouForOrderPage from "./page/ThankYouForOrderPage.js"
 import AddPickUpOrderPage from "./page/AddPickUpOrderPage.js"
 import AddDeliveryOrderPage from "./page/AddDeliveryOrderPage.js"
 import PUODOListPage from "./page/PUODOListPage.js"
+import PUODetailsPage from "./page/PUODetailsPage.js"
+import DODetailsPage from "./page/DODetailsPage.js"
 
 const routes = [
 	{
@@ -290,6 +292,36 @@ const routes = [
 		component: ThankYouForOrderPage,
 		navbar: {
 			itemId: 902,
+			showBeforeLogin: false,
+			showAfterLogin: false
+		},
+		router: {
+			requireLogin: true
+		}
+	},
+	{
+		path: "/PUODetails/:id?",
+		menuName: "Box Movement Details (Pick Up)",
+		component: PUODetailsPage,
+		navbar: {
+			itemId: 304,
+			parentId: 100,
+			firstLevel: false,
+			showBeforeLogin: false,
+			showAfterLogin: false
+		},
+		router: {
+			requireLogin: true
+		}
+	},
+	{
+		path: "/DODetails/:id?",
+		menuName: "Box Movement Details (Delivery)",
+		component: DODetailsPage,
+		navbar: {
+			itemId: 305,
+			parentId: 100,
+			firstLevel: false,
 			showBeforeLogin: false,
 			showAfterLogin: false
 		},

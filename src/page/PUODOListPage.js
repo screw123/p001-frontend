@@ -11,6 +11,7 @@ import parseApolloErr from '../util/parseErr.js'
 import {BigLoadingScreen} from '../component/Loading.js'
 import get from 'lodash/get'
 import union from 'lodash/union'
+import sortBy from 'lodash/sortBy'
 import { MultiSelect } from '../component/FormikForm.js'
 
 class PUODOListPage extends React.Component {
@@ -54,9 +55,13 @@ class PUODOListPage extends React.Component {
 						return (
 							<div>
 								{errStack.map(v=>{ return <p>{v.message}</p> }) }
-							</div>	
+							</div>
 						)
-                    }
+					}
+					console.log(data)
+					const d1 = data.getRecentPUOListByUser.map(v=> Object.assign(v, {docType: 'PickUpOrder'}))
+					const d2 = data.getRecentDOListByUser.map(v=> Object.assign(v, {docType: 'DeliveryOrder'}))
+					const docList = sortBy(d1.concat(d2), ['updateDateTime']).reverse()
                     return(
                         <React.Fragment>
                             <MultiSelect 
@@ -73,7 +78,7 @@ class PUODOListPage extends React.Component {
                             />
                             {this.state.selectedAcct_id && 
                                 <Background>
-                                    <PUODOListForm PUODOlist={data.getRecentPUODOListByUser.filter(v=>v.account_id._id===this.state.selectedAcct_id)} {...this.props} />
+                                    <PUODOListForm PUODOlist={docList.filter(v=>v.account_id._id===this.state.selectedAcct_id)} {...this.props} />
                                 </Background>
                             }
                         </React.Fragment>

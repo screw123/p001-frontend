@@ -7,6 +7,21 @@ import c from '../stateContainer/LocaleApi.js'
 
 export const singleContainerDisplaySize = 180
 
+export const docTypeColor = (docType) =>{
+    switch(docType) {
+        case 'PickUpOrder':
+            return {background: 'Green', color: 'White'}
+        case 'DeliveryOrder':
+            return {background: 'DodgerBlue ', color: 'White'}
+        case 'Invoice':
+            return {background: 'GoldenRod ', color: 'White'}
+        case 'RentalOrder':
+            return {background: 'Indigo', color: 'White'}
+        default:
+            return {}
+    }
+}
+
 const TextNoWrap = styled.div`
 	font-size: 1rem;
 	white-space: nowrap;
@@ -82,6 +97,10 @@ const Amount = ({t, l})=>(
 	<IDDiv>{c.t(l) + ' : '+t}</IDDiv>
 )
 
+const DocType = ({t, float})=> (
+	<Tag {...docTypeColor(t)} float={float}>{c.t(t)}</Tag>
+)
+
 export const SmallPic = ({t, url, width, height})=>(
 	<img src={url} width={width} height={height} />
 )
@@ -112,4 +131,4 @@ const ContainerSummary = ({docLines, l}) => {
 
 }
 
-export default {Text, LongText, ID, Status, YesNo, DateOnly, DateTime, Amount, SmallPic, ContainerSummary, singleContainerDisplaySize}
+export default {Text, LongText, ID, Status, YesNo, DateOnly, DateTime, Amount, SmallPic, ContainerSummary, singleContainerDisplaySize, DocType}

@@ -34,14 +34,14 @@ export default class ContainerListForm extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state={PUODO: undefined}
-        this.PUODOLine = this.PUODOLine.bind(this)
+        this.state={container: undefined}
+        this.containerLine = this.containerLine.bind(this)
         this.setRedirect = this.setRedirect.bind(this)
     }
 
-    setRedirect = (PUODO) => this.setState({PUODO: PUODO})
+    setRedirect = (container) => this.setState({container: container})
 
-    PUODOLine = ({rowObj, data, multiSelect}, buttons) => {
+    containerLine = ({rowObj, data, multiSelect}, buttons) => {
         let { _id, billedAmt, status, paidAmt, createDateTime, docLines, docType} = data
         return (
             <InfoListStandardLine
@@ -68,25 +68,21 @@ export default class ContainerListForm extends React.Component {
         const g = this.props.login
         const c = this.props.i18n
         
-        if (this.state.PUODO) {
-            if (this.state.PUODO.docType==='PickUpOrder') {
-                return(<Redirect push to={{pathname: '/PUOdetails', state: {PUO_id: this.state.PUODO._id} }} />)
-            }
-            return(<Redirect push to={{pathname: '/DOdetails', state: {DO_id: this.state.PUODO._id} }} />)
+        if (this.state.container) {
+            return(<Redirect push to={{pathname: '/ContainerDetails', state: {container_id: this.state.container._id} }} />)
         }
         return(<div>
             <InfoList 
                 rowHeightCalc={(i, width)=>{
                     const fixed_field_lines = 2
-                    const containerSummary_lines = new Set(this.props.PUODOlist[i].docLines.map(v=>v.SKU_id.name)).size
+                    const containerSummary_lines = 1
 
                     //per field line * 1.5, per container line * 1.25, + 1.5line of buffer
                     return c.state.defaultHeight*1.5*fixed_field_lines + containerSummary_lines*32*1.25 / Math.floor(width*.95/DocLine.singleContainerDisplaySize) + c.state.defaultHeight*1.5
-
                 }}
-                headerText={<div><FontAwesomeIcon icon='file-invoice' /> {c.t('Box Movement Record')}</div>}
-                data={this.props.PUODOlist || []} 
-                listComponent={this.PUODOLine}
+                headerText={<div><FontAwesomeIcon icon='file-invoice' /> {c.t('Your Boxes')}</div>}
+                data={this.props.containerList || []} 
+                listComponent={this.containerLine}
                 refreshRowHeight={true}
             />
             

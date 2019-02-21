@@ -901,5 +901,26 @@ export const getDOById = gql`
         }
     }`
 
+export const getMyContainers = gql`
+    query getMyContainers {
+        getMyContainers {
+            _id
+            printId
+            userDefinedName
+            containerType_id {
+                _id
+            }
+            containerTypeName
+            containerUserInfo_id
+            weightKG
+            accountOwner_id {
+                _id
+            }
+            storageStartDate
+            storageExpiryDate
+            status
+        }
+    }`
+
 
 export default {}

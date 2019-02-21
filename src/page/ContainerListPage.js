@@ -1,11 +1,11 @@
 import React from "react"
 
-import ContainerListForm from '../form/PUODOListForm.js'
+import ContainerListForm from '../form/ContainerListForm.js'
 
 import {Background} from '../component/BasicComponents.js'
 
 import { ApolloProvider, Query } from 'react-apollo'
-import { getRecentPUODOListByUser } from '../gql/query.js'
+import { getMyContainers } from '../gql/query.js'
 import parseApolloErr from '../util/parseErr.js'
 
 import {BigLoadingScreen} from '../component/Loading.js'
@@ -45,11 +45,11 @@ class ContainerListPage extends React.Component {
         
         return (
             <ApolloProvider client={g.getGqlClient()}>
-                <Query query={getRecentPUODOListByUser} notifyOnNetworkStatusChange>
+                <Query query={getMyContainers} notifyOnNetworkStatusChange>
                 {({ loading, error, data, refetch, networkStatus }) => {
 					if (loading) return (<BigLoadingScreen text={'Loading...'}/>)
 					if (error) {
-						console.log('PUODOListPage', error)
+						console.log('ContainerListPage', error)
 						const errStack = parseApolloErr(error, c.t)
 
 						return (
@@ -58,10 +58,6 @@ class ContainerListPage extends React.Component {
 							</div>
 						)
 					}
-					console.log(data)
-					const d1 = data.getRecentPUOListByUser.map(v=> Object.assign(v, {docType: 'PickUpOrder'}))
-					const d2 = data.getRecentDOListByUser.map(v=> Object.assign(v, {docType: 'DeliveryOrder'}))
-					const docList = sortBy(d1.concat(d2), ['updateDateTime']).reverse()
                     return(
                         <React.Fragment>
                             <MultiSelect 
@@ -78,7 +74,7 @@ class ContainerListPage extends React.Component {
                             />
                             {this.state.selectedAcct_id && 
                                 <Background>
-                                    <PUODOListForm PUODOlist={docList.filter(v=>v.account_id._id===this.state.selectedAcct_id)} {...this.props} />
+                                    <ContainerListForm containerList={data.getMyContainers.filter(v=>v.accountOwner_id._id===this.state.selectedAcct_id)} {...this.props} />
                                 </Background>
                             }
                         </React.Fragment>

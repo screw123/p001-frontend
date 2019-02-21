@@ -7,7 +7,7 @@ import styled from 'styled-components'
 
 import get from 'lodash/get'
 import { BrowserRouter, Route } from 'react-router-dom'
-import routes from './routes.js'
+import routes, {NotFound} from './routes.js'
 
 import Navbar from './component/Navbar.js'
 import PrivateRoute from './component/PrivateRoute.js'
@@ -45,9 +45,9 @@ class App extends React.Component {
 
     genItems = ({routes, stateContainer}) => {
         let c = []
-        for (var i = 0; i < routes.length; i++) {
+        for (let i = 0; i < routes.length; i++) {
             if (routes[i].path) {
-                let Com = routes[i].component
+                const Com = routes[i].component
                 if (routes[i].router.requireLogin) {
                     c.push(<PrivateRoute
                         component={Com}
@@ -65,8 +65,10 @@ class App extends React.Component {
                         key={i}
                     />)
                 }
+                
             }
         }
+        c.push(<Route render={(props) => <NotFound {...props} {...stateContainer} />} key={'NotFound'} /> )
         return c
     }
 
@@ -77,7 +79,7 @@ class App extends React.Component {
                 return(
                 <LocaleApiProvider><LocaleApiSubscriber>
                 {(c) =>(
-                    <div>
+                    <React.Fragment>
                         {((g.state.isLogined===true)||(g.state.isLogined===false)) && <MainContainer>
                             <DummyPassHistory />  {/*Load this to add the history obj into GqpApi state */}
                             {this.genItems({routes: routes, stateContainer: {login: g, i18n: c}})}  {/* Put routes.js all into react-router */}
@@ -87,7 +89,7 @@ class App extends React.Component {
                         {(!((g.state.isLogined===true)||(g.state.isLogined===false))) && <div>
                             <BigLoadingScreen />
                         </div>}
-                    </div>
+                    </React.Fragment>
                 )}
                 </LocaleApiSubscriber></LocaleApiProvider>
             )}}

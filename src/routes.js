@@ -18,6 +18,7 @@ import AddDeliveryOrderPage from "./page/AddDeliveryOrderPage.js"
 import PUODOListPage from "./page/PUODOListPage.js"
 import PUODetailsPage from "./page/PUODetailsPage.js"
 import DODetailsPage from "./page/DODetailsPage.js"
+export {NotFoundPage as NotFound} from "./page/NotFoundPage.js"
 
 const routes = [
 	{
@@ -329,6 +330,6 @@ const routes = [
 			requireLogin: true
 		}
 	}
-];
+]
 
 export default routes;

@@ -6,7 +6,7 @@ import { faCcVisa, faCcMastercard, faCcAmex } from '@fortawesome/free-brands-svg
 import styled from 'styled-components'
 
 import get from 'lodash/get'
-import { BrowserRouter, Route } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import routes, {NotFound} from './routes.js'
 
 import Navbar from './component/Navbar.js'
@@ -69,7 +69,7 @@ class App extends React.Component {
             }
         }
         c.push(<Route render={(props) => <NotFound {...props} {...stateContainer} />} key={'NotFound'} /> )
-        return c
+        return <Switch>{c}</Switch>
     }
 
     render() {

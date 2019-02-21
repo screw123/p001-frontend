@@ -47,7 +47,7 @@ const Button = styled.div`
 	width: 100px;
 `
 
-class ContainerList extends React.Component {
+class ContainerSelectionList extends React.Component {
 	constructor(props) {
 		super(props)
 		this.lineItem = this.lineItem.bind(this)
@@ -138,4 +138,4 @@ class ContainerList extends React.Component {
 	}
 }
 
-export default ContainerList
+export default ContainerSelectionList

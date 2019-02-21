@@ -5,7 +5,7 @@ import { Formik, Field} from 'formik'
 import FormikForm, { TextField, FormButton, FormErr, FieldRow } from '../component/FormikForm.js'
 
 import SelectAddress from '../component/SelectAddress.js'
-import ContainerList from '../component/ContainerList.js'
+import ContainerSelectionList from '../component/ContainerSelectionList.js'
 import SelectCreditCard from '../component/SelectCreditCard.js'
 
 import { ApolloProvider, Query, Mutation } from "react-apollo"
@@ -172,7 +172,7 @@ class AddPickUpOrderForm extends React.Component {
                                         err={errors['shippingAddress']}
                                         defaultShippingAddress_id={get(acct, 'defaultShippingAddress_id._id',null)}
                                     />
-                                    <ContainerList
+                                    <ContainerSelectionList
                                         containerList={containers}
                                         SKUInfo={SKU}
                                         updateSelected={a=> {

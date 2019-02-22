@@ -2,7 +2,7 @@ import React from 'react'
 import get from 'lodash/get'
 import styled from "styled-components"
 
-import { Container, ButtonsDiv, FieldsDiv, RecordID, DateOnly, DateTime, Text, Num, Dollar, Address, DocLines, Status} from '../component/DocDetails.js'
+import { Container, ButtonsDiv, FieldsDiv, RecordID, DateOnly, DateTime, Text, Num, Dollar, Address, PUODODocLines, Status} from '../component/DocDetails.js'
 import SystemError from '../component/SystemError.js'
 import {getROStatusColor} from './ROListForm.js'
 
@@ -25,14 +25,27 @@ class PUODetailsForm extends React.PureComponent {
             </ButtonsDiv>
             <FieldsDiv>
                 <DateOnly title='createDateTime' data={PUO.createDateTime} />
-                <DateOnly title='updateDateTime' data={PUO.updateDateTime} />
+                <Address title='Shipping Address' data={PUO.shippingAddress} />
+                {!!PUO.fulfillDateTime && <DateTime title='fulfillDateTime' data={PUO.fulfillDateTime} />}
+                {!PUO.fulfillDateTime && <DateTime title='requestDateTime' data={PUO.requestDateTime} />}
+
                 <Dollar title='totalAmt' data={PUO.totalAmt} />
-                <Address title='billingAddress' data={PUO.billingAddress} />
+                
                 <Status title='Status' data={PUO.status} {...getROStatusColor(PUO.status)} />
             </FieldsDiv>
-            <DocLines data={PUO.docLines} title='Pick Up Details' /> 
+            <PUODODocLines data={PUO.docLines} title={c.t('Pick Up Details')} /> 
         </Container>)
 	}
 }
 
 export default PUODetailsForm
+
+
+/*
+
+docLines: Array [ {…} ]
+
+
+
+
+*/

@@ -5,6 +5,7 @@ import {AutoSizer} from 'react-virtualized'
 import {Tag} from '../component/BasicComponents.js'
 import c from '../stateContainer/LocaleApi.js'
 import {SmallPic } from './DocLine.js'
+import {ContainerLineItem} from './ContainerSelectionList.js'
 
 export const Container = ({children})=> (
 	<OuterWrapper>
@@ -28,7 +29,7 @@ const Title = styled.div`
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	font-size: 1.5rem;
+	font-size: 1.25rem;
 	line-height: 1.4;
 	font-weight: 600;
 `
@@ -87,7 +88,7 @@ export const Num = ({title, data}) =>(
 export const Dollar = ({title, data}) =>(
 	<FieldWrapper>
 		<FieldTitle>{c.t(title)}</FieldTitle>
-		<TextNoWrap><DollarSpan>{accounting.formatMoney(data)}</DollarSpan></TextNoWrap>
+		<TextNoWrap><DollarDiv>{accounting.formatMoney(data)}</DollarDiv></TextNoWrap>
 	</FieldWrapper>
 )
 
@@ -117,13 +118,9 @@ export const Address = ({title, data}) => (
 	</FieldWrapper>
 )
 
-export const DocLines = ({title, data}) => {
+export const RentalDocLines = ({title, data}) => {
 	let displayCom = []
 	for(let i=0;i<data.length;i++) {
-		console.log(accounting.formatColumn([data[i].rent_unitPrice, 9999999],'$ ' , 1))
-
-
-
 		displayCom.push(
 			<DocLineRow key={'docLines'+i}>
 				<SingleContainerDisplay>
@@ -132,8 +129,8 @@ export const DocLines = ({title, data}) => {
 				</SingleContainerDisplay>
 				<DocLineField>{data[i].duration + ' ' + c.t(data[i].rentMode, {count: data[i].duration})}</DocLineField>
 				<DocLineField>{data[i].qty + c.t('pcs')}</DocLineField>
-				<DocLineField><DollarSpan>{accounting.formatColumn([data[i].rent_unitPrice, 99999],'$ ' , 1)[0]}</DollarSpan></DocLineField>
-				<DocLineField><DollarSpan>{accounting.formatColumn([data[i].rent_lineTotal, 99999],'$ ' , 1)[0]}</DollarSpan> </DocLineField>
+				<DocLineField><DollarPre>{accounting.formatColumn([data[i].rent_unitPrice, 99999],'$ ' , 1)[0]}</DollarPre></DocLineField>
+				<DocLineField><DollarPre>{accounting.formatColumn([data[i].rent_lineTotal, 99999],'$ ' , 1)[0]}</DollarPre> </DocLineField>
 			</DocLineRow>
 		)
 	}
@@ -158,6 +155,40 @@ export const DocLines = ({title, data}) => {
 		</DocLineWrapper>
 	)
 }
+
+export const PUODODocLines = ({title, data}) => {
+	let displayCom = []
+	for(let i=0;i<data.length;i++) {
+		console.log(data[i])
+		displayCom.push(
+			<ContainerLineItem
+				key={'container'+i}
+				iconPicURL={data[i].SKU_id.iconPicURL}
+				c={c}
+				containerDoc={data[i]}
+			/>
+		)
+	}
+	return (
+		<DocLineWrapper>
+			<Title>{c.t(title)}</Title>
+			<AutoSizer disableHeight>
+			{({width}) => (
+				<DocLineFlexDiv width={width}>
+					{displayCom}
+				</DocLineFlexDiv>
+			)}
+			</AutoSizer>
+			
+		</DocLineWrapper>
+	)
+}
+
+const DocLineFlexDiv = styled.div`
+	display: flex;
+	overflow: auto;
+	width: ${({width})=>width}px;
+`
 
 const DocLineRowsDiv = styled.div`
 	display: block;
@@ -195,9 +226,6 @@ const DocLineWrapper = styled.div`
 	padding: 0.5rem 0;
 `
 
-
-
-
 const FieldWrapper = styled.div`
 	width: 15rem;
 	box-sizing: border-box;
@@ -219,15 +247,21 @@ const TextNoWrap = styled.div`
 	font-size: 1rem;
 	white-space: nowrap;
 	text-overflow: ellipsis;
+	padding: 0 0 0 0.5rem;
 `
 
 const AddressText = styled.div`
 	font-size: 0.8rem;
 	white-space: nowrap;
 	text-overflow: ellipsis;
+	padding: 0 0 0 0.5rem;
 ` 
 
-const DollarSpan = styled.pre`
+const DollarPre = styled.pre`
+	font-family: 'Inconsolata', monospace;
+`
+
+const DollarDiv = styled.div`
 	font-family: 'Inconsolata', monospace;
 `
 
@@ -251,5 +285,5 @@ export const DocEvents = ({title, data}) => {
 export default {
 	Container, ButtonsDiv, FieldsDiv,
 	RecordID,
-	DateOnly, DateTime, Text, Num, Dollar, Address, DocLines, Status
+	DateOnly, DateTime, Text, Num, Dollar, Address, RentalDocLines, PUODODocLines, Status
 }

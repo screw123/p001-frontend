@@ -47,6 +47,19 @@ const Button = styled.div`
 	width: 100px;
 `
 
+export const ContainerLineItem = ({selected, style, key, onClick, iconPicURL, isNew, c, containerDoc}) => {
+	return (
+		<ContainerDiv selected={selected} style={style} key={key} onClick={onClick}>
+			<SmallPic url={iconPicURL} width={c.state.defaultHeight * 3} height={c.state.defaultHeight * 3} />
+			<span>
+				{containerDoc.userDefinedName + " " + (containerDoc.printId !== containerDoc.userDefinedName ? "(" + containerDoc.printId + ")" : "")}
+			</span>
+			{isNew && <Tag float='right' background='Yellow' color='Green'>{c.t('Just Ordered!')}</Tag>}
+		</ContainerDiv>
+	)
+}
+
+
 class ContainerSelectionList extends React.Component {
 	constructor(props) {
 		super(props)
@@ -65,28 +78,17 @@ class ContainerSelectionList extends React.Component {
 
 	lineItem = ({ rowObj, c }) => {
 		const container = this.props.containerList[rowObj.index]
-		const selected = this.props.selected.includes(container._id)
-		const isNew = container.status==='EMPTY'
-
-		return (
-			<ContainerDiv
-				selected={selected}
+		return(
+			<ContainerLineItem
+				selected={this.props.selected.includes(container._id)}
 				style={rowObj.style}
 				key={rowObj.key}
 				onClick={e => this.toggleSelectedItem(e, container._id)}
-			>
-				<SmallPic
-					url={this.props.SKUInfo.find(v => v._id === container.containerType_id._id).iconPicURL}
-					width={c.state.defaultHeight * 3}
-					height={c.state.defaultHeight * 3}
-				/>
-				<span>
-					{container.userDefinedName +
-						" " +
-						(container.printId !== container.userDefinedName ? "(" + container.printId + ")" : "")}
-				</span>
-				{isNew && <Tag float='right' background='Yellow' color='Green'>{c.t('Just Ordered!')}</Tag>}
-			</ContainerDiv>
+				iconPicURL={this.props.SKUInfo.find(v => v._id === container.containerType_id._id).iconPicURL}
+				isNew={container.status==='EMPTY'}
+				c={c}
+				containerDoc={this.props.containerList[rowObj.index]}
+			/>
 		)
 	}
 

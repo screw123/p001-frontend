@@ -3,6 +3,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {ClickIcon} from './BasicComponents.js'
+
+const roundRadiusREM = 2
 
 const ModalBG = styled.div`
     display: ${props=>(props.show)? 'block':'none'};
@@ -18,47 +21,39 @@ const ModalBG = styled.div`
 
 const ModalBody = styled.div`
     background-color: white;
-    margin: 15% auto;
-    border: 1px solid #888;
-    width: 80%;
-    box-shadow: 0 0.2em 0.4em 0 rgba(0,0,0,0.4),0 0.3em 1.2em 0 rgba(0,0,0,0.2);
-    transition: all 0.3s ease-out;
+    margin: 3% auto;
     
+    width: 95%;
+    box-shadow: 0 0.2rem 0.4rem 0 rgba(0,0,0,0.4),0 0.3rem 1.2rem 0 rgba(0,0,0,0.2);
+    transition: all 0.3s ease-out;
+    border-radius: ${roundRadiusREM}rem;
 `
 
 const Title = styled.h3`
-    background-color: #f47;
-    padding: 1em 2em;
+    background: #f36;
+    padding: ${roundRadiusREM/2}rem ${roundRadiusREM}rem ${({hasTitle})=> hasTitle? 0.5 :2}rem ${roundRadiusREM/2}rem;
+    border-radius: ${roundRadiusREM}rem ${roundRadiusREM}rem 0 0;
+    text-align: center;
 `
 
 const Content = styled.div`
-    padding: 2em;
+    padding: 1rem;
 `
 
-const IconDiv = styled.div`
-    align-self: center;
-    padding: 0.5em;
-    cursor: pointer;
-`
 
 const Footer = styled.div`
-    padding: 1em;
+    padding: ${roundRadiusREM/2}rem;
     justify-content: center;
     background-color: #f47;
+    border-radius: 0 0 ${roundRadiusREM}rem ${roundRadiusREM}rem;
 `
-
-export const CloseIcon = ({onClick, ...props}) => (
-    <IconDiv onClick={onClick}>
-        <FontAwesomeIcon icon='window-close' {...props}/>
-    </IconDiv>
-)
 
 const Modal = ({component, content, title, closeModal, footerButtons, ...props}) => (
     <ModalBG {...props}>
         <ModalBody>
-            <Title>
+            <Title hasTitle={title}>
                 {title}
-                {closeModal && <CloseIcon onClick={closeModal} />}
+                {closeModal && <ClickIcon icon='window-close' onClick={closeModal} float='right' />}
             </Title>
             <Content>
                 {component}

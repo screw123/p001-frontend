@@ -834,6 +834,8 @@ export const getPUOById = gql`
                 SKUName
                 container_id {
                     _id
+                    printId
+                    userDefinedName
                 }
                 container_printId
                 remarks

@@ -2,7 +2,7 @@ import React from 'react'
 import get from 'lodash/get'
 import styled from "styled-components"
 
-import { Container, ButtonsDiv, FieldsDiv, RecordID, DateOnly, DateTime, Text, Num, Dollar, Address, DocLines, Status} from '../component/DocDetails.js'
+import { Container, ButtonsDiv, FieldsDiv, RecordID, DateOnly, DateTime, Text, Num, Dollar, Address, RentalDocLines, Status} from '../component/DocDetails.js'
 import SystemError from '../component/SystemError.js'
 import {getROStatusColor} from './ROListForm.js'
 
@@ -79,7 +79,7 @@ class RODetailsForm extends React.PureComponent {
                 <Address title='billingAddress' data={RO.billingAddress} />
                 <Status title='Status' data={RO.status} {...getROStatusColor(RO.status)} />
             </FieldsDiv>
-            <DocLines data={RO.docLines} title='Rental Details' /> 
+            <RentalDocLines data={RO.docLines} title='Rental Details' /> 
         </Container>)
 	}
 }

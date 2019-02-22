@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const BG = styled.div`
     background: White;
@@ -127,12 +128,12 @@ const ToolTipText = styled.span`
 	background-color: DimGrey;
 	color: #fff;
 	text-align: center;
-	border-radius: 0.25em;
-	padding: 0.1em 0.5em;
+	border-radius: 0.25rem;
+	padding: 0.1rem 0.5rem;
 	position: absolute;
 	z-index: 1;
 	left: 100%;
-	margin-left:0.5em;
+	margin-left:0.5rem;
 
 	&:after {
 		content: "";
@@ -140,7 +141,7 @@ const ToolTipText = styled.span`
 		left: 100%;
 		z-index: 1000;
 		margin-left: 0;
-		margin-bottom: -1em;
+		margin-bottom: -1rem;
 	}
 
 	${ToolTipBox}:hover & {
@@ -148,5 +149,16 @@ const ToolTipText = styled.span`
 	}
 `
 
+const IconSpan = styled.span`
+    align-self: center;
+	cursor: pointer;
+	${({float})=> float? 'float:'+float : '' }
+`
 
-export default {Background, WrapRow, StraightRow, ClickableText, Tag, Section, SectionContent, ToolTip }
+export const ClickIcon = ({icon, onClick, float, ...props}) => (
+    <IconSpan onClick={onClick} float={float}>
+        <FontAwesomeIcon icon={icon} {...props}/>
+    </IconSpan>
+)
+
+export default {Background, WrapRow, StraightRow, ClickableText, Tag, Section, SectionContent, ToolTip, ClickIcon }

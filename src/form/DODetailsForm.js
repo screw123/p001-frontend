@@ -25,12 +25,15 @@ class DODetailsForm extends React.PureComponent {
             </ButtonsDiv>
             <FieldsDiv>
                 <DateOnly title='createDateTime' data={DO.createDateTime} />
-                <DateOnly title='updateDateTime' data={DO.updateDateTime} />
+                <Address title='Shipping Address' data={DO.shippingAddress} />
+                {!!DO.fulfillDateTime && <DateTime title='fulfillDateTime' data={DO.fulfillDatetime} />}
+                {!DO.fulfillDateTime && <DateTime title='requestDateTime' data={DO.requestDatetime} approximate={true} />}
+                
                 <Dollar title='totalAmt' data={DO.totalAmt} />
-                <Address title='billingAddress' data={DO.billingAddress} />
+                
                 <Status title='Status' data={DO.status} {...getROStatusColor(DO.status)} />
             </FieldsDiv>
-            <PUODODocLines data={DO.docLines} title='Pick Up Details' /> 
+            <PUODODocLines data={DO.docLines} title={c.t('Delivery Details')} /> 
         </Container>)
 	}
 }

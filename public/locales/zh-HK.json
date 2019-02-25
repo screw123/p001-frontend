@@ -132,5 +132,20 @@
     "Thu": "四",
     "Fri": "五",
     "Sat": "六",
-    "Pick Up Date": "存箱日期"
+    "Pick Up Date": "存箱日期",
+    "EMPTY": "剛訂購",
+    "STORED": "在WiseKeep",
+    "PENDING_OUTBOUND": "在途中",
+    "IN_TRANSIT_TO_CUSTOMER": "在途中",
+    "WITH_CUSTOMER": "在你手",
+    "PENDING_INBOUND": "在途中",
+    "IN_TRANSIT_TO_WAREHOUSE": "在途中",
+    "DISBANDED": "已取消",
+    "PickUpOrder": "收貨指示",
+    "DeliveryOrder": "送貨指示",
+    "Morning": "早上",
+    "Afternoon": "下午",
+    "Evening": "黃昏",
+    "Pick Up Details": "收貨內容",
+    "Delivery Details": "送貨內容"
 }

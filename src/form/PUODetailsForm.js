@@ -26,9 +26,9 @@ class PUODetailsForm extends React.PureComponent {
             <FieldsDiv>
                 <DateOnly title='createDateTime' data={PUO.createDateTime} />
                 <Address title='Shipping Address' data={PUO.shippingAddress} />
-                {!!PUO.fulfillDateTime && <DateTime title='fulfillDateTime' data={PUO.fulfillDateTime} />}
-                {!PUO.fulfillDateTime && <DateTime title='requestDateTime' data={PUO.requestDateTime} />}
-
+                {!!PUO.fulfillDateTime && <DateTime title='fulfillDateTime' data={PUO.fulfillDatetime} />}
+                {!PUO.fulfillDateTime && <DateTime title='requestDateTime' data={PUO.requestDatetime} approximate={true} />}
+                
                 <Dollar title='totalAmt' data={PUO.totalAmt} />
                 
                 <Status title='Status' data={PUO.status} {...getROStatusColor(PUO.status)} />

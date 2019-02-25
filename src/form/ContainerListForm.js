@@ -11,19 +11,21 @@ import {LocaleApiSubscriber} from '../stateContainer/LocaleApi.js'
 
 export const getPUODOStatusColor = (status) =>{
     switch(status) {
-        case 'INIT':
+        case 'EMPTY':
             return {background: 'DeepSkyBlue', color: 'Black'}
-        case 'PROCESSING_PAID':
+        case 'STORED':
             return {background: 'Gold', color: 'Black'}
-        case 'PROCESSING_UNPAID':
+        case 'PENDING_OUTBOUND':
             return {background: 'Tomato', color: 'White'}
-        case 'COMPLETED_PAID':
+        case 'IN_TRANSIT_TO_CUSTOMER':
             return {background: 'Forest', color: 'White'}
-        case 'COMPLETED_UNPAID':
+        case 'WITH_CUSTOMER':
             return {background: 'Tomato', color: 'White'}
-        case 'HOLD':
+        case 'PENDING_INBOUND':
             return {background: 'OrangeRed', color: 'Gold'}
-        case 'CANCELLED':
+        case 'IN_TRANSIT_TO_WAREHOUSE':
+            return {background: 'OrangeRed', color: 'Gold'}
+        case 'DISBANDED':
             return {background: 'DimGrey', color: 'White'}
         default:
             return {}

@@ -737,12 +737,13 @@ query getRecentPUODOListByUser {
             SKU_id {
                 name
                 iconPicURL
-                
             }
             container_id {
                 _id
+                printId
+                userDefinedName
             }
-            container_printId
+            
         }
         shippingAddress {
             legalName
@@ -777,8 +778,9 @@ query getRecentPUODOListByUser {
             }
             container_id {
                 _id
+                printId
+                userDefinedName
             }
-            container_printId
         }
         shippingAddress {
             legalName

@@ -7,6 +7,17 @@ import c from '../stateContainer/LocaleApi.js'
 import {SmallPic } from './DocLine.js'
 import {ContainerLineItem} from './ContainerSelectionList.js'
 
+const timeApprox = (date) => {
+	const h = c.moment(date).hour()
+	switch(true) {
+		case (h<9): return undefined
+		case (h<13): return c.t('Morning')
+		case (h<18): return c.t('Afternoon')
+		case (h<22): return c.t('Evening')
+		default: return undefined
+	}
+}
+
 export const Container = ({children})=> (
 	<OuterWrapper>
 		{children}
@@ -67,16 +78,19 @@ export const Text = ({title, data}) =>(
 export const DateOnly = ({title, data}) =>(
 	<FieldWrapper>
 		<FieldTitle>{c.t(title)}</FieldTitle>
-		<TextNoWrap>{c.moment(data).calendar()}</TextNoWrap>
+		<TextNoWrap>{c.moment(data).format('YYYY-MM-DD')}</TextNoWrap>
 	</FieldWrapper>
 )
 
-export const DateTime = ({title, data}) =>(
-	<FieldWrapper>
-		<FieldTitle>{c.t(title)}</FieldTitle>
-		<TextNoWrap>{c.moment(data).calendar()}</TextNoWrap>
-	</FieldWrapper>
-)
+export const DateTime = ({title, data, approximate}) =>{
+	const time = approximate ? timeApprox(data) : c.moment(data).format('HH:MM')
+	return (
+		<FieldWrapper>
+			<FieldTitle>{c.t(title)}</FieldTitle>
+			<TextNoWrap>{c.moment(data).format('YYYY-MM-DD') + (time ? ' ' + time : '') }</TextNoWrap>
+		</FieldWrapper>
+	)
+}
 
 export const Num = ({title, data}) =>(
 	<FieldWrapper>
@@ -159,13 +173,13 @@ export const RentalDocLines = ({title, data}) => {
 export const PUODODocLines = ({title, data}) => {
 	let displayCom = []
 	for(let i=0;i<data.length;i++) {
-		console.log(data[i])
+		console.log('PUODODocLines', data[i])
 		displayCom.push(
 			<ContainerLineItem
 				key={'container'+i}
 				iconPicURL={data[i].SKU_id.iconPicURL}
 				c={c}
-				containerDoc={data[i]}
+				containerDoc={data[i].container_id}
 			/>
 		)
 	}

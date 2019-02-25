@@ -9,55 +9,6 @@ import { ApolloProvider, Mutation } from 'react-apollo'
 
 import {LocaleApiSubscriber} from '../stateContainer/LocaleApi.js'
 
-/*{
-    "_id": "5c2df683c3287648fca2fe03",
-    "account_id": "5b518c4c031c7d0179e23b6a",
-    "accountType": "PERSONAL",
-    "billedAmt": 176,
-    "billingAddress": {
-        "addressCountry": "NEW TERRITORIES",
-        "addressRegion1": "ccc",
-        "addressRegion2": "ddd",
-        "legalName": "aaa",
-        "streetAddress": "bbbaaa",
-        "telephone": "52525252"
-    },
-    "billingAddress_id": "5c07a1345010625008c21c2b",
-    "createBy_id": "5b518c4b031c7d0179e23b69",
-    "createDateTime": "2019-01-03T11:48:19.518Z",
-    "docEvent_id": [
-        "5c2df683c3287648fca2fe04",
-        "5c2df687c3287648fca2fe09"
-    ],
-    "docLines": [
-        {
-            "duration": 5,
-            "qty": 44,
-            "rent_lineTotal": 176,
-            "rent_unitPrice": 4,
-            "rentMode": "DAY",
-            "SKU_id": "5b110d2d4e3d922dacfd3ed6",
-            "SKUName": "Standard Box"
-        }
-    ],
-    "invoiceList": [
-        {
-            "_id": "5c2df684c3287648fca2fe05",
-            "settledAmt": 176,
-            "status": "FULL_SETTLED",
-            "totalAmt": 176
-        }
-    ],
-    "paidAmt": 176,
-    "printCount": 0,
-    "quotation_id": "5c2df65bc3287648fca2fe01",
-    "status": "PROCESSING_PAID",
-    "totalAmt": 176,
-    "updateBy_id": "5b518c4b031c7d0179e23b69",
-    "updateDateTime": "2019-01-03T11:48:23.475Z",
-    "version": "1.0"
-}*/
-
 export const getROStatusColor = (status) =>{
     switch(status) {
         case 'INIT':

@@ -147,5 +147,11 @@
     "Afternoon": "Afternoon",
     "Evening": "Evening",
     "Pick Up Details": "Pick Up Details",
-    "Delivery Details": "Delivery Details"
+    "Delivery Details": "Delivery Details",
+    "requestDatetime": "Booked Date/Time",
+    "fulfillDatetime": "Fulfilled Date/Time",
+    "Box Movement Record": "Box Movement Record",
+    "Send Box To Wisekeep": "Send Box To Wisekeep",
+    "Get your stuff": "Get your stuff",
+    "All your stuffs": "All your stuffs"
 }

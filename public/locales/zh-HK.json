@@ -147,5 +147,11 @@
     "Afternoon": "下午",
     "Evening": "黃昏",
     "Pick Up Details": "收貨內容",
-    "Delivery Details": "送貨內容"
+    "Delivery Details": "送貨內容",
+    "requestDatetime": "預約日期/時間",
+    "fulfillDatetime": "完成日期/時間",
+    "Box Movement Record": "物品收送記錄",
+    "Send Box To Wisekeep": "預約存放物件",
+    "Get your stuff": "預約取回物件",
+    "All your stuffs": "物品一覽"
 }

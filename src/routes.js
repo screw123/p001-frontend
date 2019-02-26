@@ -245,7 +245,7 @@ const routes = [
 	},
 	{
 		path: "/ArrangePickUp",
-		menuName: "Send Box To Us",
+		menuName: "Send Box To Wisekeep",
 		component: AddPickUpOrderPage,
 		navbar: {
 			itemId: 301,
@@ -333,7 +333,7 @@ const routes = [
 	},
 	{
 		path: "/ContainerList",
-		menuName: "All your boxes",
+		menuName: "All your stuffs",
 		component: ContainerListPage,
 		navbar: {
 			itemId: 401,

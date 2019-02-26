@@ -26,8 +26,8 @@ class DODetailsForm extends React.PureComponent {
             <FieldsDiv>
                 <DateOnly title='createDateTime' data={DO.createDateTime} />
                 <Address title='Shipping Address' data={DO.shippingAddress} />
-                {!!DO.fulfillDateTime && <DateTime title='fulfillDateTime' data={DO.fulfillDatetime} />}
-                {!DO.fulfillDateTime && <DateTime title='requestDateTime' data={DO.requestDatetime} approximate={true} />}
+                {!!DO.fulfillDatetime && <DateTime title='fulfillDatetime' data={DO.fulfillDatetime} approximate={true} />}
+                {!DO.fulfillDatetime && <DateTime title='requestDatetime' data={DO.requestDatetime} approximate={true} />}
                 
                 <Dollar title='totalAmt' data={DO.totalAmt} />
                 

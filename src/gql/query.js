@@ -919,9 +919,50 @@ export const getMyContainers = gql`
             weightKG
             accountOwner_id {
                 _id
+                name
             }
             storageStartDate
             storageExpiryDate
+            status
+        }
+    }`
+
+export const getContainerById = gql`
+    query getContainerById($_id: String, $printId: String) {
+        getContainerById(_id: $_id, printId: $printId) {
+            _id
+            printId
+            userDefinedName
+            containerType_id {
+                _id
+                name
+                iconPicURL
+                lengthM
+                widthM
+                heightM
+            }
+            weightKG
+            accountOwner_id {
+                _id
+                name
+            }
+            storageStartDate
+            storageExpiryDate
+            rentalOrder_id {
+                _id
+            }
+            priceList_id {
+                _id
+                rent
+                ship_in_base
+                ship_in_perPiece
+                ship_out_base
+                ship_out_perPiece
+                ship_first_base
+                ship_first_perPiece
+                ship_last_base
+                ship_last_perPiece
+            }
             status
         }
     }`

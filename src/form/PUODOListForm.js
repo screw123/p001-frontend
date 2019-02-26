@@ -57,7 +57,6 @@ export default class PUODOListForm extends React.Component {
     togglePUODetailsModal = (doc) => {
         console.log(doc)
         if (doc) {
-            console.log('hasDoc')
             this.setState(prevState=> ({
                 selectedDoc: doc,
                 showPUODetailsModal: !prevState.showPUODetailsModal

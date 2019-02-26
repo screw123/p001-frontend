@@ -18,8 +18,8 @@ const timeApprox = (date) => {
 	}
 }
 
-export const Container = ({children})=> (
-	<OuterWrapper>
+export const Container = ({children, isNoTitle})=> (
+	<OuterWrapper isNoTitle={isNoTitle}>
 		{children}
 	</OuterWrapper>
 )
@@ -30,10 +30,10 @@ const OuterWrapper = styled.div`
     overflow: hidden;
 	min-width: 300px;
 	grid-template-columns: [s1] 2.5% [content] auto [end] 2.5% [s2];
-	grid-template-rows: [s1] 4rem [title] auto [buttons] auto [content] auto [doclines] auto [docevent] 4rem [s2];
+	grid-template-rows: [s1] ${({isNoTitle})=> isNoTitle ? 'auto': '4rem'} [title] auto [buttons] auto [content] auto [doclines] auto [docevent] 4rem [s2];
 `
 
-const Title = styled.div`
+export const Title = styled.div`
 	grid-row: s1 / title;
 	grid-column: content / end;
 	align-self: center;
@@ -293,8 +293,6 @@ const ID = styled.span`
 export const DocEvents = ({title, data}) => {
 	return (<p>{title}</p>)
 }
-
-
 
 export default {
 	Container, ButtonsDiv, FieldsDiv,

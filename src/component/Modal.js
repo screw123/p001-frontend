@@ -1,7 +1,7 @@
 //Modal component 
 
 import React from 'react'
-import styled from 'styled-components'
+import styled, {keyframes} from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {ClickIcon} from './BasicComponents.js'
 
@@ -22,22 +22,19 @@ const ModalBG = styled.div`
 const ModalBody = styled.div`
     background-color: white;
     margin: 3% auto;
-    
     width: 95%;
     box-shadow: 0 0.2rem 0.4rem 0 rgba(0,0,0,0.4),0 0.3rem 1.2rem 0 rgba(0,0,0,0.2);
-    transition: all 0.3s ease-out;
     border-radius: ${roundRadiusREM}rem;
 `
 
-const Title = styled.h3`
-    background: #f36;
+const Title = styled.div`
+    background: #f47;
     padding: ${roundRadiusREM/2}rem ${roundRadiusREM}rem ${({hasTitle})=> hasTitle? 0.5 :2}rem ${roundRadiusREM/2}rem;
     border-radius: ${roundRadiusREM}rem ${roundRadiusREM}rem 0 0;
     text-align: center;
 `
 
 const Content = styled.div`
-    padding: 1rem;
 `
 
 
@@ -48,20 +45,20 @@ const Footer = styled.div`
     border-radius: 0 0 ${roundRadiusREM}rem ${roundRadiusREM}rem;
 `
 
-const Modal = ({component, content, title, closeModal, footerButtons, ...props}) => (
+const Modal = ({component, content, title, closeModal, footerButtons, hideTitle, ...props}) => (
     <ModalBG {...props}>
         <ModalBody>
-            <Title hasTitle={title}>
+            {!hideTitle && <Title hasTitle={title}>
                 {title}
                 {closeModal && <ClickIcon icon='window-close' onClick={closeModal} float='right' />}
-            </Title>
+            </Title>}
             <Content>
                 {component}
                 {content}
             </Content>
-            <Footer>
+            {!!footerButtons&& <Footer>
                 {footerButtons}
-            </Footer>
+            </Footer>}
         </ModalBody>
     </ModalBG>
 )

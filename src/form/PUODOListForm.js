@@ -73,6 +73,7 @@ export default class PUODOListForm extends React.Component {
                 occupyFullRow={true}
                 multiSelect={multiSelect}
                 key1={rowObj.key}
+                key={rowObj.key}
                 style={rowObj.style}
                 showBottomBorder={true}
                 contentOnClick={e=>{

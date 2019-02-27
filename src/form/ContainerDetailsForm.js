@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import styled from "styled-components"
 
-import {CustomField, Container, ContainerHeader, ButtonsDiv, FieldsDiv, Avatar} from '../component/ContainerDetails.js'
+import {CustomField, Container, ContainerHeader, ButtonsDiv, FieldsDiv, BoxType} from '../component/ContainerDetails.js'
 
 import { ApolloProvider, Query } from 'react-apollo'
 import { getContainerById } from '../gql/query.js'
@@ -39,20 +39,14 @@ export default class ContainerDetailsForm extends Component {
 						loadError = true
 					}
 					const {printId, userDefinedName, containerType_id} = container
-					const {name, iconPicURL, widthM, lengthM, heightM} = containerType_id
 					return(
 						<Container isNoTitle={this.props.hideTitle}>
 							{!this.props.hideTitle && <ContainerHeader printId={printId} userDefinedName={userDefinedName} />}
 							<ButtonsDiv> </ButtonsDiv>
 							<FieldsDiv>
-								<div>
-									<Avatar imgURL={iconPicURL} />
-									<div>
-										<div>{name}</div>
-										<div>{lengthM*100 + 'cm X ' + widthM*100 + 'cm X ' + heightM*100 + 'cm'}</div>
-									</div>
-									
-								</div>
+								<BoxType SKUMaster={containerType_id} />
+								<CustomField label="haha" content="hehe" />
+								<CustomField label="haha" content="hehe" />
 								
 								
 							</FieldsDiv>

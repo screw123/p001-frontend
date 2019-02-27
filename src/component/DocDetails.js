@@ -240,9 +240,14 @@ const DocLineWrapper = styled.div`
 	padding: 0.5rem 0;
 `
 
-const FieldWrapper = styled.div`
+export const FieldWrapper = styled.div`
 	width: 15rem;
 	box-sizing: border-box;
+	display: grid;
+	grid-gap: 0.3rem;
+	align-items: center;
+	grid-template-columns: repeat(auto-fit, minmax(1rem, max-content));
+	${({span})=>span? 'grid-column: span '+span: ''}
 `
 
 const FieldTitle = styled.div`

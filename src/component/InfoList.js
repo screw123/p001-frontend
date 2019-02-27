@@ -33,7 +33,7 @@ const ContentDiv = styled.div`
 
 export const InfoListStandardLine = ({key1, style, content, contentOnClick, occupyFullRow, showBottomBorder, ...props}) => {
     return(<OuterWrapper key={key1} style={style} {...props}>
-        <ContentDiv onClick={contentOnClick} occupyFullRow={occupyFullRow} showBottomBorder={showBottomBorder}>
+        <ContentDiv key={key1} onClick={contentOnClick} occupyFullRow={occupyFullRow} showBottomBorder={showBottomBorder}>
             {content}
         </ContentDiv>
     </OuterWrapper>)

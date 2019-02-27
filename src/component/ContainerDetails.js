@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import c from '../stateContainer/LocaleApi.js'
-import {Title} from './DocDetails.js'
+import {Title, FieldWrapper} from './DocDetails.js'
 
 export {Container, Title, ButtonsDiv, FieldsDiv} from './DocDetails.js'
 
@@ -26,6 +26,26 @@ const TextNoWrap = styled.div`
 	text-overflow: ellipsis;
 `
 
+const Description = styled.div`
+	font-size: 0.8rem;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	color: DimGray;
+`
+
+export const BoxType = ({SKUMaster}) => {
+	const {name, iconPicURL, widthM, lengthM, heightM} = SKUMaster
+	return (
+		<FieldWrapper span={2} >
+			<Avatar imgURL={iconPicURL} size={3} />
+			<div>
+				<Description>{name}</Description>
+				<Description>{lengthM*100 + 'cm X ' + widthM*100 + 'cm X ' + heightM*100 + 'cm'}</Description>
+			</div>
+		</FieldWrapper>
+	)
+}
+
 export const ContainerHeader = ({printId, userDefinedName}) => (
 	<Title><span>{userDefinedName}</span><span>{printId !== userDefinedName ? " (" + printId + ")" : ""}</span></Title>
 )
@@ -45,6 +65,7 @@ export const Avatar = ({imgURL, size}) => (
 )
 
 const RoundImg = styled.img`
+	border-size: 0px;
 	border-radius: 50%;
 	width: ${({size=3})=>size}rem;
 	height: ${({size=3})=>size}rem;

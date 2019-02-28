@@ -42,9 +42,10 @@ export default class ContainerDetailsForm extends Component {
 					return(
 						<Container isNoTitle={this.props.hideTitle}>
 							{!this.props.hideTitle && <ContainerHeader printId={printId} userDefinedName={userDefinedName} />}
+							<BoxType SKUMaster={containerType_id} />
 							<ButtonsDiv> </ButtonsDiv>
 							<FieldsDiv>
-								<BoxType SKUMaster={containerType_id} />
+								
 								<CustomField label="haha" content="hehe" />
 								<CustomField label="haha" content="hehe" />
 								

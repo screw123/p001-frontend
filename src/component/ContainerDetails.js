@@ -4,8 +4,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import c from '../stateContainer/LocaleApi.js'
 import {Title, FieldWrapper} from './DocDetails.js'
 
-export {Container, Title, ButtonsDiv, FieldsDiv} from './DocDetails.js'
+export {Title, FieldsDiv} from './DocDetails.js'
 
+export const Container = ({children, isNoTitle})=> (
+	<OuterWrapper isNoTitle={isNoTitle}>
+		{children}
+	</OuterWrapper>
+)
+
+const OuterWrapper = styled.div`
+    box-sizing:border-box;
+    display: grid;
+    overflow: hidden;
+	min-width: 15rem;
+	grid-template-columns: [s1] 2.5% [content] auto [end] 2.5% [s2];
+	grid-template-rows: [s1] ${({isNoTitle})=> isNoTitle ? 'auto': '4rem'} [title] auto [boxtype] auto [buttons] auto [standardFields] auto [cusFields] auto [docevent] 2rem [s2];
+`
 
 const CustomFieldWrapper = styled.div`
 	box-sizing: border-box;
@@ -33,16 +47,31 @@ const Description = styled.div`
 	color: DimGray;
 `
 
+export const ButtonsDiv = styled.div`
+	grid-column: content / end;
+	grid-row: boxtype / buttons;
+	align-self: center;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	padding: 1rem 0;
+`
+
+const BoxTypeWrapper = styled(FieldWrapper)`
+	grid-row: title / boxtype;
+	grid-column: content / end;
+`
+
 export const BoxType = ({SKUMaster}) => {
 	const {name, iconPicURL, widthM, lengthM, heightM} = SKUMaster
 	return (
-		<FieldWrapper span={2} >
+		<BoxTypeWrapper>
 			<Avatar imgURL={iconPicURL} size={3} />
 			<div>
 				<Description>{name}</Description>
 				<Description>{lengthM*100 + 'cm X ' + widthM*100 + 'cm X ' + heightM*100 + 'cm'}</Description>
 			</div>
-		</FieldWrapper>
+		</BoxTypeWrapper>
 	)
 }
 

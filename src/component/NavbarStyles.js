@@ -36,7 +36,7 @@ export const Logo = styled(Link)`
 
 export const LeftContainer = styled.div`
   align-self: center;
-  justify-self: center;
+  justify-self: self-start;
 `
 
 //Middle not used anymore, only keey as reference
@@ -49,16 +49,18 @@ export const MiddleContainer = styled.div`
 `
 
 export const RightContainer = styled.div`
+  justify-self: self-end;
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
-  align-items: center;  
+  align-items: center;
 `
 
 export const FirstLevelContainer = styled.div`
   display: inline-block;
   padding: 0.3rem 1rem;
   color: white;
+  position: relative;
 `
 
 export const FirstLevelText = styled(({ displayText, key, ...props }) => (
@@ -142,6 +144,7 @@ export const Menu = styled.div`
   display: none;
   padding: 0.3rem;
   position: absolute;
+  right: 0;
   min-width: 150px;
   background-color: White;
   border-radius: 0.25rem;
@@ -152,9 +155,7 @@ export const Menu = styled.div`
   }
 `
 
-export const RightMenu = styled(Menu)`
-
-`
+export const RightMenu = styled(Menu)``
 
 export const MenuText = styled.div`
   padding: 0.3rem 0.1rem;
@@ -187,6 +188,7 @@ export const MenuLink = styled(Link)`
 export const MobileMenuWrapper = styled.div`
   color: white;
   cursor: pointer;
+  font-size: 1.25rem;
 `
 
 export const MobileMenu = styled(({ ...props }) => <FontAwesomeIcon icon={faAlignJustify} />)``
@@ -200,12 +202,12 @@ export const MobileMenuBar = styled.div`
   height: 90vh;
   margin-top: 5.5rem;
 	padding: 1rem;
-	left:  ${props => (props.show ? "0px" : "-22rem")}
-	-webkit-transition: left 0.25s ease;
-  -moz-transition: left 0.25s ease;
-  -ms-transition: left 0.25s ease;
-  -o-transition: left 0.25s ease;
-  transition: left 0.25s ease;
+	right:  ${props => (props.show ? "0px" : "-22rem")}
+	-webkit-transition: right 0.25s ease;
+  -moz-transition: right 0.25s ease;
+  -ms-transition: right 0.25s ease;
+  -o-transition: right 0.25s ease;
+  transition: right 0.25s ease;
   @media (min-width: 769px) {
     display: none;
   }

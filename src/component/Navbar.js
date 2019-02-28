@@ -2,10 +2,10 @@
 //Current design is app.js directly supply props to this component and all logics stores here.
 //Later on depends on complexity we may split it out into more structures.
 
-import React from "react";
-import { I18n } from "react-i18next";
-import { GqlApiSubscriber } from "../stateContainer/GqlApi.js";
-import LocaleApi, { LocaleApiSubscriber } from "../stateContainer/LocaleApi.js";
+import React from "react"
+import { I18n } from "react-i18next"
+import { GqlApiSubscriber } from "../stateContainer/GqlApi.js"
+import LocaleApi, { LocaleApiSubscriber } from "../stateContainer/LocaleApi.js"
 import {
   StickyDiv,
   LeftContainer,
@@ -14,6 +14,7 @@ import {
   FirstLevelContainer,
   FirstLevelText,
   FirstLevelLink,
+  FirstLevelLoginLink,
   RightSideIcon,
   LangSelector,
   Menu,
@@ -24,18 +25,19 @@ import {
   MenuLink,
   MobileMenuWrapper,
   MobileMenu,
-  MobileMenuBar
-} from "./NavbarStyles";
+  MobileMenuBar,
+  Logo
+} from "./NavbarStyles"
 
 class Navbar extends React.PureComponent {
   genMenu = (g, t) => {
-    let c = [];
+    let c = []
     const firstLevelNode = this.props.routes
       .filter(v => v.navbar.firstLevel === true)
-      .sort((a, b) => a.navbar.itemId - b.navbar.itemId);
+      .sort((a, b) => a.navbar.itemId - b.navbar.itemId)
 
     for (let i = 0; i < firstLevelNode.length; i++) {
-      const r = firstLevelNode[i];
+      const r = firstLevelNode[i]
 
       if (
         r.navbar.firstLevel &
@@ -50,12 +52,13 @@ class Navbar extends React.PureComponent {
               <FirstLevelLink
                 to={r.linkURL || r.path}
                 onClick={() => {
-                  if (LocaleApi.state.width <= 768) LocaleApi.toggleMenuBar();
-                }}>
+                  if (LocaleApi.state.width <= 768) LocaleApi.toggleMenuBar()
+                }}
+              >
                 {r.navbar.itemId + " " + t(r.menuName)}
               </FirstLevelLink>
             </FirstLevelContainer>
-          );
+          )
         } else {
           //if no patt, means it's text, thus use FirstLevelText.  If link should use FirstLevelLink
           c.push(
@@ -64,26 +67,26 @@ class Navbar extends React.PureComponent {
                 {this.gen2ndLevel({ parentId: r.navbar.itemId, t: t, g: g })}
               </FirstLevelText>
             </FirstLevelContainer>
-          );
+          )
         }
       }
     }
-    return c;
-  };
+    return c
+  }
 
   gen2ndLevel = ({ parentId, t, g }) => {
     const children = this.props.routes
       .filter(v => v.navbar.parentId === parentId)
-      .sort((a, b) => a.navbar.itemId - b.navbar.itemId);
+      .sort((a, b) => a.navbar.itemId - b.navbar.itemId)
 
     if (children.length === 0) {
-      return undefined;
+      return undefined
     }
-    let c = [];
+    let c = []
 
     for (let i = 0; i < children.length; i++) {
-      const r = children[i];
-      const toPath = r.linkURL || r.path;
+      const r = children[i]
+      const toPath = r.linkURL || r.path
 
       if (
         (g.state.isLogined && r.navbar.showAfterLogin) ||
@@ -94,18 +97,19 @@ class Navbar extends React.PureComponent {
             to={toPath}
             key={`${parentId}-${i}`}
             onClick={() => {
-              if (LocaleApi.state.width <= 768) LocaleApi.toggleMenuBar();
-            }}>
+              if (LocaleApi.state.width <= 768) LocaleApi.toggleMenuBar()
+            }}
+          >
             {r.navbar.itemId + " " + t(r.menuName)}
           </MenuLink>
-        );
+        )
       }
     }
     if (c.length === 0) {
-      return undefined;
+      return undefined
     }
-    return <Menu>{c}</Menu>;
-  };
+    return <Menu>{c}</Menu>
+  }
 
   /*
     if (g.state.isLogined===true) {
@@ -124,7 +128,7 @@ class Navbar extends React.PureComponent {
             }
     */
 
-  handleMobileMenuClick = () => {};
+  handleMobileMenuClick = () => {}
 
   render() {
     return (
@@ -140,12 +144,12 @@ class Navbar extends React.PureComponent {
                         <MobileMenu />
                       </MobileMenuWrapper>
                     ) : (
-                      "Logo"
+                      <Logo to="/" />
                     )}
                   </LeftContainer>
 
                   <MiddleContainer>
-                    {LocaleApi.state.width <= 768 ? "Logo" : this.genMenu(g, c.t)}
+                    {LocaleApi.state.width <= 768 ? <Logo to="/" /> : this.genMenu(g, c.t)}
                   </MiddleContainer>
 
                   <RightContainer isLogined={g.state.isLogined}>
@@ -157,7 +161,8 @@ class Navbar extends React.PureComponent {
                     {LocaleApi.state.i18n.language === "en" && (
                       <LangSelector
                         fontsize={1.4}
-                        onClick={() => LocaleApi.changeLanguage("zh-HK")}>
+                        onClick={() => LocaleApi.changeLanguage("zh-HK")}
+                      >
                         中
                       </LangSelector>
                     )}
@@ -191,7 +196,7 @@ class Navbar extends React.PureComponent {
                     )}
                     {!g.state.isLogined && (
                       <FirstLevelContainer>
-                        <FirstLevelLink to={"/login"}>{c.t("Sign In")}</FirstLevelLink>
+                        <FirstLevelLoginLink to={"/login"}>{c.t("Login")}</FirstLevelLoginLink>
                       </FirstLevelContainer>
                     )}
                   </RightContainer>
@@ -204,8 +209,8 @@ class Navbar extends React.PureComponent {
           </LocaleApiSubscriber>
         )}
       </GqlApiSubscriber>
-    );
+    )
   }
 }
 
-export default Navbar;
+export default Navbar

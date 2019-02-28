@@ -5,25 +5,29 @@ import {Tag, ToolTip} from '../component/BasicComponents.js'
 import DocLine from '../component/DocLine.js'
 import { Redirect } from "react-router-dom"
 
+import ContainerDetailsForm from '../form/ContainerDetailsForm.js'
+import Modal from '../component/Modal.js'
 import { ApolloProvider, Mutation } from 'react-apollo'
 
 import {LocaleApiSubscriber} from '../stateContainer/LocaleApi.js'
 
-export const getPUODOStatusColor = (status) =>{
+export const getContainerStatusColor = (status) =>{
     switch(status) {
-        case 'INIT':
+        case 'EMPTY':
             return {background: 'DeepSkyBlue', color: 'Black'}
-        case 'PROCESSING_PAID':
+        case 'STORED':
             return {background: 'Gold', color: 'Black'}
-        case 'PROCESSING_UNPAID':
+        case 'PENDING_OUTBOUND':
             return {background: 'Tomato', color: 'White'}
-        case 'COMPLETED_PAID':
+        case 'IN_TRANSIT_TO_CUSTOMER':
             return {background: 'Forest', color: 'White'}
-        case 'COMPLETED_UNPAID':
+        case 'WITH_CUSTOMER':
             return {background: 'Tomato', color: 'White'}
-        case 'HOLD':
+        case 'PENDING_INBOUND':
             return {background: 'OrangeRed', color: 'Gold'}
-        case 'CANCELLED':
+        case 'IN_TRANSIT_TO_WAREHOUSE':
+            return {background: 'OrangeRed', color: 'Gold'}
+        case 'DISBANDED':
             return {background: 'DimGrey', color: 'White'}
         default:
             return {}
@@ -34,32 +38,48 @@ export default class ContainerListForm extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state={PUODO: undefined}
-        this.PUODOLine = this.PUODOLine.bind(this)
+        this.state={
+            container: undefined,
+            showContainerDetailsModal: false
+        }
+        this.containerLine = this.containerLine.bind(this)
         this.setRedirect = this.setRedirect.bind(this)
+        this.toggleContainerDetailsModal = this.toggleContainerDetailsModal.bind(this)
+
     }
 
-    setRedirect = (PUODO) => this.setState({PUODO: PUODO})
+    toggleContainerDetailsModal = (doc) => {
+        if (doc) {
+            this.setState(prevState=> ({
+                container: doc,
+                showContainerDetailsModal: !prevState.showContainerDetailsModal
+            }))
+        }
+        else { this.setState(prevState=> ({showContainerDetailsModal: !prevState.showContainerDetailsModal}) ) }
+    }
 
-    PUODOLine = ({rowObj, data, multiSelect}, buttons) => {
+    setRedirect = (container) => this.setState({container: container})
+
+    containerLine = ({rowObj, data, multiSelect}, buttons) => {
         let { _id, billedAmt, status, paidAmt, createDateTime, docLines, docType} = data
         return (
             <InfoListStandardLine
                 occupyFullRow={true}
                 multiSelect={multiSelect}
                 key1={rowObj.key}
+                key={rowObj.key}
                 style={rowObj.style}
                 showBottomBorder={true}
                 contentOnClick={e=>{
                     e.preventDefault()
-                    this.setRedirect(data)
+                    this.toggleContainerDetailsModal(data)
                 }}
-                content={<div>
-					<DocLine.Status t={status} color={getPUODOStatusColor} float='right' />
+                content={<React.Fragment>
+					<DocLine.Status t={status} color={getContainerStatusColor} float='right' />
                     <DocLine.DateTime l='Box Rental Date' t={createDateTime} />
                     <DocLine.ID l='Record Number' t={_id} />
 					<DocLine.DocType t={docType} float='right' />
-                </div>}
+                </React.Fragment>}
             />
         )
     }
@@ -68,28 +88,37 @@ export default class ContainerListForm extends React.Component {
         const g = this.props.login
         const c = this.props.i18n
         
-        if (this.state.PUODO) {
-            if (this.state.PUODO.docType==='PickUpOrder') {
-                return(<Redirect push to={{pathname: '/PUOdetails', state: {PUO_id: this.state.PUODO._id} }} />)
-            }
-            return(<Redirect push to={{pathname: '/DOdetails', state: {DO_id: this.state.PUODO._id} }} />)
-        }
-        return(<div>
-            <InfoList 
-                rowHeightCalc={(i, width)=>{
-                    const fixed_field_lines = 2
-                    const containerSummary_lines = new Set(this.props.PUODOlist[i].docLines.map(v=>v.SKU_id.name)).size
-
-                    //per field line * 1.5, per container line * 1.25, + 1.5line of buffer
-                    return c.state.defaultHeight*1.5*fixed_field_lines + containerSummary_lines*32*1.25 / Math.floor(width*.95/DocLine.singleContainerDisplaySize) + c.state.defaultHeight*1.5
-
-                }}
-                headerText={<div><FontAwesomeIcon icon='file-invoice' /> {c.t('Box Movement Record')}</div>}
-                data={this.props.PUODOlist || []} 
-                listComponent={this.PUODOLine}
-                refreshRowHeight={true}
-            />
-            
-        </div>)
+        return(
+            <React.Fragment>
+                <InfoList 
+                    rowHeightCalc={(i, width)=>{
+                        const fixed_field_lines = 2
+                        const containerSummary_lines = 1
+ 
+                        //per field line * 1.5, per container line * 1.25, + 1.5line of buffer
+                        return c.state.defaultHeight*1.5*fixed_field_lines + containerSummary_lines*32*1.25 / Math.floor(width*.95/DocLine.singleContainerDisplaySize) + c.state.defaultHeight*1.5
+                    }}
+                    headerText={<div><FontAwesomeIcon icon='boxes' /> {c.t('All stuffs')}</div>}
+                    data={this.props.containerList || []} 
+                    listComponent={this.containerLine}
+                    refreshRowHeight={true}
+                />
+                {this.state.showContainerDetailsModal &&
+                    <Modal
+                        show={this.state.showContainerDetailsModal}
+                        component={
+                            <ContainerDetailsForm
+                                container={this.state.container}
+                                hideTitle={true}
+                                {...this.props}
+                            />
+                        }
+                        title={this.state.container.userDefinedName + ( (this.state.container.printId !== this.state.container.userDefinedName) ? " (" + this.state.container.printId + ")" : "")}
+                        closeModal={this.toggleContainerDetailsModal}
+                    />
+                }
+                
+            </React.Fragment>
+        )
     }
 }

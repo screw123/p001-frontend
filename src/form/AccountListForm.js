@@ -26,7 +26,7 @@ export default class AccountListForm extends React.Component {
         let { _id, name, accountType, balance, isActive} = data
     
         return (
-            <LocaleApiSubscriber>
+            <LocaleApiSubscriber key={rowObj.key}>
             {(c)=>(
                 <InfoListStandardLine
                     key={rowObj.key}
@@ -50,20 +50,20 @@ export default class AccountListForm extends React.Component {
         let { _id, name, accountType, balance, isActive} = data
     
         return (
-            <LocaleApiSubscriber>
+            <LocaleApiSubscriber key={rowObj.key}>
             {(c)=>(
                 <InfoListStandardLine
-                    key={rowObj.key}
+                    key1={rowObj.key}
                     style={rowObj.style}
                     contentOnClick={e=>{
                         e.preventDefault()
                         this.setRedirect(_id, 'edit')
                     }}
-                    content={<div >
+                    content={<React.Fragment>
                         <span>{name}</span>
                         <Tag background={(accountType==='PERSONAL')? 'LightGreen': 'RoyalBlue'}>{c.t(accountType)}</Tag>
                         {!isActive && <Tag float='right' background='Gray'>{c.t('INACTIVE')}</Tag>}
-                    </div>}
+                    </React.Fragment>}
                 />
             )}
             </LocaleApiSubscriber>

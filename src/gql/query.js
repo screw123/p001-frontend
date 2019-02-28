@@ -737,12 +737,13 @@ query getRecentPUODOListByUser {
             SKU_id {
                 name
                 iconPicURL
-                
             }
             container_id {
                 _id
+                printId
+                userDefinedName
             }
-            container_printId
+            
         }
         shippingAddress {
             legalName
@@ -777,8 +778,9 @@ query getRecentPUODOListByUser {
             }
             container_id {
                 _id
+                printId
+                userDefinedName
             }
-            container_printId
         }
         shippingAddress {
             legalName
@@ -834,6 +836,8 @@ export const getPUOById = gql`
                 SKUName
                 container_id {
                     _id
+                    printId
+                    userDefinedName
                 }
                 container_printId
                 remarks
@@ -898,6 +902,68 @@ export const getDOById = gql`
                 userName
                 createDateTime
             }
+        }
+    }`
+
+export const getMyContainers = gql`
+    query getMyContainers {
+        getMyContainers {
+            _id
+            printId
+            userDefinedName
+            containerType_id {
+                _id
+            }
+            containerTypeName
+            containerUserInfo_id
+            weightKG
+            accountOwner_id {
+                _id
+                name
+            }
+            storageStartDate
+            storageExpiryDate
+            status
+        }
+    }`
+
+export const getContainerById = gql`
+    query getContainerById($_id: String, $printId: String) {
+        getContainerById(_id: $_id, printId: $printId) {
+            _id
+            printId
+            userDefinedName
+            containerType_id {
+                _id
+                name
+                iconPicURL
+                lengthM
+                widthM
+                heightM
+            }
+            weightKG
+            accountOwner_id {
+                _id
+                name
+            }
+            storageStartDate
+            storageExpiryDate
+            rentalOrder_id {
+                _id
+            }
+            priceList_id {
+                _id
+                rent
+                ship_in_base
+                ship_in_perPiece
+                ship_out_base
+                ship_out_perPiece
+                ship_first_base
+                ship_first_perPiece
+                ship_last_base
+                ship_last_perPiece
+            }
+            status
         }
     }`
 

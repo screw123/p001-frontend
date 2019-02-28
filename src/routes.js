@@ -18,6 +18,7 @@ import AddDeliveryOrderPage from "./page/AddDeliveryOrderPage.js"
 import PUODOListPage from "./page/PUODOListPage.js"
 import PUODetailsPage from "./page/PUODetailsPage.js"
 import DODetailsPage from "./page/DODetailsPage.js"
+import ContainerListPage from "./page/ContainerListPage.js"
 export {NotFoundPage as NotFound} from "./page/NotFoundPage.js"
 
 const routes = [
@@ -244,7 +245,7 @@ const routes = [
 	},
 	{
 		path: "/ArrangePickUp",
-		menuName: "Send Box To Us",
+		menuName: "Send Box To Wisekeep",
 		component: AddPickUpOrderPage,
 		navbar: {
 			itemId: 301,
@@ -325,6 +326,21 @@ const routes = [
 			firstLevel: false,
 			showBeforeLogin: false,
 			showAfterLogin: false
+		},
+		router: {
+			requireLogin: true
+		}
+	},
+	{
+		path: "/ContainerList",
+		menuName: "All your stuffs",
+		component: ContainerListPage,
+		navbar: {
+			itemId: 401,
+			parentId: 100,
+			firstLevel: false,
+			showBeforeLogin: false,
+			showAfterLogin: true
 		},
 		router: {
 			requireLogin: true

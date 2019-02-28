@@ -1,182 +1,62 @@
 import React, { Component } from "react"
 import styled from "styled-components"
 
-const Title = styled.h2`
-  text-align: center;
-  margin-top: 15px;
-`
-const Wrapper = styled.div``
-const Row = styled.div`
-  display: flex;
-  flex-flow: row wrap;
-  margin: 25px 0px;
-`
-const RowName = styled.p`
-  margin: 0px;
-  text-align: center;
-  font-size: 1.15em;
-`
+import {CustomField, Container, ContainerHeader, ButtonsDiv, FieldsDiv, BoxType} from '../component/ContainerDetails.js'
 
-const Item = styled.div`
-  margin: 5px;
-  flex: 1;
-`
-const ItemName = styled.p`
-  margin: 5px 0px;
-  font-weight: bold;
-  text-align: center;
-`
-const ItemValue = styled.p`
-  margin: 0px;
-  text-align: center;
+import { ApolloProvider, Query } from 'react-apollo'
+import { getContainerById } from '../gql/query.js'
+
+const Title = styled.h2`
+	text-align: center;
+	margin-top: 15px;
 `
 
 export default class ContainerDetailsForm extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {}
-  }
+	constructor(props) {
+		super(props)
+		this.state = {}
+	}
 
-  render() {
-    const c = this.props.i18n
-    const Container = this.props.Container
-    return (
-      <Wrapper>
-        <Title>{c.t("Container Details")}</Title>
+	render() {
+		const c = this.props.i18n
+		const g = this.props.login
+		return (
+			<ApolloProvider client={g.getGqlClient()}>
+				<Query query={getContainerById} variables={{_id: this.props.container._id}} notifyOnNetworkStatusChange>
+				{({ loading, error, data, networkStatus }) => {
+					let container, loadError
+					loadError = false
+					if (loading) {
+						container = this.props.container
+					}
+					else {
+						console.log(loading, networkStatus, data)
+						container = data.getContainerById
+					}
 
-        <Row>
-          <Item>
-            <ItemName>{c.t("Id")}</ItemName>
-            <ItemValue>{Container._id}</ItemValue>
-          </Item>
-          <Item>
-            <ItemName>{c.t("Owner Id")}</ItemName>
-            <ItemValue>{Container.accountOwner_id}</ItemValue>
-          </Item>
-          <Item>
-            <ItemName>{c.t("Auto Renew")}</ItemName>
-            <ItemValue>{Container.autoRenew ? "Enable" : "Disable"}</ItemValue>
-          </Item>
-          <Item>
-            <ItemName>{c.t("User Info Id")}</ItemName>
-            <ItemValue>{Container.containerUserInfo_id.toString()}</ItemValue>
-          </Item>
-        </Row>
+					if (error) {
+						console.log(error)
+						loadError = true
+					}
+					const {printId, userDefinedName, containerType_id} = container
+					return(
+						<Container isNoTitle={this.props.hideTitle}>
+							{!this.props.hideTitle && <ContainerHeader printId={printId} userDefinedName={userDefinedName} />}
+							<BoxType SKUMaster={containerType_id} />
+							<ButtonsDiv> </ButtonsDiv>
+							<FieldsDiv>
+								
+								<CustomField label="haha" content="hehe" />
+								<CustomField label="haha" content="hehe" />
+								
+								
+							</FieldsDiv>
 
-        <Row>
-          <Item>
-            <ItemName>{c.t("Type Id")}</ItemName>
-            <ItemValue>{Container.containerType_id}</ItemValue>
-          </Item>
-          <Item>
-            <ItemName>{c.t("Name")}</ItemName>
-            <ItemValue>{Container.containerTypeName}</ItemValue>
-          </Item>
-          <Item>
-            <ItemName>{c.t("Short Code")}</ItemName>
-            <ItemValue>{Container.containerTypeShortCode}</ItemValue>
-          </Item>
-        </Row>
-
-        <Row>
-          <Item>
-            <ItemName>{c.t("Rental Order Id")}</ItemName>
-            <ItemValue>{Container.rentalOrder_id}</ItemValue>
-          </Item>
-          <Item>
-            <ItemName>{c.t("Paid Duration")}</ItemName>
-            <ItemValue>{Container.paidDuration}</ItemValue>
-          </Item>
-          <Item>
-            <ItemName>{c.t("Paid Terms")}</ItemName>
-            <ItemValue>{Container.paidTerms}</ItemValue>
-          </Item>
-        </Row>
-
-        <Row>
-          <Item>
-            <ItemName>{c.t("Upcoming Events Id")}</ItemName>
-            <ItemValue>{Container.upcomingEvents_id.toString()}</ItemValue>
-          </Item>
-          <Item>
-            <ItemName>{c.t("Print Id")}</ItemName>
-            <ItemValue>{Container.printId}</ItemValue>
-          </Item>
-          <Item>
-            <ItemName>{c.t("Status")}</ItemName>
-            <ItemValue>{Container.status}</ItemValue>
-          </Item>
-        </Row>
-
-        <Row>
-          <Item>
-            <ItemName>{c.t("Storage Start Date")}</ItemName>
-            <ItemValue>{Container.storageStartDate}</ItemValue>
-          </Item>
-          <Item>
-            <ItemName>{c.t("Storage Exprity Date")}</ItemName>
-            <ItemValue>{Container.storageExpiryDate}</ItemValue>
-          </Item>
-
-          <Item>
-            <ItemName>{c.t("User Defined Name")}</ItemName>
-            <ItemValue>{Container.userDefinedName}</ItemValue>
-          </Item>
-        </Row>
-
-        <Row>
-          <Item>
-            <ItemName>{c.t("Height")}</ItemName>
-            <ItemValue>{Container.heightM}</ItemValue>
-          </Item>
-          <Item>
-            <ItemName>{c.t("Length")}</ItemName>
-            <ItemValue>{Container.lengthM}</ItemValue>
-          </Item>
-          <Item>
-            <ItemName>{c.t("Width")}</ItemName>
-            <ItemValue>{Container.widthM}</ItemValue>
-          </Item>
-          <Item>
-            <ItemName>{c.t("Weight")}</ItemName>
-            <ItemValue>{Container.weightKG}</ItemValue>
-          </Item>
-        </Row>
-
-        <RowName>{c.t("Finished Events")}</RowName>
-        {Container.finishedEvents_id.map(event => (
-          <Row>
-            {event.user_id && (
-              <Item>
-                <ItemName>{c.t("User Id")}</ItemName>
-                <ItemValue>{event.user_id}</ItemValue>
-              </Item>
-            )}
-            {event.userName && (
-              <Item>
-                <ItemName>{c.t("User Name")}</ItemName>
-                <ItemValue>{event.userName}</ItemValue>
-              </Item>
-            )}
-            <Item>
-              <ItemName>{c.t("Created At")}</ItemName>
-              <ItemValue>{event.createDateTime}</ItemValue>
-            </Item>
-            <Item>
-              <ItemName>{c.t("Doc Type")}</ItemName>
-              <ItemValue>{event.docType}</ItemValue>
-            </Item>
-            <Item>
-              <ItemName>{c.t("Event Type")}</ItemName>
-              <ItemValue>{event.eventType}</ItemValue>
-            </Item>
-            <Item>
-              <ItemName>{c.t("Message")}</ItemName>
-              <ItemValue>{event.msg}</ItemValue>
-            </Item>
-          </Row>
-        ))}
-      </Wrapper>
-    )
-  }
+						</Container>
+					)
+				}}
+				</Query>
+			</ApolloProvider>
+		)
+	}
 }

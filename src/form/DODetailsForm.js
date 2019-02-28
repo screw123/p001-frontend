@@ -2,7 +2,7 @@ import React from 'react'
 import get from 'lodash/get'
 import styled from "styled-components"
 
-import { Container, ButtonsDiv, FieldsDiv, RecordID, DateOnly, DateTime, Text, Num, Dollar, Address, DocLines, Status} from '../component/DocDetails.js'
+import { Container, ButtonsDiv, FieldsDiv, RecordID, DateOnly, DateTime, Text, Num, Dollar, Address, PUODODocLines, Status} from '../component/DocDetails.js'
 import SystemError from '../component/SystemError.js'
 import {getROStatusColor} from './ROListForm.js'
 
@@ -25,12 +25,15 @@ class DODetailsForm extends React.PureComponent {
             </ButtonsDiv>
             <FieldsDiv>
                 <DateOnly title='createDateTime' data={DO.createDateTime} />
-                <DateOnly title='updateDateTime' data={DO.updateDateTime} />
+                <Address title='Shipping Address' data={DO.shippingAddress} />
+                {!!DO.fulfillDatetime && <DateTime title='fulfillDatetime' data={DO.fulfillDatetime} approximate={true} />}
+                {!DO.fulfillDatetime && <DateTime title='requestDatetime' data={DO.requestDatetime} approximate={true} />}
+                
                 <Dollar title='totalAmt' data={DO.totalAmt} />
-                <Address title='billingAddress' data={DO.billingAddress} />
+                
                 <Status title='Status' data={DO.status} {...getROStatusColor(DO.status)} />
             </FieldsDiv>
-            <DocLines data={DO.docLines} title='Pick Up Details' /> 
+            <PUODODocLines data={DO.docLines} title={c.t('Delivery Details')} /> 
         </Container>)
 	}
 }

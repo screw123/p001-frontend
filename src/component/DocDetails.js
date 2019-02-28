@@ -5,9 +5,21 @@ import {AutoSizer} from 'react-virtualized'
 import {Tag} from '../component/BasicComponents.js'
 import c from '../stateContainer/LocaleApi.js'
 import {SmallPic } from './DocLine.js'
+import {ContainerLineItem} from './ContainerSelectionList.js'
 
-export const Container = ({children})=> (
-	<OuterWrapper>
+const timeApprox = (date) => {
+	const h = c.moment(date).hour()
+	switch(true) {
+		case (h<9): return undefined
+		case (h<13): return c.t('Morning')
+		case (h<18): return c.t('Afternoon')
+		case (h<22): return c.t('Evening')
+		default: return undefined
+	}
+}
+
+export const Container = ({children, isNoTitle})=> (
+	<OuterWrapper isNoTitle={isNoTitle}>
 		{children}
 	</OuterWrapper>
 )
@@ -18,17 +30,17 @@ const OuterWrapper = styled.div`
     overflow: hidden;
 	min-width: 300px;
 	grid-template-columns: [s1] 2.5% [content] auto [end] 2.5% [s2];
-	grid-template-rows: [s1] 4rem [title] auto [buttons] auto [content] auto [doclines] auto [docevent] 4rem [s2];
+	grid-template-rows: [s1] ${({isNoTitle})=> isNoTitle ? 'auto': '4rem'} [title] auto [buttons] auto [content] auto [doclines] auto [docevent] 4rem [s2];
 `
 
-const Title = styled.div`
+export const Title = styled.div`
 	grid-row: s1 / title;
 	grid-column: content / end;
 	align-self: center;
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	font-size: 1.5rem;
+	font-size: 1.25rem;
 	line-height: 1.4;
 	font-weight: 600;
 `
@@ -66,16 +78,19 @@ export const Text = ({title, data}) =>(
 export const DateOnly = ({title, data}) =>(
 	<FieldWrapper>
 		<FieldTitle>{c.t(title)}</FieldTitle>
-		<TextNoWrap>{c.moment(data).calendar()}</TextNoWrap>
+		<TextNoWrap>{c.moment(data).format('YYYY-MM-DD')}</TextNoWrap>
 	</FieldWrapper>
 )
 
-export const DateTime = ({title, data}) =>(
-	<FieldWrapper>
-		<FieldTitle>{c.t(title)}</FieldTitle>
-		<TextNoWrap>{c.moment(data).calendar()}</TextNoWrap>
-	</FieldWrapper>
-)
+export const DateTime = ({title, data, approximate}) =>{
+	const time = approximate ? timeApprox(data) : c.moment(data).format('HH:MM')
+	return (
+		<FieldWrapper>
+			<FieldTitle>{c.t(title)}</FieldTitle>
+			<TextNoWrap>{c.moment(data).format('YYYY-MM-DD') + (time ? ' ' + time : '') }</TextNoWrap>
+		</FieldWrapper>
+	)
+}
 
 export const Num = ({title, data}) =>(
 	<FieldWrapper>
@@ -87,7 +102,7 @@ export const Num = ({title, data}) =>(
 export const Dollar = ({title, data}) =>(
 	<FieldWrapper>
 		<FieldTitle>{c.t(title)}</FieldTitle>
-		<TextNoWrap><DollarSpan>{accounting.formatMoney(data)}</DollarSpan></TextNoWrap>
+		<TextNoWrap><DollarDiv>{accounting.formatMoney(data)}</DollarDiv></TextNoWrap>
 	</FieldWrapper>
 )
 
@@ -117,13 +132,9 @@ export const Address = ({title, data}) => (
 	</FieldWrapper>
 )
 
-export const DocLines = ({title, data}) => {
+export const RentalDocLines = ({title, data}) => {
 	let displayCom = []
 	for(let i=0;i<data.length;i++) {
-		console.log(accounting.formatColumn([data[i].rent_unitPrice, 9999999],'$ ' , 1))
-
-
-
 		displayCom.push(
 			<DocLineRow key={'docLines'+i}>
 				<SingleContainerDisplay>
@@ -132,8 +143,8 @@ export const DocLines = ({title, data}) => {
 				</SingleContainerDisplay>
 				<DocLineField>{data[i].duration + ' ' + c.t(data[i].rentMode, {count: data[i].duration})}</DocLineField>
 				<DocLineField>{data[i].qty + c.t('pcs')}</DocLineField>
-				<DocLineField><DollarSpan>{accounting.formatColumn([data[i].rent_unitPrice, 99999],'$ ' , 1)[0]}</DollarSpan></DocLineField>
-				<DocLineField><DollarSpan>{accounting.formatColumn([data[i].rent_lineTotal, 99999],'$ ' , 1)[0]}</DollarSpan> </DocLineField>
+				<DocLineField><DollarPre>{accounting.formatColumn([data[i].rent_unitPrice, 99999],'$ ' , 1)[0]}</DollarPre></DocLineField>
+				<DocLineField><DollarPre>{accounting.formatColumn([data[i].rent_lineTotal, 99999],'$ ' , 1)[0]}</DollarPre> </DocLineField>
 			</DocLineRow>
 		)
 	}
@@ -158,6 +169,40 @@ export const DocLines = ({title, data}) => {
 		</DocLineWrapper>
 	)
 }
+
+export const PUODODocLines = ({title, data}) => {
+	let displayCom = []
+	for(let i=0;i<data.length;i++) {
+		console.log('PUODODocLines', data[i])
+		displayCom.push(
+			<ContainerLineItem
+				key={'container'+i}
+				iconPicURL={data[i].SKU_id.iconPicURL}
+				c={c}
+				containerDoc={data[i].container_id}
+			/>
+		)
+	}
+	return (
+		<DocLineWrapper>
+			<Title>{c.t(title)}</Title>
+			<AutoSizer disableHeight>
+			{({width}) => (
+				<DocLineFlexDiv width={width}>
+					{displayCom}
+				</DocLineFlexDiv>
+			)}
+			</AutoSizer>
+			
+		</DocLineWrapper>
+	)
+}
+
+const DocLineFlexDiv = styled.div`
+	display: flex;
+	overflow: auto;
+	width: ${({width})=>width}px;
+`
 
 const DocLineRowsDiv = styled.div`
 	display: block;
@@ -195,12 +240,14 @@ const DocLineWrapper = styled.div`
 	padding: 0.5rem 0;
 `
 
-
-
-
-const FieldWrapper = styled.div`
+export const FieldWrapper = styled.div`
 	width: 15rem;
 	box-sizing: border-box;
+	display: grid;
+	grid-gap: 0.3rem;
+	align-items: center;
+	grid-template-columns: repeat(auto-fit, minmax(1rem, max-content));
+	${({span})=>span? 'grid-column: span '+span: ''}
 `
 
 const FieldTitle = styled.div`
@@ -219,15 +266,21 @@ const TextNoWrap = styled.div`
 	font-size: 1rem;
 	white-space: nowrap;
 	text-overflow: ellipsis;
+	padding: 0 0 0 0.5rem;
 `
 
 const AddressText = styled.div`
 	font-size: 0.8rem;
 	white-space: nowrap;
 	text-overflow: ellipsis;
+	padding: 0 0 0 0.5rem;
 ` 
 
-const DollarSpan = styled.pre`
+const DollarPre = styled.pre`
+	font-family: 'Inconsolata', monospace;
+`
+
+const DollarDiv = styled.div`
 	font-family: 'Inconsolata', monospace;
 `
 
@@ -246,10 +299,8 @@ export const DocEvents = ({title, data}) => {
 	return (<p>{title}</p>)
 }
 
-
-
 export default {
 	Container, ButtonsDiv, FieldsDiv,
 	RecordID,
-	DateOnly, DateTime, Text, Num, Dollar, Address, DocLines, Status
+	DateOnly, DateTime, Text, Num, Dollar, Address, RentalDocLines, PUODODocLines, Status
 }

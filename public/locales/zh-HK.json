@@ -154,5 +154,6 @@
     "Send Box To Wisekeep": "預約存放物件",
     "Get your stuff": "預約取回物件",
     "All your stuffs": "物品一覽",
-    "All stuffs": "所有物品"
+    "All stuffs": "所有物品",
+    "storageExpiryDate": "租期至"
 }

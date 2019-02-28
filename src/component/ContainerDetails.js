@@ -2,9 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import c from '../stateContainer/LocaleApi.js'
-import {Title, FieldWrapper} from './DocDetails.js'
+import {Title, FieldWrapper, FieldTitle, TextNoWrap} from './DocDetails.js'
 
-export {Title, FieldsDiv} from './DocDetails.js'
+export {Title, Text, DateOnly} from './DocDetails.js'
 
 export const Container = ({children, isNoTitle})=> (
 	<OuterWrapper isNoTitle={isNoTitle}>
@@ -19,6 +19,25 @@ const OuterWrapper = styled.div`
 	min-width: 15rem;
 	grid-template-columns: [s1] 2.5% [content] auto [end] 2.5% [s2];
 	grid-template-rows: [s1] ${({isNoTitle})=> isNoTitle ? 'auto': '4rem'} [title] auto [boxtype] auto [buttons] auto [standardFields] auto [cusFields] auto [docevent] 2rem [s2];
+	grid-gap: 1rem 0;
+`
+
+export const StandardFieldsDiv = styled.div`
+	grid-column: content / end;
+	grid-row: buttons / standardFields;
+	align-self: center;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+	grid-gap: 0.75rem 0.25rem;
+`
+
+export const CustomFieldsDiv = styled.div`
+	grid-column: content / end;
+	grid-row: standardFields / cusFields;
+	align-self: center;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+	grid-gap: 0.75rem 0.25rem;
 `
 
 const CustomFieldWrapper = styled.div`
@@ -34,7 +53,7 @@ const CustomFieldTitle = styled.span`
 	text-overflow: ellipsis;
 `
 
-const TextNoWrap = styled.div`
+const CustomTextNoWrap = styled.div`
 	font-size: 1rem;
 	white-space: nowrap;
 	text-overflow: ellipsis;
@@ -75,6 +94,13 @@ export const BoxType = ({SKUMaster}) => {
 	)
 }
 
+export const RelatedAccount = ({account, user}) => (
+	<FieldWrapper>
+		<FieldTitle>Account</FieldTitle>
+		<TextNoWrap>{account.name}</TextNoWrap>
+	</FieldWrapper>
+)
+
 export const ContainerHeader = ({printId, userDefinedName}) => (
 	<Title><span>{userDefinedName}</span><span>{printId !== userDefinedName ? " (" + printId + ")" : ""}</span></Title>
 )
@@ -84,7 +110,7 @@ export const CustomField = ({label, content}) => {
 		<CustomFieldWrapper>
 			<CustomFieldTitle>{c.t(label)}</CustomFieldTitle>
 			<span>|</span>
-			<TextNoWrap>{content}</TextNoWrap>
+			<CustomTextNoWrap>{content}</CustomTextNoWrap>
 		</CustomFieldWrapper>
 	)
 }

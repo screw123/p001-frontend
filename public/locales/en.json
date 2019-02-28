@@ -154,5 +154,6 @@
     "Send Box To Wisekeep": "Send Box To Wisekeep",
     "Get your stuff": "Get your stuff",
     "All your stuffs": "All your stuffs",
-    "All stuffs": "All stuffs"
+    "All stuffs": "All stuffs",
+    "storageExpiryDate": "Rent Until"
 }

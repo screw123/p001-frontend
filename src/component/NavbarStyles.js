@@ -58,6 +58,7 @@ export const RightContainer = styled.div`
 export const FirstLevelContainer = styled.div`
   display: inline-block;
   padding: 0.3rem 1rem;
+  color: white;
 `
 
 export const FirstLevelText = styled(({ displayText, key, ...props }) => (
@@ -84,7 +85,6 @@ export const FirstLevelLink = styled(Link)`
   white-space: nowrap;
   font-size: 1.2rem;
   font-weight: 500;
-  line-height: 2rem;
   cursor: pointer;
   color: white;
   &:hover {
@@ -115,6 +115,7 @@ export const RightSideIcon = styled(({ icon, haveMenu, ...props }) => (
   </div>
 ))`
   display: inline-block;
+  position: relative;
   cursor: pointer;
   font-size: 1.3rem;
   @media (max-width: 768px) {
@@ -185,6 +186,7 @@ export const MenuLink = styled(Link)`
 
 export const MobileMenuWrapper = styled.div`
   color: white;
+  cursor: pointer;
 `
 
 export const MobileMenu = styled(({ ...props }) => <FontAwesomeIcon icon={faAlignJustify} />)``

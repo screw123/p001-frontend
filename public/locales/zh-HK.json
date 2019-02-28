@@ -154,5 +154,6 @@
     "Get your stuff": "預約取回物件",
     "All your stuffs": "物品一覽",
     "All stuffs": "所有物品",
-    "Please provide either your email or mobile phone number to login": "你可以電郵地址, 或香港手機號碼登入.  你亦可通過Facebook 或 Google 登入."
+    "Please provide either your email or mobile phone number to login": "你可以電郵地址, 或香港手機號碼登入.  你亦可通過Facebook 或 Google 登入.",
+    "storageExpiryDate": "租期至"
 }

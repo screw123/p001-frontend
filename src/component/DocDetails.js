@@ -243,14 +243,10 @@ const DocLineWrapper = styled.div`
 export const FieldWrapper = styled.div`
 	width: 15rem;
 	box-sizing: border-box;
-	display: grid;
-	grid-gap: 0.3rem;
-	align-items: center;
-	grid-template-columns: repeat(auto-fit, minmax(1rem, max-content));
-	${({span})=>span? 'grid-column: span '+span: ''}
+
 `
 
-const FieldTitle = styled.div`
+export const FieldTitle = styled.div`
 	font-size: 0.8rem;
 	font-weight: 600;
 	text-transform: uppercase;
@@ -262,7 +258,7 @@ const FieldTitleGrid = styled(FieldTitle)`
 	text-align: center;
 `
 
-const TextNoWrap = styled.div`
+export const TextNoWrap = styled.div`
 	font-size: 1rem;
 	white-space: nowrap;
 	text-overflow: ellipsis;

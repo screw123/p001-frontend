@@ -8,29 +8,29 @@ export const StickyDiv = styled.div`
   position: sticky;
   top: 0;
   margin: 0;
-  padding: 1.75rem 7rem;
+  padding: 1rem 1rem;
   background: linear-gradient(180deg, #f43ea6 0%, #f5576c 100%);
   grid-row: navbar / body;
   display: grid;
   grid-template-rows: auto;
   grid-column-gap: 0.75rem;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
-  grid-template-columns: 13rem auto 13rem;
+  grid-template-columns: 10rem auto;
   @media (max-width: 768px) {
     padding: 0.75rem 1rem;
     height: 4rem;
-    grid-template-columns: 1rem auto 13rem;
+    grid-template-columns: 7.75rem auto;
   }
 `
 export const Logo = styled(Link)`
   display: block;
-  height: 6rem;
-  width: 13rem;
+  height: 4rem;
+  width: 9rem;
   background-image: url("/Logo_white.svg");
   background-size: 100% 100%;
   @media (max-width: 768px) {
-    height: 4rem;
-    width: 9rem;
+    height: 3rem;
+    width: 6.75rem;
   }
 `
 
@@ -39,14 +39,8 @@ export const LeftContainer = styled.div`
   justify-self: center;
 `
 
+//Middle not used anymore, only keey as reference
 export const MiddleContainer = styled.div`
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  align-items: center;
-`
-
-export const RightContainer = styled.div`
   display: grid;
   grid-template-rows: auto;
   grid-template-columns: ${props => (props.isLogined ? "1fr 1fr 1fr" : "1fr 2fr")};
@@ -54,9 +48,16 @@ export const RightContainer = styled.div`
   align-self: center;
 `
 
+export const RightContainer = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;  
+`
+
 export const FirstLevelContainer = styled.div`
   display: inline-block;
-  padding: 0.3rem 0.5rem;
+  padding: 0.3rem 1rem;
 `
 
 export const FirstLevelText = styled(({ displayText, key, ...props }) => (
@@ -68,9 +69,10 @@ export const FirstLevelText = styled(({ displayText, key, ...props }) => (
   </div>
 ))`
   white-space: nowrap;
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 500;
   cursor: pointer;
+  color: white;
   &:hover {
     color: Yellow;
   }
@@ -80,7 +82,7 @@ export const FirstLevelText = styled(({ displayText, key, ...props }) => (
 export const FirstLevelLink = styled(Link)`
   display: inline-block;
   white-space: nowrap;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: 500;
   line-height: 2rem;
   cursor: pointer;
@@ -95,7 +97,7 @@ export const FirstLevelLoginLink = styled(Link)`
   white-space: nowrap;
   cursor: pointer;
   color: white;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: 500;
   line-height: 2rem;
   padding: 0.5rem 3rem;
@@ -150,7 +152,7 @@ export const Menu = styled.div`
 `
 
 export const RightMenu = styled(Menu)`
-  right: 0;
+
 `
 
 export const MenuText = styled.div`

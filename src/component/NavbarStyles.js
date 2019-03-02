@@ -8,7 +8,8 @@ export const StickyDiv = styled.div`
   position: sticky;
   top: 0;
   margin: 0;
-  padding: 1rem 1rem;
+  // same for every component
+  padding: 1rem 7rem;
   background: linear-gradient(180deg, #f43ea6 0%, #f5576c 100%);
   grid-row: navbar / body;
   display: grid;
@@ -17,6 +18,7 @@ export const StickyDiv = styled.div`
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
   grid-template-columns: 10rem auto;
   @media (max-width: 768px) {
+    // same for every component
     padding: 0.75rem 1rem;
     height: 4rem;
     grid-template-columns: 7.75rem auto;

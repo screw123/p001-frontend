@@ -65,8 +65,6 @@ export const FirstLevelContainer = styled.div`
   position: relative;
 `
 
-
-
 export const FirstLevelText = styled(({ displayText, key, ...props }) => (
   <div>
     <span key1={key} {...props}>
@@ -80,9 +78,7 @@ export const FirstLevelText = styled(({ displayText, key, ...props }) => (
   font-weight: 500;
   cursor: pointer;
   color: white;
-  &:hover {
-    color: Yellow;
-  }
+
   ${props => (props.children ? '&:after { content: "▾";' : "")}
 `
 
@@ -112,9 +108,6 @@ export const FirstLevelLoginLink = styled(Link)`
   padding: 0.5rem 3rem;
   border-radius: 3rem;
   background-color: rgba(216, 216, 216, 0.5);
-  &:hover {
-    color: yellow;
-  }
 `
 
 const FirstLevelHover = styled.div`
@@ -144,9 +137,6 @@ export const RightSideIcon = styled(({ icon, haveMenu, ...props }) => (
   }
   justify-self: center;
   align-self: center;
-  &:hover {
-    color: Yellow;
-  }
   ${haveMenu => (haveMenu ? '&:after { content: "▾"; }' : "")}
 `
 

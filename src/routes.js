@@ -1,5 +1,10 @@
-import LoginPage from "./page/LoginPage.js"
 import IndexPage from "./page/IndexPage.js"
+import WhyUsPage from "./page/WhyUsPage.js"
+import PricingPage from "./page/PricingPage.js"
+
+import LoginPage from "./page/LoginPage.js"
+
+
 import UserDashboardPage from "./page/UserDashboardPage.js"
 import SignUpWorkflow from "./page/SignUpWorkflow.js"
 import ResetPasswordPage from "./page/ResetPasswordPage.js"
@@ -19,7 +24,9 @@ import PUODOListPage from "./page/PUODOListPage.js"
 import PUODetailsPage from "./page/PUODetailsPage.js"
 import DODetailsPage from "./page/DODetailsPage.js"
 import ContainerListPage from "./page/ContainerListPage.js"
+
 export {NotFoundPage as NotFound} from "./page/NotFoundPage.js"
+
 
 const routes = [
 	{
@@ -28,8 +35,8 @@ const routes = [
 		component: LoginPage,
 		navbar: {
 			firstLevel: true,
-			itemId: 2,
-			showBeforeLogin: true,
+			itemId: 11,
+			showBeforeLogin: false,
 			showAfterLogin: false
 		},
 		router: {
@@ -41,7 +48,7 @@ const routes = [
 		menuName: "Sign Up",
 		component: SignUpWorkflow,
 		navbar: {
-			itemId: 3,
+			itemId: 12,
 			firstLevel: true,
 			showBeforeLogin: true,
 			showAfterLogin: false
@@ -115,6 +122,36 @@ const routes = [
 			firstLevel: true,
 			showBeforeLogin: true,
 			showAfterLogin: false
+		},
+		router: {
+			requireLogin: false
+		}
+	},
+	{
+		path: "/whyus",
+		exact: true,
+		menuName: "Why Us",
+		component: WhyUsPage,
+		navbar: {
+			itemId: 2,
+			firstLevel: true,
+			showBeforeLogin: true,
+			showAfterLogin: false
+		},
+		router: {
+			requireLogin: false
+		}
+	},
+	{
+		path: "/pricing",
+		exact: true,
+		menuName: "Pricing",
+		component: PricingPage,
+		navbar: {
+			itemId: 3,
+			firstLevel: true,
+			showBeforeLogin: true,
+			showAfterLogin: true
 		},
 		router: {
 			requireLogin: false

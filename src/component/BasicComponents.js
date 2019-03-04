@@ -3,34 +3,42 @@ import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const BG = styled.div`
-    background: White;
-    box-sizing: border-box;
-    min-height: 100vh;
+	background: White;
+	box-sizing: border-box;
+	min-height: 100vh;
 `
 
 const BG2 = styled.div`
-    @media (max-width: 1366px) {
-        width: 100%
-    }
-    
-    @media (min-width: 1367px) {
-        width: 1366px
-        margin: auto
-    }
+	// @media (max-width: 1366px) {
+	//     width: 100%
+	// }
+
+	// @media (min-width: 1367px) {
+	//     width: 1366px
+	//     margin: auto
+	// }
+
+	// New
+	padding: 3rem 7rem;
+	max-width: 1366px;
+	margin: auto;
+	@media (max-width: 768px) {
+		padding: 1.75rem 1rem;
+	}
 `
 
-export const Background = ({children}) => (
-    <BG>
-        <BG2>
+export const Background = ({ children }) => (
+	<BG>
+		<BG2>
 			{children}
-			<p></p>
-        </BG2>
-    </BG>
+			<p />
+		</BG2>
+	</BG>
 )
 
 export const WrapRow = styled.div`
-    display: flex;
-    flex-flow: row wrap;
+	display: flex;
+	flex-flow: row wrap;
 `
 
 export const StraightRow = styled.div`
@@ -39,24 +47,24 @@ export const StraightRow = styled.div`
 `
 
 export const ClickableText = styled.div`
-    font-weight: 600;
+	font-weight: 600;
 	cursor: pointer;
 `
 
 export const Tag = styled.span`
-    ${props => props.float && `float: ${props.float}`};
-	background: ${props => props.background? props.background : 'Red'};
+	${props => props.float && `float: ${props.float}`};
+	background: ${props => (props.background ? props.background : 'Red')};
 	padding: 0.25rem;
 	margin: 0 0.25rem;
-    font-size: 0.7rem;
-    border-radius: ${props => props.circle? `50%`:`0.2rem`};
-    color: ${props => props.color ? props.color : `White`};
-    ${({children})=>children? '': 'visibility: hidden'};
+	font-size: 0.7rem;
+	border-radius: ${props => (props.circle ? `50%` : `0.2rem`)};
+	color: ${props => (props.color ? props.color : `White`)};
+	${({ children }) => (children ? '' : 'visibility: hidden')};
 `
 
 const SectionDiv = styled.div`
 	display: grid;
-	box-sizing:border-box;
+	box-sizing: border-box;
 	grid-template-columns: [s1] 2.5% [content] auto [end] 2.5% [s2];
 `
 
@@ -65,13 +73,15 @@ const Div2 = styled.div`
 `
 
 const SectionHeader = styled.div`
-    font-weight: 600;
-    font-size: 1.75rem;
-    box-sizing:border-box;
+	font-weight: 600;
+	font-size: 1.75rem;
+	box-sizing: border-box;
 	display: grid;
 	padding: 1rem 0;
 	grid-column: content / end;
-	grid-template-columns: [iconLeft] ${({headerIconLeft})=>headerIconLeft?'12.5':'0'}% [content] auto [iconRight] ${({headerIconRight})=>headerIconRight?'12.5':'0'}% [end];
+	grid-template-columns: [iconLeft] ${({ headerIconLeft }) => (headerIconLeft ? '12.5' : '0')}% [content] auto [iconRight] ${({
+			headerIconRight
+		}) => (headerIconRight ? '12.5' : '0')}% [end];
 `
 
 const HeaderText = styled.div`
@@ -91,25 +101,27 @@ const SectionContent = styled.div`
 	> 
 `
 
-export const Section = (props) => {
-	return(
-		<SectionDiv><Div2>
-			<SectionHeader {...props}>
-				<HeaderIconLeft {...props}>{props.headerIconLeft}</HeaderIconLeft>
-				<HeaderText {...props}>{props.headerText}</HeaderText>
-				<HeaderIconRight {...props}>{props.headerIconRight}</HeaderIconRight>
-			</SectionHeader>
-			<SectionContent>{props.children}</SectionContent>
-		</Div2></SectionDiv>
+export const Section = props => {
+	return (
+		<SectionDiv>
+			<Div2>
+				<SectionHeader {...props}>
+					<HeaderIconLeft {...props}>{props.headerIconLeft}</HeaderIconLeft>
+					<HeaderText {...props}>{props.headerText}</HeaderText>
+					<HeaderIconRight {...props}>{props.headerIconRight}</HeaderIconRight>
+				</SectionHeader>
+				<SectionContent>{props.children}</SectionContent>
+			</Div2>
+		</SectionDiv>
 	)
 }
 
-export const ToolTip = (props) => (
+export const ToolTip = props => (
 	<ToolTipBox>
 		{props.mainText}
 		<ToolTipText>{props.tip}</ToolTipText>
 	</ToolTipBox>
-);
+)
 
 const ToolTipBox = styled.div`
 	position: relative;
@@ -121,7 +133,7 @@ const ToolTipBox = styled.div`
 	// If you want to make it full width:
 	// width: 100%;
 	//text-align: center;
-`;
+`
 
 const ToolTipText = styled.span`
 	visibility: hidden;
@@ -133,10 +145,10 @@ const ToolTipText = styled.span`
 	position: absolute;
 	z-index: 1;
 	left: 100%;
-	margin-left:0.5rem;
+	margin-left: 0.5rem;
 
 	&:after {
-		content: "";
+		content: '';
 		position: absolute;
 		left: 100%;
 		z-index: 1000;
@@ -150,15 +162,25 @@ const ToolTipText = styled.span`
 `
 
 const IconSpan = styled.span`
-    align-self: center;
+	align-self: center;
 	cursor: pointer;
-	${({float})=> float? 'float:'+float : '' }
+	${({ float }) => (float ? 'float:' + float : '')}
 `
 
-export const ClickIcon = ({icon, onClick, float, ...props}) => (
-    <IconSpan onClick={onClick} float={float}>
-        <FontAwesomeIcon icon={icon} {...props}/>
-    </IconSpan>
+export const ClickIcon = ({ icon, onClick, float, ...props }) => (
+	<IconSpan onClick={onClick} float={float}>
+		<FontAwesomeIcon icon={icon} {...props} />
+	</IconSpan>
 )
 
-export default {Background, WrapRow, StraightRow, ClickableText, Tag, Section, SectionContent, ToolTip, ClickIcon }
+export default {
+	Background,
+	WrapRow,
+	StraightRow,
+	ClickableText,
+	Tag,
+	Section,
+	SectionContent,
+	ToolTip,
+	ClickIcon
+}

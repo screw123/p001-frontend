@@ -9,7 +9,6 @@ import LocaleApi, { LocaleApiSubscriber } from "../stateContainer/LocaleApi.js"
 import {
   StickyDiv,
   LeftContainer,
-  MiddleContainer,
   RightContainer,
   FirstLevelContainer,
   FirstLevelText,

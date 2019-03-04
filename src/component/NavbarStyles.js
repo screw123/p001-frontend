@@ -65,6 +65,8 @@ export const FirstLevelContainer = styled.div`
   position: relative;
 `
 
+
+
 export const FirstLevelText = styled(({ displayText, key, ...props }) => (
   <div>
     <span key1={key} {...props}>
@@ -84,16 +86,19 @@ export const FirstLevelText = styled(({ displayText, key, ...props }) => (
   ${props => (props.children ? '&:after { content: "▾";' : "")}
 `
 
-export const FirstLevelLink = styled(Link)`
+export const FirstLevelLink = styled(({children, ...props})=>(
+  <Link {...props}>
+    {children}
+    <FirstLevelHover />
+  </Link>
+
+))`
   display: inline-block;
   white-space: nowrap;
   font-size: 1.2rem;
   font-weight: 500;
   cursor: pointer;
   color: white;
-  &:hover {
-    color: yellow;
-  }
 `
 
 export const FirstLevelLoginLink = styled(Link)`
@@ -109,6 +114,18 @@ export const FirstLevelLoginLink = styled(Link)`
   background-color: rgba(216, 216, 216, 0.5);
   &:hover {
     color: yellow;
+  }
+`
+
+const FirstLevelHover = styled.div`
+  border: 0.1rem solid white;
+  border-radius: 1rem;
+  width: 0rem;
+  opacity: 0;
+  transition: opacity 0s, width 0.1s;
+  ${FirstLevelLink}:hover & { 
+    opacity: 1;
+    width: 2.5rem;
   }
 `
 

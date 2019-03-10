@@ -39,14 +39,22 @@ export const Para = styled.p`
 	line-height: 1.25rem;
 	color: ${props => props.color};
 	text-align: ${props => props.align};
+	@media (max-width: 768px) {
+		font-size: 0.85rem;
+		line-height: 1rem;
+	}
 `
 export const Title = styled.p`
 	margin: 0 0 0.5rem 0;
 	font-size: 3rem;
-	font-weight: 500;
+	font-weight: 600;
 	line-height: 3.75rem;
 	color: ${props => props.color};
 	text-align: ${props => props.align};
+	@media (max-width: 768px) {
+		font-size: 1.5rem;
+		line-height: 1.75rem;
+	}
 `
 
 export const SignUp = styled.button`

@@ -10,6 +10,9 @@ export const LeftSide = styled.div`
 	flex: 1;
 	padding: 4rem;
 	color: #787f84;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 	@media (max-width: 1200px) {
 		padding: 2rem;
 	}

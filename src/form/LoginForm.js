@@ -8,6 +8,7 @@ import FormikForm, {
 	FormErr,
 	FieldRow
 } from '../component/FormikForm.js'
+import styled from 'styled-components'
 import { I18n } from 'react-i18next'
 import isMobilePhone from 'validator/lib/isMobilePhone'
 import isEmail from 'validator/lib/isEmail'
@@ -18,14 +19,25 @@ import pickBy from 'lodash/pickBy'
 
 import GqlApi, { GqlApiSubscriber } from '../stateContainer/GqlApi.js'
 
+const ButtonsWrapper = styled.div`
+	padding-top: ${props => (props.mobile ? '2rem' : '0')};
+	justify-content: ${props => (props.mobile ? 'space-between' : 'flex-end')};
+	@media (min-width: 769px) {
+		display: ${props => (props.mobile ? 'none' : 'flex')};
+	}
+	@media (max-width: 768px) {
+		display: ${props => (props.mobile ? 'flex' : 'none')};
+	}
+`
+
 class LoginForm extends React.PureComponent {
 	constructor(props) {
 		super(props)
 		this.state = { showResetPassword: false }
-		this.showResetPasswordForm = this.showResetPasswordForm.bind(this)
 		this.onResetSucess = this.onResetSucess.bind(this)
 	}
 	showResetPasswordForm = () => this.setState({ showResetPassword: true })
+	goToSignUpPage = () => this.props.history.push('/signup')
 	onResetSucess = () => this.setState({ showResetPassword: false })
 
 	//props= user object
@@ -107,18 +119,30 @@ class LoginForm extends React.PureComponent {
 							/>
 							<FormErr>{status}</FormErr>
 							{!this.state.showResetPassword && (
-								<FormButtonBasic onClick={this.showResetPasswordForm}>
-									{c.t('Forget Your Password?')}
-								</FormButtonBasic>
+								<ButtonsWrapper mobile={false}>
+									<FormButtonBasic onClick={this.showResetPasswordForm}>
+										{c.t('Forget Your Password?')}
+									</FormButtonBasic>
+								</ButtonsWrapper>
 							)}
 							<FieldRow>
 								<FormButton
 									type='submit'
 									disabled={isSubmitting || !isEmpty(pickBy(errors)) || !dirty}
 								>
-									{c.t('Submit')}
+									{c.t('Login')}
 								</FormButton>
 							</FieldRow>
+							{!this.state.showResetPassword && (
+								<ButtonsWrapper mobile={true}>
+									<FormButtonBasic onClick={this.goToSignUpPage}>
+										{c.t('Sign Up')}
+									</FormButtonBasic>
+									<FormButtonBasic onClick={this.showResetPasswordForm}>
+										{c.t('Forget Your Password?')}
+									</FormButtonBasic>
+								</ButtonsWrapper>
+							)}
 						</FormikForm>
 						{this.state.showResetPassword && (
 							<div>

@@ -44,7 +44,8 @@ export const FieldRow = styled(FieldDiv)`
     display: flex
     width: 100%
     box-sizing:border-box;
-    padding: 1em;
+	// padding: 1em;
+	justify-content: center;
     flex-flow: row wrap;
 `
 
@@ -57,25 +58,28 @@ export const FieldLabel = styled.label`
 
 //Form Button
 const FB = styled.button`
-	border: 0.2em solid ${props => (props.disabled ? `rgba(128, 128, 128, 0.2)` : `White`)};
-	display: flex;
-	flex: 0 0 auto;
-	align-self: stretch;
-	justify-content: center;
+	// border: 0.2em solid ${props => (props.disabled ? `rgba(128, 128, 128, 0.2)` : `White`)};
+	border: none;
 	font-size: 1.5rem;
 	line-height: 1.75rem;
-	font-weight: 500;
 	border-radius: 3rem;
-	margin: 5px 15px;
-	padding: 0.75rem;
+	margin: 0.5rem 1rem;
+	padding: 0.75rem 2.5rem;
 	min-width: 12rem;
-	font-weight: ${props => (props.disabled ? `400` : `600`)};
+	max-width: 100%;
+	font-weight: ${props => (!props.disabled ? `400` : `600`)};
 	background: ${props =>
 		!props.disabled
 			? `rgba(128, 128, 128, 0.2)`
 			: `linear-gradient(180deg, #F43EA6 0%, #F5576C 100%)`};
 	color: ${props => (!props.disabled ? 'rgb(128, 128, 128)' : ' white')};
 	${props => props.fullSize && `width: 100%`}
+	&:hover {
+		background: ${props =>
+			!props.disabled
+				? `rgba(128, 128, 128, 0.2)`
+				: `linear-gradient(180deg, #F43EA6 0%, #F5576C 100%)`};
+	}
 `
 const FBB = styled.p`
 	font-size: 1rem;
@@ -83,7 +87,6 @@ const FBB = styled.p`
 	margin: 0.5rem 0;
 	color: ${props => (props.disabled ? `rgba(128, 128, 128, 0.4)` : `#787F84`)};
 	cursor: pointer;
-	text-align: right;
 `
 
 export const FormButton = ({ children, ...props }) => <FB {...props}>{children}</FB>

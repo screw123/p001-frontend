@@ -42,17 +42,27 @@ class LoginPage extends React.Component {
 									? c.t('Please Login First') + '...'
 									: c.t('Login Page')}
 							</Styles.Para>
-							<Styles.Title>
+							<Styles.Title color='#787F84' align='left'>
 								{c.t('Lorem ipsum dolor sit amet, consectetur')}
 							</Styles.Title>
-							<Styles.Para>
+							<Styles.Para color='#787F84' align='left'>
 								{c.t('Curabitur et rutrum ante, a malesuada felis.')}
 							</Styles.Para>
 							<LoginForm user={{}} {...this.props} />
 						</Styles.LeftSide>
 
 						<Styles.RightSide>
-							<button onClick={this.redirectToSignUp}>{c.t('Sign Up Now!')}</button>
+							<Styles.Title color='#FEFEFE' align='center'>
+								{c.t('Hi, create new account')}
+							</Styles.Title>
+							<Styles.Para color='#FEFEFE' align='center'>
+								{c.t(
+									'Curabitur et rutrum ante, a malesuada felis.Curabitur et rutrum ante, a malesuada felis.'
+								)}
+							</Styles.Para>
+							<Styles.SignUp onClick={this.redirectToSignUp}>
+								{c.t('Sign Up')}
+							</Styles.SignUp>
 						</Styles.RightSide>
 					</Styles.Container>
 				</Background>

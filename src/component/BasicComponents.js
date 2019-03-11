@@ -20,7 +20,7 @@ const BG2 = styled.div`
 
 	// New
 	padding: 3rem 6rem;
-	max-width: 1366px;
+
 	margin: auto;
 	@media (max-width: 1024px) {
 		padding: 2rem;
@@ -34,7 +34,6 @@ export const Background = ({ children }) => (
 	<BG>
 		<BG2>
 			{children}
-			<p />
 		</BG2>
 	</BG>
 )

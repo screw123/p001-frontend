@@ -36,7 +36,8 @@ export const FieldDiv = styled.div`
     // }
 
     //New
-    width: 100%
+	width: 100%
+	max-width: 40rem;
 `
 
 //FieldRow is for Grouping FieldDiv together and form a virtual row.  FieldDivs will auto flow due to display=flex

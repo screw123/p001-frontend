@@ -8,7 +8,7 @@ export const Container = styled.div`
 `
 export const LeftSide = styled.div`
 	flex: 1;
-	padding: 4rem;
+	padding: 2rem;
 	color: #787f84;
 	display: flex;
 	flex-direction: column;
@@ -19,7 +19,7 @@ export const LeftSide = styled.div`
 `
 export const RightSide = styled.div`
 	flex: 1;
-	padding: 4rem;
+	padding: 2rem;
 	border-radius: 1rem;
 	background: linear-gradient(180deg, #f43ea6 0%, #f5576c 100%);
 	display: flex;

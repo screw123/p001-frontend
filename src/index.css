@@ -1,7 +1,25 @@
 html {
-	font-size: 1em;
+	font-size: 16px;
 	scroll-behavior: smooth;
 	scrollbar-width: thin;
+}
+
+@media only screen and (min-width: 1366px) {
+	html {
+		font-size: 18px;
+	}
+}
+
+@media only screen and (min-width: 1920px) {
+	html {
+		font-size: 20px;
+	}
+}
+	
+@media only screen and (min-width: 2560px) {
+	html {
+		font-size: 24px;
+	}
 }
 
 body::-webkit-scrollbar {

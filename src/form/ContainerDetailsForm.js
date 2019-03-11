@@ -50,8 +50,7 @@ export default class ContainerDetailsForm extends Component {
 									ref={ref => (this.pond = ref)}
 
 									files={this.state.files}
-									allowMultiple={true}
-									maxFiles={3}
+									allowMultiple={false}
 									server="/uploadpic"
 									onupdatefiles={fileItems => {
 										console.log(fileItems)

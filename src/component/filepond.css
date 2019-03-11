@@ -24,7 +24,7 @@
 	padding: 0;
 	left: 1rem;
 	top: 1.75rem;
-	width: calc(100% - 2em);
+	width: calc(100% - 2rem);
 	opacity: 0;
 	font-size: 0;
 }
@@ -266,7 +266,7 @@
 	height: 100%;
 	-ms-flex-align: start;
 	align-items: flex-start;
-	padding: 0.5625rem 0.5625rem;
+	padding: 0.2rem 0.2rem;
 	color: #fff;
 	border-radius: 0.5rem;
 }

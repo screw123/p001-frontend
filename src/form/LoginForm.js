@@ -1,15 +1,9 @@
 import React from 'react'
 
 import { Formik, Field } from 'formik'
-import FormikForm, {
-	TextField,
-	FormButton,
-	FormButtonBasic,
-	FormErr,
-	FieldRow
-} from '../component/FormikForm.js'
+import {CTAButton} from '../component/BasicComponents.js'
+import FormikForm, { TextField, FormButton, FormButtonBasic, FormErr, FieldRow } from '../component/FormikForm.js'
 import styled from 'styled-components'
-import { I18n } from 'react-i18next'
 import isMobilePhone from 'validator/lib/isMobilePhone'
 import isEmail from 'validator/lib/isEmail'
 import ResetPasswordForm from './ResetPasswordForm.js'
@@ -17,7 +11,7 @@ import ResetPasswordForm from './ResetPasswordForm.js'
 import isEmpty from 'lodash/isEmpty'
 import pickBy from 'lodash/pickBy'
 
-import GqlApi, { GqlApiSubscriber } from '../stateContainer/GqlApi.js'
+
 
 const ButtonsWrapper = styled.div`
 	padding-top: ${props => (props.mobile ? '2rem' : '0')};
@@ -126,12 +120,12 @@ class LoginForm extends React.PureComponent {
 								</ButtonsWrapper>
 							)}
 							<FieldRow>
-								<FormButton
+								<CTAButton
 									type='submit'
 									disabled={isSubmitting || !isEmpty(pickBy(errors)) || !dirty}
 								>
 									{c.t('Login')}
-								</FormButton>
+								</CTAButton>
 							</FieldRow>
 							{!this.state.showResetPassword && (
 								<ButtonsWrapper mobile={true}>

@@ -48,7 +48,6 @@
     "Last Name": "名",
     "Last Update": "最後更新",
     "Login": "登入",
-    "Login Page": "登入頁面",
     "Logout": "登出",
     "Managed Accounts": "可管理的帳戶",
     "MONTH": "個月",
@@ -74,7 +73,7 @@
     "Please enter valid email address": "請輸入正確電郵地址",
     "Please enter your First Name": "請輸入姓氏",
     "Please enter your Last Name": "請輸入名字",
-    "Please Login First": "請先登入",
+    "Please Login": "請登入",
     "Please login to continue": "請登入以繼續",
     "PROCESSING_PAID": "處理中 / 已付款",
     "PROCESSING_UNPAID": "處理中 / 未付款",
@@ -154,5 +153,6 @@
     "Send Box To Wisekeep": "預約存放物件",
     "Get your stuff": "預約取回物件",
     "All your stuffs": "物品一覽",
-    "All stuffs": "所有物品"
+    "All stuffs": "所有物品",
+    "Please provide either your email or mobile phone number to login": "你可以電郵地址, 或香港手機號碼登入.  你亦可通過Facebook 或 Google 登入."
 }

@@ -8,19 +8,19 @@ const Input = styled.input`
 	display: block;
 	border: none;
 	background: transparent;
-	font-size: 1em;
+	font-size: 1rem;
 	outline: none;
 `
 
 export const InputRow = styled.div`
     display: flex
     box-sizing:border-box;
-    border-radius: 1.75em;
-    border: ${props => (props.disabled ? `0em` : `0.1em solid #999999`)};
-    background-color: #F4F4F4;
+    border-radius: 2rem;
+    border: ${props => (props.disabled ? `0` : `0.1rem solid #999999`)};
+    background: #F4F4F4;
     text-overflow: clip;
-    padding: 0.85em;
-    font-size: 1.1em;
+    padding: 0.8rem;
+    font-size: 1rem;
 `
 
 export const InputGroup = styled.div`

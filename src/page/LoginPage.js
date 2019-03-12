@@ -1,10 +1,11 @@
 import React from 'react'
 import LoginForm from '../form/LoginForm.js'
 import { I18n } from 'react-i18next'
-import { Background } from '../component/BasicComponents.js'
+import { Background, CTAButton, ContrastedCTAButton, Header, Text } from '../component/BasicComponents.js'
 import { Redirect } from 'react-router-dom'
 
-import * as Styles from './LoginPageStyles'
+import { LeftSide, RightSide, TwinCard} from '../component/TwoSides.js'
+
 
 class LoginPage extends React.Component {
 	constructor(props) {
@@ -35,36 +36,31 @@ class LoginPage extends React.Component {
 		} else {
 			return (
 				<Background>
-					<Styles.Container>
-						<Styles.LeftSide>
-							<Styles.Para>
-								{this.props.location.state
-									? c.t('Please Login First') + '...'
-									: c.t('Login Page')}
-							</Styles.Para>
-							<Styles.Title color='#787F84' align='left'>
-								{c.t('Lorem ipsum dolor sit amet, consectetur')}
-							</Styles.Title>
-							<Styles.Para color='#787F84' align='left'>
-								{c.t('Curabitur et rutrum ante, a malesuada felis.')}
-							</Styles.Para>
+					<TwinCard>
+						<LeftSide>
+							<Header>
+								{c.t('Please Login')}
+							</Header>
+							<Text>
+								{c.t('Please provide either your email or mobile phone number to login')}
+							</Text>
 							<LoginForm user={{}} {...this.props} />
-						</Styles.LeftSide>
+						</LeftSide>
 
-						<Styles.RightSide>
-							<Styles.Title color='#FEFEFE' align='center'>
+						<RightSide>
+							<Header color='#fff' align='center'>
 								{c.t('Hi, create new account')}
-							</Styles.Title>
-							<Styles.Para color='#FEFEFE' align='center'>
+							</Header>
+							<Text color='#fff' align='center'>
 								{c.t(
 									'Curabitur et rutrum ante, a malesuada felis.Curabitur et rutrum ante, a malesuada felis.'
 								)}
-							</Styles.Para>
-							<Styles.SignUp onClick={this.redirectToSignUp}>
+							</Text>
+							<ContrastedCTAButton onClick={this.redirectToSignUp}>
 								{c.t('Sign Up')}
-							</Styles.SignUp>
-						</Styles.RightSide>
-					</Styles.Container>
+							</ContrastedCTAButton>
+						</RightSide>
+					</TwinCard>
 				</Background>
 			)
 		}

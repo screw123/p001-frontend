@@ -2,6 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
+//Background and Cards
+
 const BG = styled.div`
 	background: White;
 	box-sizing: border-box;
@@ -38,20 +40,87 @@ export const Background = ({ children }) => (
 	</BG>
 )
 
-export const WrapRow = styled.div`
-	display: flex;
-	flex-flow: row wrap;
+export const Card = styled.div`
+	border-radius: 1rem;
+	box-shadow: 0px 6px 12px 3px rgba(0, 0, 0, 0.4);
 `
 
-export const StraightRow = styled.div`
-    display: flex
-    flex-flow: row nowrap;
+export const AccentedCard = styled(Card)`
+	border-radius: 1rem;
+	box-shadow: 6px 6px 48px 3px rgba(230, 29, 110, 0.4);
 `
 
-export const ClickableText = styled.div`
+
+
+
+
+
+
+
+//Text and Headers
+
+export const Text = styled.div`
+	font-size: 1rem;
+	line-height: 1.5rem;
+	color: ${props => props.color? props.color: '#888'};
+	text-align: ${props => props.align};
+	@media (max-width: 768px) {
+		font-size: 0.85rem;
+		line-height: 1.1rem;
+	}
+`
+
+export const Header = styled(Text)`
+	margin: 0 0 1rem 0;
+	font-size: 3rem;
+	font-weight: 600;
+	line-height: 3.75rem;
+	@media (max-width: 768px) {
+		font-size: 2rem;
+		line-height: 1.75rem;
+	}
+`
+
+export const ClickableText = styled(Text)`
 	font-weight: 600;
 	cursor: pointer;
 `
+
+
+
+
+
+//Buttons
+
+export const Button = styled.button`
+	cursor: pointer;
+	border: none;
+	font-size: 1.25rem;
+	font-weight: 600;
+	border-radius: 3rem;
+	margin: 0.5rem 1rem;
+	padding: 0.5rem 2rem;
+	min-width: 10rem;
+	background: ${props => !props.disabled ? 'rgba(128, 128, 128, 0.2)' : '#E61D6E'};
+	color: ${props => (!props.disabled ? '#888' : ' white')};
+`
+
+export const CTAButton = styled(Button)`
+	padding: 0.75rem 2.5rem;
+	font-size: 1.5rem;
+	min-width: 12rem;
+	background: ${props => !props.disabled ? `rgba(128, 128, 128, 0.2)` : `linear-gradient(180deg, #F43EA6 0%, #F5576C 100%)`};
+	color: ${props => (!props.disabled ? '#888' : ' white')};
+`
+
+export const ContrastedCTAButton = styled(CTAButton)`
+	background: ${props => props.disabled ? 'rgba(128, 128, 128, 0.2)' : 'White'};
+	color: ${props => props.disabled ? '#888' : '#E61D6E'};
+`
+
+
+
+//Special Text and Icon
 
 export const Tag = styled.span`
 	${props => props.float && `float: ${props.float}`};
@@ -63,60 +132,6 @@ export const Tag = styled.span`
 	color: ${props => (props.color ? props.color : `White`)};
 	${({ children }) => (children ? '' : 'visibility: hidden')};
 `
-
-const SectionDiv = styled.div`
-	display: grid;
-	box-sizing: border-box;
-	grid-template-columns: [s1] 2.5% [content] auto [end] 2.5% [s2];
-`
-
-const Div2 = styled.div`
-	grid-column: content / end;
-`
-
-const SectionHeader = styled.div`
-	font-weight: 600;
-	font-size: 1.75rem;
-	box-sizing: border-box;
-	display: grid;
-	padding: 1rem 0;
-	grid-column: content / end;
-	grid-template-columns: [iconLeft] ${({ headerIconLeft }) => (headerIconLeft ? '12.5' : '0')}% [content] auto [iconRight] ${({
-			headerIconRight
-		}) => (headerIconRight ? '12.5' : '0')}% [end];
-`
-
-const HeaderText = styled.div`
-	grid-column: content / iconRight;
-`
-
-const HeaderIconLeft = styled.div`
-	grid-column: iconLeft / content;
-`
-
-const HeaderIconRight = styled.div`
-	grid-column: iconRight / end;
-`
-
-const SectionContent = styled.div`
-	display: flex;
-	> 
-`
-
-export const Section = props => {
-	return (
-		<SectionDiv>
-			<Div2>
-				<SectionHeader {...props}>
-					<HeaderIconLeft {...props}>{props.headerIconLeft}</HeaderIconLeft>
-					<HeaderText {...props}>{props.headerText}</HeaderText>
-					<HeaderIconRight {...props}>{props.headerIconRight}</HeaderIconRight>
-				</SectionHeader>
-				<SectionContent>{props.children}</SectionContent>
-			</Div2>
-		</SectionDiv>
-	)
-}
 
 export const ToolTip = props => (
 	<ToolTipBox>
@@ -175,9 +190,79 @@ export const ClickIcon = ({ icon, onClick, float, ...props }) => (
 	</IconSpan>
 )
 
+
+
+
+
+
+
+
+
+export const StraightRow = styled.div`
+    display: flex
+    flex-flow: row nowrap;
+`
+
+const SectionDiv = styled.div`
+	display: grid;
+	box-sizing: border-box;
+	grid-template-columns: [s1] 2.5% [content] auto [end] 2.5% [s2];
+`
+
+const Div2 = styled.div`
+	grid-column: content / end;
+`
+
+const SectionHeader = styled.div`
+	font-weight: 600;
+	font-size: 1.75rem;
+	box-sizing: border-box;
+	display: grid;
+	padding: 1rem 0;
+	grid-column: content / end;
+	grid-template-columns: [iconLeft] ${({ headerIconLeft }) => (headerIconLeft ? '12.5' : '0')}% [content] auto [iconRight] ${({
+			headerIconRight
+		}) => (headerIconRight ? '12.5' : '0')}% [end];
+`
+
+const HeaderText = styled.div`
+	grid-column: content / iconRight;
+`
+
+const HeaderIconLeft = styled.div`
+	grid-column: iconLeft / content;
+`
+
+const HeaderIconRight = styled.div`
+	grid-column: iconRight / end;
+`
+
+const SectionContent = styled.div`
+	display: flex;
+	> 
+`
+
+export const Section = props => {
+	return (
+		<SectionDiv>
+			<Div2>
+				<SectionHeader {...props}>
+					<HeaderIconLeft {...props}>{props.headerIconLeft}</HeaderIconLeft>
+					<HeaderText {...props}>{props.headerText}</HeaderText>
+					<HeaderIconRight {...props}>{props.headerIconRight}</HeaderIconRight>
+				</SectionHeader>
+				<SectionContent>{props.children}</SectionContent>
+			</Div2>
+		</SectionDiv>
+	)
+}
+
+
+
+
+
 export default {
 	Background,
-	WrapRow,
 	StraightRow,
 	ClickableText,
 	Tag,

@@ -48,7 +48,6 @@
     "Last Name": "Last Name",
     "Last Update": "Last Update",
     "Login": "Login",
-    "Login Page": "Login Page",
     "Logout": "Logout",
     "Managed Accounts": "Managed Accounts",
     "MONTH": "Month",
@@ -74,7 +73,7 @@
     "Please enter valid email address": "Please enter valid email address",
     "Please enter your First Name": "Please enter your First Name",
     "Please enter your Last Name": "Please enter your Last Name",
-    "Please Login First": "Please Login First",
+    "Please Login": "Please Login",
     "Please login to continue": "Please login to continue",
     "PROCESSING_PAID": "Processing / Paid",
     "PROCESSING_UNPAID": "Processing / Un-Paid",
@@ -154,5 +153,6 @@
     "Send Box To Wisekeep": "Send Box To Wisekeep",
     "Get your stuff": "Get your stuff",
     "All your stuffs": "All your stuffs",
-    "All stuffs": "All stuffs"
+    "All stuffs": "All stuffs",
+    "Please provide either your email or mobile phone number to login": "Please use either email or mobile phone number to login.  Or you can login via Facebook or Google."
 }

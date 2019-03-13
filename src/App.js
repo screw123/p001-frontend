@@ -20,7 +20,7 @@ import LocaleApi, {LocaleApiProvider, LocaleApiSubscriber} from './stateContaine
 
 const MainContainer = styled.div`
     display: grid;
-    grid-template-rows: [navbar] auto [body] auto [end];
+    grid-template-rows: [navbar] auto [navbar2] auto [body] auto [end];
     grid-template-columns: auto;
 `
 

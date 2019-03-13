@@ -5,13 +5,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faAlignJustify } from "@fortawesome/free-solid-svg-icons"
 
 export const StickyDiv = styled.div`
-  position: sticky;
+  ${props=> props.nonStick? '' : 'position: sticky;'}
   top: 0;
   margin: 0;
   // same for every component
   padding: 1rem 7rem;
   background: linear-gradient(180deg, #f43ea6 0%, #f5576c 100%);
-  grid-row: navbar / body;
+  grid-row: ${props=> props.section? props.section: 'navbar / navbar2'};
   display: grid;
   grid-template-rows: auto;
   grid-column-gap: 0.75rem;

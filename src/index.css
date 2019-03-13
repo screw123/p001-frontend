@@ -1,7 +1,25 @@
 html {
-	font-size: 1em;
+	font-size: 16px;
 	scroll-behavior: smooth;
 	scrollbar-width: thin;
+}
+
+@media only screen and (min-width: 1366px) {
+	html {
+		font-size: 18px;
+	}
+}
+
+@media only screen and (min-width: 1920px) {
+	html {
+		font-size: 20px;
+	}
+}
+	
+@media only screen and (min-width: 2560px) {
+	html {
+		font-size: 24px;
+	}
 }
 
 body::-webkit-scrollbar {
@@ -11,26 +29,8 @@ body::-webkit-scrollbar {
 
 
 body, input, select, textarea {
-	font-family: 'Noto Sans TC', sans-serif;
+	font-family: 'Helvetica Neue', 'Arimo', 'Noto Sans TC', sans-serif;
 	margin: 0;
-}
-
-button {
-    box-sizing: border-box;
-    border-radius: 0.25em;
-    border: 0.13em solid #333;
-    padding: 0.3em 1.5em;
-    max-width: 50%;
-    font-weight: 600;
-    text-align: center;
-    background: rgba(255, 64, 112, 0.3);
-    transition: all 0.3s ease-out;
-    vertical-align: middle;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: rgba(255, 64, 112, 0.7);
 }
 
 a {

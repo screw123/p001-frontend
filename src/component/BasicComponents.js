@@ -45,14 +45,38 @@ export const Card = styled.div`
 	box-shadow: 0px 6px 12px 3px rgba(0, 0, 0, 0.4);
 `
 
-export const AccentedCard = styled(Card)`
+export const BigCard = styled(Card)`
+	display: flex;
+	min-height: 70vh;
+`
+
+export const AccentedBigCard = styled.div`
+	min-height: 70vh;
 	border-radius: 1rem;
 	box-shadow: 6px 6px 48px 3px rgba(230, 29, 110, 0.4);
 `
 
+export const AccentedTwinCard = styled(AccentedBigCard)`
+	display: grid;
+	min-height: 70vh;
+	grid-template-columns: 1fr 1fr;
+	@media (max-width: 768px) {
+		grid-template-columns: auto;
+	}
+`
 
+export const TwinCardChild = styled.div`
+	padding: 2rem;
+	border-radius: 1rem;
+	background: #fff;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+`
 
-
+export const AccentedTwinCardChild = styled(TwinCardChild)`
+	background: linear-gradient(180deg, #f43ea6 0%, #f5576c 100%);
+`
 
 
 

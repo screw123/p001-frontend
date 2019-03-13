@@ -1,4 +1,5 @@
 import React from 'react'
+import { Redirect } from 'react-router-dom'
 
 import { Formik, Field } from 'formik'
 import {CTAButton} from '../component/BasicComponents.js'
@@ -27,17 +28,18 @@ const ButtonsWrapper = styled.div`
 class LoginForm extends React.PureComponent {
 	constructor(props) {
 		super(props)
-		this.state = { showResetPassword: false }
-		this.onResetSucess = this.onResetSucess.bind(this)
+		this.state = { redirectToResetPw: false }
 	}
-	showResetPasswordForm = () => this.setState({ showResetPassword: true })
+	showResetPasswordForm = () => this.setState({ redirectToResetPw: true })
 	goToSignUpPage = () => this.props.history.push('/signup')
-	onResetSucess = () => this.setState({ showResetPassword: false })
 
 	//props= user object
 	render() {
 		const g = this.props.login
 		const c = this.props.i18n
+		if (this.state.redirectToResetPw) {
+			return ( <Redirect to={{ pathname: '/resetPassword', state: { nextPath: {nextPath: '/login'}, passOnState: {} } }} /> )
+		}
 		return (
 			<Formik
 				initialValues={{
@@ -138,12 +140,6 @@ class LoginForm extends React.PureComponent {
 								</ButtonsWrapper>
 							)}
 						</FormikForm>
-						{this.state.showResetPassword && (
-							<div>
-								<h2>{c.t('Reset Your Password')}</h2>
-								<ResetPasswordForm onResetSucess={() => this.onResetSucess} />
-							</div>
-						)}
 					</div>
 				)}
 			</Formik>

@@ -2,7 +2,8 @@ import React, { Component } from "react"
 import styled from "styled-components"
 
 import {CustomField, Container, ContainerHeader, ButtonsDiv, StandardFieldsDiv, CustomFieldsDiv, BoxType, Text, RelatedAccount, DateOnly} from '../component/ContainerDetails.js'
-import {PicUpload} from '../component/PicUpload.js'
+
+import {PhotoUploader} from '../component/PhotoUploader.js'
 
 import { ApolloProvider, Query } from 'react-apollo'
 import { getContainerById } from '../gql/query.js'
@@ -46,19 +47,7 @@ export default class ContainerDetailsForm extends Component {
 							{!this.props.hideTitle && <ContainerHeader printId={printId} userDefinedName={userDefinedName} />}
 							<BoxType SKUMaster={containerType_id} />
 							<ButtonsDiv>
-								<PicUpload 
-									ref={ref => (this.pond = ref)}
-
-									files={this.state.files}
-									allowMultiple={false}
-									server="/uploadpic"
-									onupdatefiles={fileItems => {
-										console.log(fileItems)
-										this.setState({
-											files: fileItems.map(fileItem => fileItem.file)
-										})
-									}}
-								/>
+								<PhotoUploader />
 							</ButtonsDiv>
 							<StandardFieldsDiv>
 								<RelatedAccount account={container.accountOwner_id} user={g.state.myself} />

@@ -47,7 +47,7 @@ export const Image = styled.div`
 		background-size: 70% auto;
 		background-position: center bottom;
 	}
-	// @media (max-width: 500px) {
-	// 	background-size: 100% auto;
-	// }
+	@media (max-width: 500px) {
+		background-size: 85% auto;
+	}
 `

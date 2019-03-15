@@ -1,37 +1,35 @@
-import IndexPage from "./page/IndexPage.js"
-import WhyUsPage from "./page/WhyUsPage.js"
-import PricingPage from "./page/PricingPage.js"
+import IndexPage from './page/IndexPage.js'
+import WhyUsPage from './page/WhyUsPage.js'
+import PricingPage from './page/PricingPage.js'
 
-import LoginPage from "./page/LoginPage.js"
+import LoginPage from './page/LoginPage.js'
 
+import UserDashboardPage from './page/UserDashboardPage.js'
+import SignUpWorkflow from './page/SignUpWorkflow.js'
+import ResetPasswordPage from './page/ResetPasswordPage.js'
+import UserActivationPage from './page/UserActivationPage.js'
+import TermsAndConditionPage from './page/TermsAndConditionPage.js'
+import QuotationPage from './page/QuotationPage.js'
+import SalesOrderConfirmPage from './page/SalesOrderConfirmPage.js'
+import UserProfilePage from './page/UserProfilePage.js'
+import TestPage from './page/TestPage.js'
+import EditAccountPage from './page/EditAccountPage.js'
+import ROListPage from './page/ROListPage.js'
+import RODetailsPage from './page/RODetailsPage.js'
+import ThankYouForOrderPage from './page/ThankYouForOrderPage.js'
+import AddPickUpOrderPage from './page/AddPickUpOrderPage.js'
+import AddDeliveryOrderPage from './page/AddDeliveryOrderPage.js'
+import PUODOListPage from './page/PUODOListPage.js'
+import PUODetailsPage from './page/PUODetailsPage.js'
+import DODetailsPage from './page/DODetailsPage.js'
+import ContainerListPage from './page/ContainerListPage.js'
 
-import UserDashboardPage from "./page/UserDashboardPage.js"
-import SignUpWorkflow from "./page/SignUpWorkflow.js"
-import ResetPasswordPage from "./page/ResetPasswordPage.js"
-import UserActivationPage from "./page/UserActivationPage.js"
-import TermsAndConditionPage from "./page/TermsAndConditionPage.js"
-import QuotationPage from "./page/QuotationPage.js"
-import SalesOrderConfirmPage from "./page/SalesOrderConfirmPage.js"
-import UserProfilePage from "./page/UserProfilePage.js"
-import TestPage from "./page/TestPage.js"
-import EditAccountPage from "./page/EditAccountPage.js"
-import ROListPage from "./page/ROListPage.js"
-import RODetailsPage from "./page/RODetailsPage.js"
-import ThankYouForOrderPage from "./page/ThankYouForOrderPage.js"
-import AddPickUpOrderPage from "./page/AddPickUpOrderPage.js"
-import AddDeliveryOrderPage from "./page/AddDeliveryOrderPage.js"
-import PUODOListPage from "./page/PUODOListPage.js"
-import PUODetailsPage from "./page/PUODetailsPage.js"
-import DODetailsPage from "./page/DODetailsPage.js"
-import ContainerListPage from "./page/ContainerListPage.js"
-
-export {NotFoundPage as NotFound} from "./page/NotFoundPage.js"
-
+export { NotFoundPage as NotFound } from './page/NotFoundPage.js'
 
 const routes = [
 	{
-		path: "/login", //this should be removed as Login should be a right side icon item
-		menuName: "Login",
+		path: '/login', //this should be removed as Login should be a right side icon item
+		menuName: 'Login',
 		component: LoginPage,
 		navbar: {
 			firstLevel: true,
@@ -44,8 +42,8 @@ const routes = [
 		}
 	},
 	{
-		path: "/signup", //this should be removed as sign up is right side icon item
-		menuName: "Sign Up",
+		path: '/signup', //this should be removed as sign up is right side icon item
+		menuName: 'Sign Up',
 		component: SignUpWorkflow,
 		navbar: {
 			itemId: 12,
@@ -58,7 +56,7 @@ const routes = [
 		}
 	},
 	{
-		menuName: "My Keep",
+		menuName: 'My Keep',
 		navbar: {
 			itemId: 100,
 			firstLevel: true,
@@ -67,8 +65,8 @@ const routes = [
 		}
 	},
 	{
-		path: "/dash",
-		menuName: "Dashboard",
+		path: '/dash',
+		menuName: 'Dashboard',
 		component: UserDashboardPage,
 		navbar: {
 			itemId: 101,
@@ -82,9 +80,9 @@ const routes = [
 		}
 	},
 	{
-		path: "/userActivation/:_id?/:verificationPIN?", //will not show in NavBar
-		linkURL: "/userActivation",
-		menuName: "User Activation",
+		path: '/userActivation/:_id?/:verificationPIN?', //will not show in NavBar
+		linkURL: '/userActivation',
+		menuName: 'User Activation',
 		component: UserActivationPage,
 		navbar: {
 			itemId: 901,
@@ -97,9 +95,9 @@ const routes = [
 		}
 	},
 	{
-		path: "/terms", //is temp, will update and change
+		path: '/terms', //is temp, will update and change
 		exact: true,
-		menuName: "Terms And Condition",
+		menuName: 'Terms And Condition',
 		component: TermsAndConditionPage,
 		navbar: {
 			itemId: 701,
@@ -113,9 +111,9 @@ const routes = [
 		}
 	},
 	{
-		path: "/", //main page
+		path: '/', //main page
 		exact: true,
-		menuName: "Home",
+		menuName: 'Home',
 		component: IndexPage,
 		navbar: {
 			itemId: 1,
@@ -128,9 +126,9 @@ const routes = [
 		}
 	},
 	{
-		path: "/whyus",
+		path: '/whyus',
 		exact: true,
-		menuName: "Why Us",
+		menuName: 'Why Us',
 		component: WhyUsPage,
 		navbar: {
 			itemId: 2,
@@ -143,9 +141,9 @@ const routes = [
 		}
 	},
 	{
-		path: "/pricing",
+		path: '/pricing',
 		exact: true,
-		menuName: "Pricing",
+		menuName: 'Pricing',
 		component: PricingPage,
 		navbar: {
 			itemId: 3,
@@ -158,9 +156,9 @@ const routes = [
 		}
 	},
 	{
-		path: "/resetPassword", //this should be removed as reset password should only be shown in login page
+		path: '/resetPassword', //this should be removed as reset password should only be shown in login page
 		exact: true,
-		menuName: "Reset Your Password",
+		menuName: 'Reset Your Password',
 		component: ResetPasswordPage,
 		navbar: {
 			itemId: 702,
@@ -173,9 +171,9 @@ const routes = [
 		}
 	},
 	{
-		path: "/quotation",
+		path: '/quotation',
 		exact: true,
-		menuName: "Quotation",
+		menuName: 'Quotation',
 		component: QuotationPage,
 		navbar: {
 			itemId: 201,
@@ -188,10 +186,10 @@ const routes = [
 		}
 	},
 	{
-		path: "/confirmSalesOrder/:quotation_id?", //should be removed???
-		linkURL: "/confirmSalesOrder",
+		path: '/confirmSalesOrder/:quotation_id?', //should be removed???
+		linkURL: '/confirmSalesOrder',
 		exact: true,
-		menuName: "Confirm Sales Order",
+		menuName: 'Confirm Sales Order',
 		component: SalesOrderConfirmPage,
 		navbar: {
 			itemId: 901,
@@ -203,9 +201,9 @@ const routes = [
 		}
 	},
 	{
-		path: "/testPage",
+		path: '/testPage',
 		exact: true,
-		menuName: "Testing Zone",
+		menuName: 'Testing Zone',
 		component: TestPage,
 		navbar: {
 			itemId: 999,
@@ -218,9 +216,9 @@ const routes = [
 		}
 	},
 	{
-		path: "/editUser",
+		path: '/editUser',
 		exact: true,
-		menuName: "Edit User",
+		menuName: 'Edit User',
 		component: UserProfilePage,
 		navbar: {
 			itemId: 112,
@@ -234,10 +232,10 @@ const routes = [
 		}
 	},
 	{
-		path: "/editAccount/:account_id?/:mode?",
-		linkURL: "/editAccount",
+		path: '/editAccount/:account_id?/:mode?',
+		linkURL: '/editAccount',
 		exact: true,
-		menuName: "Edit Account",
+		menuName: 'Edit Account',
 		component: EditAccountPage,
 		navbar: {
 			itemId: 113,
@@ -251,8 +249,8 @@ const routes = [
 		}
 	},
 	{
-		path: "/ROList",
-		menuName: "Box Rental Record",
+		path: '/ROList',
+		menuName: 'Box Rental Record',
 		component: ROListPage,
 		navbar: {
 			itemId: 201,
@@ -266,8 +264,8 @@ const routes = [
 		}
 	},
 	{
-		path: "/RODetails/:id?",
-		menuName: "Box Rental Details",
+		path: '/RODetails/:id?',
+		menuName: 'Box Rental Details',
 		component: RODetailsPage,
 		navbar: {
 			itemId: 202,
@@ -281,8 +279,8 @@ const routes = [
 		}
 	},
 	{
-		path: "/ArrangePickUp",
-		menuName: "Send Box To Wisekeep",
+		path: '/ArrangePickUp',
+		menuName: 'Send Box To Wisekeep',
 		component: AddPickUpOrderPage,
 		navbar: {
 			itemId: 301,
@@ -296,8 +294,8 @@ const routes = [
 		}
 	},
 	{
-		path: "/ArrangeDelivery",
-		menuName: "Get your stuff",
+		path: '/ArrangeDelivery',
+		menuName: 'Get your stuff',
 		component: AddDeliveryOrderPage,
 		navbar: {
 			itemId: 302,
@@ -311,8 +309,8 @@ const routes = [
 		}
 	},
 	{
-		path: "/PUODOList",
-		menuName: "Box Movement Record",
+		path: '/PUODOList',
+		menuName: 'Box Movement Record',
 		component: PUODOListPage,
 		navbar: {
 			itemId: 303,
@@ -326,8 +324,8 @@ const routes = [
 		}
 	},
 	{
-		path: "/ThankYou",
-		menuName: "Thank you for your order",
+		path: '/ThankYou',
+		menuName: 'Thank you for your order',
 		component: ThankYouForOrderPage,
 		navbar: {
 			itemId: 902,
@@ -339,8 +337,8 @@ const routes = [
 		}
 	},
 	{
-		path: "/PUODetails/:id?",
-		menuName: "Box Movement Details (Pick Up)",
+		path: '/PUODetails/:id?',
+		menuName: 'Box Movement Details (Pick Up)',
 		component: PUODetailsPage,
 		navbar: {
 			itemId: 304,
@@ -354,8 +352,8 @@ const routes = [
 		}
 	},
 	{
-		path: "/DODetails/:id?",
-		menuName: "Box Movement Details (Delivery)",
+		path: '/DODetails/:id?',
+		menuName: 'Box Movement Details (Delivery)',
 		component: DODetailsPage,
 		navbar: {
 			itemId: 305,
@@ -369,8 +367,8 @@ const routes = [
 		}
 	},
 	{
-		path: "/ContainerList",
-		menuName: "All your stuffs",
+		path: '/ContainerList',
+		menuName: 'All your stuffs',
 		component: ContainerListPage,
 		navbar: {
 			itemId: 401,
@@ -385,4 +383,4 @@ const routes = [
 	}
 ]
 
-export default routes;
+export default routes

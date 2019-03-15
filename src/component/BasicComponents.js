@@ -34,9 +34,7 @@ const BG2 = styled.div`
 
 export const Background = ({ children }) => (
 	<BG>
-		<BG2>
-			{children}
-		</BG2>
+		<BG2>{children}</BG2>
 	</BG>
 )
 
@@ -72,21 +70,19 @@ export const TwinCardChild = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	align-items: center;
 `
 
 export const AccentedTwinCardChild = styled(TwinCardChild)`
 	background: linear-gradient(180deg, #f43ea6 0%, #f5576c 100%);
 `
 
-
-
-
 //Text and Headers
 
 export const Text = styled.div`
 	font-size: 1rem;
 	line-height: 1.5rem;
-	color: ${props => props.color? props.color: '#888'};
+	color: ${props => (props.color ? props.color : '#888')};
 	text-align: ${props => props.align};
 	@media (max-width: 768px) {
 		font-size: 0.85rem;
@@ -110,22 +106,17 @@ export const ClickableText = styled(Text)`
 	cursor: pointer;
 `
 
-
-
-
-
 //Buttons
-
 export const Button = styled.button`
 	cursor: pointer;
 	border: none;
 	font-size: 1.25rem;
 	font-weight: 600;
 	border-radius: 3rem;
-	margin: 0.5rem 1rem;
+	margin: 0.5rem 0rem;
 	padding: 0.5rem 2rem;
 	min-width: 10rem;
-	background: ${props => !props.disabled ? 'rgba(128, 128, 128, 0.2)' : '#E61D6E'};
+	background: ${props => (!props.disabled ? 'rgba(128, 128, 128, 0.2)' : '#E61D6E')};
 	color: ${props => (!props.disabled ? '#888' : ' white')};
 `
 
@@ -133,16 +124,17 @@ export const CTAButton = styled(Button)`
 	padding: 0.75rem 2.5rem;
 	font-size: 1.5rem;
 	min-width: 12rem;
-	background: ${props => !props.disabled ? `rgba(128, 128, 128, 0.2)` : `linear-gradient(180deg, #F43EA6 0%, #F5576C 100%)`};
+	background: ${props =>
+		!props.disabled
+			? `rgba(128, 128, 128, 0.2)`
+			: `linear-gradient(180deg, #F43EA6 0%, #F5576C 100%)`};
 	color: ${props => (!props.disabled ? '#888' : ' white')};
 `
 
 export const ContrastedCTAButton = styled(CTAButton)`
-	background: ${props => props.disabled ? 'rgba(128, 128, 128, 0.2)' : 'White'};
-	color: ${props => props.disabled ? '#888' : '#E61D6E'};
+	background: ${props => (props.disabled ? 'rgba(128, 128, 128, 0.2)' : 'White')};
+	color: ${props => (props.disabled ? '#888' : '#E61D6E')};
 `
-
-
 
 //Special Text and Icon
 
@@ -214,14 +206,6 @@ export const ClickIcon = ({ icon, onClick, float, ...props }) => (
 	</IconSpan>
 )
 
-
-
-
-
-
-
-
-
 export const StraightRow = styled.div`
     display: flex
     flex-flow: row nowrap;
@@ -280,10 +264,6 @@ export const Section = props => {
 		</SectionDiv>
 	)
 }
-
-
-
-
 
 export default {
 	Background,

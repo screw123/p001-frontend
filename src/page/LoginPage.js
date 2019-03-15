@@ -1,7 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
 import LoginForm from '../form/LoginForm.js'
-import { Background, ContrastedCTAButton, Header, Text, AccentedTwinCard, TwinCardChild, AccentedTwinCardChild } from '../component/BasicComponents.js'
+import {
+	Background,
+	ContrastedCTAButton,
+	Header,
+	Text,
+	AccentedTwinCard,
+	TwinCardChild,
+	AccentedTwinCardChild
+} from '../component/BasicComponents.js'
 import { Redirect } from 'react-router-dom'
 
 const Left = TwinCardChild
@@ -16,7 +24,7 @@ class LoginPage extends React.Component {
 		super(props)
 		this.redirectToSignUp = this.redirectToSignUp.bind(this)
 		this.state = {
-			redirectToSignUp: false,
+			redirectToSignUp: false
 		}
 	}
 
@@ -31,19 +39,25 @@ class LoginPage extends React.Component {
 			return <Redirect to={{ pathname: nextPath, state: passOnState }} />
 		}
 		if (this.state.redirectToSignUp) {
-			return ( <Redirect to={{ pathname: '/signup', state: { nextPath: nextPath, passOnState: passOnState } }} /> )
+			return (
+				<Redirect
+					to={{
+						pathname: '/signup',
+						state: { nextPath: nextPath, passOnState: passOnState }
+					}}
+				/>
+			)
 		}
-		
 
 		return (
 			<Background>
 				<AccentedTwinCard>
 					<Left>
-						<Header>
-							{c.t('Please Login')}
-						</Header>
+						<Header>{c.t('Please Login')}</Header>
 						<Text>
-							{c.t('Please provide either your email or mobile phone number to login')}
+							{c.t(
+								'Please provide either your email or mobile phone number to login'
+							)}
 						</Text>
 						<LoginForm user={{}} {...this.props} />
 					</Left>

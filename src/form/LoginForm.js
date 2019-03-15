@@ -2,8 +2,14 @@ import React from 'react'
 import { Redirect } from 'react-router-dom'
 
 import { Formik, Field } from 'formik'
-import {CTAButton} from '../component/BasicComponents.js'
-import FormikForm, { TextField, FormButton, FormButtonBasic, FormErr, FieldRow } from '../component/FormikForm.js'
+import { CTAButton } from '../component/BasicComponents.js'
+import FormikForm, {
+	TextField,
+	FormButton,
+	FormButtonBasic,
+	FormErr,
+	FieldRow
+} from '../component/FormikForm.js'
 import styled from 'styled-components'
 import isMobilePhone from 'validator/lib/isMobilePhone'
 import isEmail from 'validator/lib/isEmail'
@@ -11,8 +17,6 @@ import ResetPasswordForm from './ResetPasswordForm.js'
 
 import isEmpty from 'lodash/isEmpty'
 import pickBy from 'lodash/pickBy'
-
-
 
 const ButtonsWrapper = styled.div`
 	padding-top: ${props => (props.mobile ? '2rem' : '0')};
@@ -38,7 +42,14 @@ class LoginForm extends React.PureComponent {
 		const g = this.props.login
 		const c = this.props.i18n
 		if (this.state.redirectToResetPw) {
-			return ( <Redirect to={{ pathname: '/resetPassword', state: { nextPath: {nextPath: '/login'}, passOnState: {} } }} /> )
+			return (
+				<Redirect
+					to={{
+						pathname: '/resetPassword',
+						state: { nextPath: { nextPath: '/login' }, passOnState: {} }
+					}}
+				/>
+			)
 		}
 		return (
 			<Formik
@@ -96,51 +107,49 @@ class LoginForm extends React.PureComponent {
 				}}
 			>
 				{({ errors, isSubmitting, dirty, touched, values, status, initialValues }) => (
-					<div>
-						<FormikForm>
-							<Field
-								name='user'
-								type='text'
-								component={TextField}
-								placeholder={c.t('Email/Phone')}
-								value={values.user}
-								hidden={initialValues['user'] != ''}
-							/>
-							<Field
-								name='password'
-								type='password'
-								component={TextField}
-								placeholder={c.t('Password')}
-								value={values.password}
-							/>
-							<FormErr>{status}</FormErr>
-							{!this.state.showResetPassword && (
-								<ButtonsWrapper mobile={false}>
-									<FormButtonBasic onClick={this.showResetPasswordForm}>
-										{c.t('Forget Your Password?')}
-									</FormButtonBasic>
-								</ButtonsWrapper>
-							)}
-							<FieldRow>
-								<CTAButton
-									type='submit'
-									disabled={isSubmitting || !isEmpty(pickBy(errors)) || !dirty}
-								>
-									{c.t('Login')}
-								</CTAButton>
-							</FieldRow>
-							{!this.state.showResetPassword && (
-								<ButtonsWrapper mobile={true}>
-									<FormButtonBasic onClick={this.goToSignUpPage}>
-										{c.t('Sign Up')}
-									</FormButtonBasic>
-									<FormButtonBasic onClick={this.showResetPasswordForm}>
-										{c.t('Forget Your Password?')}
-									</FormButtonBasic>
-								</ButtonsWrapper>
-							)}
-						</FormikForm>
-					</div>
+					<FormikForm>
+						<Field
+							name='user'
+							type='text'
+							component={TextField}
+							placeholder={c.t('Email/Phone')}
+							value={values.user}
+							hidden={initialValues['user'] != ''}
+						/>
+						<Field
+							name='password'
+							type='password'
+							component={TextField}
+							placeholder={c.t('Password')}
+							value={values.password}
+						/>
+						<FormErr>{status}</FormErr>
+						{!this.state.showResetPassword && (
+							<ButtonsWrapper mobile={false}>
+								<FormButtonBasic onClick={this.showResetPasswordForm}>
+									{c.t('Forget Your Password?')}
+								</FormButtonBasic>
+							</ButtonsWrapper>
+						)}
+						<FieldRow>
+							<CTAButton
+								type='submit'
+								disabled={isSubmitting || !isEmpty(pickBy(errors)) || !dirty}
+							>
+								{c.t('Login')}
+							</CTAButton>
+						</FieldRow>
+						{!this.state.showResetPassword && (
+							<ButtonsWrapper mobile={true}>
+								<FormButtonBasic onClick={this.goToSignUpPage}>
+									{c.t('Sign Up')}
+								</FormButtonBasic>
+								<FormButtonBasic onClick={this.showResetPasswordForm}>
+									{c.t('Forget Your Password?')}
+								</FormButtonBasic>
+							</ButtonsWrapper>
+						)}
+					</FormikForm>
 				)}
 			</Formik>
 		)

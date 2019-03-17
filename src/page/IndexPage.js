@@ -1,7 +1,12 @@
 import React from 'react'
 import { I18n } from 'react-i18next'
 import * as Styles from './IndexPageStyles'
-import { Background, ContrastedCTAButton, Header, Text } from '../component/BasicComponents.js'
+import {
+	Background,
+	ContrastedCTAButton,
+	HeaderWithBar,
+	Text
+} from '../component/BasicComponents.js'
 import { BigLoadingScreen } from '../component/Loading.js'
 
 class IndexPage extends React.Component {
@@ -11,8 +16,9 @@ class IndexPage extends React.Component {
 			<div>
 				{/* <BigLoadingScreen text={'Welcome to Wisekeep!  Our website is under construction!'} /> */}
 				<Styles.TopSection>
-					<Styles.Bar />
-					<Header color='#fff'>{c.t('Wisekeep provide valet storage service')}</Header>
+					<HeaderWithBar color='#fff'>
+						{c.t('Wisekeep provide valet storage service')}
+					</HeaderWithBar>
 					<Text color='#fff'>
 						{c.t(
 							'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate, nisl commodo sagittis luctus, nunc velit auctor mauris, vitae ornare nisl nisl euismod lectus.'
@@ -22,6 +28,17 @@ class IndexPage extends React.Component {
 					<ContrastedCTAButton> {c.t('Start Now!')}</ContrastedCTAButton>
 					<Styles.Image />
 				</Styles.TopSection>
+
+				<Background>
+					<Styles.Section>
+						<HeaderWithBar color='#787F84'>{c.t('How It Works')}</HeaderWithBar>
+						<Text color='#787F84'>
+							{c.t(
+								'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate'
+							)}
+						</Text>
+					</Styles.Section>
+				</Background>
 			</div>
 		)
 	}

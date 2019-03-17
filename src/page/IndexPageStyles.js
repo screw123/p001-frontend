@@ -22,15 +22,6 @@ export const TopSection = styled.div`
 		padding-left: 1rem;
 	}
 `
-
-export const Bar = styled.hr`
-	height: 0.25rem;
-	width: 6rem;
-	background: #fff;
-	margin: 1rem 0;
-	border-radius: 0.25rem;
-`
-
 export const Image = styled.div`
 	position: absolute;
 	bottom: 0;
@@ -50,4 +41,11 @@ export const Image = styled.div`
 	@media (max-width: 500px) {
 		background-size: 85% auto;
 	}
+`
+
+export const Section = styled.div`
+	padding: 5rem 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 `

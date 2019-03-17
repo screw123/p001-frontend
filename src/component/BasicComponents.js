@@ -11,18 +11,7 @@ const BG = styled.div`
 `
 
 const BG2 = styled.div`
-	// @media (max-width: 1366px) {
-	//     width: 100%
-	// }
-
-	// @media (min-width: 1367px) {
-	//     width: 1366px
-	//     margin: auto
-	// }
-
-	// New
 	padding: 3rem 6rem;
-
 	margin: auto;
 	@media (max-width: 1024px) {
 		padding: 2rem;
@@ -109,6 +98,28 @@ export const Header2 = styled(Text)`
 	@media (max-width: 768px) {
 		font-size: 1.75rem;
 		line-height: 1.75rem;
+	}
+`
+
+export const HeaderWithBar = styled(Text)`
+	position: relative;
+	padding: 1rem 0;
+	font-size: 3rem;
+	font-weight: 600;
+	line-height: 3.75rem;
+	@media (max-width: 768px) {
+		font-size: 2rem;
+		line-height: 1.75rem;
+	}
+	&:before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 0;
+		height: 0.25rem;
+		width: 5rem;
+		background-color: ${props => (props.color ? props.color : 'fff')};
+		border-radius: 0.25rem;
 	}
 `
 

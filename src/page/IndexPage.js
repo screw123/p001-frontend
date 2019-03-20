@@ -5,7 +5,8 @@ import {
 	Background,
 	ContrastedCTAButton,
 	HeaderWithBar,
-	Text
+	Text,
+	ClickableText
 } from '../component/BasicComponents.js'
 import { BigLoadingScreen } from '../component/Loading.js'
 
@@ -37,6 +38,65 @@ class IndexPage extends React.Component {
 								'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate'
 							)}
 						</Text>
+						<Styles.CardsRow>
+							<Styles.Card>
+								<Styles.CardImage image='/card-wave-1.png' />
+								<Styles.CardContent>
+									<Text color='#787F84' align='center'>
+										{c.t('We send you boxes')}
+									</Text>
+								</Styles.CardContent>
+								<Styles.CardFooter>
+									<ClickableText color='#787F84' align='center'>
+										{c.t('Learn More')}
+									</ClickableText>
+								</Styles.CardFooter>
+							</Styles.Card>
+
+							<Styles.Card>
+								<Styles.CardImage image='/card-wave-2.png' />
+								<Styles.CardContent>
+									<Text color='#787F84' align='center'>
+										{c.t(
+											'You put your stuff in physical box, and digitally store the stuff in the virtual box. We store both'
+										)}
+									</Text>
+								</Styles.CardContent>
+								<Styles.CardFooter>
+									<ClickableText color='#787F84' align='center'>
+										{c.t('Learn More')}
+									</ClickableText>
+								</Styles.CardFooter>
+							</Styles.Card>
+
+							<Styles.Card>
+								<Styles.CardImage image='/card-wave-3.png' />
+								<Styles.CardContent>
+									<Text color='#787F84' align='center'>
+										{c.t('We send you your stuff when you need it')}
+									</Text>
+								</Styles.CardContent>
+								<Styles.CardFooter>
+									<ClickableText color='#787F84' align='center'>
+										{c.t('Learn More')}
+									</ClickableText>
+								</Styles.CardFooter>
+							</Styles.Card>
+
+							<Styles.Card>
+								<Styles.CardImage image='/card-wave-4.png' />
+								<Styles.CardContent>
+									<Text color='#787F84' align='center'>
+										{c.t('Enjoy your stuff again')}
+									</Text>
+								</Styles.CardContent>
+								<Styles.CardFooter>
+									<ClickableText color='#787F84' align='center'>
+										{c.t('Learn More')}
+									</ClickableText>
+								</Styles.CardFooter>
+							</Styles.Card>
+						</Styles.CardsRow>
 					</Styles.Section>
 				</Background>
 			</div>

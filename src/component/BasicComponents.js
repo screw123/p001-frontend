@@ -73,6 +73,7 @@ export const Text = styled.div`
 	line-height: 1.5rem;
 	color: ${props => (props.color ? props.color : '#888')};
 	text-align: ${props => props.align};
+	font-weight: ${props => (props.fontWeight ? props.fontWeight : '500')};
 	@media (max-width: 768px) {
 		font-size: 0.85rem;
 		line-height: 1.1rem;
@@ -90,25 +91,18 @@ export const Header = styled(Text)`
 	}
 `
 
-export const HeaderWithBar = styled(Text)`
+export const HeaderWithBar = styled(Header)`
 	position: relative;
 	padding: 1rem 0;
-	font-size: 3rem;
-	font-weight: 600;
-	line-height: 3.75rem;
-	@media (max-width: 768px) {
-		font-size: 2rem;
-		line-height: 1.75rem;
-	}
 	&:before {
 		content: '';
 		position: absolute;
 		left: 0;
 		top: 0;
-		height: 0.25rem;
+		height: 0.3rem;
 		width: 5rem;
 		background-color: ${props => (props.color ? props.color : 'fff')};
-		border-radius: 0.25rem;
+		border-radius: 0.3rem;
 	}
 `
 

@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 //Background and Cards
 
 const BG = styled.div`
-	background: White;
+	background: ${props => (props.color ? props.color : '#fff')};
 	box-sizing: border-box;
 	min-height: 100vh;
 `
@@ -21,8 +21,8 @@ const BG2 = styled.div`
 	}
 `
 
-export const Background = ({ children }) => (
-	<BG>
+export const Background = ({ children, color }) => (
+	<BG color={color}>
 		<BG2>{children}</BG2>
 	</BG>
 )

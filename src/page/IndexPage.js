@@ -30,7 +30,7 @@ class IndexPage extends React.Component {
 					<Styles.Image />
 				</Styles.TopSection>
 
-				<Background>
+				<Background color='#f3f3f3'>
 					<Styles.Section>
 						<HeaderWithBar color='#787F84'>{c.t('How It Works')}</HeaderWithBar>
 						<Text color='#787F84'>

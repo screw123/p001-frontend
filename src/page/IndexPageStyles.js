@@ -50,6 +50,7 @@ export const Section = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	background: #f3f3f3;
 	@media (max-width: 1024px) {
 		padding: 2rem 0;
 	}
@@ -76,7 +77,7 @@ export const Card = styled.div`
 	display: flex;
 	flex-direction: column;
 	transition: all 0.2s ease-in-out;
-	background: #f8f9fa;
+	background: #fff;
 	border-radius: 0.5rem;
 	&:hover {
 		transform: scale(1.1);

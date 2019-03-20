@@ -50,6 +50,9 @@ class IndexPage extends React.Component {
 									<ClickableText color='#787F84' align='center'>
 										{c.t('Learn More')}
 									</ClickableText>
+									<Styles.RightIconWrapper>
+										<Styles.RightIcon />
+									</Styles.RightIconWrapper>
 								</Styles.CardFooter>
 							</Styles.Card>
 
@@ -66,6 +69,9 @@ class IndexPage extends React.Component {
 									<ClickableText color='#787F84' align='center'>
 										{c.t('Learn More')}
 									</ClickableText>
+									<Styles.RightIconWrapper>
+										<Styles.RightIcon />
+									</Styles.RightIconWrapper>
 								</Styles.CardFooter>
 							</Styles.Card>
 
@@ -80,6 +86,9 @@ class IndexPage extends React.Component {
 									<ClickableText color='#787F84' align='center'>
 										{c.t('Learn More')}
 									</ClickableText>
+									<Styles.RightIconWrapper>
+										<Styles.RightIcon />
+									</Styles.RightIconWrapper>
 								</Styles.CardFooter>
 							</Styles.Card>
 
@@ -94,6 +103,9 @@ class IndexPage extends React.Component {
 									<ClickableText color='#787F84' align='center'>
 										{c.t('Learn More')}
 									</ClickableText>
+									<Styles.RightIconWrapper>
+										<Styles.RightIcon />
+									</Styles.RightIconWrapper>
 								</Styles.CardFooter>
 							</Styles.Card>
 						</Styles.CardsRow>

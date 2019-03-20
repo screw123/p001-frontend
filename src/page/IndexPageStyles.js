@@ -1,4 +1,7 @@
+import React from 'react'
 import styled from 'styled-components'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
 
 export const TopSection = styled.div`
 	position: relative;
@@ -118,9 +121,18 @@ export const CardContent = styled.div`
 export const CardFooter = styled.div`
 	flex: 0 0 15%;
 	padding: 0.4rem;
+	display: flex;
+	justify-content: center;
 	background-color: rgba(0, 0, 0, 0.03);
 	visibility: hidden;
 	${Card}:hover & {
 		visibility: visible;
 	}
 `
+export const RightIconWrapper = styled.div`
+	color: #787f84;
+	cursor: pointer;
+	font-size: 1rem;
+	padding: 0.2rem 0.4rem;
+`
+export const RightIcon = styled(({ ...props }) => <FontAwesomeIcon icon={faArrowRight} />)``

@@ -1,13 +1,20 @@
-import React, {useCallback} from 'react'
+import React, {useState, useCallback} from 'react'
 import styled from "styled-components"
 import {useDropzone} from 'react-dropzone'
 //import Compress from 'compress.js'
 
 import request from 'superagent'
+import SystemError from './SystemError.js'
 
 //const c = new Compress()
 
-export const PhotoUploader = ()=> {
+export const PhotoUploader = ({container_id, onUploadSuccess})=> {
+
+	const [success, setSuccess] = useState(true)
+
+	if (!container_id) {
+		return <SystemError message="Error: Container ID not present" />
+	}
 
 	const onDropAccepted = useCallback(async f=> {
 
@@ -23,15 +30,16 @@ export const PhotoUploader = ()=> {
 		const base64str = img1.data
 		const imgExt = img1.ext
 		const file = Compress.convertBase64ToFile(base64str, imgExt)*/
-
+		setSuccess(true)
 		const mf = await readFile(f[0])
 
-		
 		try {
-			console.log('mf=', mf)
-			const res = await request.post('https://wisekeep.hk/api/uploadAttachment').withCredentials().attach('att', mf)
+			const res = await request.post('https://wisekeep.hk/api/uploadAttachment').withCredentials().attach('att', mf, f[0].name).field('container_id', container_id)
 			if (res.statusCode === 200) {
-				console.log('success, response=', res.text)
+				if (res.text === 'ok') {
+					onUploadSuccess()
+				}
+				else { setSuccess(false) }
 				return new Promise((resolve, reject) => resolve(true))
 			}
 			else if (res.statusCode === 401) {
@@ -67,6 +75,7 @@ export const PhotoUploader = ()=> {
 		<div {...getRootProps()}>
 			<input {...getInputProps()} />
 			<p>Drag 'n' drop some files here, or click to select files</p>
+			{!success && <p>Error!</p>}
 		</div>
 	)
 }

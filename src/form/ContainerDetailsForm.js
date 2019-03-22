@@ -25,7 +25,7 @@ export default class ContainerDetailsForm extends Component {
 		return (
 			<ApolloProvider client={g.getGqlClient()}>
 				<Query query={getContainerById} variables={{_id: this.props.container._id}} notifyOnNetworkStatusChange>
-				{({ loading, error, data, networkStatus }) => {
+				{({ loading, error, data, networkStatus, refetch }) => {
 					let container, loadError
 					loadError = false
 					if (loading) {
@@ -47,7 +47,7 @@ export default class ContainerDetailsForm extends Component {
 							{!this.props.hideTitle && <ContainerHeader printId={printId} userDefinedName={userDefinedName} />}
 							<BoxType SKUMaster={containerType_id} />
 							<ButtonsDiv>
-								<PhotoUploader />
+								<PhotoUploader container_id={this.props.container._id} onUploadSuccess={()=>refetch()} />
 							</ButtonsDiv>
 							<StandardFieldsDiv>
 								<RelatedAccount account={container.accountOwner_id} user={g.state.myself} />

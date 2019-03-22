@@ -915,7 +915,6 @@ export const getMyContainers = gql`
                 _id
             }
             containerTypeName
-            containerUserInfo_id
             weightKG
             accountOwner_id {
                 _id
@@ -940,6 +939,10 @@ export const getContainerById = gql`
                 lengthM
                 widthM
                 heightM
+            }
+            containerUserInfo_id {
+                customFields
+                pics
             }
             weightKG
             accountOwner_id {

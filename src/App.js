@@ -83,8 +83,7 @@ class App extends React.Component {
                         {((g.state.isLogined===true)||(g.state.isLogined===false)) && <MainContainer>
                             <DummyPassHistory />  {/*Load this to add the history obj into GqpApi state */}
                             {this.genItems({routes: routes, stateContainer: {login: g, i18n: c}})}  {/* Put routes.js all into react-router */}
-                            {(get(g, 'state.history.location.pathname', undefined) !=='/') && <Navbar routes={routes} />}
-                            {/*<Navbar routes={routes} />   THE ORIGINAL.  USE THIS WHEN GO LIVE Generate NavBar Component */}
+                            <Navbar routes={routes} />
                         </MainContainer>}
                         {(!((g.state.isLogined===true)||(g.state.isLogined===false))) && <div>
                             <BigLoadingScreen />

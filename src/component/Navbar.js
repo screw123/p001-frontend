@@ -6,6 +6,7 @@ import React from "react"
 import { I18n } from "react-i18next"
 import { GqlApiSubscriber } from "../stateContainer/GqlApi.js"
 import LocaleApi, { LocaleApiSubscriber } from "../stateContainer/LocaleApi.js"
+import get from 'lodash/get'
 import {
   StickyDiv,
   LeftContainer,
@@ -137,7 +138,7 @@ class Navbar extends React.PureComponent {
           <LocaleApiSubscriber>
             {c => (
               <React.Fragment>
-                <StickyDiv>
+                <StickyDiv background={(get(g, 'state.history.location.pathname', undefined) ==='/') ? '#f43ea6' : 'linear-gradient(180deg, #f43ea6 0%, #f5576c 100%)'}>
                   <LeftContainer>
                     <Logo to="/" />
                   </LeftContainer>

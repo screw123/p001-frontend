@@ -7,19 +7,19 @@ import { faAlignJustify } from '@fortawesome/free-solid-svg-icons'
 export const StickyDiv = styled.div`
 	${props => (props.nonStick ? '' : 'position: sticky;')}
 	top: 0;
-	margin: auto;
+	margin: 0;
 	// same for every component
 	// keep right/left padding same as Background of BasicComponents.js
 	padding: 1rem 6rem;
-	background: linear-gradient(180deg, #f43ea6 0%, #f5576c 100%);
+	background: ${({background})=>background};
 	grid-row: ${props => (props.section ? props.section : 'navbar / navbar2')};
 	display: grid;
 	grid-template-rows: auto;
 	grid-column-gap: 0.75rem;
-	box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
+	// box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
 	grid-template-columns: 10rem auto;
 	@media (max-width: 1024px) {
-		padding: 0.75 2rem;
+		padding: 0.75rem 2rem;
 	}
 	@media (max-width: 768px) {
 		// same for every component
@@ -27,6 +27,7 @@ export const StickyDiv = styled.div`
 		height: 4rem;
 		grid-template-columns: 7.75rem auto;
 	}
+	z-index: 5;
 `
 export const Logo = styled(Link)`
 	display: block;

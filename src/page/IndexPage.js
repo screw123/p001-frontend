@@ -17,17 +17,17 @@ class IndexPage extends React.Component {
 			<div>
 				{/* <BigLoadingScreen text={'Welcome to Wisekeep!  Our website is under construction!'} /> */}
 				<Styles.TopSection>
-					<HeaderWithBar color='#fff'>
+					<HeaderWithBar color='#fff' z={1} >
 						{c.t('Wisekeep provide valet storage service')}
 					</HeaderWithBar>
-					<Text color='#fff'>
+					<Text color='#fff' z={1}>
 						{c.t(
 							'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate, nisl commodo sagittis luctus, nunc velit auctor mauris, vitae ornare nisl nisl euismod lectus.'
 						)}
 					</Text>
 					<br />
-					<ContrastedCTAButton> {c.t('Start Now!')}</ContrastedCTAButton>
-					<Styles.Image />
+					{c.state.width > 768 && (<ContrastedCTAButton z={1}> {c.t('Start Now!')}</ContrastedCTAButton>)}
+					<Styles.Banner />
 				</Styles.TopSection>
 
 				<Background color='#f3f3f3'>

@@ -8,6 +8,7 @@ const BG = styled.div`
 	background: ${props => (props.color ? props.color : '#fff')};
 	box-sizing: border-box;
 	min-height: 100vh;
+	grid-row: ${props => (props.section ? props.section : 'body / end')};
 `
 
 const BG2 = styled.div`
@@ -74,18 +75,30 @@ export const Text = styled.div`
 	line-height: 1.5rem;
 	color: ${props => (props.color ? props.color : '#888')};
 	text-align: ${props => props.align};
-	font-weight: ${props => (props.fontWeight ? props.fontWeight : '500')};
+	font-weight: ${props => (props.fontWeight ? props.fontWeight : '400')};
+	@media (max-width: 1024px) {
+		font-size: 0.9rem;
+		line-height: 1.25rem;
+	}
 	@media (max-width: 768px) {
 		font-size: 0.85rem;
 		line-height: 1.1rem;
 	}
+	${({ z }) => (z ? 'z-index: ' + z : '')}
 `
 
-export const Header = styled(Text)`
+export const Header = styled.div`
 	margin: 0 0 1rem 0;
 	font-size: 3rem;
 	font-weight: 600;
 	line-height: 3.75rem;
+	color: ${props => (props.color ? props.color : '#888')};
+	text-align: ${props => props.align};
+	${({ z }) => (z ? 'z-index: ' + z : '')}
+	@media (max-width: 1024px) {
+		font-size: 2.5rem;
+		line-height: 2.5rem;
+	}
 	@media (max-width: 768px) {
 		font-size: 2rem;
 		line-height: 1.75rem;
@@ -112,7 +125,7 @@ export const HeaderWithBar = styled(Header)`
 		top: 0;
 		height: 0.3rem;
 		width: 5rem;
-		background-color: ${props => (props.color ? props.color : 'fff')};
+		background-color: ${props => (props.color ? props.color : '#fff')};
 		border-radius: 0.3rem;
 	}
 `
@@ -132,11 +145,13 @@ export const Button = styled.button`
 	margin: 0.5rem 0rem;
 	padding: 0.5rem 2rem;
 	min-width: 10rem;
-	background: ${props => (!props.disabled ? '#E61D6E' : 'rgba(128, 128, 128, 0.2)')};
-	color: ${props => (!props.disabled ? 'white' : '#888')};
+	background: ${props => (!props.disabled ? 'rgba(128, 128, 128, 0.2)' : '#E61D6E')};
+	color: ${props => (!props.disabled ? '#888' : ' white')};
+	${({ z }) => (z ? 'z-index: ' + z : '')}
 `
 
 export const CTAButton = styled(Button)`
+	margin: 3rem 0;
 	padding: 0.75rem 2.5rem;
 	font-size: 1.5rem;
 	min-width: 12rem;
@@ -144,6 +159,8 @@ export const CTAButton = styled(Button)`
 		!props.disabled
 			? `rgba(128, 128, 128, 0.2)`
 			: `linear-gradient(180deg, #F43EA6 0%, #F5576C 100%)`};
+	color: ${props => (!props.disabled ? '#888' : ' white')};
+	cursor: pointer;
 `
 
 export const ContrastedCTAButton = styled(CTAButton)`
@@ -286,7 +303,6 @@ const HeaderIconRight = styled.div`
 
 const SectionContent = styled.div`
 	display: flex;
-	> 
 `
 
 export const Section = props => {

@@ -941,8 +941,12 @@ export const getContainerById = gql`
                 heightM
             }
             containerUserInfo_id {
+                _id
                 customFields
-                pics
+                uploadFiles_id {
+                    highresURL
+                    thumbnailURL
+                }
             }
             weightKG
             accountOwner_id {

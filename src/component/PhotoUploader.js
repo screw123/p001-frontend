@@ -8,12 +8,12 @@ import SystemError from './SystemError.js'
 
 //const c = new Compress()
 
-export const PhotoUploader = ({container_id, onUploadSuccess})=> {
+export const PhotoUploader = ({containerUserInfo_id, onUploadSuccess})=> {
 
 	const [success, setSuccess] = useState(true)
 
-	if (!container_id) {
-		return <SystemError message="Error: Container ID not present" />
+	if (!containerUserInfo_id) {
+		return <SystemError message="Error: Container Info ID not present" />
 	}
 
 	const onDropAccepted = useCallback(async f=> {
@@ -34,7 +34,7 @@ export const PhotoUploader = ({container_id, onUploadSuccess})=> {
 		const mf = await readFile(f[0])
 
 		try {
-			const res = await request.post('https://wisekeep.hk/api/uploadAttachment').withCredentials().attach('att', mf, f[0].name).field('container_id', container_id)
+			const res = await request.post('https://wisekeep.hk/api/uploadAttachment').withCredentials().attach('att', mf, f[0].name).field('containerUserInfo_id', containerUserInfo_id)
 			if (res.statusCode === 200) {
 				if (res.text === 'ok') {
 					onUploadSuccess()

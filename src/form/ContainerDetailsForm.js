@@ -8,6 +8,8 @@ import {PhotoUploader} from '../component/PhotoUploader.js'
 import { ApolloProvider, Query } from 'react-apollo'
 import { getContainerById } from '../gql/query.js'
 
+import {ContainerDetailsFileViewer} from '../component/ContainerDetailsFileViewer.js'
+
 import get from 'lodash/get'
 
 
@@ -47,7 +49,8 @@ export default class ContainerDetailsForm extends Component {
 							{!this.props.hideTitle && <ContainerHeader printId={printId} userDefinedName={userDefinedName} />}
 							<BoxType SKUMaster={containerType_id} />
 							<ButtonsDiv>
-								<PhotoUploader container_id={this.props.container._id} onUploadSuccess={()=>refetch()} />
+								{container.containerUserInfo_id && <ContainerDetailsFileViewer images={container.containerUserInfo_id.uploadFiles_id} />}
+								{container.containerUserInfo_id && <PhotoUploader containerUserInfo_id={container._id} onUploadSuccess={()=>refetch()} />}
 							</ButtonsDiv>
 							<StandardFieldsDiv>
 								<RelatedAccount account={container.accountOwner_id} user={g.state.myself} />

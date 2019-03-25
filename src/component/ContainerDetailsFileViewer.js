@@ -10,6 +10,7 @@ const GalleryGrid = styled.div`
 
 const MidSizeImg = styled.img`
 	cursor: pointer
+	
 `
 
 const MiniImg = styled.img`
@@ -29,12 +30,12 @@ export const ContainerDetailsFileViewer = ({images}) => {
 				cellRenderer={a => {
 					return <MiniImg src={images[a.columnIndex].thumbnailURL} onClick={()=> setCurrentImg(images[a.columnIndex])} />
 				}}
-				columnCount={images.length}
+				columnCount={images? images.length : 0 }
 				columnWidth={100}
 				height={100}
 				rowCount={1}
 				rowHeight={100}
-				width={350}
+				width={300}
 			/>
 
 		</GalleryGrid>

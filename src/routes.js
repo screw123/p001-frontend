@@ -24,6 +24,7 @@ import PUODOListPage from "./page/PUODOListPage.js"
 import PUODetailsPage from "./page/PUODetailsPage.js"
 import DODetailsPage from "./page/DODetailsPage.js"
 import ContainerListPage from "./page/ContainerListPage.js"
+import ContainerDetailsPage from "./page/ContainerDetailsPage.js"
 
 export {NotFoundPage as NotFound} from "./page/NotFoundPage.js"
 
@@ -378,6 +379,21 @@ const routes = [
 			firstLevel: false,
 			showBeforeLogin: false,
 			showAfterLogin: true
+		},
+		router: {
+			requireLogin: true
+		}
+	},
+	{
+		path: "/ContainerDetails/:id",
+		menuName: "Container Details",
+		component: ContainerDetailsPage,
+		navbar: {
+			itemId: 402,
+			parentId: 100,
+			firstLevel: false,
+			showBeforeLogin: false,
+			showAfterLogin: false
 		},
 		router: {
 			requireLogin: true

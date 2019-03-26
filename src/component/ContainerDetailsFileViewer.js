@@ -1,21 +1,11 @@
 import React, {useState} from "react";
 import { Grid } from "react-virtualized";
 import styled, { keyframes } from "styled-components";
-
-
-const GalleryGrid = styled.div`
-	display: grid;
-	grid-template-rows: 3fr 1fr;
-`
-
-const MidSizeImg = styled.img`
-	cursor: pointer
-	
-`
+import {AutoSizer} from 'react-virtualized'
 
 const MiniImg = styled.img`
-	width: 100px;
-	height: 100px;
+	width: 150px;
+	height: 150px;
 	cursor: pointer
 `
 
@@ -24,20 +14,20 @@ export const ContainerDetailsFileViewer = ({images}) => {
 	const [currentImg, setCurrentImg] = useState(images? images[0] : null)
 
 	return (
-		<GalleryGrid>
-			<MidSizeImg src={currentImg ? currentImg.thumbnailURL : '/images/box.PNG'} />
+		<AutoSizer disableHeight>
+			{({width}) => (
 			<Grid
 				cellRenderer={a => {
-					return <MiniImg src={images[a.columnIndex].thumbnailURL} onClick={()=> setCurrentImg(images[a.columnIndex])} />
+					return <MiniImg src={images[a.columnIndex].thumbnailURL} onClick={()=> setCurrentImg(images[a.columnIndex])} key={a.key} style={a.style} />
 				}}
 				columnCount={images? images.length : 0 }
-				columnWidth={100}
-				height={100}
+				columnWidth={150}
+				height={170}
 				rowCount={1}
-				rowHeight={100}
-				width={300}
+				rowHeight={150}
+				width={width}
 			/>
-
-		</GalleryGrid>
+			)}
+		</AutoSizer>
 	)
 }

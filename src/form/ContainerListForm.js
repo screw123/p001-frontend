@@ -49,6 +49,7 @@ export default class ContainerListForm extends React.Component {
     }
 
     toggleContainerDetailsModal = (doc) => {
+        console.log('doc=', doc)
         if (doc) {
             this.setState(prevState=> ({
                 container: doc,
@@ -88,7 +89,7 @@ export default class ContainerListForm extends React.Component {
         const g = this.props.login
         const c = this.props.i18n
         
-        if (this.state.container) return (<Redirect push to={{pathname: '/editAccount/'+ this.state.account_id+'/'+this.state.type}} /> )
+        if (this.state.container) return (<Redirect push to={{pathname: '/ContainerDetails', state: {container: this.state.container} }} /> )
 
         return(
             <React.Fragment>

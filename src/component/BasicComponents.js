@@ -105,6 +105,16 @@ export const Header = styled(Text)`
 	}
 `
 
+export const Header2 = styled(Text)`
+	font-size: 2.5rem;
+	font-weight: 400;
+	line-height: 3.5rem;
+	@media (max-width: 768px) {
+		font-size: 1.75rem;
+		line-height: 1.75rem;
+	}
+`
+
 export const ClickableText = styled(Text)`
 	font-weight: 600;
 	cursor: pointer;

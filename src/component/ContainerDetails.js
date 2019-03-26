@@ -17,8 +17,9 @@ const OuterWrapper = styled.div`
     display: grid;
     overflow: hidden;
 	min-width: 15rem;
-	grid-template-columns: [s1] 2.5% [content] auto [end] 2.5% [s2];
+	grid-template-columns: [s1] 1fr [s2] 1fr [s3] 1fr [s4] 1fr [end];
 	grid-template-rows: [s1] ${({isNoTitle})=> isNoTitle ? 'auto': '4rem'} [title] auto [boxtype] auto [buttons] auto [standardFields] auto [cusFields] auto [docevent] 2rem [s2];
+	grid-template-rows: [s1] ${({isNoTitle})=> isNoTitle ? 'auto': '4rem'} [basicInfo] auto [buttons] auto [files] auto [cusFields] auto [docevent] 2rem [s2];
 	grid-gap: 1rem 0;
 `
 
@@ -68,7 +69,7 @@ const Description = styled.div`
 
 export const ButtonsDiv = styled.div`
 	grid-column: content / end;
-	grid-row: boxtype / buttons;
+	grid-row: basicInfo / buttons;
 	align-self: center;
 	display: flex;
 	flex-wrap: wrap;
@@ -82,7 +83,7 @@ const BoxTypeWrapper = styled(FieldWrapper)`
 `
 
 export const BoxType = ({SKUMaster}) => {
-	const {name, iconPicURL, widthM, lengthM, heightM} = SKUMaster
+	const {name, iconPicURL, widthM, lengthM, heightM} = SKUMaster || {}
 	return (
 		<BoxTypeWrapper>
 			<Avatar imgURL={iconPicURL} size={3} />
@@ -94,10 +95,17 @@ export const BoxType = ({SKUMaster}) => {
 	)
 }
 
+export const BoxPic = styled.img`
+	width: 150px;
+	height: 150px;
+	grid-column: s1 / s2;
+	grid-row: s1 / basicInfo;
+`
+
 export const RelatedAccount = ({account, user}) => (
 	<FieldWrapper>
 		<FieldTitle>Account</FieldTitle>
-		<TextNoWrap>{account.name}</TextNoWrap>
+		<TextNoWrap>{account? account.name : 'Loading...'}</TextNoWrap>
 	</FieldWrapper>
 )
 

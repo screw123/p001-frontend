@@ -385,7 +385,7 @@ const routes = [
 		}
 	},
 	{
-		path: "/ContainerDetails/:id",
+		path: "/ContainerDetails/:container_id?",
 		menuName: "Container Details",
 		component: ContainerDetailsPage,
 		navbar: {

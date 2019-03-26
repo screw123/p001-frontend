@@ -11,7 +11,7 @@ import get from 'lodash/get'
 import parseApolloErr from '../util/parseErr.js'
 
 import {DateOnly, Text as TextField, FieldWrapper, FieldTitle, TextNoWrap} from '../component/DocDetails.js'
-import {Header, Header2, Text, Button, BigCard, Background} from '../component/BasicComponents'
+import {Header, Header2, Text, FunctionButton, BigCard, Background, ContrastFunctionButton} from '../component/BasicComponents'
 
 export default class ContainerDetailsForm extends Component {
 	constructor(props) {
@@ -50,12 +50,13 @@ export default class ContainerDetailsForm extends Component {
 					const {printId, userDefinedName, containerType_id, rentalOrder_id} = container
 					console.log('container=', loading, container)
 					return(
-						<Background><BigCard>
+						<Background color='#EEE'><BigCard noShadow>
 							<Container>
 								<BoxPic src={get(containerType_id, 'iconPicURL', '/images/ico-box.svg')} />
 								<BoxData container={container} t={c.t} />
 								<ButtonsDiv>
-									<Button>Testing</Button>
+									<FunctionButton>Testing</FunctionButton>
+									<ContrastFunctionButton>Testing</ContrastFunctionButton>
 								</ButtonsDiv>
 								<FilesDiv>
 									{container.containerUserInfo_id && <ContainerDetailsFileViewer images={container.containerUserInfo_id.uploadFiles_id} />}
@@ -93,8 +94,9 @@ const OuterWrapper = styled.div`
 	min-width: 15rem;
 	grid-template-columns: [s1] 1fr [s2] 1fr [s3] 1fr [s4] 1fr [end];
 	//grid-template-rows: [s1] ${({isNoTitle})=> isNoTitle ? 'auto': '4rem'} [title] auto [boxtype] auto [buttons] auto [standardFields] auto [cusFields] auto [docevent] 2rem [s2];
-	grid-template-rows: [s1] auto [basicInfo] auto [buttons] auto [cusFields] auto [files] auto [docevent] 2rem [s2];
+	grid-template-rows: [s1] auto [basicInfo] auto [buttons] auto [cusFields] auto [files] auto [docevent];
 	grid-gap: 1rem 1rem;
+	margin: 2rem 0;
 `
 
 const BoxPic = styled.img`

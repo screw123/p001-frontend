@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 //Background and Cards
 
 const BG = styled.div`
-	background: White;
+	background: ${({color})=> color? color:'White'};
 	box-sizing: border-box;
 	min-height: 100vh;
 `
@@ -32,8 +32,8 @@ const BG2 = styled.div`
 	}
 `
 
-export const Background = ({ children }) => (
-	<BG>
+export const Background = ({ children, color }) => (
+	<BG color={color}>
 		<BG2>
 			{children}
 		</BG2>
@@ -42,7 +42,9 @@ export const Background = ({ children }) => (
 
 export const Card = styled.div`
 	border-radius: 1rem;
-	box-shadow: 0px 6px 12px 3px rgba(0, 0, 0, 0.4);
+	background: #fff;
+	${({noShadow})=>noShadow? '' : 'box-shadow: 0px 6px 12px 3px rgba(0, 0, 0, 0.4);'}
+
 `
 
 export const BigCard = styled(Card)`
@@ -135,8 +137,8 @@ export const Button = styled.button`
 	margin: 0.5rem 1rem;
 	padding: 0.5rem 2rem;
 	min-width: 10rem;
-	background: ${props => !props.disabled ? 'rgba(128, 128, 128, 0.2)' : '#E61D6E'};
-	color: ${props => (!props.disabled ? '#888' : ' white')};
+	background: ${props => !props.disabled ? '#E61D6E': 'rgba(128, 128, 128, 0.2)'};
+	color: ${props => (!props.disabled ?  'white': '#888')};
 `
 
 export const CTAButton = styled(Button)`
@@ -144,12 +146,35 @@ export const CTAButton = styled(Button)`
 	font-size: 1.5rem;
 	min-width: 12rem;
 	background: ${props => !props.disabled ? `rgba(128, 128, 128, 0.2)` : `linear-gradient(180deg, #F43EA6 0%, #F5576C 100%)`};
-	color: ${props => (!props.disabled ? '#888' : ' white')};
 `
 
 export const ContrastedCTAButton = styled(CTAButton)`
 	background: ${props => props.disabled ? 'rgba(128, 128, 128, 0.2)' : 'White'};
-	color: ${props => props.disabled ? '#888' : '#E61D6E'};
+	color: ${props => props.disabled ?  '#E61D6E': '#888'};
+`
+
+export const FunctionButton = styled.button`
+	cursor: pointer;
+	border: 1px solid #888;
+	font-size: 1rem;
+	border-radius: 3rem;
+	margin: 0.5rem 1rem;
+	padding: 0.5rem 2rem;
+	min-width: 8rem;
+	background: ${props => !props.disabled ? 'transparent': 'rgba(128, 128, 128, 0.2)'};
+	color: ${props => (props.disabled ?  'white' : '#888')};
+`
+
+export const ContrastFunctionButton = styled.button`
+	cursor: pointer;
+	border: 1px solid #D00;
+	font-size: 1rem;
+	border-radius: 3rem;
+	margin: 0.5rem 1rem;
+	padding: 0.5rem 2rem;
+	min-width: 8rem;
+	background: ${props => !props.disabled ? 'transparent': 'rgba(128, 128, 128, 0.2)'};
+	color: ${props => (props.disabled ?  'white' : '#D00')};
 `
 
 
@@ -224,14 +249,6 @@ export const ClickIcon = ({ icon, onClick, float, ...props }) => (
 	</IconSpan>
 )
 
-
-
-
-
-
-
-
-
 export const StraightRow = styled.div`
     display: flex
     flex-flow: row nowrap;
@@ -290,10 +307,6 @@ export const Section = props => {
 		</SectionDiv>
 	)
 }
-
-
-
-
 
 export default {
 	Background,

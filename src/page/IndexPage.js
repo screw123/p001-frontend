@@ -17,7 +17,7 @@ class IndexPage extends React.Component {
 			<div>
 				{/* <BigLoadingScreen text={'Welcome to Wisekeep!  Our website is under construction!'} /> */}
 				<Styles.TopSection>
-					<HeaderWithBar color='#fff' z={1} >
+					<HeaderWithBar color='#fff' z={1}>
 						{c.t('Wisekeep provide valet storage service')}
 					</HeaderWithBar>
 					<Text color='#fff' z={1}>
@@ -26,12 +26,15 @@ class IndexPage extends React.Component {
 						)}
 					</Text>
 					<br />
-					{c.state.width > 768 && (<ContrastedCTAButton z={1}> {c.t('Start Now!')}</ContrastedCTAButton>)}
+					{c.state.width > 768 && (
+						<ContrastedCTAButton z={1}> {c.t('Start Now!')}</ContrastedCTAButton>
+					)}
 					<Styles.Banner />
 				</Styles.TopSection>
 
+				{/* Cards Section */}
 				<Background color='#f3f3f3'>
-					<Styles.Section>
+					<Styles.Section top={true}>
 						<HeaderWithBar color='#787F84'>{c.t('How It Works')}</HeaderWithBar>
 						<Text color='#787F84'>
 							{c.t(
@@ -110,7 +113,78 @@ class IndexPage extends React.Component {
 							</Styles.Card>
 						</Styles.CardsRow>
 					</Styles.Section>
+
+					<Styles.Section top={false}>
+						<HeaderWithBar color='#787F84'>{c.t('Why Us')}</HeaderWithBar>
+						<Text color='#787F84' align='center'>
+							{c.t(
+								'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate, nisl commodo sagittis luctus, nunc velit auctor mauris, vitae ornare nisl nisl euismod lectus. Vestibulum faucibus posuere neque eget eleifend. In in mattis sem. Nullam ultrices auctor turpis non pharetra.'
+							)}
+						</Text>
+
+						<Styles.CardsTwoRow>
+							<Styles.CardTwo>
+								<Styles.CardTwoImage image='/icon-furniture.png' />
+								<Styles.CardTwoContent>
+									<Styles.TextBig>{c.t('Save Space')}</Styles.TextBig>
+									<Text color='#787F84' align='left'>
+										{c.t(
+											'Lorem ipsum dolor sit amet,consectetur adipiscing elit'
+										)}
+									</Text>
+									<ClickableText color='#787F84' align='left'>
+										{c.t('Learn More')}
+									</ClickableText>
+								</Styles.CardTwoContent>
+							</Styles.CardTwo>
+
+							<Styles.CardTwo>
+								<Styles.CardTwoImage image='/icon-security.png' />
+								<Styles.CardTwoContent>
+									<Styles.TextBig>{c.t('Security')}</Styles.TextBig>
+									<Text color='#787F84' align='left'>
+										{c.t(
+											'Lorem ipsum dolor sit amet,consectetur adipiscing elit'
+										)}
+									</Text>
+									<ClickableText color='#787F84' align='left'>
+										{c.t('Learn More')}
+									</ClickableText>
+								</Styles.CardTwoContent>
+							</Styles.CardTwo>
+
+							<Styles.CardTwo>
+								<Styles.CardTwoImage image='/icon-temperature.png' />
+								<Styles.CardTwoContent>
+									<Styles.TextBig>{c.t('Climate Control')}</Styles.TextBig>
+									<Text color='#787F84' align='left'>
+										{c.t(
+											'Lorem ipsum dolor sit amet,consectetur adipiscing elit'
+										)}
+									</Text>
+									<ClickableText color='#787F84' align='left'>
+										{c.t('Learn More')}
+									</ClickableText>
+								</Styles.CardTwoContent>
+							</Styles.CardTwo>
+						</Styles.CardsTwoRow>
+					</Styles.Section>
 				</Background>
+
+				{/* Plan Section */}
+				<Styles.PlanSection>
+					<Styles.PlanImage />
+					<Styles.PlanContent>
+						<Background>
+							<HeaderWithBar color='#787F84'>{c.t('Choose Your Plan')}</HeaderWithBar>
+							<Text color='#787F84' align='left'>
+								{c.t(
+									'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate'
+								)}
+							</Text>
+						</Background>
+					</Styles.PlanContent>
+				</Styles.PlanSection>
 			</div>
 		)
 	}

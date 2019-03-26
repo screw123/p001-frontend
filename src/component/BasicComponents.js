@@ -71,6 +71,7 @@ export const AccentedTwinCardChild = styled(TwinCardChild)`
 //Text and Headers
 
 export const Text = styled.div`
+	max-width: 60rem;
 	font-size: 1rem;
 	line-height: 1.5rem;
 	color: ${props => (props.color ? props.color : '#888')};

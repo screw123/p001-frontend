@@ -28,7 +28,6 @@ const BannerImage = styled.div`
 	background: url('wisekeep.svg') no-repeat;
 	background-size: contain;
 	background-position: right bottom;
-
 `
 
 const BannerWrapper = styled.div`
@@ -36,23 +35,26 @@ const BannerWrapper = styled.div`
 	bottom: 0;
 	right: 0;
 	width: 85%;
-	height: 100%
+	height: 100%;
 `
 
-export const Banner = () => (<BannerWrapper><BannerImage /></BannerWrapper>)
-
+export const Banner = () => (
+	<BannerWrapper>
+		<BannerImage />
+	</BannerWrapper>
+)
 
 export const Section = styled.div`
-	padding: 5rem 0;
+	padding: ${props => (props.top ? '5rem  0' : '0 0 5rem')};
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	background: #f3f3f3;
 	@media (max-width: 1024px) {
-		padding: 2rem 0;
+		padding: ${props => (props.top ? '2rem  0' : '0 0 2rem')};
 	}
 	@media (max-width: 768px) {
-		padding: 1rem 0;
+		padding: ${props => (props.top ? '1rem  0' : '0 0 1rem')};
 	}
 `
 
@@ -130,3 +132,61 @@ export const RightIconWrapper = styled.div`
 	padding: 0.2rem 0.4rem;
 `
 export const RightIcon = styled(({ ...props }) => <FontAwesomeIcon icon={faArrowRight} />)``
+
+//CardTwo
+export const CardsTwoRow = styled.div`
+	margin: 3rem 0;
+	width: 100%;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+	align-items: center;
+	@media (max-width: 1024px) {
+		margin: 1rem 0;
+		flex-direction: column;
+	}
+`
+
+export const CardTwo = styled.div`
+	display: flex;
+	margin: 1rem 0;
+	flex: 1;
+`
+
+export const CardTwoImage = styled.div`
+	align-self: center;
+	// width and height same as image size
+	min-width: 8rem;
+	min-height: 8rem;
+	width: 8rem;
+	height: 8rem;
+	background: ${props => `url(${props.image}) no-repeat`};
+	background-size: 100% 100%;
+`
+
+export const CardTwoContent = styled.div`
+	padding: 0rem 1rem;
+`
+
+export const TextBig = styled.div`
+	color: #e61d6e;
+	font-size: 1.75rem;
+	font-weight: 500;
+`
+
+//Plan Section
+
+export const PlanSection = styled.div`
+	display: flex;
+`
+
+export const PlanImage = styled.div`
+	width: 30%;
+	min-height: 50rem;
+	background: url('img-wisekeep-box.png');
+	background-size: cover;
+`
+
+export const PlanContent = styled.div`
+	width: 70%;
+`

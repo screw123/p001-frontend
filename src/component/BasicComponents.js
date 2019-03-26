@@ -9,7 +9,6 @@ const BG = styled.div`
 	box-sizing: border-box;
 	min-height: 100vh;
 	grid-row: ${props => (props.section ? props.section : 'body / end')};
-
 `
 
 const BG2 = styled.div`
@@ -71,6 +70,7 @@ export const AccentedTwinCardChild = styled(TwinCardChild)`
 //Text and Headers
 
 export const Text = styled.div`
+	max-width: 60rem;
 	font-size: 1rem;
 	line-height: 1.5rem;
 	color: ${props => (props.color ? props.color : '#888')};
@@ -84,7 +84,7 @@ export const Text = styled.div`
 		font-size: 0.85rem;
 		line-height: 1.1rem;
 	}
-	${({z})=> z? 'z-index: '+z : ''}
+	${({ z }) => (z ? 'z-index: ' + z : '')}
 `
 
 export const Header = styled.div`
@@ -94,7 +94,7 @@ export const Header = styled.div`
 	line-height: 3.75rem;
 	color: ${props => (props.color ? props.color : '#888')};
 	text-align: ${props => props.align};
-	${({z})=> z? 'z-index: '+z : ''}
+	${({ z }) => (z ? 'z-index: ' + z : '')}
 	@media (max-width: 1024px) {
 		font-size: 2.5rem;
 		line-height: 2.5rem;
@@ -137,7 +137,7 @@ export const Button = styled.button`
 	min-width: 10rem;
 	background: ${props => (!props.disabled ? 'rgba(128, 128, 128, 0.2)' : '#E61D6E')};
 	color: ${props => (!props.disabled ? '#888' : ' white')};
-	${({z})=> z? 'z-index: '+z : ''}
+	${({ z }) => (z ? 'z-index: ' + z : '')}
 `
 
 export const CTAButton = styled(Button)`

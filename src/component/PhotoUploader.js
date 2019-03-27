@@ -6,9 +6,11 @@ import {useDropzone} from 'react-dropzone'
 import request from 'superagent'
 import SystemError from './SystemError.js'
 
+import {ContrastFunctionButton} from '../component/BasicComponents'
+
 //const c = new Compress()
 
-export const PhotoUploader = ({containerUserInfo_id, onUploadSuccess})=> {
+export const PhotoUploader = ({containerUserInfo_id, onUploadSuccess, c})=> {
 
 	const [success, setSuccess] = useState(true)
 
@@ -64,7 +66,7 @@ export const PhotoUploader = ({containerUserInfo_id, onUploadSuccess})=> {
 	})
 
 	const {getRootProps, getInputProps, acceptedFiles} = useDropzone({
-		accept: ['image/*', 'application/pdf'],
+		accept: ['image/*'],
 		maxSize: 10485760,
 		minSize: 1,
 		multiple: false,
@@ -72,13 +74,69 @@ export const PhotoUploader = ({containerUserInfo_id, onUploadSuccess})=> {
 	})
 
 	return (
-		<div {...getRootProps()}>
+		<DivWrapper {...getRootProps()}>
+
+			<PhotoImg src='/images/ico-img.svg' />
 			<input {...getInputProps()} />
-			<p>Drag 'n' drop some files here, or click to select files</p>
+			<ResponsiveText>{c.t( (c.state.width>1024) ?'Drop a file to upload, or' : 'Choose a file, or')}</ResponsiveText>
+			<Button>{c.t( (c.state.width>1024) ?'Choose a file' : 'Take a picture')}</Button>
 			{!success && <p>Error!</p>}
-		</div>
+		</DivWrapper>
 	)
 }
+
+const ResponsiveText = styled.div`
+	margin-bottom: 15px;
+`
+
+const PhotoImg = styled.img`
+	display:block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 10px;
+	width: 15%;
+	@media (max-width: 1024px) {
+		width: 30%;
+	}
+`
+
+const DivWrapper = styled.div`
+	box-sizing: border-box;
+	text-align: center;
+	font-size: 1rem;
+	width: 290px;
+	height: 140px;
+	cursor: pointer
+	background-color: #f8f8f8;
+	background-image: url('/images/ico-img-grey.svg');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 120px;
+	padding: 5px;
+	margin 5px;
+	border-radius: 10px;
+	border: 1px dashed #999;
+	@media (max-width: 1024px) {
+		width: 140px;
+		font-size: 0.8rem;
+	}
+`
+
+export const Button = styled.button`
+	cursor: pointer;
+	border: 1px solid #D00;
+	font-size: 1rem;
+	border-radius: 3rem;
+	padding: 0.5rem 2rem;
+	min-width: 8rem;
+	background: linear-gradient(180deg, #F43EA6 0%, #F5576C 100%);
+	color: White;
+	@media (max-width: 1024px) {
+		padding: 0.5rem 1rem;
+		min-width: 1rem;
+		font-size: 0.8rem;
+	}
+`
 
 const readFile = async inputFile => {
 	const temporaryFileReader = new FileReader()

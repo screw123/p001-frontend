@@ -1,7 +1,6 @@
 import React, { Component } from "react"
 import styled from "styled-components"
 
-import {PhotoUploader} from '../component/PhotoUploader.js'
 import { ApolloProvider, Query } from 'react-apollo'
 import { getContainerById } from '../gql/query.js'
 import {ContainerDetailsFileViewer} from '../component/ContainerDetailsFileViewer.js'
@@ -20,6 +19,13 @@ export default class ContainerDetailsForm extends Component {
 			files: []
 		}
 	}
+
+	updateContainerInfo = (container) => {this.setState({
+		iconPicURL: get(container, 'containerType_id.iconPicURL', '/images/ico-box.svg'),
+		container: container,
+		containerUserInfo: get(container, 'containerUserInfo_id', undefined),
+		
+	})}
 
 	render() {
 		const c = this.props.i18n
@@ -47,20 +53,19 @@ export default class ContainerDetailsForm extends Component {
 					}
 					
 					
-					const {printId, userDefinedName, containerType_id, rentalOrder_id} = container
-					console.log('container=', loading, container)
+					const {containerUserInfo_id} = container
+					console.log('container=', loading, containerUserInfo_id)
 					return(
 						<Background color='#EEE'><BigCard noShadow>
 							<Container>
-								<BoxPic src={get(containerType_id, 'iconPicURL', '/images/ico-box.svg')} />
+								<BoxPic src={get(container, 'containerType_id.iconPicURL', '/images/ico-box.svg')} />
 								<BoxData container={container} t={c.t} />
 								<ButtonsDiv>
 									<FunctionButton>Testing</FunctionButton>
 									<ContrastFunctionButton>Testing</ContrastFunctionButton>
 								</ButtonsDiv>
 								<FilesDiv>
-									{container.containerUserInfo_id && <ContainerDetailsFileViewer images={container.containerUserInfo_id.uploadFiles_id} />}
-									{container.containerUserInfo_id && <PhotoUploader containerUserInfo_id={container._id} onUploadSuccess={()=>refetch()} />}
+									{!!containerUserInfo_id && <ContainerDetailsFileViewer containerUserInfo_id={containerUserInfo_id} onUploadSuccess={()=>refetch()} c={c}/>}
 								</FilesDiv>
 
 								<CustomFieldsDiv>
@@ -92,17 +97,20 @@ const OuterWrapper = styled.div`
     display: grid;
     overflow: hidden;
 	min-width: 15rem;
-	grid-template-columns: [s1] 1fr [s2] 1fr [s3] 1fr [s4] 1fr [end];
+	grid-template-columns: [s0] auto [s1] 1fr [s1f] auto [s2] 1fr [s3] 1fr [s4] 1fr [end];
 	//grid-template-rows: [s1] ${({isNoTitle})=> isNoTitle ? 'auto': '4rem'} [title] auto [boxtype] auto [buttons] auto [standardFields] auto [cusFields] auto [docevent] 2rem [s2];
 	grid-template-rows: [s1] auto [basicInfo] auto [buttons] auto [cusFields] auto [files] auto [docevent];
 	grid-gap: 1rem 1rem;
 	margin: 2rem 0;
+	@media (max-width: 768px) {
+		grid-template-columns: [s0] auto [s2] 1fr [s3] 1fr [s4] 1fr [s1] 1fr [s1f] auto[end];
+	}
 `
 
 const BoxPic = styled.img`
 	width: 150px;
 	height: 150px;
-	grid-column: s1 / s2;
+	grid-column: s1 / s1f;
 	grid-row: s1 / basicInfo;
 	justify-self: center;
 	align-self: center;
@@ -125,10 +133,11 @@ const ButtonsDiv = styled.div`
 	grid-row: basicInfo / buttons;
 	display: flex;
 	flex-flow: row wrap;
+	justify-content: space-around;
 `
 
 const FilesDiv = styled.div`
-	grid-column: s1 / end;
+	grid-column: s0 / end;
 	grid-row: cusFields / files;
 	display: flex;
 	flex-flow: row wrap;

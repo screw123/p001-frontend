@@ -2,9 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import c from '../stateContainer/LocaleApi.js'
-import {Title, FieldWrapper} from './DocDetails.js'
+import {Title, FieldWrapper, FieldTitle, TextNoWrap} from './DocDetails.js'
 
-export {Title, FieldsDiv} from './DocDetails.js'
+export {Title, Text, DateOnly} from './DocDetails.js'
 
 export const Container = ({children, isNoTitle})=> (
 	<OuterWrapper isNoTitle={isNoTitle}>
@@ -17,8 +17,28 @@ const OuterWrapper = styled.div`
     display: grid;
     overflow: hidden;
 	min-width: 15rem;
-	grid-template-columns: [s1] 2.5% [content] auto [end] 2.5% [s2];
+	grid-template-columns: [s1] 1fr [s2] 1fr [s3] 1fr [s4] 1fr [end];
 	grid-template-rows: [s1] ${({isNoTitle})=> isNoTitle ? 'auto': '4rem'} [title] auto [boxtype] auto [buttons] auto [standardFields] auto [cusFields] auto [docevent] 2rem [s2];
+	grid-template-rows: [s1] ${({isNoTitle})=> isNoTitle ? 'auto': '4rem'} [basicInfo] auto [buttons] auto [files] auto [cusFields] auto [docevent] 2rem [s2];
+	grid-gap: 1rem 0;
+`
+
+export const StandardFieldsDiv = styled.div`
+	grid-column: content / end;
+	grid-row: buttons / standardFields;
+	align-self: center;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+	grid-gap: 0.75rem 0.25rem;
+`
+
+export const CustomFieldsDiv = styled.div`
+	grid-column: content / end;
+	grid-row: standardFields / cusFields;
+	align-self: center;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+	grid-gap: 0.75rem 0.25rem;
 `
 
 const CustomFieldWrapper = styled.div`
@@ -34,7 +54,7 @@ const CustomFieldTitle = styled.span`
 	text-overflow: ellipsis;
 `
 
-const TextNoWrap = styled.div`
+const CustomTextNoWrap = styled.div`
 	font-size: 1rem;
 	white-space: nowrap;
 	text-overflow: ellipsis;
@@ -49,7 +69,7 @@ const Description = styled.div`
 
 export const ButtonsDiv = styled.div`
 	grid-column: content / end;
-	grid-row: boxtype / buttons;
+	grid-row: basicInfo / buttons;
 	align-self: center;
 	display: flex;
 	flex-wrap: wrap;
@@ -63,7 +83,7 @@ const BoxTypeWrapper = styled(FieldWrapper)`
 `
 
 export const BoxType = ({SKUMaster}) => {
-	const {name, iconPicURL, widthM, lengthM, heightM} = SKUMaster
+	const {name, iconPicURL, widthM, lengthM, heightM} = SKUMaster || {}
 	return (
 		<BoxTypeWrapper>
 			<Avatar imgURL={iconPicURL} size={3} />
@@ -75,6 +95,20 @@ export const BoxType = ({SKUMaster}) => {
 	)
 }
 
+export const BoxPic = styled.img`
+	width: 150px;
+	height: 150px;
+	grid-column: s1 / s2;
+	grid-row: s1 / basicInfo;
+`
+
+export const RelatedAccount = ({account, user}) => (
+	<FieldWrapper>
+		<FieldTitle>Account</FieldTitle>
+		<TextNoWrap>{account? account.name : 'Loading...'}</TextNoWrap>
+	</FieldWrapper>
+)
+
 export const ContainerHeader = ({printId, userDefinedName}) => (
 	<Title><span>{userDefinedName}</span><span>{printId !== userDefinedName ? " (" + printId + ")" : ""}</span></Title>
 )
@@ -84,7 +118,7 @@ export const CustomField = ({label, content}) => {
 		<CustomFieldWrapper>
 			<CustomFieldTitle>{c.t(label)}</CustomFieldTitle>
 			<span>|</span>
-			<TextNoWrap>{content}</TextNoWrap>
+			<CustomTextNoWrap>{content}</CustomTextNoWrap>
 		</CustomFieldWrapper>
 	)
 }

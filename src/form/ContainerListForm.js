@@ -40,7 +40,7 @@ export default class ContainerListForm extends React.Component {
         super(props)
         this.state={
             container: undefined,
-            showContainerDetailsModal: false
+            showContainerDetailsModal: false,
         }
         this.containerLine = this.containerLine.bind(this)
         this.setRedirect = this.setRedirect.bind(this)
@@ -49,6 +49,7 @@ export default class ContainerListForm extends React.Component {
     }
 
     toggleContainerDetailsModal = (doc) => {
+        console.log('doc=', doc)
         if (doc) {
             this.setState(prevState=> ({
                 container: doc,
@@ -88,6 +89,8 @@ export default class ContainerListForm extends React.Component {
         const g = this.props.login
         const c = this.props.i18n
         
+        if (this.state.container) return (<Redirect push to={{pathname: '/ContainerDetails', state: {container: this.state.container} }} /> )
+
         return(
             <React.Fragment>
                 <InfoList 
@@ -103,7 +106,7 @@ export default class ContainerListForm extends React.Component {
                     listComponent={this.containerLine}
                     refreshRowHeight={true}
                 />
-                {this.state.showContainerDetailsModal &&
+                {/*this.state.showContainerDetailsModal &&
                     <Modal
                         show={this.state.showContainerDetailsModal}
                         component={
@@ -116,7 +119,7 @@ export default class ContainerListForm extends React.Component {
                         title={this.state.container.userDefinedName + ( (this.state.container.printId !== this.state.container.userDefinedName) ? " (" + this.state.container.printId + ")" : "")}
                         closeModal={this.toggleContainerDetailsModal}
                     />
-                }
+                */}
                 
             </React.Fragment>
         )

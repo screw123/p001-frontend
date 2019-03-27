@@ -154,5 +154,6 @@
     "Get your stuff": "Get your stuff",
     "All your stuffs": "All your stuffs",
     "All stuffs": "All stuffs",
-    "Please provide either your email or mobile phone number to login": "Please use either email or mobile phone number to login.  Or you can login via Facebook or Google."
+    "Please provide either your email or mobile phone number to login": "Please use either email or mobile phone number to login.  Or you can login via Facebook or Google.",
+    "storageExpiryDate": "Rent Until"
 }

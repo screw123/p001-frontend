@@ -11,7 +11,7 @@ export const StickyDiv = styled.div`
   // same for every component
   padding: 1rem 7rem;
   background: linear-gradient(180deg, #f43ea6 0%, #f5576c 100%);
-  grid-row: ${props=> props.section? props.section: 'navbar / navbar2'};
+  grid-row: ${props=> props.section? props.section: 'start / navbar'};
   display: grid;
   grid-template-rows: auto;
   grid-column-gap: 0.75rem;

@@ -27,7 +27,7 @@ import {
 	Logo
 } from "./NavbarStyles"
 
-const genMenu = ({g, c, routes}) => {
+const genMenu = ({g, c, routes, isFrontMenu}) => {
 	let menu = []
 	const firstLevelNode = routes
 		.filter(v => v.navbar.firstLevel === true)
@@ -36,12 +36,9 @@ const genMenu = ({g, c, routes}) => {
 	for (let i = 0; i < firstLevelNode.length; i++) {
 		const r = firstLevelNode[i]
 
-		if (
-			r.navbar.firstLevel &
-			(r.navbar.showAfterLogin === g.state.isLogined ||
-				r.navbar.showBeforeLogin === !g.state.isLogined)
-		) {
-			//If it's a first Lv item, generate, else skip
+		if (r.navbar.firstLevel & (isFrontMenu? (r.navbar.showBeforeLogin & !r.navbar.showAfterLogin): r.navbar.showAfterLogin) ) {
+		//(r.navbar.showAfterLogin === g.state.isLogined || r.navbar.showBeforeLogin === !g.state.isLogined) ) {
+		//If it's a first Lv item, generate, else skip
 			if (r.path) {
 				//if have path, means it's a link.  Link should not have 2nd level menu
 				menu.push(
@@ -71,7 +68,7 @@ const genMenu = ({g, c, routes}) => {
 	return menu
 }
 
-const gen2ndLevel = ({ parentId, c, g, routes }) => {
+const gen2ndLevel = ({ parentId, c, g, routes, isFrontMenu }) => {
 	const children = routes
 		.filter(v => v.navbar.parentId === parentId)
 		.sort((a, b) => a.navbar.itemId - b.navbar.itemId)
@@ -85,10 +82,8 @@ const gen2ndLevel = ({ parentId, c, g, routes }) => {
 		const r = children[i]
 		const toPath = r.linkURL || r.path
 
-		if (
-			(g.state.isLogined && r.navbar.showAfterLogin) ||
-			(!g.state.isLogined && r.navbar.showBeforeLogin)
-		) {
+		//if ((g.state.isLogined && r.navbar.showAfterLogin) ||(!g.state.isLogined && r.navbar.showBeforeLogin)) {
+		if (isFrontMenu? (r.navbar.showBeforeLogin & !r.navbar.showAfterLogin): r.navbar.showAfterLogin) {	
 			menu.push(
 				<MenuLink
 					to={toPath}
@@ -129,13 +124,13 @@ const langSelector = ({c, changeEng, changeChn}) => (
 	</>
 )
 
-const Navbar = (props) => (
+const Navbar = ({routes, isFrontMenu}) => (
 	<GqlApiSubscriber>
 	{g => (
 		<LocaleApiSubscriber>
 		{c => (
 			<>
-				<StickyDiv>
+				<StickyDiv section={isFrontMenu? 'start/navbar' : 'navbar/navbar2'}>
 					<LeftContainer>
 						<Logo to="/" />
 					</LeftContainer>
@@ -149,7 +144,7 @@ const Navbar = (props) => (
 
 						{c.state.width > 768 && (
 							<>
-								{genMenu({g: g, c: c, routes: props.routes})}
+								{genMenu({g: g, c: c, routes: routes, isFrontMenu: isFrontMenu})}
 								{langSelector({c: c, changeEng: 'EN', changeChn: '中'})}
 								<div>
 									
@@ -186,7 +181,7 @@ const Navbar = (props) => (
 				</StickyDiv>
 				<MobileMenuBar show={c.state.showMenuBar}>
 					{langSelector({c: c, changeEng: 'Switch to English', changeChn: '轉成中文'})}
-					{ genMenu({g: g, c: c, routes: props.routes}) }
+					{genMenu({g: g, c: c, routes: routes, isFrontMenu: isFrontMenu})}
 				</MobileMenuBar>
 			</>
 		)}

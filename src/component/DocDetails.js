@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import accounting from 'accounting'
 import {AutoSizer} from 'react-virtualized'
-import {Tag} from '../component/BasicComponents.js'
+import {Tag, Text as T} from '../component/BasicComponents.js'
 import c from '../stateContainer/LocaleApi.js'
 import {SmallPic } from './DocLine.js'
 import {ContainerLineItem} from './ContainerSelectionList.js'
@@ -243,15 +243,11 @@ const DocLineWrapper = styled.div`
 export const FieldWrapper = styled.div`
 	width: 15rem;
 	box-sizing: border-box;
-	display: grid;
-	grid-gap: 0.3rem;
-	align-items: center;
-	grid-template-columns: repeat(auto-fit, minmax(1rem, max-content));
-	${({span})=>span? 'grid-column: span '+span: ''}
+	margin: 0.5rem 0;
 `
 
-const FieldTitle = styled.div`
-	font-size: 0.8rem;
+export const FieldTitle = styled(T)`
+	font-size: 1rem;
 	font-weight: 600;
 	text-transform: uppercase;
 `
@@ -262,14 +258,14 @@ const FieldTitleGrid = styled(FieldTitle)`
 	text-align: center;
 `
 
-const TextNoWrap = styled.div`
+export const TextNoWrap = styled(T)`
 	font-size: 1rem;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	padding: 0 0 0 0.5rem;
 `
 
-const AddressText = styled.div`
+const AddressText = styled(T)`
 	font-size: 0.8rem;
 	white-space: nowrap;
 	text-overflow: ellipsis;
@@ -280,11 +276,11 @@ const DollarPre = styled.pre`
 	font-family: 'Inconsolata', monospace;
 `
 
-const DollarDiv = styled.div`
+const DollarDiv = styled(T)`
 	font-family: 'Inconsolata', monospace;
 `
 
-const LongTextDiv = styled.div`
+const LongTextDiv = styled(T)`
 	font-size: 0.9rem;
 	text-overflow: ellipsis;
 `

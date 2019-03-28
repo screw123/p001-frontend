@@ -1,16 +1,23 @@
 import React from "react"
 import { I18n } from 'react-i18next'
 import styled from 'styled-components'
+import {
+	Header
+} from "../component/HeaderStyles"
 
-import {BigLoadingScreen } from '../component/Loading.js'
+import PricingTable from '../component/PricingTable.js'
+
 
 class PricingPage extends React.Component {
     
     
     render = () => (
-        <div>
-            <BigLoadingScreen text={'Welcome to Wisekeep!  This page is Pricing'}/>
-        </div>
+        <React.Fragment>
+            <Header Pricing>
+							<h1>Pricing</h1>
+            </Header>
+            <PricingTable/>							
+        </React.Fragment>
     )
 }
 

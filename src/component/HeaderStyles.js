@@ -10,4 +10,8 @@ export const Header = styled.div`
   font-weight: bold;
   text-align: center;
   height: 300px;
+  display: flex;
+	justify-content:center;
+	align-content:center;
+	flex-direction:column;
 `

@@ -7,6 +7,7 @@ import isEmpty from 'lodash/isEmpty'
 import pickBy from 'lodash/pickBy'
 import omitBy from 'lodash/omitBy'
 import isUndefined from 'lodash/isUndefined'
+import get from 'lodash/get'
 
 import { ApolloProvider, Mutation } from 'react-apollo'
 import { addAddress, updateAddress } from '../gql/query.js'
@@ -141,12 +142,13 @@ class EditAddressForm extends React.Component {
                             }}                    
                         >
                         {({ errors, isSubmitting, touched, values, status }) => {
+                            console.log('address=', this.props.address)
                             return (
                                 <FormikForm>
-                                    {this.props.address.defaultBillingAddress && 
+                                    {get(this.props.address, 'defaultBillingAddress', undefined) && 
                                         <Tag float='left'>{c.t('Default Billing')}</Tag>
                                     }
-                                    {this.props.address.defaultShippingAddress && 
+                                    {get(this.props.address, 'defaultShippingAddress', undefined) && 
                                         <Tag float='left'>{c.t('Default Shipping')}</Tag>
                                     }
                                     <Field
@@ -206,7 +208,7 @@ class EditAddressForm extends React.Component {
                                         value={values.telephone}
                                         err={errors.telephone}
                                     />
-                                    {!this.props.address.defaultBillingAddress && 
+                                    {!get(this.props.address, 'defaultBillingAddress', undefined) && 
                                         <Field
                                             component={CheckBox2}
                                             name="setDefaultBilling"
@@ -220,7 +222,7 @@ class EditAddressForm extends React.Component {
                                             </ClickableText>
                                         </Field>
                                     }
-                                    {!this.props.address.defaultShippingAddress && 
+                                    {!get(this.props.address, 'defaultShippingAddress', undefined) && 
                                         <Field
                                             component={CheckBox2}
                                             name="setDefaultShipping"

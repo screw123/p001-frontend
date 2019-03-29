@@ -5,29 +5,38 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faAlignJustify } from "@fortawesome/free-solid-svg-icons"
 
 export const StickyDiv = styled.div`
-  ${props=> props.nonStick? '' : 'position: sticky;'}
+  position: sticky;
   top: 0;
   margin: 0;
-  // same for every component
-  padding: 1rem 7rem;
-  background: linear-gradient(180deg, #f43ea6 0%, #f5576c 100%);
-  grid-row: ${props=> props.section? props.section: 'start / navbar'};
-  display: grid;
-  grid-template-rows: auto;
-  grid-column-gap: 0.75rem;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
-  grid-template-columns: 10rem auto;
+  grid-row: start / navbar;
+  display: block;
   @media (max-width: 768px) {
-    // same for every component
-    padding: 0.75rem 1rem;
     height: 4rem;
+  }
+`
+
+export const PrimaryMenuDiv = styled.div`
+  background: linear-gradient(180deg, #f43ea6 0%, #f5576c 100%);
+  display: grid;
+  padding: 1rem 7rem;
+  grid-template-columns: 10rem auto;
+  grid-template-rows: 1fr;
+  grid-column-gap: 0.75rem;
+  @media (max-width: 768px) {
+    padding: 0.75rem 1rem;
     grid-template-columns: 7.75rem auto;
   }
 `
+
+
+
 export const Logo = styled(Link)`
+  align-self: center;
+  justify-self: center;
   display: block;
   height: 4rem;
   width: 9rem;
+  grid-row: 1 /span 2;
   background-image: url("/Logo_white.svg");
   background-size: 100% 100%;
   @media (max-width: 768px) {
@@ -36,36 +45,35 @@ export const Logo = styled(Link)`
   }
 `
 
-export const LeftContainer = styled.div`
-  align-self: center;
-  justify-self: self-start;
-`
-
-//Middle not used anymore, only keey as reference
-export const MiddleContainer = styled.div`
-  display: grid;
-  grid-template-rows: auto;
-  grid-template-columns: ${props => (props.isLogined ? "1fr 1fr 1fr" : "1fr 2fr")};
-  justify-self: center;
-  align-self: center;
-`
-
 export const RightContainer = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+`
+
+export const DashMenuContainer = styled.div`
   justify-self: self-end;
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
   align-items: center;
+  color: #888;
+  background: #EEE;
 `
 
 export const FirstLevelContainer = styled.div`
   display: inline-block;
   padding: 0.3rem 1rem;
-  color: white;
   position: relative;
+  font-weight: 500;
+  font-size: 1.2rem;
+  cursor: pointer;
+  white-space: nowrap;
 `
 
-export const FirstLevelText = styled(({ displayText, key, ...props }) => (
+export const FirstLevelText = styled(({ displayText, key, color, ...props }) => (
   <div>
     <span key1={key} {...props}>
       {displayText}
@@ -73,16 +81,11 @@ export const FirstLevelText = styled(({ displayText, key, ...props }) => (
     {props.children}
   </div>
 ))`
-  white-space: nowrap;
-  font-size: 1.2rem;
-  font-weight: 500;
-  cursor: pointer;
-  color: white;
-
+  ${({color})=>color? 'color:'+color : ''}
   ${props => (props.children ? '&:after { content: "▾";' : "")}
 `
 
-export const FirstLevelLink = styled(({children, ...props})=>(
+export const FirstLevelLink = styled(({children, color, ...props})=>(
   <Link {...props}>
     {children}
     <FirstLevelHover />
@@ -90,24 +93,16 @@ export const FirstLevelLink = styled(({children, ...props})=>(
 
 ))`
   display: inline-block;
-  white-space: nowrap;
-  font-size: 1.2rem;
-  font-weight: 500;
-  cursor: pointer;
-  color: white;
+  ${({color})=>color? 'color:'+color : ''}
 `
 
 export const FirstLevelLoginLink = styled(Link)`
   display: inline-block;
-  white-space: nowrap;
-  cursor: pointer;
-  color: white;
-  font-size: 1.2rem;
-  font-weight: 500;
   line-height: 2rem;
   padding: 0.5rem 3rem;
   border-radius: 3rem;
   background-color: rgba(216, 216, 216, 0.5);
+  color: White;
 `
 
 const FirstLevelHover = styled.div`
@@ -153,7 +148,7 @@ export const LangSelector = styled.span`
 
 export const Menu = styled.div`
   display: none;
-  padding: 0.3rem;
+  padding: 0.5rem;
   position: absolute;
   right: 0;
   min-width: 150px;
@@ -166,14 +161,12 @@ export const Menu = styled.div`
   }
 `
 
-export const RightMenu = styled(Menu)``
-
 export const MenuText = styled.div`
   padding: 0.3rem 0.1rem;
   font-size: 1rem;
   cursor: default;
   user-select: none;
-  color: Black;
+  color: #888;
 `
 
 export const Separator = styled.hr`
@@ -185,14 +178,12 @@ export const MenuFunction = styled.div`
   font-size: 0.9rem;
   cursor: pointer;
   padding: 0.3rem 0.1rem;
-  color: #555;
 `
 
 export const MenuLink = styled(Link)`
-  font-size: 0.9rem;
+  font-size: 1rem;
   cursor: pointer;
-  padding: 0.3rem 0.1rem;
-  color: #555;
+  padding: 0.5rem 0.2rem;
   display: block;
 `
 

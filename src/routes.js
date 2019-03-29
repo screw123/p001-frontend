@@ -152,7 +152,7 @@ const routes = [
 			itemId: 3,
 			firstLevel: true,
 			showBeforeLogin: true,
-			showAfterLogin: true
+			showAfterLogin: false
 		},
 		router: {
 			requireLogin: false
@@ -201,21 +201,6 @@ const routes = [
 		},
 		router: {
 			requireLogin: true
-		}
-	},
-	{
-		path: "/testPage",
-		exact: true,
-		menuName: "Testing Zone",
-		component: TestPage,
-		navbar: {
-			itemId: 999,
-			firstLevel: true,
-			showBeforeLogin: true,
-			showAfterLogin: true
-		},
-		router: {
-			requireLogin: false
 		}
 	},
 	{

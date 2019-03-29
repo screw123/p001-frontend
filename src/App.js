@@ -20,19 +20,21 @@ import LocaleApi, {LocaleApiProvider, LocaleApiSubscriber} from './stateContaine
 
 const MainContainer = styled.div`
     display: grid;
-    grid-template-rows: [start] auto [navbar] auto [navbar2] auto [body] auto [end];
+    grid-template-rows: [start] auto [navbar] auto [body] auto [end];
 `
 
 class App extends React.Component {
     constructor(props) {
         super(props)
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this)
+        this.updateWindowPosition = this.updateWindowPosition.bind(this)
     }
 
     componentDidMount() {
         GqlApi.checkLogined()
         this.updateWindowDimensions()
         window.addEventListener('resize', this.updateWindowDimensions)
+        window.addEventListener('scroll', this.updateWindowPosition)
         library.add(faEye, faEyeSlash, faPlusCircle, faWindowClose, faBell, faUser, faEdit, faTrashAlt,  faCcVisa, faCcMastercard, faCcAmex, faCreditCard, faAddressCard, faSearch, faSignInAlt, faFileInvoice, faBoxes, faTruckLoading)
     }
       
@@ -41,6 +43,7 @@ class App extends React.Component {
     }
 
     updateWindowDimensions = () => LocaleApi.updateWindowDimensions({ width: window.innerWidth, height: window.innerHeight })
+    updateWindowPosition = () => LocaleApi.updateWindowPosition({ scrollTop: window.scrollTop })
 
     genItems = ({routes, stateContainer}) => {
         let c = []
@@ -82,8 +85,7 @@ class App extends React.Component {
                         {((g.state.isLogined===true)||(g.state.isLogined===false)) && <MainContainer>
                             <DummyPassHistory />  {/*Load this to add the history obj into GqpApi state */}
                             {this.genItems({routes: routes, stateContainer: {login: g, i18n: c}})}  {/* Put routes.js all into react-router */}
-                            {(get(g, 'state.history.location.pathname', undefined) !=='/') && <Navbar routes={routes} isFrontMenu={true} />}
-                            {(get(g, 'state.history.location.pathname', undefined) !=='/') && (g.state.isLogined===true) && <Navbar routes={routes} isFrontMenu={false} />}
+                            {(get(g, 'state.history.location.pathname', undefined) !=='/') && <Navbar routes={routes} g={g} c={c} />}
                             {/*<Navbar routes={routes} />   THE ORIGINAL.  USE THIS WHEN GO LIVE Generate NavBar Component */}
                         </MainContainer>}
                         {(!((g.state.isLogined===true)||(g.state.isLogined===false))) && <div>

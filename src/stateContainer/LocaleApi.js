@@ -32,7 +32,7 @@ class LocaleContainer extends Container {
                 },
                 react: {
                 },
-                debug: true
+                debug: false
             })
 
         if (i18next.language === 'zh-HK') {
@@ -44,13 +44,15 @@ class LocaleContainer extends Container {
             defaultHeight: parseFloat(getComputedStyle(document.body).fontSize),
             width: 0,
             height: 0,
+            scrollTop: 0,
             showMenuBar: false
         };
     }
 
-    updateWindowDimensions() {
-        this.setState({ width: window.innerWidth, height: window.innerHeight });
-    }
+    updateWindowDimensions() { this.setState({ width: window.innerWidth, height: window.innerHeight }) }
+    updateWindowPosition() { 
+        console.log(document.body.scrollTop || document.documentElement.scrollTop)
+        this.setState({ scrollTop: document.body.scrollTop || document.documentElement.scrollTop }) }
 
     t = (...props) => {
         return this.state.i18n.t(...props);

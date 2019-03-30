@@ -13,10 +13,29 @@ import get from 'lodash/get'
 import union from 'lodash/union'
 import { MultiSelect } from '../component/FormikForm.js'
 
+/*
+This let user select an account that he has access to, then download list of Rental Orders from API, provide that list to ROListForm.
+
+Accounts shows as a dropdown menu if it has 3+ entries.  If it has < 3 entries it shows as a radio box.  This is the default behaviour of MultiSelect.
+
+MultiSelect is the default component that we use thruout the app of a dropdown/radio box
+
+For all pages/forms/components:
+    "g" normally refers to GqlApi, which is a state container for everything related to backend API connection, login status, user information.
+
+    "c" normally refers to LocaleApi, which keeps the translation component.  "c.t(string) is the translation function that turns the string into different language.
+
+    For some lazy reason, c also stores the browser window size now.  Will move them to their own state container later.
+
+*/
+
+
 class ROListPage extends React.Component {
 
     constructor(props) {
-		super(props)
+        super(props)
+        
+        //consolidate accounts that user has access to, into a list store in state
 		const acctList = union(
             (this.props.login.state.myself.accountOwn_id===null) ? 
                 [] : 
@@ -30,7 +49,8 @@ class ROListPage extends React.Component {
                 })
         )
 		this.state={
-			acctList: acctList,
+            acctList: acctList,
+            
 			selectedAcct_id: get(this.props, 'location.state.account._id', undefined) || get(this.props, 'account._id', undefined) || this.props.account_id || ((acctList.length>0) ? acctList[0].value : undefined)
 		}
 		this.changeAcct = this.changeAcct.bind(this)
@@ -73,7 +93,11 @@ class ROListPage extends React.Component {
                             />
                             {this.state.selectedAcct_id && 
                                 <Background>
-                                    <ROListForm ROlist={data.getRecentROListByUser.filter(v=>v.account_id._id===this.state.selectedAcct_id)} {...this.props} />
+                                    <ROListForm 
+                                        ROlist={data.getRecentROListByUser
+                                            .filter(v=>v.account_id._id===this.state.selectedAcct_id)}
+                                        {...this.props}
+                                    />
                                 </Background>
                             }
                         </React.Fragment>

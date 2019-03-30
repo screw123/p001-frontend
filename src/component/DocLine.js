@@ -65,47 +65,47 @@ export const SingleContainerDisplay = styled.div`
 	width: 100%
 `
 
-const Text = ({t, l})=>(
-	<TextNoWrap>{c.t(l) + ' : '+t}</TextNoWrap>
+const Text = ({text, label})=>(
+	<TextNoWrap>{c.t(label) + ' : '+text}</TextNoWrap>
 )
 
-const LongText = ({t, l})=>(
-	<LongTextDiv>{c.t(l) + ' : '+t}</LongTextDiv>
+const LongText = ({text, label})=>(
+	<LongTextDiv>{c.t(label) + ' : '+text}</LongTextDiv>
 )
 
-const ID = ({t, l})=>(
-	<IDDiv>{c.t(l) + ' : '+ t}</IDDiv>
+const ID = ({text, label})=>(
+	<IDDiv>{c.t(label) + ' : '+ text}</IDDiv>
 )
 
-const Status = ({t, color, float})=>(
-	<Tag {...color(t)} float={float}>{c.t(t)}</Tag>
+const Status = ({text, color, float})=>(
+	<Tag {...color(text)} float={float}>{c.t(text)}</Tag>
 )
 
-const YesNo = ({t, l})=>(
-	<IDDiv>{c.t(l) + ' : '+t}</IDDiv>
+const YesNo = ({text, label})=>(
+	<IDDiv>{c.t(label) + ' : '+text}</IDDiv>
 )
 
-const DateOnly = ({t, l})=>(
-	<TextNoWrap>{c.t(l) + ' : '+ c.moment(t).calendar()}</TextNoWrap>
+const DateOnly = ({text, label})=>(
+	<TextNoWrap>{c.t(label) + ' : '+ c.moment(text).calendar()}</TextNoWrap>
 )
 
-const DateTime = ({t, l})=>(
-	<TextNoWrap>{c.t(l) + ' : '+ c.moment(t).calendar()}</TextNoWrap>
+const DateTime = ({text, label})=>(
+	<TextNoWrap>{c.t(label) + ' : '+ c.moment(text).calendar()}</TextNoWrap>
 )
 
-const Amount = ({t, l})=>(
-	<IDDiv>{c.t(l) + ' : '+t}</IDDiv>
+const Amount = ({text, label})=>(
+	<IDDiv>{c.t(label) + ' : '+text}</IDDiv>
 )
 
-const DocType = ({t, float})=> (
-	<Tag {...docTypeColor(t)} float={float}>{c.t(t)}</Tag>
+const DocType = ({text, float})=> (
+	<Tag {...docTypeColor(text)} float={float}>{c.t(text)}</Tag>
 )
 
-export const SmallPic = ({t, url, width, height})=>(
+export const SmallPic = ({text, url, width, height})=>(
 	<img src={url} width={width} height={height} />
 )
 
-const ContainerSummary = ({docLines, l}) => {
+const ContainerSummary = ({docLines}) => {
 	let summary = {}
 	let displayCom = []
 	for(let i=0;i<docLines.length;i++) {
@@ -122,7 +122,7 @@ const ContainerSummary = ({docLines, l}) => {
 		displayCom.push(
 			<SingleContainerDisplay key={summaryKeys[i]+'1'}>
 				<SmallPic url={summary[summaryKeys[i]].URL} width={c.state.defaultHeight*2} height={c.state.defaultHeight*2} />
-				<Text l={summaryKeys[i]} t={summary[summaryKeys[i]].qty} />
+				<Text label={summaryKeys[i]} text={summary[summaryKeys[i]].qty} />
 			</SingleContainerDisplay>
 		)
 

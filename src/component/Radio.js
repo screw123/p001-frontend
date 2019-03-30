@@ -18,10 +18,8 @@ const FilterPrice= styled.div`
 	padding: 1em;
 	background-image: linear-gradient(-180deg, #F43EA6 0%, #F5576C 100%);
 	border-radius: 16px;
-	color: white;
+	color: ${props => (props.checked ? 'white' : '#A6A6A6')};
 `
-
-
 
 const Radio = ({text,checked, ...props }) => (
   <React.Fragment>

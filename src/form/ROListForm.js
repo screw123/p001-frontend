@@ -1,7 +1,14 @@
 import React from 'react'
 import InfoList, {InfoListStandardLine} from '../component/InfoList.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {Tag, ToolTip} from '../component/BasicComponents.js'
+
+import {
+    Tag, 
+    ToolTip, 
+    HeaderCards
+} 
+from '../component/BasicComponents.js'
+
 import DocLine from '../component/DocLine.js'
 import { Redirect } from "react-router-dom"
 
@@ -12,19 +19,19 @@ import {LocaleApiSubscriber} from '../stateContainer/LocaleApi.js'
 export const getROStatusColor = (status) =>{
     switch(status) {
         case 'INIT':
-            return {background: 'DeepSkyBlue', color: 'Black'}
+            return {background: 'transparent', color: 'Black'}
         case 'PROCESSING_PAID':
-            return {background: 'Gold', color: 'Black'}
+            return {background: 'transparent', color: '#0FAAC5'}
         case 'PROCESSING_UNPAID':
-            return {background: 'Tomato', color: 'White'}
+            return {background: 'transparent', color: '#D70000'}
         case 'COMPLETED_PAID':
-            return {background: 'Forest', color: 'White'}
+            return {background: 'transparent', color: '#45AE06'}
         case 'COMPLETED_UNPAID':
-            return {background: 'Tomato', color: 'White'}
+            return {background: 'transparent', color: '#D70000'}
         case 'HOLD':
-            return {background: 'OrangeRed', color: 'Gold'}
+            return {background: 'transparent', color: '#787F84'}
         case 'CANCELLED':
-            return {background: 'DimGrey', color: 'White'}
+            return {background: 'transparent', color: '#D70000'}
         default:
             return {}
     }
@@ -80,7 +87,12 @@ export default class ROListForm extends React.Component {
                     return c.state.defaultHeight*1.5*fixed_field_lines + containerSummary_lines*32*1.25 / Math.floor(width*.95/DocLine.singleContainerDisplaySize) + c.state.defaultHeight*1.5
 
                 }}
-                headerText={<div><FontAwesomeIcon icon='file-invoice' /> {c.t('Box Rental Record')}</div>}
+                headerText = {
+                    <HeaderCards>
+                        {c.t('Box Rental Record')}
+                    </HeaderCards>
+                }
+
                 data={this.props.ROlist || []} 
                 listComponent={this.ROLine}
                 refreshRowHeight={true}

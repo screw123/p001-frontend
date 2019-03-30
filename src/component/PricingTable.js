@@ -58,15 +58,15 @@ class PricingTable extends React.Component {
 					<TableRow>
 						<FilterDate>
 		           <Radio
-		            checked
+ 		            checked={this.state.checked = true}
 	             	text = {'By Day'}
 		         	 />
  		           <Radio
-		            checked
+ 		            checked={this.state.checked}
 	             	text = {'By Month'}
 		         	 />
  		           <Radio
-		            checked
+ 		            checked={this.state.checked}
 	             	text = {'By Year'}
 		         	 />
 						</FilterDate>

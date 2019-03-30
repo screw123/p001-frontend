@@ -123,7 +123,13 @@ export const ClickableText = styled(Text)`
 `
 
 
-
+export const HeaderCards = styled(Text)`
+	border-bottom: 1px solid #E8E8E8;
+	color: #787F84;
+	font-size: 28px;
+	font-weight: bold;
+    padding-bottom: 2%;
+`
 
 
 //Buttons

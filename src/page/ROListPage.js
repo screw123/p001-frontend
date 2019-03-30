@@ -1,17 +1,20 @@
 import React from "react"
-
+import styled from 'styled-components'
 import ROListForm from '../form/ROListForm.js'
-
 import {Background} from '../component/BasicComponents.js'
-
 import { ApolloProvider, Query } from 'react-apollo'
 import { getRecentROListByUser } from '../gql/query.js'
 import parseApolloErr from '../util/parseErr.js'
-
 import {BigLoadingScreen} from '../component/Loading.js'
 import get from 'lodash/get'
 import union from 'lodash/union'
 import { MultiSelect } from '../component/FormikForm.js'
+
+const ContainerBox = styled.div`
+    background-color: white;
+    border-radius: 16px;
+    margin: 5% 10%;
+`
 
 class ROListPage extends React.Component {
 
@@ -58,7 +61,7 @@ class ROListPage extends React.Component {
 						)
                     }
                     return(
-                        <React.Fragment>
+                        <ContainerBox>
                             <MultiSelect 
                                 field={{
                                     name: 'acct',
@@ -76,7 +79,7 @@ class ROListPage extends React.Component {
                                     <ROListForm ROlist={data.getRecentROListByUser.filter(v=>v.account_id._id===this.state.selectedAcct_id)} {...this.props} />
                                 </Background>
                             }
-                        </React.Fragment>
+                        </ContainerBox>
                     )
                 }}
                 </Query>

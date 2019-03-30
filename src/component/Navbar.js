@@ -47,9 +47,6 @@ const genMenu = ({g, c, routes, isFrontMenu, isPrimaryMenu}) => {
 						<FirstLevelLink
 							color={isPrimaryMenu? '#fff':'#666'}
 							to={r.linkURL || r.path}
-							onClick={() => {
-								if (c.state.width <= 768) c.toggleMenuBar()
-							}}
 						>
 							{c.t(r.menuName)}
 						</FirstLevelLink>
@@ -135,7 +132,7 @@ const langSelector = ({c, changeEng, changeChn}) => (
 	</>
 )
 
-const genMobileMenu = ({g, c, routes}) => {
+const genMobileMenu = ({g, c, routes, setMenuClose}) => {
 	let primaryMenu = [], secondaryMenu = []
 	const firstLevelNode = routes
 		.filter(v => v.navbar.firstLevel === true)
@@ -143,19 +140,19 @@ const genMobileMenu = ({g, c, routes}) => {
 	if (g.state.isLogined) {
 		const n1 = firstLevelNode.filter(v => v.navbar.showBeforeLogin)
 		const n2 = firstLevelNode.filter(v => v.navbar.showAfterLogin)
-		secondaryMenu = fillMobileMenu({g:g, c:c, nodes: n1, allNodes: routes})
-		primaryMenu = fillMobileMenu({g:g, c:c, nodes: n2, allNodes: routes})
+		secondaryMenu = fillMobileMenu({g:g, c:c, nodes: n1, allNodes: routes, setMenuClose: setMenuClose})
+		primaryMenu = fillMobileMenu({g:g, c:c, nodes: n2, allNodes: routes, setMenuClose: setMenuClose})
 	}
 	else {
 		const n = firstLevelNode.filter(v => v.navbar.showBeforeLogin)
-		//primaryMenu = fillMobileMenu({g:g, c:c, nodes: n, allNodes: routes})
+		primaryMenu = fillMobileMenu({g:g, c:c, nodes: n, allNodes: routes, setMenuClose: setMenuClose})
 	}
 
 	return <><MobilePrimaryWrapper>{primaryMenu}</MobilePrimaryWrapper><MobileSecondaryWrapper>{secondaryMenu}</MobileSecondaryWrapper></>
 
 }
 
-const fillMobileMenu = ({parentId, g, c, nodes, allNodes}) => {
+const fillMobileMenu = ({parentId, g, c, nodes, allNodes, setMenuClose}) => {
 	let arr = []
 	for (let i = 0; i < nodes.length; i++) {
 
@@ -176,6 +173,7 @@ const fillMobileMenu = ({parentId, g, c, nodes, allNodes}) => {
 							to={children[j].linkURL || children[j].path}
 							color='#fff'
 							key={children[j].navbar.itemId}
+							onClick={setMenuClose}
 						>
 							{c.t(children[j].menuName)}
 						</MobileMenuLink>
@@ -192,6 +190,7 @@ const fillMobileMenu = ({parentId, g, c, nodes, allNodes}) => {
 						key={nodes[i].navbar.itemId}
 						color='#fff'
 						to={nodes[i].linkURL || nodes[i].path}
+						onClick={setMenuClose}
 					>
 						{c.t(nodes[i].menuName)}
 					</MobileMenuLink>
@@ -212,6 +211,8 @@ const Navbar = ({routes, g, c}) => {
 	
 	//if scrolled up and currently not showing front menu, change to show front menu
 	else if ((c.state.scrollTop < 100) & (showFrontMenu ===false) ) { setShowFrontMenu(true) }
+
+	const setMenuClose = ()=> setShowMobileMenu(false)
 
 	return(
 		<StickyDiv>
@@ -236,7 +237,7 @@ const Navbar = ({routes, g, c}) => {
 							<MobileMenuButton isMenuOpen={showMobileMenu} />
 						</MobileMenuWrapper>
 						{showMobileMenu && <MobileMenu>
-							{genMobileMenu({g: g, c: c, routes: routes})}
+							{genMobileMenu({g: g, c: c, routes: routes, setMenuClose: setMenuClose})}
 						</MobileMenu>}
 					</PrimaryMenuDiv>
 				</>

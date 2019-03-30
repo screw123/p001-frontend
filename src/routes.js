@@ -1,9 +1,8 @@
 import IndexPage from "./page/IndexPage.js"
 import WhyUsPage from "./page/WhyUsPage.js"
 import PricingPage from "./page/PricingPage.js"
-
+import OurClientsPage from "./page/OurClientsPage.js"
 import LoginPage from "./page/LoginPage.js"
-
 
 import UserDashboardPage from "./page/UserDashboardPage.js"
 import SignUpWorkflow from "./page/SignUpWorkflow.js"
@@ -13,7 +12,6 @@ import TermsAndConditionPage from "./page/TermsAndConditionPage.js"
 import QuotationPage from "./page/QuotationPage.js"
 import SalesOrderConfirmPage from "./page/SalesOrderConfirmPage.js"
 import UserProfilePage from "./page/UserProfilePage.js"
-import TestPage from "./page/TestPage.js"
 import EditAccountPage from "./page/EditAccountPage.js"
 import ROListPage from "./page/ROListPage.js"
 import RODetailsPage from "./page/RODetailsPage.js"
@@ -51,7 +49,7 @@ const routes = [
 		navbar: {
 			itemId: 12,
 			firstLevel: true,
-			showBeforeLogin: true,
+			showBeforeLogin: false,
 			showAfterLogin: false
 		},
 		router: {
@@ -159,6 +157,21 @@ const routes = [
 		}
 	},
 	{
+		path: "/clients",
+		exact: true,
+		menuName: "Our Clients",
+		component: OurClientsPage,
+		navbar: {
+			itemId: 4,
+			firstLevel: true,
+			showBeforeLogin: true,
+			showAfterLogin: false
+		},
+		router: {
+			requireLogin: false
+		}
+	},
+	{
 		path: "/resetPassword", //this should be removed as reset password should only be shown in login page
 		exact: true,
 		menuName: "Reset Your Password",
@@ -166,7 +179,7 @@ const routes = [
 		navbar: {
 			itemId: 702,
 			firstLevel: true,
-			showBeforeLogin: true,
+			showBeforeLogin: false,
 			showAfterLogin: false
 		},
 		router: {

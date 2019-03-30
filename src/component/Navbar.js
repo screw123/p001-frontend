@@ -17,11 +17,12 @@ import {
 	Menu,
 	MenuLink,
 	MobileMenuWrapper,
-	MobileMenu,
-	MobileMenuBar,
+	MobileMenuButton,
 	Logo,
 	DashMenuContainer,
-	PrimaryMenuDiv
+	PrimaryMenuDiv,
+	MobileMenu,
+	MobileMenuItem
 } from "./NavbarStyles"
 
 const genMenu = ({g, c, routes, isFrontMenu, isPrimaryMenu}) => {
@@ -33,29 +34,29 @@ const genMenu = ({g, c, routes, isFrontMenu, isPrimaryMenu}) => {
 	for (let i = 0; i < firstLevelNode.length; i++) {
 		const r = firstLevelNode[i]
 
-		if (r.navbar.firstLevel & (isFrontMenu? (r.navbar.showBeforeLogin & !r.navbar.showAfterLogin): r.navbar.showAfterLogin) ) {
-		//(r.navbar.showAfterLogin === g.state.isLogined || r.navbar.showBeforeLogin === !g.state.isLogined) ) {
+		if (isFrontMenu? (r.navbar.showBeforeLogin & !r.navbar.showAfterLogin): r.navbar.showAfterLogin) {
 		//If it's a first Lv item, generate, else skip
 			if (r.path) {
 				//if have path, means it's a link.  Link should not have 2nd level menu
 				menu.push(
 					<FirstLevelContainer key={r.navbar.itemId}>
 						<FirstLevelLink
-							color={isPrimaryMenu? '#fff':undefined}
+							color={isPrimaryMenu? '#fff':'#666'}
 							to={r.linkURL || r.path}
 							onClick={() => {
 								if (c.state.width <= 768) c.toggleMenuBar()
 							}}
 						>
-							{r.navbar.itemId + " " + c.t(r.menuName)}
+							{c.t(r.menuName)}
 						</FirstLevelLink>
 					</FirstLevelContainer>
 				)
 			} else {
 				//if no patt, means it's text, thus use FirstLevelText.  If link should use FirstLevelLink
+				console.log(r.menuName)
 				menu.push(
 					<FirstLevelContainer key={r.navbar.itemId}>
-						<FirstLevelText displayText={c.t(r.menuName)} color={isPrimaryMenu? '#fff':undefined}>
+						<FirstLevelText displayText={c.t(r.menuName)} color={isPrimaryMenu? '#fff':'#666'}>
 							{gen2ndLevel({ parentId: r.navbar.itemId, c: c, g: g, routes: routes })}
 						</FirstLevelText>
 					</FirstLevelContainer>
@@ -66,14 +67,14 @@ const genMenu = ({g, c, routes, isFrontMenu, isPrimaryMenu}) => {
 	if (isPrimaryMenu) {
 		menu.push(langSelector({c: c, changeEng: 'EN', changeChn: '中'}) )
 		if (!g.state.isLogined) {
-			menu.push(<FirstLevelContainer>
+			menu.push(<FirstLevelContainer key='link-login'>
 				<FirstLevelLoginLink to={"/login"}>
 					{c.t("Login")}
 				</FirstLevelLoginLink>
 			</FirstLevelContainer>)
 		}
 		else {
-			menu.push(<FirstLevelContainer>
+			menu.push(<FirstLevelContainer key='link-logout'>
 				<FirstLevelText color='#fff' displayText={c.t('Logout')} onClick={() => g.logout()} />
 			</FirstLevelContainer>)
 		}
@@ -95,7 +96,6 @@ const gen2ndLevel = ({ parentId, c, g, routes, isFrontMenu }) => {
 		const r = children[i]
 		const toPath = r.linkURL || r.path
 
-		//if ((g.state.isLogined && r.navbar.showAfterLogin) ||(!g.state.isLogined && r.navbar.showBeforeLogin)) {
 		if (isFrontMenu? (r.navbar.showBeforeLogin & !r.navbar.showAfterLogin): r.navbar.showAfterLogin) {	
 			menu.push(
 				<MenuLink
@@ -105,7 +105,7 @@ const gen2ndLevel = ({ parentId, c, g, routes, isFrontMenu }) => {
 						if (c.state.width <= 768) c.toggleMenuBar()
 					}}
 				>
-					{r.navbar.itemId + " " + c.t(r.menuName)}
+					{c.t(r.menuName)}
 				</MenuLink>
 			)
 		}
@@ -119,39 +119,58 @@ const gen2ndLevel = ({ parentId, c, g, routes, isFrontMenu }) => {
 const langSelector = ({c, changeEng, changeChn}) => (
 	<>
 		{!(c.state.i18n.language === "en") && (
-			<LangSelector
-				fontsize={1}
-				onClick={() => c.changeLanguage("en")}
-			>
+			<LangSelector onClick={() => c.changeLanguage("en")} key='lang-en'>
 				{changeEng}
 			</LangSelector>
 		)}
 		{c.state.i18n.language === "en" && (
-			<LangSelector
-				fontsize={1}
-				onClick={() => c.changeLanguage("zh-HK")}
-			>
+			<LangSelector onClick={() => c.changeLanguage("zh-HK")} key='lang-zh'>
 				{changeChn}
 			</LangSelector>
 		)}
 	</>
 )
 
-const genNavbar = ({g, c, routes, isFrontMenu}) => (
-	<>
-		{c.state.width <= 768 && (
-			<MobileMenuWrapper onClick={() => c.toggleMenuBar()}>
-				<MobileMenu />
-			</MobileMenuWrapper>
-		)}
+const genMobileMenu = ({g, c, routes}) => {
+	let primaryMenu = [], secondaryMenu = []
+	const firstLevelNode = routes
+		.filter(v => v.navbar.firstLevel === true)
+		.sort((a, b) => a.navbar.itemId - b.navbar.itemId)
+	if (g.state.isLogined) {
+		const n1 = firstLevelNode.filter(v => v.navbar.showBeforeLogin)
+		const n2 = firstLevelNode.filter(v => v.navbar.showAfterLogin)
+		secondaryMenu = fillMobileMenu({g:g, c:c, nodes: n1, allNodes: routes})
+		primaryMenu = fillMobileMenu({g:g, c:c, nodes: n2, allNodes: routes})
+	}
+	else {
+		const n = firstLevelNode.filter(v => v.navbar.showBeforeLogin)
+		//primaryMenu = fillMobileMenu({g:g, c:c, nodes: n, allNodes: routes})
+	}
 
-		{c.state.width > 768 && (
-			<>
-				
-			</>
-		)}
-	</>
-)
+	return <><div>{primaryMenu}</div><div>{secondaryMenu}</div></>
+
+}
+
+const fillMobileMenu = ({g, c, nodes, allNodes}) => {
+	let arr = []
+	for (let i = 0; i < nodes.length; i++) {
+		console.log(nodes[i])
+		arr.push(<MobileMenuItem>{c.t(nodes[i].menuName)}</MobileMenuItem>)
+/*
+		//if have path, means it's a link.  Link should not have 2nd level menu
+		if (!nodes[i].path) {
+			const children = allNodes
+				.filter(v => v.navbar.parentId === nodes[i].navbar.itemId)
+				.sort((a, b) => a.navbar.itemId - b.navbar.itemId)
+
+			for (let j = 0; j < children.length; i++) {
+				arr.push(<MobileMenuItem secondLevel>{c.t(children[j].name)}</MobileMenuItem>)
+			}
+		}*/
+	}
+	return arr
+}
+
 
 const Navbar = ({routes, g, c}) => {
 	const [showFrontMenu, setShowFrontMenu] = useState(true)
@@ -164,54 +183,35 @@ const Navbar = ({routes, g, c}) => {
 	else if ((c.state.scrollTop < 100) & (showFrontMenu ===false) ) { setShowFrontMenu(true) }
 
 	return(
-		<>
-			<StickyDiv>
-				<PrimaryMenuDiv>
-					<Logo to="/" />
-					<RightContainer>
-						{genMenu({g: g, c: c, routes: routes, isFrontMenu: showFrontMenu, isPrimaryMenu: true})}
-					</RightContainer>
-				</PrimaryMenuDiv>
-				{g.state.isLogined && (showFrontMenu === true) && <DashMenuContainer>
-					{genMenu({g: g, c: c, routes: routes, isFrontMenu: false, isPrimaryMenu: false})}
-				</DashMenuContainer>}
-					{showMobileMenu && <MobileMenuBar show={c.state.showMenuBar}>
-						{langSelector({c: c, changeEng: 'Switch to English', changeChn: '轉成中文'})}
-						{genMenu({g: g, c: c, routes: routes})}
-					</MobileMenuBar>}
-			</StickyDiv>
-			
-		</>
+		<StickyDiv>
+			{c.state.width > 1024 && (
+				<>
+					<PrimaryMenuDiv>
+						<Logo to="/" />
+						<RightContainer>
+							{genMenu({g: g, c: c, routes: routes, isFrontMenu: showFrontMenu, isPrimaryMenu: true})}
+						</RightContainer>
+					</PrimaryMenuDiv>
+					{g.state.isLogined && (showFrontMenu === true) && <DashMenuContainer>
+						{genMenu({g: g, c: c, routes: routes, isFrontMenu: false, isPrimaryMenu: false})}
+					</DashMenuContainer>}
+				</>
+			)}
+			{c.state.width <= 1024 && (
+				<>
+					<PrimaryMenuDiv mobileMenuExpand={showMobileMenu}>
+						<Logo to="/" />
+						<MobileMenuWrapper onClick={() => (showMobileMenu ? setShowMobileMenu(false): setShowMobileMenu(true)) }>
+							<MobileMenuButton isMenuOpen={showMobileMenu} />
+						</MobileMenuWrapper>
+						{showMobileMenu && <MobileMenu>
+							{genMobileMenu({g: g, c: c, routes: routes})}
+						</MobileMenu>}
+					</PrimaryMenuDiv>
+				</>
+			)}
+		</StickyDiv>
 	)
 }
-
-
-/*
-<MobileMenuBar show={c.state.showMenuBar}>
-					{langSelector({c: c, changeEng: 'Switch to English', changeChn: '轉成中文'})}
-					{genMenu({g: g, c: c, routes: routes, isFrontMenu: isFrontMenu})}
-				</MobileMenuBar>
-				*/
-
-/*
-{g.state.isLogined && (
-						<FirstLevelContainer>
-							<RightSideIcon icon="user" haveMenu>
-								<RightMenu>
-									<MenuText>
-										{c.t("Hello, user!", {
-											name: g.state.myself.firstName + " " + g.state.myself.lastName
-										})}
-									</MenuText>
-									<Separator />
-									<MenuFunction onClick={() => g.logout()}>
-										{" "}
-										{c.t("Logout")}{" "}
-									</MenuFunction>
-								</RightMenu>
-							</RightSideIcon>
-						</FirstLevelContainer>
-					)}
-*/
 
 export default Navbar

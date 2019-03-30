@@ -45,7 +45,6 @@ class LocaleContainer extends Container {
             width: 0,
             height: 0,
             scrollTop: 0,
-            showMenuBar: false
         };
     }
 
@@ -71,10 +70,6 @@ class LocaleContainer extends Container {
     getCurrentLangForGql() {
         return this.state.i18n.language === 'en' ? 'en' : 'zhHK';
     }
-    
-	toggleMenuBar() {
-		this.setState({showMenuBar: !this.state.showMenuBar})
-	}
 }
 
 const LocaleApi = new LocaleContainer();

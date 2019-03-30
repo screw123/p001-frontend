@@ -1,6 +1,6 @@
 import React from 'react'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faEye, faEyeSlash, faPlusCircle, faWindowClose, faBell, faUser, faEdit, faTrashAlt, faCreditCard, faSearch, faSignInAlt, faFileInvoice, faBoxes, faTruckLoading } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faEyeSlash, faPlusCircle, faWindowClose, faBell, faUser, faEdit, faTrashAlt, faCreditCard, faSearch, faSignInAlt, faFileInvoice, faBoxes, faTruckLoading, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { faAddressCard } from '@fortawesome/free-regular-svg-icons'
 import { faCcVisa, faCcMastercard, faCcAmex } from '@fortawesome/free-brands-svg-icons'
 import styled from 'styled-components'
@@ -35,7 +35,7 @@ class App extends React.Component {
         this.updateWindowDimensions()
         window.addEventListener('resize', this.updateWindowDimensions)
         window.addEventListener('scroll', this.updateWindowPosition)
-        library.add(faEye, faEyeSlash, faPlusCircle, faWindowClose, faBell, faUser, faEdit, faTrashAlt,  faCcVisa, faCcMastercard, faCcAmex, faCreditCard, faAddressCard, faSearch, faSignInAlt, faFileInvoice, faBoxes, faTruckLoading)
+        library.add(faEye, faEyeSlash, faPlusCircle, faWindowClose, faBell, faUser, faEdit, faTrashAlt,  faCcVisa, faCcMastercard, faCcAmex, faCreditCard, faAddressCard, faSearch, faSignInAlt, faFileInvoice, faBoxes, faTruckLoading, faTimes)
     }
       
     componentWillUnmount() {

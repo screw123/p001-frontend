@@ -3,7 +3,17 @@ import styled from 'styled-components'
 
 import { FieldDiv, FieldLabel, ErrorLabel } from './Formik-Basic.js'
 import { LoadingIcon } from '../component/Loading.js'
-import Select, { components } from 'react-select'
+import Select from 'react-select'
+
+/*
+MultiSelect is designed to minimize user's effort to interact with the app.
+If no. of options <=3, we just lay out all options on screen and let user change with 1 click.
+
+If options >3, we think it will be too crowded on screen so we group them up.
+Currently we think we should use a dropdown box.  
+
+*/
+
 
 const RadioBlockGroup = styled.div`
     box-sizing:border-box;
@@ -58,12 +68,15 @@ export const MultiSelect = ({
     field: { name, value, ...fields },
     form: { setFieldValue },
     touched, classNames, err, options, disabled, label, multiSelect, isLoading, hidden, customOption, customMultiValueLabel, customSingleValueLabel, defaultValue, placeholder, isClearable, isSearchable, backspaceRemovesValue, ...props }) => {
-    /*  Radio by default, will change to select if options > 3
-        if multi-select, will change radio to checkbox
+    /*  Radio by default,
+        if options > 3,  will change to dropdown
+        if multiSelect, will change radio to checkbox
         field.name = internal name used by code
         label = text label shown on form
         defaultValue = value or [value]
-        options = [{value, label}]  */
+        options = [{value, label}]
+        customOption: A custom render of options can be supplied as props
+    */
     
     let customComponentsMS = {}
     if (customOption) {customComponentsMS['Option'] = customOption}
@@ -72,6 +85,15 @@ export const MultiSelect = ({
 
     if (hidden) 
         return null
+    if (isLoading) {
+        return (
+            <FieldDiv className={classNames}>
+                <FieldLabel>{label}</FieldLabel>
+                <LoadingIcon />
+            </FieldDiv>
+        )
+    }
+    //className using here is a big exception.  This is only for comply with Formik.  Remove this when we move away from Formik
     else if (options.length===0) {
         return(
             <FieldDiv className={classNames}>
@@ -80,6 +102,8 @@ export const MultiSelect = ({
             </FieldDiv>
         )
     }
+
+    // if we have more than 3 options, we just get lazy and wrap the whole component in react-select.  We should replace this with our current setup in future releases.
     else if (options.length>3) {
         return (
         <FieldDiv className={classNames}>
@@ -92,7 +116,6 @@ export const MultiSelect = ({
                 }
                 isDisabled={disabled}
                 isLoading={isLoading}
-                isSearchable={true}
                 isMulti={multiSelect}
                 isSearchable={isSearchable}
                 isClearable={isClearable}
@@ -113,18 +136,23 @@ export const MultiSelect = ({
             {err && <ErrorLabel>{err}</ErrorLabel> }
         </FieldDiv>
     )}
-    else { //pending: components
+
+
+    else { 
         let items = []
         for(let i=0; i<options.length;i++) {
             
             let isSelected
-            if (isLoading) {return <LoadingIcon />}
-            if (multiSelect) { isSelected = (value.find(v => {
-                return (v===options[i].value)
-            }) !== undefined) }
-            else { 
-                isSelected = (options[i].value === value) }
-
+            
+            //determine if this option is selected
+            if (multiSelect) { 
+                isSelected = (value.find(v => {
+                    return (v===options[i].value)
+                }) !== undefined)
+            }
+            else { isSelected = (options[i].value === value) }
+            
+            //If the whole MultiSelect is disabled, render a disabled view of a particular option
             if (disabled) {
                 if (customOption) {
                     items.push(customOption({

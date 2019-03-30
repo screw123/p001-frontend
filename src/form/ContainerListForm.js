@@ -76,10 +76,10 @@ export default class ContainerListForm extends React.Component {
                     this.toggleContainerDetailsModal(data)
                 }}
                 content={<React.Fragment>
-					<DocLine.Status t={status} color={getContainerStatusColor} float='right' />
-                    <DocLine.DateTime l='Box Rental Date' t={createDateTime} />
-                    <DocLine.ID l='Record Number' t={_id} />
-					<DocLine.DocType t={docType} float='right' />
+					<DocLine.Status text={status} color={getContainerStatusColor} float='right' />
+                    <DocLine.DateTime label='Box Rental Date' t={createDateTime} />
+                    <DocLine.ID label='Record Number' text={_id} />
+					<DocLine.DocType text={docType} float='right' />
                 </React.Fragment>}
             />
         )

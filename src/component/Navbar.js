@@ -22,7 +22,11 @@ import {
 	DashMenuContainer,
 	PrimaryMenuDiv,
 	MobileMenu,
-	MobileMenuItem
+	MobileMenuItem,
+	MobileMenuLink,
+	MobilePrimaryWrapper,
+	MobileSectionDiv,
+	MobileSecondaryWrapper
 } from "./NavbarStyles"
 
 const genMenu = ({g, c, routes, isFrontMenu, isPrimaryMenu}) => {
@@ -147,26 +151,53 @@ const genMobileMenu = ({g, c, routes}) => {
 		//primaryMenu = fillMobileMenu({g:g, c:c, nodes: n, allNodes: routes})
 	}
 
-	return <><div>{primaryMenu}</div><div>{secondaryMenu}</div></>
+	return <><MobilePrimaryWrapper>{primaryMenu}</MobilePrimaryWrapper><MobileSecondaryWrapper>{secondaryMenu}</MobileSecondaryWrapper></>
 
 }
 
-const fillMobileMenu = ({g, c, nodes, allNodes}) => {
+const fillMobileMenu = ({parentId, g, c, nodes, allNodes}) => {
 	let arr = []
 	for (let i = 0; i < nodes.length; i++) {
-		console.log(nodes[i])
-		arr.push(<MobileMenuItem>{c.t(nodes[i].menuName)}</MobileMenuItem>)
-/*
-		//if have path, means it's a link.  Link should not have 2nd level menu
+
+		//if no path, means it's just category name.  
 		if (!nodes[i].path) {
+			let arr_2 = []
+			arr_2.push(<MobileMenuItem key={nodes[i].navbar.itemId} color='#fff'>{c.t(nodes[i].menuName)}</MobileMenuItem>)
+
 			const children = allNodes
 				.filter(v => v.navbar.parentId === nodes[i].navbar.itemId)
 				.sort((a, b) => a.navbar.itemId - b.navbar.itemId)
 
-			for (let j = 0; j < children.length; i++) {
-				arr.push(<MobileMenuItem secondLevel>{c.t(children[j].name)}</MobileMenuItem>)
+			for (let j = 0; j < children.length; j++) {
+				if (children[j].navbar.showAfterLogin) {
+					arr_2.push(
+						<MobileMenuLink
+							secondLevel
+							to={children[j].linkURL || children[j].path}
+							color='#fff'
+							key={children[j].navbar.itemId}
+						>
+							{c.t(children[j].menuName)}
+						</MobileMenuLink>
+					)
+				}
 			}
-		}*/
+			arr.push(<MobileSectionDiv>{arr_2}</MobileSectionDiv>)
+		}
+		//if have path, means it's a link.  Link should not have 2nd level menu
+		else {
+			arr.push(
+				<MobileSectionDiv>
+					<MobileMenuLink
+						key={nodes[i].navbar.itemId}
+						color='#fff'
+						to={nodes[i].linkURL || nodes[i].path}
+					>
+						{c.t(nodes[i].menuName)}
+					</MobileMenuLink>
+				</MobileSectionDiv>
+			)
+		}
 	}
 	return arr
 }

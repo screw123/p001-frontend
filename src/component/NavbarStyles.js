@@ -28,7 +28,7 @@ export const PrimaryMenuDiv = styled.div`
 		grid-template-rows: 3rem auto;
 		grid-template-columns: 7.75rem auto;
 	}
-	overflow: hidden;
+	overflow: ${({mobileMenuExpand})=>mobileMenuExpand? 'auto': 'hidden'};
 `
 
 
@@ -193,13 +193,49 @@ export const MobileMenuWrapper = styled.div`
 export const MobileMenuButton = styled(({isMenuOpen,  ...props }) => <FontAwesomeIcon icon={isMenuOpen? faTimes: faAlignJustify} />)``
 
 export const MobileMenu = styled.div`
-	margin: 5rem 2rem;
+	grid-column: 1 / span 2;
+	margin: 2rem 0;
+	display: grid;
+	grid-template-rows: auto
+	
 `
 
 export const MobileMenuItem = styled.div`
-	font-size: ${({secondLevel})=>secondLevel? '0.9rem': '1rem'};
+	font-size: ${({secondLevel})=>secondLevel? '1rem': '1.1rem'};
+	padding: 0.2rem ${({secondLevel})=>secondLevel? '1rem': '0'};
+	${({color})=>color? 'color:'+color : ''}
+	font-weight: 500;
+	display: block;
+`
+
+export const MobileMenuLink = styled(({children, color, ...props})=>(
+	<Link {...props}>
+		{children}
+	</Link>
+
+))`
+display: block;
+	${({color})=>color? 'color:'+color : ''}
+	font-size: ${({secondLevel})=>secondLevel? '1rem': '1.2rem'};
 	padding: 0.2rem ${({secondLevel})=>secondLevel? '1rem': '0'};
 `
+
+export const MobilePrimaryWrapper = styled.div`
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+	grid-gap: 0.25rem 0.25rem;
+`
+
+export const MobileSectionDiv = styled.div`
+	display: block;
+`
+
+export const MobileSecondaryWrapper = styled.div`
+	display: flex;
+	flex-flow: column wrap;
+	align-content: center;
+`
+
 
 /*
 export const MobileMenuBar = styled.div`

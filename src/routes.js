@@ -66,6 +66,24 @@ const routes = [
 		}
 	},
 	{
+		menuName: "Move Your Box",
+		navbar: {
+			itemId: 200,
+			firstLevel: true,
+			showBeforeLogin: false,
+			showAfterLogin: true
+		}
+	},
+	{
+		menuName: "Records",
+		navbar: {
+			itemId: 400,
+			firstLevel: true,
+			showBeforeLogin: false,
+			showAfterLogin: true
+		}
+	},
+	{
 		path: "/dash",
 		menuName: "Dashboard",
 		component: UserDashboardPage,
@@ -102,8 +120,7 @@ const routes = [
 		component: TermsAndConditionPage,
 		navbar: {
 			itemId: 701,
-			parentId: 100,
-			firstLevel: false,
+			firstLevel: true,
 			showBeforeLogin: false,
 			showAfterLogin: true
 		},
@@ -192,7 +209,7 @@ const routes = [
 		menuName: "Quotation",
 		component: QuotationPage,
 		navbar: {
-			itemId: 301,
+			itemId: 801,
 			firstLevel: true,
 			showBeforeLogin: true,
 			showAfterLogin: true
@@ -251,11 +268,11 @@ const routes = [
 	},
 	{
 		path: "/ROList",
-		menuName: "Box Rental Record",
+		menuName: "Rental Record",
 		component: ROListPage,
 		navbar: {
-			itemId: 201,
-			parentId: 100,
+			itemId: 401,
+			parentId: 400,
 			firstLevel: false,
 			showBeforeLogin: false,
 			showAfterLogin: true
@@ -269,8 +286,8 @@ const routes = [
 		menuName: "Box Rental Details",
 		component: RODetailsPage,
 		navbar: {
-			itemId: 202,
-			parentId: 100,
+			itemId: 402,
+			parentId: 400,
 			firstLevel: false,
 			showBeforeLogin: false,
 			showAfterLogin: false
@@ -284,8 +301,8 @@ const routes = [
 		menuName: "Send Box To Wisekeep",
 		component: AddPickUpOrderPage,
 		navbar: {
-			itemId: 301,
-			parentId: 100,
+			itemId: 201,
+			parentId: 200,
 			firstLevel: false,
 			showBeforeLogin: false,
 			showAfterLogin: true
@@ -299,8 +316,8 @@ const routes = [
 		menuName: "Get your stuff",
 		component: AddDeliveryOrderPage,
 		navbar: {
-			itemId: 302,
-			parentId: 100,
+			itemId: 202,
+			parentId: 200,
 			firstLevel: false,
 			showBeforeLogin: false,
 			showAfterLogin: true
@@ -311,11 +328,11 @@ const routes = [
 	},
 	{
 		path: "/PUODOList",
-		menuName: "Box Movement Record",
+		menuName: "Movement Record",
 		component: PUODOListPage,
 		navbar: {
-			itemId: 303,
-			parentId: 100,
+			itemId: 411,
+			parentId: 400,
 			firstLevel: false,
 			showBeforeLogin: false,
 			showAfterLogin: true
@@ -342,7 +359,7 @@ const routes = [
 		menuName: "Box Movement Details (Pick Up)",
 		component: PUODetailsPage,
 		navbar: {
-			itemId: 304,
+			itemId: 412,
 			parentId: 100,
 			firstLevel: false,
 			showBeforeLogin: false,
@@ -357,7 +374,7 @@ const routes = [
 		menuName: "Box Movement Details (Delivery)",
 		component: DODetailsPage,
 		navbar: {
-			itemId: 305,
+			itemId: 413,
 			parentId: 100,
 			firstLevel: false,
 			showBeforeLogin: false,
@@ -372,9 +389,8 @@ const routes = [
 		menuName: "All your stuffs",
 		component: ContainerListPage,
 		navbar: {
-			itemId: 401,
-			parentId: 100,
-			firstLevel: false,
+			itemId: 501,
+			firstLevel: true,
 			showBeforeLogin: false,
 			showAfterLogin: true
 		},

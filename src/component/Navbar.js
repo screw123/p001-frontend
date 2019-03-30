@@ -145,7 +145,7 @@ const genMobileMenu = ({g, c, routes, setMenuClose}) => {
 	}
 	else {
 		const n = firstLevelNode.filter(v => v.navbar.showBeforeLogin)
-		primaryMenu = fillMobileMenu({g:g, c:c, nodes: n, allNodes: routes, setMenuClose: setMenuClose})
+		secondaryMenu = fillMobileMenu({g:g, c:c, nodes: n, allNodes: routes, setMenuClose: setMenuClose})
 	}
 
 	return <><MobilePrimaryWrapper>{primaryMenu}</MobilePrimaryWrapper><MobileSecondaryWrapper>{secondaryMenu}</MobileSecondaryWrapper></>

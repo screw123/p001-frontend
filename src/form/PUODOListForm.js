@@ -81,10 +81,10 @@ export default class PUODOListForm extends React.Component {
                     toggleModel(data)
                 }}
                 content={<div>
-					<DocLine.Status t={status} color={getPUODOStatusColor} float='right' />
-                    <DocLine.DateTime l='Box Rental Date' t={createDateTime} />
-                    <DocLine.ID l='Record Number' t={_id} />
-					<DocLine.DocType t={docType} float='right' />
+					<DocLine.Status text={status} color={getPUODOStatusColor} float='right' />
+                    <DocLine.DateTime label='Box Rental Date' text={createDateTime} />
+                    <DocLine.ID label='Record Number' text={_id} />
+					<DocLine.DocType text={docType} float='right' />
                 </div>}
             />
         )

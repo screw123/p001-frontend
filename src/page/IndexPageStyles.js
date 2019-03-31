@@ -97,8 +97,11 @@ export const Card = styled.div`
 
 export const CardImage = styled.div`
 	flex: 0 0 60%;
-	background: ${props => `url(${props.image}) no-repeat`};
-	background-size: 100% 100%;
+	background: ${props => `url(${props.image}) no-repeat center`};
+	background-size: 50% 50%;
+	background-color: #f44d80;
+	border-bottom-left-radius: 50% 10%;
+	border-bottom-right-radius: 50% 10%;
 	@media (min-width: 1025px) and (max-width: 1200px) {
 		flex: 0 0 50%;
 	}
@@ -141,7 +144,7 @@ export const CardsTwoRow = styled.div`
 	flex-flow: row wrap;
 	justify-content: center;
 	align-items: center;
-	@media (max-width: 1024px) {
+	@media (max-width: 1100px) {
 		margin: 1rem 0;
 		flex-direction: column;
 	}
@@ -151,6 +154,11 @@ export const CardTwo = styled.div`
 	display: flex;
 	margin: 1rem 0;
 	flex: 1;
+	@media (max-width: 1100px) {
+		background-color: white;
+		border-radius: 1rem;
+		box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.5);
+	}
 `
 
 export const CardTwoImage = styled.div`
@@ -160,11 +168,17 @@ export const CardTwoImage = styled.div`
 	min-height: 8rem;
 	width: 8rem;
 	height: 8rem;
-	background: ${props => `url(${props.image}) no-repeat`};
-	background-size: 100% 100%;
+	background: ${props => `url(${props.image}) no-repeat center`};
+	background-size: 80% 80%;
+	@media (min-width: 1101px) {
+		background-color: white;
+		border-radius: 1rem;
+		box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.5);
+	}
 `
 
 export const CardTwoContent = styled.div`
+	margin: auto;
 	padding: 0rem 1rem;
 `
 

@@ -43,7 +43,7 @@ class IndexPage extends React.Component {
 						</Text>
 						<Styles.CardsRow>
 							<Styles.Card>
-								<Styles.CardImage image='/card-wave-1.png' />
+								<Styles.CardImage image='/images/ico-boxLine.svg' />
 								<Styles.CardContent>
 									<Text color='#787F84' align='center'>
 										{c.t('We send you boxes')}
@@ -60,7 +60,7 @@ class IndexPage extends React.Component {
 							</Styles.Card>
 
 							<Styles.Card>
-								<Styles.CardImage image='/card-wave-2.png' />
+								<Styles.CardImage image='/images/ico-pickUp.svg' />
 								<Styles.CardContent>
 									<Text color='#787F84' align='center'>
 										{c.t(
@@ -79,7 +79,7 @@ class IndexPage extends React.Component {
 							</Styles.Card>
 
 							<Styles.Card>
-								<Styles.CardImage image='/card-wave-3.png' />
+								<Styles.CardImage image='/images/ico-phone.svg' />
 								<Styles.CardContent>
 									<Text color='#787F84' align='center'>
 										{c.t('We send you your stuff when you need it')}
@@ -96,7 +96,7 @@ class IndexPage extends React.Component {
 							</Styles.Card>
 
 							<Styles.Card>
-								<Styles.CardImage image='/card-wave-4.png' />
+								<Styles.CardImage image='/images/ico-upbox.svg' />
 								<Styles.CardContent>
 									<Text color='#787F84' align='center'>
 										{c.t('Enjoy your stuff again')}
@@ -124,7 +124,7 @@ class IndexPage extends React.Component {
 
 						<Styles.CardsTwoRow>
 							<Styles.CardTwo>
-								<Styles.CardTwoImage image='/icon-furniture.png' />
+								<Styles.CardTwoImage image='/images/ico-couch.svg' />
 								<Styles.CardTwoContent>
 									<Styles.TextBig>{c.t('Save Space')}</Styles.TextBig>
 									<Text color='#787F84' align='left'>
@@ -139,7 +139,7 @@ class IndexPage extends React.Component {
 							</Styles.CardTwo>
 
 							<Styles.CardTwo>
-								<Styles.CardTwoImage image='/icon-security.png' />
+								<Styles.CardTwoImage image='/images/ico-lock.svg' />
 								<Styles.CardTwoContent>
 									<Styles.TextBig>{c.t('Security')}</Styles.TextBig>
 									<Text color='#787F84' align='left'>
@@ -154,7 +154,7 @@ class IndexPage extends React.Component {
 							</Styles.CardTwo>
 
 							<Styles.CardTwo>
-								<Styles.CardTwoImage image='/icon-temperature.png' />
+								<Styles.CardTwoImage image='/images/ico-temp.svg' />
 								<Styles.CardTwoContent>
 									<Styles.TextBig>{c.t('Climate Control')}</Styles.TextBig>
 									<Text color='#787F84' align='left'>
@@ -181,6 +181,10 @@ class IndexPage extends React.Component {
 								{c.t(
 									'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate'
 								)}
+							</Text>
+
+							<Text color='#787F84' align='left'>
+								{c.t('Select the payment method')}
 							</Text>
 						</Background>
 					</Styles.PlanContent>

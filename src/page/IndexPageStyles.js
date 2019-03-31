@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRight, faStar } from '@fortawesome/free-solid-svg-icons'
 
 export const TopSection = styled.div`
 	position: relative;
@@ -45,7 +45,7 @@ export const Banner = () => (
 )
 
 export const Section = styled.div`
-	padding: ${props => (props.top ? '5rem  0' : '0 0 5rem')};
+	padding: ${props => (props.top ? '3rem  0' : '0 0 3rem')};
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -138,7 +138,7 @@ export const RightIcon = styled(({ ...props }) => <FontAwesomeIcon icon={faArrow
 
 //CardTwo
 export const CardsTwoRow = styled.div`
-	margin: 3rem 0;
+	margin: 2rem 0;
 	width: 100%;
 	display: flex;
 	flex-flow: row wrap;
@@ -163,7 +163,6 @@ export const CardTwo = styled.div`
 
 export const CardTwoImage = styled.div`
 	align-self: center;
-	// width and height same as image size
 	min-width: 8rem;
 	min-height: 8rem;
 	width: 8rem;
@@ -195,12 +194,176 @@ export const PlanSection = styled.div`
 `
 
 export const PlanImage = styled.div`
-	width: 30%;
+	flex-basis: 30%;
 	min-height: 50rem;
 	background: url('img-wisekeep-box.png');
 	background-size: cover;
+	@media (max-width: 1250px) {
+		flex-basis: 25%;
+	}
+	@media (max-width: 1160px) {
+		flex-basis: 20%;
+	}
+	@media (max-width: 1085px) {
+		flex-basis: 15%;
+	}
+	@media (max-width: 950px) {
+		flex-basis: 0%;
+		min-height: 0;
+	}
+`
+export const ProgressImage = styled.div`
+	margin: 1rem 0;
+	align-self: center;
+	width: 100%;
+	height: 2.15rem;
+	background: ${props => `url(${props.image}) no-repeat center`};
+	background-size: 100% 100%;
+`
+export const PlanContent = styled.div`
+	flex-grow: 1;
+	padding: 3rem 6rem;
+	margin: auto;
+	@media (max-width: 1024px) {
+		padding: 2rem;
+	}
+	@media (max-width: 768px) {
+		padding: 1.75rem 1rem;
+	}
 `
 
-export const PlanContent = styled.div`
-	width: 70%;
+export const PlanFooter = styled.div`
+	display: flex;
+	flex-flow: column wrap;
+`
+export const NextButton = styled.div`
+	align-self: flex-end;
+	padding: 1rem 0;
+	@media (max-width: 950px) {
+		align-self: center;
+	}
+`
+
+//CardThree (breakpoin at 950px)
+export const CardsThreeRow = styled.div`
+	margin: 1rem 0;
+	width: 100%;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+	align-items: center;
+	@media (max-width: 950px) {
+		flex-direction: column;
+	}
+`
+
+export const CardThree = styled.div`
+	display: flex;
+	flex-flow: column wrap;
+	margin: 1rem;
+	flex: 1;
+	background-color: white;
+	border-radius: 1rem;
+	box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.5);
+	@media (max-width: 950px) {
+		flex-flow: row wrap;
+		width: 100%;
+		margin: 1rem 0;
+	}
+`
+
+export const CardThreeImage = styled.div`
+	margin: 1.5rem 2rem;
+	align-self: center;
+	min-width: 8rem;
+	min-height: 8rem;
+	width: 8rem;
+	height: 8rem;
+	background: ${props => `url(${props.image}) no-repeat center`};
+	background-size: 100% 100%;
+	@media (max-width: 950px) {
+		min-width: 4rem;
+		min-height: 4rem;
+		width: 4rem;
+		height: 4rem;
+		margin: 1rem 1rem 1rem 2rem;
+	}
+`
+
+export const CardThreeContent = styled.div`
+	margin: auto;
+	padding: 0rem 1rem;
+	@media (max-width: 950px) {
+		margin: auto 0;
+	}
+`
+
+export const TextPlan = styled.div`
+	color: #787f84;
+	font-size: 1.5rem;
+	font-weight: bold;
+	line-height: 1.5rem;
+	padding: 1rem;
+`
+
+//Review Section
+export const ReviewSection = styled.div`
+	display: flex;
+	flex-direction: column;
+	background: #f3f3f3;
+	padding: 3rem 6rem;
+	margin: auto;
+	@media (max-width: 1024px) {
+		padding: 2rem;
+	}
+	@media (max-width: 768px) {
+		padding: 1.75rem 1rem;
+	}
+`
+
+//Card Four
+export const CardsFourRow = styled.div`
+	margin: 2rem 0;
+	width: 100%;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+	align-items: center;
+	@media (max-width: 1100px) {
+		margin: 1rem 0;
+		flex-direction: column;
+	}
+`
+
+export const CardFour = styled.div`
+	display: flex;
+	margin: 1rem;
+	flex: 1;
+	background-color: white;
+	border-radius: 1rem;
+	&:hover {
+		box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.5);
+	}
+`
+
+export const Stars = styled.div`
+	color: #ffda01;
+`
+
+export const StarIcon = styled(({ ...props }) => <FontAwesomeIcon icon={faStar} />)``
+
+export const CardFourImage = styled.div`
+	align-self: center;
+	min-width: 8rem;
+	min-height: 8rem;
+	width: 8rem;
+	height: 8rem;
+	background: ${props => `url(${props.image}) no-repeat center`};
+	background-size: 80% 80%;
+`
+
+export const CardFourContent = styled.div`
+	padding: 1rem;
+	display: flex;
+	flex-direction: column;
 `

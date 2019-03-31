@@ -6,7 +6,8 @@ import {
 	ContrastedCTAButton,
 	HeaderWithBar,
 	Text,
-	ClickableText
+	ClickableText,
+	Button
 } from '../component/BasicComponents.js'
 import { BigLoadingScreen } from '../component/Loading.js'
 
@@ -175,20 +176,88 @@ class IndexPage extends React.Component {
 				<Styles.PlanSection>
 					<Styles.PlanImage />
 					<Styles.PlanContent>
-						<Background>
-							<HeaderWithBar color='#787F84'>{c.t('Choose Your Plan')}</HeaderWithBar>
-							<Text color='#787F84' align='left'>
-								{c.t(
-									'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate'
-								)}
-							</Text>
+						<HeaderWithBar color='#787F84'>{c.t('Choose Your Plan')}</HeaderWithBar>
+						<Text color='#787F84' align='left'>
+							{c.t(
+								'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate'
+							)}
+						</Text>
 
+						<Styles.ProgressImage image='/images/line.svg' />
+
+						<Text color='#787F84' align='left'>
+							{c.t('Select the payment method')}
+						</Text>
+
+						<Styles.CardsThreeRow>
+							<Styles.CardThree>
+								<Styles.CardThreeImage image='/images/ico-calendarDay.svg' />
+								<Styles.CardThreeContent>
+									<Styles.TextPlan>{c.t('Daily')}</Styles.TextPlan>
+								</Styles.CardThreeContent>
+							</Styles.CardThree>
+
+							<Styles.CardThree>
+								<Styles.CardThreeImage image='/images/ico-calendarMonth.svg' />
+								<Styles.CardThreeContent>
+									<Styles.TextPlan>{c.t('Monthly')}</Styles.TextPlan>
+								</Styles.CardThreeContent>
+							</Styles.CardThree>
+
+							<Styles.CardThree>
+								<Styles.CardThreeImage image='/images/ico-calendarYear.svg' />
+								<Styles.CardThreeContent>
+									<Styles.TextPlan>{c.t('Annual')}</Styles.TextPlan>
+								</Styles.CardThreeContent>
+							</Styles.CardThree>
+						</Styles.CardsThreeRow>
+
+						<Styles.PlanFooter>
+							{/* Put checkbox here */}
 							<Text color='#787F84' align='left'>
-								{c.t('Select the payment method')}
+								{c.t('I agree with the terms and conditions')}
 							</Text>
-						</Background>
+							<Styles.NextButton>
+								<Button>{c.t('Next')}</Button>
+							</Styles.NextButton>
+						</Styles.PlanFooter>
 					</Styles.PlanContent>
 				</Styles.PlanSection>
+
+				{/* Review Section */}
+				<Styles.ReviewSection>
+					<HeaderWithBar color='#787F84'>
+						{c.t('Loved by businesses and individuals')}
+					</HeaderWithBar>
+
+					<Styles.CardsFourRow>
+						<Styles.Stars>
+							{[...Array(5)].map(i => (
+								<Styles.StarIcon />
+							))}
+						</Styles.Stars>
+						<Styles.CardFour>
+							<Styles.CardThreeImage image='/images/ico-calendarDay.svg' />
+							<Styles.CardThreeContent>
+								<Styles.TextPlan>{c.t('Daily')}</Styles.TextPlan>
+							</Styles.CardThreeContent>
+						</Styles.CardFour>
+
+						<Styles.CardFour>
+							<Styles.CardThreeImage image='/images/ico-calendarMonth.svg' />
+							<Styles.CardThreeContent>
+								<Styles.TextPlan>{c.t('Monthly')}</Styles.TextPlan>
+							</Styles.CardThreeContent>
+						</Styles.CardFour>
+
+						<Styles.CardFour>
+							<Styles.CardThreeImage image='/images/ico-calendarYear.svg' />
+							<Styles.CardThreeContent>
+								<Styles.TextPlan>{c.t('Annual')}</Styles.TextPlan>
+							</Styles.CardThreeContent>
+						</Styles.CardFour>
+					</Styles.CardsFourRow>
+				</Styles.ReviewSection>
 			</div>
 		)
 	}

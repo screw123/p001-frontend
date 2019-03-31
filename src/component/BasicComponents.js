@@ -160,7 +160,6 @@ export const CTAButton = styled(Button)`
 		!props.disabled
 			? `rgba(128, 128, 128, 0.2)`
 			: `linear-gradient(180deg, #F43EA6 0%, #F5576C 100%)`};
-	color: ${props => (!props.disabled ? '#888' : ' white')};
 	cursor: pointer;
 `
 

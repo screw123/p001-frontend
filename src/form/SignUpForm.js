@@ -183,7 +183,10 @@ class SignUpForm extends React.Component {
                                 checked={values.agreeTerms===true}
                                 err={c.t(errors.agreeTerms)}
                             >
-                                
+                                {c.t("I have already review and agree on")}
+                                <ClickableText onClick={this.toggleShowTC}>
+                                        {c.t('Terms of Condition')}
+                                </ClickableText>
                             </Field>
                             
                             <FormErr>{status && status.form}</FormErr>

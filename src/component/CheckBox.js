@@ -44,7 +44,7 @@ const StyledCheckbox = styled.div`
 const CheckBox = ({ 
   field: { name, ...field},
   form: {setFieldValue, ...form},
-  className, checked, ...props }) => (
+  className, checked, children, ...props }) => (
   <CheckboxContainer className={className}>
     <HiddenCheckbox checked={checked} {...props} {...field} />
     <StyledCheckbox checked={checked} onClick={(e)=>setFieldValue(name, !checked)}>
@@ -52,6 +52,7 @@ const CheckBox = ({
         <polyline points="20 6 9 17 4 12" />
       </Icon>
     </StyledCheckbox>
+    {children}
   </CheckboxContainer>
 )
 

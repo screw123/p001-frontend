@@ -117,9 +117,17 @@ export const Header2 = styled(Text)`
 	}
 `
 
-export const ClickableText = styled(Text)`
+export const ClickableText = styled.span`
 	font-weight: 600;
 	cursor: pointer;
+	font-size: 1rem;
+	line-height: 1.5rem;
+	padding: 0 0.2rem 0 0.2rem;
+	color: ${props => props.color? props.color: '#888'};
+	@media (max-width: 768px) {
+		font-size: 0.85rem;
+		line-height: 1.1rem;
+	}
 `
 
 

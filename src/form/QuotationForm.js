@@ -78,7 +78,6 @@ class Quotation extends React.Component {
     }
 
     transformPriceList = (d) => { //to transform a single priceList
-        console.time('transformPriceList')
         let p = d.getPriceListByAccount
         if (p===undefined) { p = d.getPriceListByCode }
         const result = {}
@@ -93,12 +92,10 @@ class Quotation extends React.Component {
             pricing[itemCode]['mode'][rentMode][duration] = omit(p[i], ['__typename', 'SKU_id', 'code', 'rentMode', 'duration'])
             merge(result, pricing)
         }
-        console.timeEnd('transformPriceList')
         return result
     }
     
     /*transformPriceListMulti = (p) => { //to transform a multiple priceList
-        console.time('transformPriceListMulti')
         console.log(p)
         const result = {}
         for(let i = 0; i<p.length;i++){
@@ -114,7 +111,6 @@ class Quotation extends React.Component {
             pricing[priceList][itemCode]['mode'][rentMode][duration] = omit(p[i], ['__typename', 'SKU_id', 'code', 'rentMode', 'duration'])
             merge(result, pricing)
         }
-        console.timeEnd('transformPriceListMulti')
         return result
     }*/
     

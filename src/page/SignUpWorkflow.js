@@ -1,12 +1,11 @@
 import React from "react"
-
+import styled from 'styled-components'
 import SignUpForm from '../form/SignUpForm.js'
 import UserActivationForm from '../form/UserActivationForm.js'
 import LoginForm from '../form/LoginForm.js'
 
-import {Background} from '../component/BasicComponents.js'
 import {BigLoadingScreen } from '../component/Loading.js'
-
+import { Background, ContrastedCTAButton, Header, Text, AccentedTwinCard, TwinCardChild, AccentedTwinCardChild } from '../component/BasicComponents.js'
 import { Redirect } from "react-router-dom"
 
 /*
@@ -42,6 +41,13 @@ import { Redirect } from "react-router-dom"
     Yes -- > (6)
 */
 
+const Right = TwinCardChild
+const Left = styled(AccentedTwinCardChild)`
+	@media (max-width: 768px) {
+		display: none;
+	}
+`
+
 class SignUpWorkflow extends React.Component {
     constructor(props) {
         super(props)
@@ -52,16 +58,21 @@ class SignUpWorkflow extends React.Component {
             accountCreated: false,
             userVerified: false,
             loading: false,
-            errMsg: undefined
+            errMsg: undefined,
+            redirectTo: undefined,
+            passOnState: {}
         }
         this.onUserCreated=this.onUserCreated.bind(this)
         this.onAccountCreated=this.onAccountCreated.bind(this)
         this.onUserVerified = this.onUserVerified.bind(this)
+        this.redirectTo = this.redirectTo.bind(this)
     }
 
     onUserCreated = (user) => this.setState({user: user, userCreated: true})
     onAccountCreated = (account) => this.setState({account: account, accountCreated: true})
     
+    redirectTo = (path, state) => this.setState({redirectTo: path, passOnState: state})
+
     onUserVerified = async (uid) => {
         //set userVerified, so whole workflow goes to stage 3
         console.log('onUserVerified called')
@@ -98,34 +109,57 @@ class SignUpWorkflow extends React.Component {
         if (g.state.isLogined) {
             return <Redirect to={{pathname: nextPath, state: passOnState}} />
         }
+        if (this.state.redirectTo) {
+			return ( <Redirect to={{ pathname: this.state.redirectTo, state: { passOnState: this.state.passOnState } }} /> )
+		}
 
         return(
-        <div>
+        <>
             {this.state.loading && <BigLoadingScreen />}
             {!this.state.loading && 
                 <Background>
                     {!(this.state.userCreated) &&
-                        <div>
-                            <h1>{c.t('Sign Up')}</h1>
-                            <SignUpForm onUserCreated={this.onUserCreated} {...this.props} />
-                        </div>
+                        <AccentedTwinCard>
+                            <Left>
+                            <Header color='#fff' align='center'>
+                                    {c.t('Alredy have an account?')}
+                                </Header>
+                                <Text color='#fff' align='center'>
+                                    {c.t('Please login to access all features!')}
+                                </Text>
+                                <ContrastedCTAButton onClick={()=> this.redirectTo('login')}>
+                                    {c.t('Login')}
+                                </ContrastedCTAButton>
+                            </Left>
+
+                            <Right>
+                                <Header>
+                                    {c.t('Sign Up')}
+                                </Header>
+                                <Text>
+                                    {c.t('Start keeping things wisely by let us know a little more about you!')}
+                                </Text>
+                                <SignUpForm onUserCreated={this.onUserCreated} {...this.props} />
+                            </Right>
+                            
+                        </AccentedTwinCard>
                     }
                     {this.state.userCreated && !(this.state.userVerified) &&
-                        <div>
+                        <>
                             <h1>{c.t('User Activation')}</h1>
                             <UserActivationForm match={{params: {}}} user={this.state.user} onVerifySuccess={this.onUserVerified} {...this.props} />
-                        </div>
+                        </>
                     }
                     {this.state.userVerified && !(g.state.isLogined) &&
-                        <div>
+                        <>
                             <h1>{c.t('Please login to continue')}</h1>
                             <LoginForm user={this.state.user} {...this.props} />
-                        </div>
+                        </>
                     }
                 </Background>
             }
             {this.state.errMsg && <p>{c.t(this.state.errMsg)}</p>}
-        </div>
+        </>
 
     )}
 }

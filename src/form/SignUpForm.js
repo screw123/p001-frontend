@@ -1,4 +1,5 @@
 import React from "react"
+
 import { Formik, Field } from 'formik'
 import isMobilePhone from 'validator/lib/isMobilePhone'
 import isEmail from 'validator/lib/isEmail'
@@ -159,7 +160,7 @@ class SignUpForm extends React.Component {
                                 type={(this.state.showPw)? 'text': 'password'}
                                 component={TextField}
                                 label={c.t('Password')}
-                                placeholder={c.t('8 characters with uppercase and lowercase letters')}
+                                remark={c.t('Require 8 characters with uppercase and lowercase letters')}
                                 value={values.password}
                                 err={errors.password}
                                 rightIcon={[<FormIcon icon={(this.state.showPw)? 'eye': 'eye-slash'} key="showPw" onClick={ this.toggleShowPw}/>]}

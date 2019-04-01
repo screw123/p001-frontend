@@ -54,13 +54,13 @@ export const BigCard = styled(Card)`
 
 export const AccentedBigCard = styled.div`
 	min-height: 70vh;
+	height: 40rem;
 	border-radius: 1rem;
 	box-shadow: 6px 6px 48px 3px rgba(230, 29, 110, 0.4);
 `
 
 export const AccentedTwinCard = styled(AccentedBigCard)`
 	display: grid;
-	min-height: 70vh;
 	grid-template-columns: 1fr 1fr;
 	@media (max-width: 768px) {
 		grid-template-columns: auto;

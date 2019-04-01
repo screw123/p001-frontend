@@ -50,11 +50,11 @@ class LoginPage extends React.Component {
 
 					<Right>
 						<Header color='#fff' align='center'>
-							{c.t('Hi, create new account')}
+							{c.t('Create New Account')}
 						</Header>
 						<Text color='#fff' align='center'>
 							{c.t(
-								'Curabitur et rutrum ante, a malesuada felis.Curabitur et rutrum ante, a malesuada felis.'
+								'Create a new account with us and start keeping things wisely'
 							)}
 						</Text>
 						<ContrastedCTAButton onClick={this.redirectToSignUp}>

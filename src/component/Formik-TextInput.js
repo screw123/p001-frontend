@@ -29,11 +29,8 @@ export const InputGroup = styled.div`
     text-overflow: wrap;
     padding: 0.5em;`
 
-const Remark = styled.div`
-	font-size: 0.8rem;
+const Remark = styled(ErrorLabel)`
 	color: #888;
-	text-overflow: wrap;
-	padding: 0.25rem 0 0 1rem;
 `
 
 

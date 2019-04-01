@@ -25,11 +25,10 @@ export const docTypeColor = (docType) =>{
 const Table = styled.div``
 
 const TableCell = styled.div`
-	border-right: 1px solid #CDCDCD;
   color: #787F84;
   font-size: 18px;
   text-align: ${props => (props.left ? 'left' : 'center')};
-  padding: 1.5em 3em;
+  padding: 1em;
   width: calc(100% / 4);
 `
 
@@ -64,18 +63,18 @@ const IDDiv = styled.div`
 	color: #787F84;
 `
 
-const ContainerDisplayGrid = styled.div`
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(${singleContainerDisplaySize}px, 1fr));
-`
-
+const PlainText = ({text, label})=>(
+	<React.Fragment>
+		<TextNoWrap>{c.t(label)}</TextNoWrap>
+		<TextNoWrap>{text}</TextNoWrap>
+	</React.Fragment>
+)
 
 const Text = ({text, label})=>(
 	<TableCell>
 		<TextNoWrap>{c.t(label)}</TextNoWrap>
 		<TextNoWrap>{text}</TextNoWrap>
 	</TableCell>
-
 )
 
 const LongText = ({text, label})=>(
@@ -129,7 +128,9 @@ const Amount = ({text, label})=>(
 )
 
 const DocType = ({text, float})=> (
-	<Tag {...docTypeColor(text)}>{c.t(text)}</Tag>
+	<TableCell>
+		<Tag {...docTypeColor(text)}>{c.t(text)}</Tag>
+	</TableCell>
 )
 
 export const SmallPic = ({text, url, width, height})=>(
@@ -151,14 +152,14 @@ const ContainerSummary = ({docLines}) => {
 	const summaryKeys = Object.keys(summary)
 	for(let i=0;i<summaryKeys.length;i++) {
 		displayCom.push(
-			<TableCell key={summaryKeys[i]+'1'}>
+			<React.Fragment key={summaryKeys[i]+'1'}>
 				<SmallPic url={summary[summaryKeys[i]].URL} width={c.state.defaultHeight*2} height={c.state.defaultHeight*2} />
-				<Text label={summaryKeys[i]} text={summary[summaryKeys[i]].qty} />
-			</TableCell>
+				<PlainText label={summaryKeys[i]} text={summary[summaryKeys[i]].qty} />
+			</React.Fragment>
 		)
 
 	}
-	return (<ContainerDisplayGrid>{displayCom}</ContainerDisplayGrid>)
+	return (<TableCell>{displayCom}</TableCell>)
 
 }
 

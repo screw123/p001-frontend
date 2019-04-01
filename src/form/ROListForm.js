@@ -18,6 +18,7 @@ const InfoListStandardLineStyled = styled(InfoListStandardLine)`
     background-color: #F8F8F8;
   }
     border-radius: 16px;
+    margin: 0 3%;
 `
 
 const TableRow = styled.div`

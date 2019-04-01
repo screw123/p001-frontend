@@ -4,9 +4,11 @@ import { Formik, Field } from 'formik'
 import isMobilePhone from 'validator/lib/isMobilePhone'
 import isEmail from 'validator/lib/isEmail'
 import FormikForm, { TextField, FormButton, FormErr, FormIcon, CheckBox2, MultiSelect } from '../component/FormikForm.js'
+import CheckBox from '../component/CheckBox.js'
+
 import TermsAndConditionPage from '../page/TermsAndConditionPage.js'
 import Modal from '../component/Modal.js'
-import {StraightRow, ClickableText } from '../component/BasicComponents.js'
+import {ClickableText } from '../component/BasicComponents.js'
 
 import isEmpty from 'lodash/isEmpty'
 import pickBy from 'lodash/pickBy'
@@ -174,19 +176,14 @@ class SignUpForm extends React.Component {
                                 options={[{value: 'Email', label: 'Email'}, {value: 'SMS', label: 'SMS'}]}
                             />
                             <Field
-                                component={CheckBox2}
+                                component={CheckBox}
                                 name="agreeTerms"
                                 value="agreeTerms"
                                 key="agreeTerms"
                                 checked={values.agreeTerms===true}
                                 err={c.t(errors.agreeTerms)}
                             >
-                                <div>
-                                    {c.t('I have already review and agree on')}
-                                    <ClickableText onClick={this.toggleShowTC}>
-                                        {c.t('Terms of Condition')}
-                                    </ClickableText>
-                                </div>
+                                
                             </Field>
                             
                             <FormErr>{status && status.form}</FormErr>

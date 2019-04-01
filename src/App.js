@@ -1,6 +1,6 @@
 import React from 'react'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faEye, faEyeSlash, faPlusCircle, faWindowClose, faBell, faUser, faEdit, faTrashAlt, faCreditCard, faSearch, faSignInAlt, faFileInvoice, faBoxes, faTruckLoading } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faEyeSlash, faPlusCircle, faWindowClose, faBell, faUser, faEdit, faTrashAlt, faCreditCard, faSearch, faSignInAlt, faFileInvoice, faBoxes, faTruckLoading, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { faAddressCard } from '@fortawesome/free-regular-svg-icons'
 import { faCcVisa, faCcMastercard, faCcAmex } from '@fortawesome/free-brands-svg-icons'
 import styled from 'styled-components'
@@ -20,21 +20,22 @@ import LocaleApi, {LocaleApiProvider, LocaleApiSubscriber} from './stateContaine
 
 const MainContainer = styled.div`
     display: grid;
-    grid-template-rows: [navbar] auto [navbar2] auto [body] auto [end];
-    grid-template-columns: auto;
+    grid-template-rows: [start] auto [navbar] auto [body] auto [end];
 `
 
 class App extends React.Component {
     constructor(props) {
         super(props)
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this)
+        this.updateWindowPosition = this.updateWindowPosition.bind(this)
     }
 
     componentDidMount() {
         GqlApi.checkLogined()
         this.updateWindowDimensions()
         window.addEventListener('resize', this.updateWindowDimensions)
-        library.add(faEye, faEyeSlash, faPlusCircle, faWindowClose, faBell, faUser, faEdit, faTrashAlt,  faCcVisa, faCcMastercard, faCcAmex, faCreditCard, faAddressCard, faSearch, faSignInAlt, faFileInvoice, faBoxes, faTruckLoading)
+        window.addEventListener('scroll', this.updateWindowPosition)
+        library.add(faEye, faEyeSlash, faPlusCircle, faWindowClose, faBell, faUser, faEdit, faTrashAlt,  faCcVisa, faCcMastercard, faCcAmex, faCreditCard, faAddressCard, faSearch, faSignInAlt, faFileInvoice, faBoxes, faTruckLoading, faTimes)
     }
       
     componentWillUnmount() {
@@ -42,6 +43,7 @@ class App extends React.Component {
     }
 
     updateWindowDimensions = () => LocaleApi.updateWindowDimensions({ width: window.innerWidth, height: window.innerHeight })
+    updateWindowPosition = () => LocaleApi.updateWindowPosition({ scrollTop: window.scrollTop })
 
     genItems = ({routes, stateContainer}) => {
         let c = []
@@ -83,7 +85,7 @@ class App extends React.Component {
                         {((g.state.isLogined===true)||(g.state.isLogined===false)) && <MainContainer>
                             <DummyPassHistory />  {/*Load this to add the history obj into GqpApi state */}
                             {this.genItems({routes: routes, stateContainer: {login: g, i18n: c}})}  {/* Put routes.js all into react-router */}
-                            {(get(g, 'state.history.location.pathname', undefined) !=='/') && <Navbar routes={routes} />}
+                            {(get(g, 'state.history.location.pathname', undefined) !=='/') && <Navbar routes={routes} g={g} c={c} />}
                             {/*<Navbar routes={routes} />   THE ORIGINAL.  USE THIS WHEN GO LIVE Generate NavBar Component */}
                         </MainContainer>}
                         {(!((g.state.isLogined===true)||(g.state.isLogined===false))) && <div>

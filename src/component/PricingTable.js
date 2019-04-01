@@ -7,6 +7,7 @@ import Toggle from './Toggle'
 import {TableHeader} from './TableHeaderStyles'
 
 const TableContainer = styled.div`
+	background-color: white;
   box-shadow: 0 6px 12px 0 rgba(0,0,0,0.5);
   border-radius: 16px;
   margin: 5% 10%;

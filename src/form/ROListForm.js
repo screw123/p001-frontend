@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 import InfoList, {InfoListStandardLine} from '../component/InfoList.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -11,6 +12,18 @@ from '../component/BasicComponents.js'
 
 import DocLine from '../component/DocLine.js'
 import { Redirect } from "react-router-dom"
+
+const InfoListStandardLineStyled = styled(InfoListStandardLine)`
+  ${InfoListStandardLineStyled}:nth-child(odd){
+    background-color: #F8F8F8;
+  }
+    border-radius: 16px;
+`
+
+const TableRow = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+`
 
 /*
 This make use of an array of Rental Order objects supplied as props, and put them together using InfoList.
@@ -56,23 +69,22 @@ export default class ROListForm extends React.Component {
     ROLine = ({rowObj, data, multiSelect}, buttons) => {
         let { _id, billedAmt, status, paidAmt, createDateTime, docLines} = data
         return (
-            <InfoListStandardLine
+            <InfoListStandardLineStyled
                 occupyFullRow={true}
                 multiSelect={multiSelect}
                 key1={rowObj.key}
                 key={rowObj.key}
-                style={rowObj.style}
                 showBottomBorder={true}
                 contentOnClick={e=>{
                     e.preventDefault()
                     this.setRedirect(data)
                 }}
-                content={<div>
-                    <DocLine.Status text={status} color={getROStatusColor} float='right' />
+                content={<TableRow>
                     <DocLine.DateTime label='Box Rental Date' text={createDateTime} />
                     <DocLine.ID label='Record Number' text={_id} />
                     <DocLine.ContainerSummary docLines={docLines} />
-                </div>}
+                    <DocLine.Status text={status} color={getROStatusColor} />
+                </TableRow>}
             />
         )
     }
@@ -95,7 +107,7 @@ export default class ROListForm extends React.Component {
                     const CSSrem = c.state.defaultHeight
 
                     //per field line * 1.5, per container line * 1.25, + 1.5line of buffer
-                    return c.state.defaultHeight*1.5*basic_info_lines + containerSummary_lines*CSSrem*1.25 / Math.floor(width*.95/DocLine.singleContainerDisplaySize) + c.state.defaultHeight*1.5
+                    return c.state.defaultHeight*1.5*basic_info_lines + containerSummary_lines*CSSrem*1.25 / Math.floor(width*.95/DocLine.singleContainerDisplaySize) + c.state.defaultHeight*5
 
                 }}
                 headerText = {

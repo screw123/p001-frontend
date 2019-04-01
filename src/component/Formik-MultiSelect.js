@@ -15,6 +15,11 @@ Currently we think we should use a dropdown box.
 */
 
 
+const SelectStyled = styled(Select)`
+    border-radius: 25px;
+    border-color: red;
+`
+
 const RadioBlockGroup = styled.div`
     display: grid;
     grid-template-rows: auto;
@@ -105,7 +110,7 @@ export const MultiSelect = ({
         return (
         <FieldDiv className={classNames}>
             <FieldLabel>{label}</FieldLabel>
-            <Select
+            <SelectStyled
                 name={name}
                 value={(multiSelect)? 
                     options.filter(v=> (value.find(u=>u===v.value)!==undefined) ) :

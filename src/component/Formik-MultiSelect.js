@@ -16,18 +16,15 @@ Currently we think we should use a dropdown box.
 
 
 const RadioBlockGroup = styled.div`
-    box-sizing:border-box;
     display: grid;
     grid-template-rows: auto;
     grid-template-columns: 33% 34% 33%;
     grid-column-gap: 0.25em;
-    box-sizing:border-box;
     width: 100%
 `
 
 const RadioBlock = styled.div`
     border: 0.1em solid ${props => props.disabled ? `rgba(128, 128, 128, 0.2)` : `White`};
-    border-radius: 0.25em;
     display: block;
     font-size: 0.7em;
     padding: 0.5em;

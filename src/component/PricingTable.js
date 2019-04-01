@@ -3,6 +3,7 @@ import { I18n } from 'react-i18next'
 import styled from 'styled-components'
 import CheckBox from './CheckBox'
 import Radio from './Radio'
+import Toggle from './Toggle'
 import {TableHeader} from './TableHeaderStyles'
 
 const TableContainer = styled.div`
@@ -31,6 +32,7 @@ const TableRow = styled.div`
   text-align: ${props => (props.left ? 'left' : 'center')};
   padding: 1.5em 3em;
   width: calc(100% / 4);
+  position:relative;
 
 	@media all and (max-width: 550px) {
     width: calc(100% / 2);
@@ -42,6 +44,7 @@ const FilterDate = styled(TableRow)`
   padding: 0;
   width: 100%;
 `
+
 
 class PricingTable extends React.Component {
   state = { checked: false }
@@ -75,16 +78,19 @@ class PricingTable extends React.Component {
 						<img src="/images/ico-box.svg" alt=""/>
 						<ItemContainerTitle>Document Box</ItemContainerTitle>
 						<ItemContainerLink>View details</ItemContainerLink>
+						<Toggle></Toggle>
 					</TableRow>
 					<TableRow>
 						<img src="/images/ico-box.svg" alt=""/>
 						<ItemContainerTitle>Document Box</ItemContainerTitle>
 						<ItemContainerLink>View details</ItemContainerLink>
+						<Toggle></Toggle>
 					</TableRow>
 					<TableRow>
 						<img src="/images/ico-box.svg" alt=""/>
 						<ItemContainerTitle>Document Box</ItemContainerTitle>
 						<ItemContainerLink>View details</ItemContainerLink>
+						<Toggle></Toggle>
 					</TableRow>
 				</Table>
 				<TableHeader>

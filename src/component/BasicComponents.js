@@ -145,12 +145,13 @@ export const CTAButton = styled(Button)`
 	padding: 0.75rem 2.5rem;
 	font-size: 1.5rem;
 	min-width: 12rem;
-	background: ${props => !props.disabled ? `rgba(128, 128, 128, 0.2)` : `linear-gradient(180deg, #F43EA6 0%, #F5576C 100%)`};
+	background: ${props => props.disabled ? `rgba(128, 128, 128, 0.2)` : `linear-gradient(180deg, #F43EA6 0%, #F5576C 100%)`};
+	color: #fff;
 `
 
 export const ContrastedCTAButton = styled(CTAButton)`
 	background: ${props => props.disabled ? 'rgba(128, 128, 128, 0.2)' : 'White'};
-	color: ${props => props.disabled ?  '#E61D6E': '#888'};
+	color: ${props => props.disabled ?  '#888': '#E61D6E' };
 `
 
 export const FunctionButton = styled.button`

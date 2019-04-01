@@ -193,10 +193,7 @@ class SignUpForm extends React.Component {
                                 type="submit"
                                 disabled={isSubmitting || !isEmpty(pickBy(errors)) || loading }
                             >
-                                <StraightRow>
-                                    {c.t('Submit')}
-                                    
-                                </StraightRow>
+                                {c.t('Submit')}
                             </FormButton>
                             <Modal
                                 show={this.state.showTC}

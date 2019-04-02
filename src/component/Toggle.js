@@ -14,6 +14,10 @@ const ToggleStyle = styled.div`
   box-shadow: inset 0 0 2px 1px rgba(0,0,0,.05);
   margin-top:10%;
 
+	@media all and (max-width: 740px) {
+  	margin-top:5%;
+	}
+
 	.b {
 	  display: block;
 	}
@@ -27,7 +31,7 @@ const ToggleStyle = styled.div`
 	  width: 100%;
 	  height: 100%;
 	  opacity: 0;
-	  z-index: 6;
+	  z-index: 2;
 	}
 
   .check:checked ~ .track {

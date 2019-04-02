@@ -21,12 +21,12 @@ const FilterPrice= styled.div`
 	color: ${props => (props.checked ? 'white' : '#A6A6A6')};
 `
 
-const Radio = ({text,checked, ...props }) => (
+const Radio = ({name,text,checked, ...props }) => (
   <React.Fragment>
-		<FilterPrice>
+		<FilterPrice checked={checked}>
 	    <label>
-				<HiddenRadio type="radio" {...props}/>
-	      <span style={{ marginLeft: 8 }}>{text}</span>
+				<HiddenRadio checked={checked} type="radio" {...props} name="filter"/>
+	      <span checked={checked} style={{ marginLeft: 8 }}>{text}</span>
 	    </label>
 		</FilterPrice>
   </React.Fragment>

@@ -35,10 +35,21 @@ const TableRow = styled.div`
   width: calc(100% / 4);
   position:relative;
 
-	@media all and (max-width: 550px) {
+	@media all and (max-width: 740px) {
     width: calc(100% / 2);
-}
+    img {
+    	display: none;
+    }
+	}
 `
+
+const TableRowFilters = styled(TableRow)`
+	@media all and (max-width: 740px) {
+		border-bottom: 2px solid #F0F0F0;
+    width: calc(100%);
+	}
+`
+
 const FilterDate = styled(TableRow)`
 	border: 2px solid #F0F0F0;
   border-radius: 16px;
@@ -54,45 +65,53 @@ class PricingTable extends React.Component {
     this.setState({ checked: event.target.checked })
   }
 
+	handleRadioChange = event => {
+    this.setState({ checked: event.target.checked })
+  }
+
+
 
 	render = () => (
 		<React.Fragment>
 			<TableContainer>
 				<Table>
-					<TableRow>
+					<TableRowFilters>
 						<FilterDate>
 		           <Radio
- 		            checked={this.state.checked = true}
+            		checked={this.state.checked}
+		            onChange={this.handleRadioChange}
 	             	text = {'By Day'}
 		         	 />
  		           <Radio
- 		            checked={this.state.checked}
+		            checked={this.state.checked}
+		            onChange={this.handleRadioChange}
 	             	text = {'By Month'}
 		         	 />
  		           <Radio
- 		            checked={this.state.checked}
+		            checked={this.state.checked}
+		            onChange={this.handleRadioChange}
 	             	text = {'By Year'}
 		         	 />
 						</FilterDate>
-					</TableRow>
-					<TableRow>
+					</TableRowFilters>
+					<TableRowFilters>
 						<img src="/images/ico-box.svg" alt=""/>
 						<ItemContainerTitle>Document Box</ItemContainerTitle>
 						<ItemContainerLink>View details</ItemContainerLink>
 						<Toggle></Toggle>
-					</TableRow>
-					<TableRow>
+					</TableRowFilters>
+					<TableRowFilters>
 						<img src="/images/ico-box.svg" alt=""/>
 						<ItemContainerTitle>Document Box</ItemContainerTitle>
 						<ItemContainerLink>View details</ItemContainerLink>
 						<Toggle></Toggle>
-					</TableRow>
-					<TableRow>
+					</TableRowFilters>
+					<TableRowFilters>
 						<img src="/images/ico-box.svg" alt=""/>
 						<ItemContainerTitle>Document Box</ItemContainerTitle>
 						<ItemContainerLink>View details</ItemContainerLink>
 						<Toggle></Toggle>
-					</TableRow>
+					</TableRowFilters>
 				</Table>
 				<TableHeader>
 					Pricing
@@ -151,7 +170,6 @@ class PricingTable extends React.Component {
 		           <CheckBox
 		            checked={this.state.checked}
 		            onChange={this.handleCheckboxChange}
-		            checked
 		         	 />
 		        </label>
 					</TableRow>
@@ -160,7 +178,6 @@ class PricingTable extends React.Component {
 		           <CheckBox
 		            checked={this.state.checked}
 		            onChange={this.handleCheckboxChange}
-		            checked
 		         	 />
 		        </label>
 					</TableRow>
@@ -169,39 +186,6 @@ class PricingTable extends React.Component {
 		           <CheckBox
 		            checked={this.state.checked}
 		            onChange={this.handleCheckboxChange}
-		            checked
-		         	 />
-		        </label>
-					</TableRow>
-				</Table>
-				<Table>
-					<TableRow left>
-						Lorem ipsum
-					</TableRow>
-					<TableRow>
-						<label>
-		           <CheckBox
-		            checked={this.state.checked}
-		            onChange={this.handleCheckboxChange}
-		            checked
-		         	 />
-		        </label>
-					</TableRow>
-					<TableRow>
-						<label>
-		           <CheckBox
-		            checked={this.state.checked}
-		            onChange={this.handleCheckboxChange}
-		            checked
-		         	 />
-		        </label>
-					</TableRow>
-					<TableRow>
-						<label>
-		           <CheckBox
-		            checked={this.state.checked}
-		            onChange={this.handleCheckboxChange}
-		            checked
 		         	 />
 		        </label>
 					</TableRow>
@@ -215,7 +199,6 @@ class PricingTable extends React.Component {
 		           <CheckBox
 		            checked={this.state.checked}
 		            onChange={this.handleCheckboxChange}
-		            checked
 		         	 />
 		        </label>
 					</TableRow>
@@ -224,7 +207,6 @@ class PricingTable extends React.Component {
 		           <CheckBox
 		            checked={this.state.checked}
 		            onChange={this.handleCheckboxChange}
-		            checked
 		         	 />
 		        </label>
 					</TableRow>
@@ -233,7 +215,35 @@ class PricingTable extends React.Component {
 		           <CheckBox
 		            checked={this.state.checked}
 		            onChange={this.handleCheckboxChange}
-		            checked
+		         	 />
+		        </label>
+					</TableRow>
+				</Table>
+				<Table>
+					<TableRow left>
+						Lorem ipsum
+					</TableRow>
+					<TableRow>
+						<label>
+		           <CheckBox
+		            checked={this.state.checked}
+		            onChange={this.handleCheckboxChange}
+		         	 />
+		        </label>
+					</TableRow>
+					<TableRow>
+						<label>
+		           <CheckBox
+		            checked={this.state.checked}
+		            onChange={this.handleCheckboxChange}
+		         	 />
+		        </label>
+					</TableRow>
+					<TableRow>
+						<label>
+		           <CheckBox
+		            checked={this.state.checked}
+		            onChange={this.handleCheckboxChange}
 		         	 />
 		        </label>
 					</TableRow>

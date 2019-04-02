@@ -17,7 +17,7 @@ const InfoListStandardLineStyled = styled(InfoListStandardLine)`
   ${InfoListStandardLineStyled}:nth-child(odd){
     background-color: #F8F8F8;
   }
-    border-radius: 16px;
+    border-radius: 5px;
     margin: 0 3%;
 `
 

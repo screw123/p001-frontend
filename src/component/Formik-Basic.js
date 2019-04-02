@@ -13,7 +13,7 @@ export const ErrorLabel = styled.div`
 
 //FieldDiv is what bounds for each field in a form, make sure all components looks more or less the same,
 export const FieldDiv = styled.div`
-    display: block
+    display: block;
     box-sizing:border-box;
     // padding: 1em;
     padding: 1rem 0;

@@ -14,10 +14,20 @@ Currently we think we should use a dropdown box.
 
 */
 
-
 const SelectStyled = styled(Select)`
-    border-radius: 25px;
-    border-color: red;
+
+    ${SelectStyled} > div{
+      border-radius: 25px;
+      border: none;
+      color:#787F84;
+      background-color: #F4F4F4;
+    }
+
+    ${SelectStyled} svg{
+      fill: #E61D6E;
+      stroke: #E61D6E;
+    }
+
 `
 
 const RadioBlockGroup = styled.div`

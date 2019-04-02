@@ -15,10 +15,6 @@ const ContainerBox = styled.div`
     border-radius: 16px;
     margin: 5% 10%;
 `
-const ROListFormStyled = styled(ROListForm)`
-    background: red;
-    border-radius: 16px;
-`
 
 /*
 This let user select an account that he has access to, then download list of Rental Orders from API, provide that list to ROListForm.
@@ -99,7 +95,7 @@ class ROListPage extends React.Component {
                                 options={this.state.acctList}
                             />
                             {this.state.selectedAcct_id && 
-                              <ROListFormStyled 
+                              <ROListForm 
                                   ROlist={data.getRecentROListByUser
                                       .filter(v=>v.account_id._id===this.state.selectedAcct_id)}
                                   {...this.props}

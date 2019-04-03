@@ -1,9 +1,30 @@
 import React from 'react'
+import styled from 'styled-components'
 import InfoList, {InfoListStandardLine} from '../component/InfoList.js'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {Tag, ToolTip} from '../component/BasicComponents.js'
+
+import {
+    Tag, 
+    ToolTip, 
+    HeaderCards
+} 
+from '../component/BasicComponents.js'
+
 import DocLine from '../component/DocLine.js'
 import { Redirect } from "react-router-dom"
+
+const InfoListStandardLineStyled = styled(InfoListStandardLine)`
+  ${InfoListStandardLineStyled}:nth-child(odd){
+    background-color: #F8F8F8;
+  }
+    border-radius: 5px;
+    margin: 0 3%;
+`
+
+const TableRow = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+`
 
 /*
 This make use of an array of Rental Order objects supplied as props, and put them together using InfoList.
@@ -17,19 +38,19 @@ RO is the short form of "Rental Order"
 export const getROStatusColor = (status) =>{
     switch(status) {
         case 'INIT':
-            return {background: 'DeepSkyBlue', color: 'Black'}
+            return {background: 'transparent', color: 'Black'}
         case 'PROCESSING_PAID':
-            return {background: 'Gold', color: 'Black'}
+            return {background: 'transparent', color: '#0FAAC5'}
         case 'PROCESSING_UNPAID':
-            return {background: 'Tomato', color: 'White'}
+            return {background: 'transparent', color: '#D70000'}
         case 'COMPLETED_PAID':
-            return {background: 'Forest', color: 'White'}
+            return {background: 'transparent', color: '#45AE06'}
         case 'COMPLETED_UNPAID':
-            return {background: 'Tomato', color: 'White'}
+            return {background: 'transparent', color: '#D70000'}
         case 'HOLD':
-            return {background: 'OrangeRed', color: 'Gold'}
+            return {background: 'transparent', color: '#787F84'}
         case 'CANCELLED':
-            return {background: 'DimGrey', color: 'White'}
+            return {background: 'transparent', color: '#D70000'}
         default:
             return {}
     }
@@ -49,23 +70,22 @@ export default class ROListForm extends React.Component {
     ROLine = ({rowObj, data, multiSelect}, buttons) => {
         let { _id, billedAmt, status, paidAmt, createDateTime, docLines} = data
         return (
-            <InfoListStandardLine
+            <InfoListStandardLineStyled
                 occupyFullRow={true}
                 multiSelect={multiSelect}
                 key1={rowObj.key}
                 key={rowObj.key}
-                style={rowObj.style}
                 showBottomBorder={true}
                 contentOnClick={e=>{
                     e.preventDefault()
                     this.setRedirect(data)
                 }}
-                content={<div>
-                    <DocLine.Status text={status} color={getROStatusColor} float='right' />
+                content={<TableRow>
                     <DocLine.DateTime label='Box Rental Date' text={createDateTime} />
                     <DocLine.ID label='Record Number' text={_id} />
                     <DocLine.ContainerSummary docLines={docLines} />
-                </div>}
+                    <DocLine.Status text={status} color={getROStatusColor} />
+                </TableRow>}
             />
         )
     }
@@ -88,10 +108,15 @@ export default class ROListForm extends React.Component {
                     const CSSrem = c.state.defaultHeight
 
                     //per field line * 1.5, per container line * 1.25, + 1.5line of buffer
-                    return c.state.defaultHeight*1.5*basic_info_lines + containerSummary_lines*CSSrem*1.25 / Math.floor(width*.95/DocLine.singleContainerDisplaySize) + c.state.defaultHeight*1.5
+                    return c.state.defaultHeight*1.5*basic_info_lines + containerSummary_lines*CSSrem*1.25 / Math.floor(width*.95/DocLine.singleContainerDisplaySize) + c.state.defaultHeight*5
 
                 }}
-                headerText={<div><FontAwesomeIcon icon='file-invoice' /> {c.t('Box Rental Record')}</div>}
+                headerText = {
+                    <HeaderCards>
+                        {c.t('Box Rental Record')}
+                    </HeaderCards>
+                }
+
                 data={this.props.ROlist || []} 
                 listComponent={this.ROLine}
                 refreshRowHeight={true}

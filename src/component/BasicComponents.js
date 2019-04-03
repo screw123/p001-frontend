@@ -123,7 +123,13 @@ export const ClickableText = styled(Text)`
 `
 
 
-
+export const HeaderCards = styled(Text)`
+	border-bottom: 1px solid #E8E8E8;
+	color: #787F84;
+	font-size: 28px;
+	font-weight: bold;
+    padding-bottom: 2%;
+`
 
 
 //Buttons
@@ -187,7 +193,7 @@ export const Tag = styled.span`
 	background: ${props => (props.background ? props.background : 'Red')};
 	padding: 0.25rem;
 	margin: 0 0.25rem;
-	font-size: 0.7rem;
+	font-size: 1rem;
 	border-radius: ${props => (props.circle ? `50%` : `0.2rem`)};
 	color: ${props => (props.color ? props.color : `White`)};
 	${({ children }) => (children ? '' : 'visibility: hidden')};

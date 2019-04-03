@@ -14,20 +14,32 @@ Currently we think we should use a dropdown box.
 
 */
 
+const SelectStyled = styled(Select)`
+
+    ${SelectStyled} > div{
+      border-radius: 25px;
+      border: none;
+      color:#787F84;
+      background-color: #F4F4F4;
+    }
+
+    ${SelectStyled} svg{
+      fill: #E61D6E;
+      stroke: #E61D6E;
+    }
+
+`
 
 const RadioBlockGroup = styled.div`
-    box-sizing:border-box;
     display: grid;
     grid-template-rows: auto;
     grid-template-columns: 33% 34% 33%;
     grid-column-gap: 0.25em;
-    box-sizing:border-box;
     width: 100%
 `
 
 const RadioBlock = styled.div`
     border: 0.1em solid ${props => props.disabled ? `rgba(128, 128, 128, 0.2)` : `White`};
-    border-radius: 0.25em;
     display: block;
     font-size: 0.7em;
     padding: 0.5em;
@@ -108,7 +120,7 @@ export const MultiSelect = ({
         return (
         <FieldDiv className={classNames}>
             <FieldLabel>{label}</FieldLabel>
-            <Select
+            <SelectStyled
                 name={name}
                 value={(multiSelect)? 
                     options.filter(v=> (value.find(u=>u===v.value)!==undefined) ) :

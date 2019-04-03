@@ -3,11 +3,13 @@ import { I18n } from 'react-i18next'
 import styled from 'styled-components'
 import CheckBox from './CheckBox'
 import Radio from './Radio'
+
 import Toggle from './Toggle'
 import {TableHeader} from './TableHeaderStyles'
 
 const TableContainer = styled.div`
 	background-color: white;
+
   box-shadow: 0 6px 12px 0 rgba(0,0,0,0.5);
   border-radius: 16px;
   margin: 5% 10%;
@@ -33,6 +35,7 @@ const TableRow = styled.div`
   text-align: ${props => (props.left ? 'left' : 'center')};
   padding: 1.5em 3em;
   width: calc(100% / 4);
+
   position:relative;
 
 	@media all and (max-width: 740px) {
@@ -50,13 +53,13 @@ const TableRowFilters = styled(TableRow)`
 	}
 `
 
+
 const FilterDate = styled(TableRow)`
 	border: 2px solid #F0F0F0;
   border-radius: 16px;
   padding: 0;
   width: 100%;
 `
-
 
 class PricingTable extends React.Component {
   state = { checked: false }
@@ -65,16 +68,16 @@ class PricingTable extends React.Component {
     this.setState({ checked: event.target.checked })
   }
 
+
 	handleRadioChange = event => {
     this.setState({ checked: event.target.checked })
   }
-
-
 
 	render = () => (
 		<React.Fragment>
 			<TableContainer>
 				<Table>
+
 					<TableRowFilters>
 						<FilterDate>
 		           <Radio

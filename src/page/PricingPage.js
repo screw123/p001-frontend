@@ -14,7 +14,7 @@ class PricingPage extends React.Component {
     render = () => (
         <React.Fragment>
             <Header Pricing>
-				Pricing
+							Pricing
             </Header>
             <PricingTable/>							
         </React.Fragment>

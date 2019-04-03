@@ -7,7 +7,7 @@ import {
 	HeaderWithBar,
 	Text,
 	ClickableText,
-	Button
+	CTAButton
 } from '../component/BasicComponents.js'
 import { BigLoadingScreen } from '../component/Loading.js'
 
@@ -218,7 +218,7 @@ class IndexPage extends React.Component {
 								{c.t('I agree with the terms and conditions')}
 							</Text>
 							<Styles.NextButton>
-								<Button>{c.t('Next')}</Button>
+								<CTAButton disabled={true}>{c.t('Next')}</CTAButton>
 							</Styles.NextButton>
 						</Styles.PlanFooter>
 					</Styles.PlanContent>
@@ -231,33 +231,99 @@ class IndexPage extends React.Component {
 					</HeaderWithBar>
 
 					<Styles.CardsFourRow>
-						<Styles.Stars>
-							{[...Array(5)].map(i => (
-								<Styles.StarIcon />
-							))}
-						</Styles.Stars>
 						<Styles.CardFour>
-							<Styles.CardThreeImage image='/images/ico-calendarDay.svg' />
-							<Styles.CardThreeContent>
-								<Styles.TextPlan>{c.t('Daily')}</Styles.TextPlan>
-							</Styles.CardThreeContent>
+							<Styles.Stars>
+								{[...Array(5)].map(i => (
+									<Styles.StarIcon />
+								))}
+							</Styles.Stars>
+							<Text>
+								{c.t(
+									'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate, nisl commodo sagittis'
+								)}
+							</Text>
+							<Styles.CardFourContent>
+								<Styles.Avatar image='/images/img-avatar.png' />
+								<Styles.AvatarDescription>
+									<Styles.TextName>{c.t('Nicolas Smit')}</Styles.TextName>
+									<Styles.TextDesignation>
+										{c.t('Individual User')}
+									</Styles.TextDesignation>
+								</Styles.AvatarDescription>
+							</Styles.CardFourContent>
 						</Styles.CardFour>
 
 						<Styles.CardFour>
-							<Styles.CardThreeImage image='/images/ico-calendarMonth.svg' />
-							<Styles.CardThreeContent>
-								<Styles.TextPlan>{c.t('Monthly')}</Styles.TextPlan>
-							</Styles.CardThreeContent>
+							<Styles.Stars>
+								{[...Array(5)].map(i => (
+									<Styles.StarIcon />
+								))}
+							</Styles.Stars>
+							<Text>
+								{c.t(
+									'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate, nisl commodo sagittis'
+								)}
+							</Text>
+							<Styles.CardFourContent>
+								<Styles.Avatar image='/images/img-avatar.png' />
+								<Styles.AvatarDescription>
+									<Styles.TextName>{c.t('Nicolas Smit')}</Styles.TextName>
+									<Styles.TextDesignation>
+										{c.t('Individual User')}
+									</Styles.TextDesignation>
+								</Styles.AvatarDescription>
+							</Styles.CardFourContent>
 						</Styles.CardFour>
 
 						<Styles.CardFour>
-							<Styles.CardThreeImage image='/images/ico-calendarYear.svg' />
-							<Styles.CardThreeContent>
-								<Styles.TextPlan>{c.t('Annual')}</Styles.TextPlan>
-							</Styles.CardThreeContent>
+							<Styles.Stars>
+								{[...Array(5)].map(i => (
+									<Styles.StarIcon />
+								))}
+							</Styles.Stars>
+							<Text>
+								{c.t(
+									'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate, nisl commodo sagittis'
+								)}
+							</Text>
+							<Styles.CardFourContent>
+								<Styles.Avatar image='/images/img-avatar.png' />
+								<Styles.AvatarDescription>
+									<Styles.TextName>{c.t('Nicolas Smit')}</Styles.TextName>
+									<Styles.TextDesignation>
+										{c.t('Individual User')}
+									</Styles.TextDesignation>
+								</Styles.AvatarDescription>
+							</Styles.CardFourContent>
 						</Styles.CardFour>
 					</Styles.CardsFourRow>
+
+					<Styles.BrandRow>
+						<Styles.BrandWrapper>
+							<Styles.BrandImage image='/images/logo.png' />
+							<Styles.BrandImage image='/images/logo.png' />
+							<Styles.BrandImage image='/images/logo.png' />
+						</Styles.BrandWrapper>
+
+						<Styles.BrandText>{c.t('Brands that trust us')}</Styles.BrandText>
+					</Styles.BrandRow>
 				</Styles.ReviewSection>
+
+				{/* Review Section */}
+				<Styles.SubscribeSection>
+					<Styles.SubscribeBox>
+						<Styles.TextSubscribe>
+							{c.t('Subscribe and get the latest news')}
+						</Styles.TextSubscribe>
+
+						<Styles.InputBox>
+							<Styles.Email placeholder='Email' />
+							<CTAButton disabled={true}>{c.t('Send')}</CTAButton>
+						</Styles.InputBox>
+					</Styles.SubscribeBox>
+
+					<Styles.TextDirection>{c.t('Get Directions')}</Styles.TextDirection>
+				</Styles.SubscribeSection>
 			</div>
 		)
 	}

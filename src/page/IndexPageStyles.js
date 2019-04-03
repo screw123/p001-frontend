@@ -244,7 +244,7 @@ export const NextButton = styled.div`
 	}
 `
 
-//CardThree (breakpoin at 950px)
+//CardThree (breakpoint at 950px)
 export const CardsThreeRow = styled.div`
 	margin: 1rem 0;
 	width: 100%;
@@ -321,7 +321,7 @@ export const ReviewSection = styled.div`
 	}
 `
 
-//Card Four
+//Card Four (breakpoint at 1100px)
 export const CardsFourRow = styled.div`
 	margin: 2rem 0;
 	width: 100%;
@@ -337,33 +337,157 @@ export const CardsFourRow = styled.div`
 
 export const CardFour = styled.div`
 	display: flex;
+	flex-direction: column;
 	margin: 1rem;
+	padding: 2rem;
 	flex: 1;
 	background-color: white;
 	border-radius: 1rem;
+	transition: box-shadow 0.5s ease;
 	&:hover {
 		box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.5);
+		cursor: pointer;
 	}
 `
 
 export const Stars = styled.div`
+	display: flex;
+	margin: 1rem 0rem;
 	color: #ffda01;
 `
 
 export const StarIcon = styled(({ ...props }) => <FontAwesomeIcon icon={faStar} />)``
 
-export const CardFourImage = styled.div`
-	align-self: center;
-	min-width: 8rem;
-	min-height: 8rem;
-	width: 8rem;
-	height: 8rem;
-	background: ${props => `url(${props.image}) no-repeat center`};
-	background-size: 80% 80%;
+export const CardFourContent = styled.div`
+	display: flex;
+	align-items: center;
+	margin-top: 2rem;
 `
 
-export const CardFourContent = styled.div`
-	padding: 1rem;
+export const Avatar = styled.div`
+	min-width: 4rem;
+	min-height: 4rem;
+	width: 4rem;
+	height: 4rem;
+	background: ${props => `url(${props.image}) no-repeat center`};
+	background-size: 100% 100%;
+`
+
+export const AvatarDescription = styled.div`
+	padding-left: 1rem;
+`
+
+export const TextName = styled.div`
+	color: #787f84;
+	font-size: 1.75rem;
+	font-weight: 500;
+`
+
+export const TextDesignation = styled.div`
+	color: #787f84;
+	font-size: 1rem;
+	font-weight: 500;
+`
+
+//Brand Row (breakpoint at 1100px)
+export const BrandRow = styled.div`
 	display: flex;
-	flex-direction: column;
+	margin-top: 2rem;
+	align-items: center;
+	justify-content: space-between;
+	@media (max-width: 1100px) {
+		margin: 1rem 0;
+		flex-direction: column;
+	}
+`
+export const BrandWrapper = styled.div`
+	display: flex;
+`
+
+export const BrandImage = styled.div`
+	//keep brand logo of ratio 3:1
+	width: 12rem;
+	height: 4rem;
+	margin: 1rem 0;
+	background: ${props => `url(${props.image}) no-repeat center`};
+	background-size: 100% 100%;
+	@media (max-width: 768px) {
+		width: 7.5rem;
+		height: 2.5rem;
+	}
+`
+
+export const BrandText = styled.div`
+	color: #787f84;
+	font-size: 1.75rem;
+	font-weight: 600;
+	@media (max-width: 768px) {
+		font-size: 1.5rem;
+	}
+`
+
+//Subscribe Section
+export const SubscribeSection = styled.div`
+	display: flex;
+	background: #f3f3f3;
+	padding: 3rem 6rem;
+	justify-content: space-between;
+	align-items: center;
+
+	background: url('/images/city.png') no-repeat center;
+	background-size: 100% 100%;
+
+	@media (max-width: 1024px) {
+		padding: 2rem;
+	}
+	@media (max-width: 768px) {
+		padding: 1.75rem 1rem;
+		flex-direction: column;
+	}
+`
+
+export const SubscribeBox = styled.div``
+
+export const TextSubscribe = styled.div`
+	color: #fff;
+	font-size: 2rem;
+	font-weight: 500;
+`
+
+export const InputBox = styled.div``
+
+export const Email = styled.input`
+	font-size: 1rem;
+	margin: 3rem -4rem 0 0;
+	padding: 0.65rem 2.5rem;
+	font-size: 1.5rem;
+	min-width: 12rem;
+	border-radius: 2rem;
+	border: 0.1rem solid #999999;
+	background: #f4f4f4;
+	@media (max-width: 600px) {
+		padding: 0.65rem 0rem 0.65rem 0.5rem;
+	}
+`
+
+export const TextDirection = styled.div`
+	color: #fff;
+	font-size: 1.75rem;
+	text-transform: uppercase;
+	font-weight: 600;
+	position: relative;
+	padding: 1rem 0;
+	&:before {
+		content: '';
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		height: 0.2rem;
+		width: 8rem;
+		background-color: #fff;
+		border-radius: 0.3rem;
+	}
+	@media (max-width: 768px) {
+		align-self: flex-end;
+	}
 `

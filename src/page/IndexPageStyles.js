@@ -75,7 +75,7 @@ export const Card = styled.div`
 	height: 22rem;
 	display: flex;
 	flex-direction: column;
-	transition: all 0.2s ease-in-out;
+	transition: all 0.25s ease-in-out;
 	background: #fff;
 	border-radius: 0.5rem;
 	&:hover {
@@ -276,6 +276,11 @@ export const CardThree = styled.div`
 	background-color: white;
 	border-radius: 1rem;
 	box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.5);
+	transition: background-color 0.5s ease;
+	&:hover {
+		background-color: #f3f3f3;
+		cursor: pointer;
+	}
 	@media (max-width: 950px) {
 		flex-flow: row wrap;
 		width: 100%;

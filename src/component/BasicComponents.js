@@ -260,7 +260,8 @@ export const ClickIcon = ({ icon, onClick, float, ...props }) => (
 
 export const StraightRow = styled.div`
     display: flex
-    flex-flow: row nowrap;
+	flex-flow: row nowrap;
+	justify-content: center;
 `
 
 const SectionDiv = styled.div`

@@ -5,7 +5,7 @@ import UserActivationForm from '../form/UserActivationForm.js'
 import LoginForm from '../form/LoginForm.js'
 
 import {BigLoadingScreen } from '../component/Loading.js'
-import { Background, ContrastedCTAButton, Header, Text, AccentedTwinCard, TwinCardChild, AccentedTwinCardChild } from '../component/BasicComponents.js'
+import { Background, ContrastedCTAButton, Header, Text, AccentedTwinCard, TwinCardChild, AccentedTwinCardChild, StraightRow } from '../component/BasicComponents.js'
 import { Redirect } from "react-router-dom"
 
 /*
@@ -127,9 +127,11 @@ class SignUpWorkflow extends React.Component {
                                 <Text color='#fff' align='center'>
                                     {c.t('Please login to access all features!')}
                                 </Text>
-                                <ContrastedCTAButton onClick={()=> this.redirectTo('login')}>
-                                    {c.t('Login')}
-                                </ContrastedCTAButton>
+                                <StraightRow>
+                                    <ContrastedCTAButton onClick={()=> this.redirectTo('login')}>
+                                        {c.t('Login')}
+                                    </ContrastedCTAButton>
+                                </StraightRow>
                             </Left>
 
                             <Right>

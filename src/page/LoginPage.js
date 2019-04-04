@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import LoginForm from '../form/LoginForm.js'
-import { Background, ContrastedCTAButton, Header, Text, AccentedTwinCard, TwinCardChild, AccentedTwinCardChild } from '../component/BasicComponents.js'
+import { Background, ContrastedCTAButton, Header, Text, AccentedTwinCard, TwinCardChild, AccentedTwinCardChild, StraightRow } from '../component/BasicComponents.js'
 import { Redirect } from 'react-router-dom'
 
 const Left = TwinCardChild
@@ -57,9 +57,11 @@ class LoginPage extends React.Component {
 								'Create a new account with us and start keeping things wisely'
 							)}
 						</Text>
-						<ContrastedCTAButton onClick={this.redirectToSignUp}>
-							{c.t('Sign Up')}
-						</ContrastedCTAButton>
+						<StraightRow>
+							<ContrastedCTAButton onClick={this.redirectToSignUp}>
+								{c.t('Sign Up')}
+							</ContrastedCTAButton>
+						</StraightRow>
 					</Right>
 				</AccentedTwinCard>
 			</Background>

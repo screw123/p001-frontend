@@ -8,7 +8,7 @@ import CheckBox from '../component/CheckBox.js'
 
 import TermsAndConditionPage from '../page/TermsAndConditionPage.js'
 import Modal from '../component/Modal.js'
-import {ClickableText } from '../component/BasicComponents.js'
+import {ClickableText, StraightRow } from '../component/BasicComponents.js'
 
 import isEmpty from 'lodash/isEmpty'
 import pickBy from 'lodash/pickBy'
@@ -190,12 +190,14 @@ class SignUpForm extends React.Component {
                             </Field>
                             
                             <FormErr>{status && status.form}</FormErr>
-                            <FormButton
-                                type="submit"
-                                disabled={isSubmitting || !isEmpty(pickBy(errors)) || loading }
-                            >
-                                {c.t('Submit')}
-                            </FormButton>
+                            <StraightRow>
+                                <FormButton
+                                    type="submit"
+                                    disabled={isSubmitting || !isEmpty(pickBy(errors)) || loading }
+                                >
+                                    {c.t('Submit')}
+                                </FormButton>
+                            </StraightRow>
                             <Modal
                                 show={this.state.showTC}
                                 component={<TermsAndConditionPage/>}

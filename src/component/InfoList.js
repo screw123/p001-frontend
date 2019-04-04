@@ -13,12 +13,11 @@ const DefaultListComponent = (a, data) => (
 )
 
 const OuterWrapper = styled.div`
-    box-sizing:border-box;
     display: grid;
     grid-template-rows: auto;
     grid-template-columns: [s1] 2.5% [content] auto [end] 2.5% [s2];
     overflow: hidden;
-    min-width: 300px;
+    min-width: 1000px;
 `
 
 const ContentDiv = styled.div`
@@ -26,9 +25,6 @@ const ContentDiv = styled.div`
     overflow: visible;
     display: ${({occupyFullRow})=>occupyFullRow? 'block':'inline-block'};
     cursor: pointer;
-    border: Silver;
-    border-width: 2px;
-    border-style: ${({showTopBorder})=>showTopBorder?'solid':'hidden'} hidden ${({showBottomBorder})=>showBottomBorder?'solid':'hidden'} hidden;
 `
 
 export const InfoListStandardLine = ({key1, style, content, contentOnClick, occupyFullRow, showBottomBorder, ...props}) => {

@@ -22,10 +22,21 @@ export const docTypeColor = (docType) =>{
     }
 }
 
+const Table = styled.div``
+
+const TableCell = styled.div`
+  color: #787F84;
+  font-size: 18px;
+  text-align: ${props => (props.left ? 'left' : 'center')};
+  padding: 1em;
+  width: calc(100% / 4);
+`
+
 const TextNoWrap = styled.div`
 	font-size: 1rem;
 	white-space: nowrap;
 	text-overflow: ellipsis;
+	color: #787F84;
 `
 
 const TextDiv = styled.div`
@@ -33,7 +44,7 @@ const TextDiv = styled.div`
 `
 
 const LongTextDiv = styled.div`
-	font-size: 0.9rem;
+	font-size: 1rem;
 	text-overflow: ellipsis;
 `
 
@@ -47,58 +58,79 @@ const FlexDiv = styled.div`
 `
 
 const IDDiv = styled.div`
-	font-size: 0.8rem;
+	font-size: 1rem;
 	white-space: nowrap;
+	color: #787F84;
 `
 
-const ContainerDisplayGrid = styled.div`
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(${singleContainerDisplaySize}px, 1fr));
-	padding: 0.25rem 0;
-`
-
-export const SingleContainerDisplay = styled.div`
-	box-sizing:border-box;
-	display: flex;
-	align-items: center;
-	flex-wrap: nowrap;
-	width: 100%
-`
+const PlainText = ({text, label})=>(
+	<React.Fragment>
+		<TextNoWrap>{c.t(label)}</TextNoWrap>
+		<TextNoWrap>{text}</TextNoWrap>
+	</React.Fragment>
+)
 
 const Text = ({text, label})=>(
-	<TextNoWrap>{c.t(label) + ' : '+text}</TextNoWrap>
+	<TableCell>
+		<TextNoWrap>{c.t(label)}</TextNoWrap>
+		<TextNoWrap>{text}</TextNoWrap>
+	</TableCell>
 )
 
 const LongText = ({text, label})=>(
-	<LongTextDiv>{c.t(label) + ' : '+text}</LongTextDiv>
+	<TableCell>
+		<LongTextDiv>{text}</LongTextDiv>
+		<LongTextDiv>{c.t(label)}</LongTextDiv>
+	</TableCell>
+
 )
 
 const ID = ({text, label})=>(
-	<IDDiv>{c.t(label) + ' : '+ text}</IDDiv>
+	<TableCell>
+		<IDDiv>{c.t(label)}</IDDiv>
+		<IDDiv>{text}</IDDiv>
+	</TableCell>
 )
 
 const Status = ({text, color, float})=>(
-	<Tag {...color(text)} float={float}>{c.t(text)}</Tag>
+	<TableCell>
+		<Tag {...color(text)}>{c.t(text)}</Tag>
+	</TableCell>
 )
 
 const YesNo = ({text, label})=>(
-	<IDDiv>{c.t(label) + ' : '+text}</IDDiv>
+	<TableCell>
+		<IDDiv>{c.t(label)}</IDDiv>
+		<IDDiv>{text}</IDDiv>
+	</TableCell>
+
 )
 
 const DateOnly = ({text, label})=>(
-	<TextNoWrap>{c.t(label) + ' : '+ c.moment(text).calendar()}</TextNoWrap>
+	<TableCell>
+		<TextNoWrap>{c.t(label)}</TextNoWrap>
+		<TextNoWrap>{c.moment(text).calendar()}</TextNoWrap>
+	</TableCell>
 )
 
 const DateTime = ({text, label})=>(
-	<TextNoWrap>{c.t(label) + ' : '+ c.moment(text).calendar()}</TextNoWrap>
+	<TableCell>
+		<TextNoWrap>{c.t(label)}</TextNoWrap>
+		<TextNoWrap>{c.moment(text).calendar()}</TextNoWrap>
+	</TableCell>
 )
 
 const Amount = ({text, label})=>(
-	<IDDiv>{c.t(label) + ' : '+text}</IDDiv>
+	<TableCell>
+		<IDDiv>{c.t(label)}</IDDiv>
+		<IDDiv>{text}</IDDiv>
+	</TableCell>
 )
 
 const DocType = ({text, float})=> (
-	<Tag {...docTypeColor(text)} float={float}>{c.t(text)}</Tag>
+	<TableCell>
+		<Tag {...docTypeColor(text)}>{c.t(text)}</Tag>
+	</TableCell>
 )
 
 export const SmallPic = ({text, url, width, height})=>(
@@ -120,14 +152,14 @@ const ContainerSummary = ({docLines}) => {
 	const summaryKeys = Object.keys(summary)
 	for(let i=0;i<summaryKeys.length;i++) {
 		displayCom.push(
-			<SingleContainerDisplay key={summaryKeys[i]+'1'}>
+			<React.Fragment key={summaryKeys[i]+'1'}>
 				<SmallPic url={summary[summaryKeys[i]].URL} width={c.state.defaultHeight*2} height={c.state.defaultHeight*2} />
-				<Text label={summaryKeys[i]} text={summary[summaryKeys[i]].qty} />
-			</SingleContainerDisplay>
+				<PlainText label={summaryKeys[i]} text={summary[summaryKeys[i]].qty} />
+			</React.Fragment>
 		)
 
 	}
-	return (<ContainerDisplayGrid>{displayCom}</ContainerDisplayGrid>)
+	return (<TableCell>{displayCom}</TableCell>)
 
 }
 

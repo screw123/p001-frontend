@@ -236,6 +236,17 @@ export const PlanFooter = styled.div`
 	display: flex;
 	flex-flow: column wrap;
 `
+
+export const Condition = styled.div`
+	display: flex;
+	align-items: center;
+`
+
+export const CheckBox = styled.input`
+	border: 2px solid #979797;
+	margin-right: 0.5rem;
+`
+
 export const NextButton = styled.div`
 	align-self: flex-end;
 	padding: 1rem 0;
@@ -465,6 +476,9 @@ export const Email = styled.input`
 	border-radius: 2rem;
 	border: 0.1rem solid #999999;
 	background: #f4f4f4;
+	&:focus {
+		outline: none;
+	}
 	@media (max-width: 600px) {
 		padding: 0.65rem 0rem 0.65rem 0.5rem;
 	}
@@ -490,4 +504,27 @@ export const TextDirection = styled.div`
 	@media (max-width: 768px) {
 		align-self: flex-end;
 	}
+`
+
+//Footer Section
+export const FooterSection = styled.div`
+	display: flex;
+	background-color: #e61d6e;
+	padding: 3rem 6rem;
+	justify-content: center;
+	border-top: 0.75rem solid #af0046;
+
+	@media (max-width: 1024px) {
+		padding: 2rem;
+	}
+	@media (max-width: 768px) {
+		padding: 1.75rem 1rem;
+	}
+`
+
+export const TextFooter = styled.div`
+	color: #fff;
+	font-size: 1.5rem;
+	font-weight: 500;
+	text-align: center;
 `

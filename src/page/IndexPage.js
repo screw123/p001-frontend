@@ -214,9 +214,12 @@ class IndexPage extends React.Component {
 
 						<Styles.PlanFooter>
 							{/* Put checkbox here */}
-							<Text color='#787F84' align='left'>
-								{c.t('I agree with the terms and conditions')}
-							</Text>
+							<Styles.Condition>
+								<Styles.CheckBox type='checkbox' />
+								<Text color='#787F84' align='left'>
+									{c.t('I agree with the terms and conditions')}
+								</Text>
+							</Styles.Condition>
 							<Styles.NextButton>
 								<CTAButton disabled={true}>{c.t('Next')}</CTAButton>
 							</Styles.NextButton>
@@ -309,7 +312,7 @@ class IndexPage extends React.Component {
 					</Styles.BrandRow>
 				</Styles.ReviewSection>
 
-				{/* Review Section */}
+				{/* Subscribe Section */}
 				<Styles.SubscribeSection>
 					<Styles.SubscribeBox>
 						<Styles.TextSubscribe>
@@ -324,6 +327,13 @@ class IndexPage extends React.Component {
 
 					<Styles.TextDirection>{c.t('Get Directions')}</Styles.TextDirection>
 				</Styles.SubscribeSection>
+
+				{/* Footer Section */}
+				<Styles.FooterSection>
+					<Styles.TextFooter>
+						{c.t('Wisekeep© 2019 All Rights Reserved.')}
+					</Styles.TextFooter>
+				</Styles.FooterSection>
 			</div>
 		)
 	}

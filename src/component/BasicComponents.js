@@ -52,6 +52,14 @@ export const BigCard = styled(Card)`
 	min-height: 70vh;
 `
 
+export const TwinCard = styled(BigCard)`
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	@media (max-width: 768px) {
+		grid-template-columns: auto;
+	}
+`
+
 export const AccentedBigCard = styled.div`
 	min-height: 70vh;
 	height: 40rem;

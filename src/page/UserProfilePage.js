@@ -1,8 +1,20 @@
 import React from "react"
 import { I18n } from 'react-i18next'
-
+import styled from 'styled-components'
 import { Redirect } from "react-router-dom"
 import UserProfileForm from '../form/UserProfileForm.js'
+
+import { Background, ContrastedCTAButton, Header, Text, TwinCard, TwinCardChild, StraightRow } from '../component/BasicComponents.js'
+
+const Left = TwinCardChild
+const Right = styled(TwinCardChild)`
+	background-image: url('/images/profile.svg');
+	background-repeat: no-repeat;
+	background-position: center;
+	@media (max-width: 768px) {
+		display: none;
+	}
+`
 
 class UserActivationPage extends React.Component {
 	
@@ -15,12 +27,22 @@ class UserActivationPage extends React.Component {
 
     render() {
 		const c = this.props.i18n
+		if (this.state.submitted) { return ( <Redirect to={{pathname: '/dash'}} /> )}
         return (
-			<div>
-				<h1>{c.t('Edit User Profile')}</h1>
-				{!this.state.submitted && <UserProfileForm onSubmitSuccess={this.redirect} {...this.props} />}
-				{this.state.submitted && <Redirect to={{pathname: '/dash'}} />}
-			</div>
+			<Background>
+				<TwinCard>
+					<Left>
+						<Header>
+							{c.t('Edit User Profile')}
+						</Header>
+						<UserProfileForm onSubmitSuccess={this.redirect} {...this.props} />
+					</Left>
+
+					<Right>
+						
+					</Right>
+				</TwinCard>
+			</Background>
         )
     }
 }

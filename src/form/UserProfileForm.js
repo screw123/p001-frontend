@@ -127,7 +127,7 @@ class UserProfileForm extends React.Component {
                             type="text"
                             component={TextField}
                             label={c.t('First Name')}
-                            err={errors.firstName}
+                            err={c.t(errors.firstName)}
                             value={values.firstName}
                         />
                         <Field
@@ -136,7 +136,7 @@ class UserProfileForm extends React.Component {
                             component={TextField}
                             label={c.t('Last Name')}
                             value={values.lastName}
-                            err={errors.lastName}
+                            err={c.t(errors.lastName)}
                         />
                         <Field
                             name="email"
@@ -144,7 +144,7 @@ class UserProfileForm extends React.Component {
                             component={TextField}
                             label={c.t('Email')}
                             value={values.email}
-                            err={errors.email}
+                            err={c.t(errors.email)}
                             disabled={true}
                         />
                         <Field
@@ -153,7 +153,7 @@ class UserProfileForm extends React.Component {
                             component={TextField}
                             label={c.t('Hong Kong Mobile Number')}
                             value={values.mobilePhone}
-                            err={errors.mobilePhone}
+                            err={c.t(errors.mobilePhone)}
                             disabled={true}
                         />
                         <Field
@@ -163,7 +163,7 @@ class UserProfileForm extends React.Component {
                             label={c.t('Existing Password')}
                             placeholder={c.t('8 characters with uppercase and lowercase letters')}
                             value={values.existingPassword}
-                            err={errors.existingPassword}
+                            err={c.t(errors.existingPassword)}
                             rightIcon={[<FormIcon icon={(this.state.showExPw)? 'eye': 'eye-slash'} key="showExPw" onClick={ this.toggleShowExPw}/>]}
                         />
                         <Field
@@ -173,18 +173,18 @@ class UserProfileForm extends React.Component {
                             label={c.t('New Password')}
                             placeholder={c.t('8 characters with uppercase and lowercase letters')}
                             value= {values.newPassword}
-                            err={errors.newPassword}
+                            err={c.t(errors.newPassword)}
                             rightIcon={[<FormIcon icon={(this.state.showNwPw)? 'eye': 'eye-slash'} key="showNwPw" onClick={ this.toggleShowNwPw}/>]}
                         />
                         <FormErr>{status}</FormErr>
-                        <FormButton
-                            type="submit"
-                            disabled={!dirty}
-                            >
-                            <StraightRow>
-                                {c.t('Submit')}
-                            </StraightRow>
-                        </FormButton>
+                        <StraightRow>
+                            <FormButton
+                                type="submit"
+                                disabled={!dirty}
+                                >
+                                    {c.t('Update')}
+                            </FormButton>
+                        </StraightRow>
                     </FormikForm>
                 )}}
                 </Formik>

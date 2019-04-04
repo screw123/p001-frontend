@@ -1,11 +1,14 @@
 import React from "react"
+
 import { Formik, Field } from 'formik'
 import isMobilePhone from 'validator/lib/isMobilePhone'
 import isEmail from 'validator/lib/isEmail'
 import FormikForm, { TextField, FormButton, FormErr, FormIcon, CheckBox2, MultiSelect } from '../component/FormikForm.js'
+import CheckBox from '../component/CheckBox.js'
+
 import TermsAndConditionPage from '../page/TermsAndConditionPage.js'
 import Modal from '../component/Modal.js'
-import {StraightRow, ClickableText } from '../component/BasicComponents.js'
+import {ClickableText, StraightRow } from '../component/BasicComponents.js'
 
 import isEmpty from 'lodash/isEmpty'
 import pickBy from 'lodash/pickBy'
@@ -48,7 +51,7 @@ class SignUpForm extends React.Component {
             lastName: ({lastName}) => (lastName.length>0)? undefined : 'Please enter your Last Name',
             email: ({email}) => isEmail(email)? undefined : 'Please enter valid email address',
             mobilePhone: ({mobilePhone}) => isMobilePhone(mobilePhone, 'zh-HK')? undefined : 'Please enter Hong Kong mobile phone number',
-            password: ({password}) => (passwordTest(password))? undefined : 'Need at least 8 characters, with both uppercase and lowercase',
+            password: ({password}) => (passwordTest(password))? undefined : 'Require 8 characters with uppercase and lowercase letters',
             verifyBySMS: ({verifyBySMS}) => (['Email','SMS'].includes(verifyBySMS))? undefined: 'Please choose a way to verify your account',
             agreeTerms: ({agreeTerms}) => (agreeTerms) ? undefined : 'Please read and agree on our Terms and Condition before proceed'
         }
@@ -127,7 +130,7 @@ class SignUpForm extends React.Component {
                                 type="text"
                                 component={TextField}
                                 label={c.t('First Name')}
-                                err={errors.firstName}
+                                err={c.t(errors.firstName)}
                                 value={values.firstName}
                             />
                             <Field
@@ -136,7 +139,7 @@ class SignUpForm extends React.Component {
                                 component={TextField}
                                 label={c.t('Last Name')}
                                 value={values.lastName}
-                                err={errors.lastName}
+                                err={c.t(errors.lastName)}
                             />
                             <Field
                                 name="email"
@@ -144,7 +147,7 @@ class SignUpForm extends React.Component {
                                 component={TextField}
                                 label={c.t('Email')}
                                 value={values.email}
-                                err={errors.email}
+                                err={c.t(errors.email)}
                             />
                             <Field
                                 name="mobilePhone"
@@ -152,16 +155,16 @@ class SignUpForm extends React.Component {
                                 component={TextField}
                                 label={c.t('Hong Kong Mobile Number')}
                                 value={values.mobilePhone}
-                                err={errors.mobilePhone}
+                                err={c.t(errors.mobilePhone)}
                             />
                             <Field
                                 name="password"
                                 type={(this.state.showPw)? 'text': 'password'}
                                 component={TextField}
                                 label={c.t('Password')}
-                                placeholder={c.t('8 characters with uppercase and lowercase letters')}
+                                remark={c.t('Require 8 characters with uppercase and lowercase letters')}
                                 value={values.password}
-                                err={errors.password}
+                                err={c.t(errors.password)}
                                 rightIcon={[<FormIcon icon={(this.state.showPw)? 'eye': 'eye-slash'} key="showPw" onClick={ this.toggleShowPw}/>]}
                             />
                             <Field
@@ -169,32 +172,32 @@ class SignUpForm extends React.Component {
                                 component={MultiSelect}
                                 label={c.t('How do you want to verify your account?')}
                                 value={values.verifyBySMS}
-                                err={errors.verifyBySMS}
+                                err={c.t(errors.verifyBySMS)}
                                 options={[{value: 'Email', label: 'Email'}, {value: 'SMS', label: 'SMS'}]}
                             />
                             <Field
-                                component={CheckBox2}
+                                component={CheckBox}
                                 name="agreeTerms"
                                 value="agreeTerms"
                                 key="agreeTerms"
                                 checked={values.agreeTerms===true}
-                                err={errors.agreeTerms}
+                                err={c.t(errors.agreeTerms)}
                             >
-                                <div>
-                                    {c.t("I have already review and agree on ")}
-                                    <ClickableText onClick={this.toggleShowTC}>
+                                {c.t("I have already review and agree on")}
+                                <ClickableText onClick={this.toggleShowTC}>
                                         {c.t('Terms of Condition')}
-                                    </ClickableText>
-                                </div>
+                                </ClickableText>
                             </Field>
                             
                             <FormErr>{status && status.form}</FormErr>
-                            <FormButton
-                                type="submit"
-                                disabled={isSubmitting || !isEmpty(pickBy(errors)) || loading }
-                            >
-                                {c.t('Submit')}
-                            </FormButton>
+                            <StraightRow>
+                                <FormButton
+                                    type="submit"
+                                    disabled={isSubmitting || !isEmpty(pickBy(errors)) || loading }
+                                >
+                                    {c.t('Submit')}
+                                </FormButton>
+                            </StraightRow>
                             <Modal
                                 show={this.state.showTC}
                                 component={<TermsAndConditionPage/>}

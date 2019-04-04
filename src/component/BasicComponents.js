@@ -54,13 +54,13 @@ export const BigCard = styled(Card)`
 
 export const AccentedBigCard = styled.div`
 	min-height: 70vh;
+	height: 40rem;
 	border-radius: 1rem;
 	box-shadow: 6px 6px 48px 3px rgba(230, 29, 110, 0.4);
 `
 
 export const AccentedTwinCard = styled(AccentedBigCard)`
 	display: grid;
-	min-height: 70vh;
 	grid-template-columns: 1fr 1fr;
 	@media (max-width: 768px) {
 		grid-template-columns: auto;
@@ -117,9 +117,17 @@ export const Header2 = styled(Text)`
 	}
 `
 
-export const ClickableText = styled(Text)`
+export const ClickableText = styled.span`
 	font-weight: 600;
 	cursor: pointer;
+	font-size: 1rem;
+	line-height: 1.5rem;
+	padding: 0 0.2rem 0 0.2rem;
+	color: ${props => props.color? props.color: '#888'};
+	@media (max-width: 768px) {
+		font-size: 0.85rem;
+		line-height: 1.1rem;
+	}
 `
 
 
@@ -258,7 +266,8 @@ export const ClickIcon = ({ icon, onClick, float, ...props }) => (
 
 export const StraightRow = styled.div`
     display: flex
-    flex-flow: row nowrap;
+	flex-flow: row nowrap;
+	justify-content: center;
 `
 
 const SectionDiv = styled.div`

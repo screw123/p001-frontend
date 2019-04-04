@@ -7,6 +7,7 @@ import { Tag, ToolTip, CTAButton } from '../component/BasicComponents.js'
 //Field level Error Label.  For form level ErrorLabel use FormErr
 export const ErrorLabel = styled.div`
 	color: Red;
+	padding: 0.25rem 0 0 1rem;
 	display: block;
 	font-size: 0.8em;
 `

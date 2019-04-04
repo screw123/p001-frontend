@@ -445,7 +445,7 @@ export const SubscribeSection = styled.div`
 	justify-content: space-between;
 	align-items: center;
 
-	background: url('/images/city.png') no-repeat center;
+	background: ${props => `url(${props.image}) no-repeat center`};
 	background-size: 100% 100%;
 
 	@media (max-width: 1024px) {

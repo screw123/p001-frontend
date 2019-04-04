@@ -313,7 +313,7 @@ class IndexPage extends React.Component {
 				</Styles.ReviewSection>
 
 				{/* Subscribe Section */}
-				<Styles.SubscribeSection>
+				<Styles.SubscribeSection image='/images/city.png'>
 					<Styles.SubscribeBox>
 						<Styles.TextSubscribe>
 							{c.t('Subscribe and get the latest news')}

@@ -16,19 +16,16 @@ class IndexPage extends React.Component {
 		const c = this.props.i18n
 		return (
 			<div>
-				{/* <BigLoadingScreen text={'Welcome to Wisekeep!  Our website is under construction!'} /> */}
 				<Styles.TopSection>
 					<HeaderWithBar color='#fff' z={1}>
-						{c.t('Wisekeep provide valet storage service')}
+						{c.t('Wisekeep is your storage service at fingertips')}
 					</HeaderWithBar>
 					<Text color='#fff' z={1}>
-						{c.t(
-							'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate, nisl commodo sagittis luctus, nunc velit auctor mauris, vitae ornare nisl nisl euismod lectus.'
-						)}
+						{c.t('short description of our service')}
 					</Text>
 					<br />
 					{c.state.width > 768 && (
-						<ContrastedCTAButton z={1}> {c.t('Start Now!')}</ContrastedCTAButton>
+						<ContrastedCTAButton z={1}> {c.t('Start Now')}</ContrastedCTAButton>
 					)}
 					<Styles.Banner />
 				</Styles.TopSection>
@@ -38,9 +35,7 @@ class IndexPage extends React.Component {
 					<Styles.Section top={true}>
 						<HeaderWithBar color='#787F84'>{c.t('How It Works')}</HeaderWithBar>
 						<Text color='#787F84'>
-							{c.t(
-								'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate'
-							)}
+							{c.t('Infinite space in 4 steps')}
 						</Text>
 						<Styles.CardsRow>
 							<Styles.Card>
@@ -64,9 +59,7 @@ class IndexPage extends React.Component {
 								<Styles.CardImage image='/images/ico-pickUp.svg' />
 								<Styles.CardContent>
 									<Text color='#787F84' align='center'>
-										{c.t(
-											'You put your stuff in physical box, and digitally store the stuff in the virtual box. We store both'
-										)}
+										{c.t('We store both physical and digital stuff')}
 									</Text>
 								</Styles.CardContent>
 								<Styles.CardFooter>

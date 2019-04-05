@@ -11,6 +11,7 @@ const Right = styled(TwinCardChild)`
 	background-image: url('/images/profile.svg');
 	background-repeat: no-repeat;
 	background-position: center;
+	background-size: cover;
 	@media (max-width: 768px) {
 		display: none;
 	}

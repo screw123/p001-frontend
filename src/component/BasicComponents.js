@@ -39,15 +39,23 @@ export const BigCard = styled(Card)`
 	min-height: 70vh;
 `
 
+export const TwinCard = styled(BigCard)`
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	@media (max-width: 768px) {
+		grid-template-columns: auto;
+	}
+`
+
 export const AccentedBigCard = styled.div`
 	min-height: 70vh;
+	height: 40rem;
 	border-radius: 1rem;
 	box-shadow: 6px 6px 48px 3px rgba(230, 29, 110, 0.4);
 `
 
 export const AccentedTwinCard = styled(AccentedBigCard)`
 	display: grid;
-	min-height: 70vh;
 	grid-template-columns: 1fr 1fr;
 	@media (max-width: 768px) {
 		grid-template-columns: auto;
@@ -131,10 +139,27 @@ export const HeaderWithBar = styled(Header)`
 	}
 `
 
-export const ClickableText = styled(Text)`
+export const ClickableText = styled.span`
 	font-weight: 600;
 	cursor: pointer;
+	font-size: 1rem;
+	line-height: 1.5rem;
+	padding: 0 0.2rem 0 0.2rem;
+	color: ${props => props.color? props.color: '#888'};
+	@media (max-width: 768px) {
+		font-size: 0.85rem;
+		line-height: 1.1rem;
+	}
 `
+
+export const HeaderCards = styled(Text)`
+	border-bottom: 1px solid #E8E8E8;
+	color: #787F84;
+	font-size: 28px;
+	font-weight: bold;
+    padding-bottom: 2%;
+`
+
 
 //Buttons
 export const Button = styled.button`
@@ -156,16 +181,13 @@ export const CTAButton = styled(Button)`
 	padding: 0.75rem 2.5rem;
 	font-size: 1.5rem;
 	min-width: 12rem;
-	background: ${props =>
-		!props.disabled
-			? `rgba(128, 128, 128, 0.2)`
-			: `linear-gradient(180deg, #F43EA6 0%, #F5576C 100%)`};
-	cursor: pointer;
+	background: ${props => props.disabled ? `rgba(128, 128, 128, 0.2)` : `linear-gradient(180deg, #F43EA6 0%, #F5576C 100%)`};
+	color: #fff;
 `
 
 export const ContrastedCTAButton = styled(CTAButton)`
-	background: ${props => (props.disabled ? 'rgba(128, 128, 128, 0.2)' : 'White')};
-	color: ${props => (props.disabled ? '#E61D6E' : '#888')};
+	background: ${props => props.disabled ? 'rgba(128, 128, 128, 0.2)' : 'White'};
+	color: ${props => props.disabled ?  '#888': '#E61D6E' };
 `
 
 export const FunctionButton = styled.button`
@@ -199,7 +221,7 @@ export const Tag = styled.span`
 	background: ${props => (props.background ? props.background : 'Red')};
 	padding: 0.25rem;
 	margin: 0 0.25rem;
-	font-size: 0.7rem;
+	font-size: 1rem;
 	border-radius: ${props => (props.circle ? `50%` : `0.2rem`)};
 	color: ${props => (props.color ? props.color : `White`)};
 	${({ children }) => (children ? '' : 'visibility: hidden')};
@@ -264,7 +286,8 @@ export const ClickIcon = ({ icon, onClick, float, ...props }) => (
 
 export const StraightRow = styled.div`
     display: flex
-    flex-flow: row nowrap;
+	flex-flow: row nowrap;
+	justify-content: center;
 `
 
 const SectionDiv = styled.div`

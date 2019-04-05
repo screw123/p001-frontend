@@ -1,31 +1,30 @@
-import IndexPage from './page/IndexPage.js'
-import WhyUsPage from './page/WhyUsPage.js'
-import PricingPage from './page/PricingPage.js'
+import IndexPage from "./page/IndexPage.js"
+import WhyUsPage from "./page/WhyUsPage.js"
+import PricingPage from "./page/PricingPage.js"
+import OurClientsPage from "./page/OurClientsPage.js"
+import LoginPage from "./page/LoginPage.js"
 
-import LoginPage from './page/LoginPage.js'
+import UserDashboardPage from "./page/UserDashboardPage.js"
+import SignUpWorkflow from "./page/SignUpWorkflow.js"
+import ResetPasswordPage from "./page/ResetPasswordPage.js"
+import UserActivationPage from "./page/UserActivationPage.js"
+import TermsAndConditionPage from "./page/TermsAndConditionPage.js"
+import QuotationPage from "./page/QuotationPage.js"
+import SalesOrderConfirmPage from "./page/SalesOrderConfirmPage.js"
+import UserProfilePage from "./page/UserProfilePage.js"
+import EditAccountPage from "./page/EditAccountPage.js"
+import ROListPage from "./page/ROListPage.js"
+import RODetailsPage from "./page/RODetailsPage.js"
+import ThankYouForOrderPage from "./page/ThankYouForOrderPage.js"
+import AddPickUpOrderPage from "./page/AddPickUpOrderPage.js"
+import AddDeliveryOrderPage from "./page/AddDeliveryOrderPage.js"
+import PUODOListPage from "./page/PUODOListPage.js"
+import PUODetailsPage from "./page/PUODetailsPage.js"
+import DODetailsPage from "./page/DODetailsPage.js"
+import ContainerListPage from "./page/ContainerListPage.js"
+import ContainerDetailsPage from "./page/ContainerDetailsPage.js"
 
-import UserDashboardPage from './page/UserDashboardPage.js'
-import SignUpWorkflow from './page/SignUpWorkflow.js'
-import ResetPasswordPage from './page/ResetPasswordPage.js'
-import UserActivationPage from './page/UserActivationPage.js'
-import TermsAndConditionPage from './page/TermsAndConditionPage.js'
-import QuotationPage from './page/QuotationPage.js'
-import SalesOrderConfirmPage from './page/SalesOrderConfirmPage.js'
-import UserProfilePage from './page/UserProfilePage.js'
-import TestPage from './page/TestPage.js'
-import EditAccountPage from './page/EditAccountPage.js'
-import ROListPage from './page/ROListPage.js'
-import RODetailsPage from './page/RODetailsPage.js'
-import ThankYouForOrderPage from './page/ThankYouForOrderPage.js'
-import AddPickUpOrderPage from './page/AddPickUpOrderPage.js'
-import AddDeliveryOrderPage from './page/AddDeliveryOrderPage.js'
-import PUODOListPage from './page/PUODOListPage.js'
-import PUODetailsPage from './page/PUODetailsPage.js'
-import DODetailsPage from './page/DODetailsPage.js'
-import ContainerListPage from './page/ContainerListPage.js'
-import ContainerDetailsPage from './page/ContainerDetailsPage.js'
-
-export { NotFoundPage as NotFound } from './page/NotFoundPage.js'
+export {NotFoundPage as NotFound} from "./page/NotFoundPage.js"
 
 const routes = [
 	{
@@ -49,7 +48,7 @@ const routes = [
 		navbar: {
 			itemId: 12,
 			firstLevel: true,
-			showBeforeLogin: true,
+			showBeforeLogin: false,
 			showAfterLogin: false
 		},
 		router: {
@@ -66,8 +65,26 @@ const routes = [
 		}
 	},
 	{
-		path: '/dash',
-		menuName: 'Dashboard',
+		menuName: "Move Your Box",
+		navbar: {
+			itemId: 200,
+			firstLevel: true,
+			showBeforeLogin: false,
+			showAfterLogin: true
+		}
+	},
+	{
+		menuName: "Records",
+		navbar: {
+			itemId: 400,
+			firstLevel: true,
+			showBeforeLogin: false,
+			showAfterLogin: true
+		}
+	},
+	{
+		path: "/dash",
+		menuName: "Dashboard",
 		component: UserDashboardPage,
 		navbar: {
 			itemId: 101,
@@ -102,8 +119,7 @@ const routes = [
 		component: TermsAndConditionPage,
 		navbar: {
 			itemId: 701,
-			parentId: 100,
-			firstLevel: false,
+			firstLevel: true,
 			showBeforeLogin: false,
 			showAfterLogin: true
 		},
@@ -150,7 +166,22 @@ const routes = [
 			itemId: 3,
 			firstLevel: true,
 			showBeforeLogin: true,
-			showAfterLogin: true
+			showAfterLogin: false
+		},
+		router: {
+			requireLogin: false
+		}
+	},
+	{
+		path: "/clients",
+		exact: true,
+		menuName: "Our Clients",
+		component: OurClientsPage,
+		navbar: {
+			itemId: 4,
+			firstLevel: true,
+			showBeforeLogin: true,
+			showAfterLogin: false
 		},
 		router: {
 			requireLogin: false
@@ -164,7 +195,7 @@ const routes = [
 		navbar: {
 			itemId: 702,
 			firstLevel: true,
-			showBeforeLogin: true,
+			showBeforeLogin: false,
 			showAfterLogin: false
 		},
 		router: {
@@ -177,7 +208,7 @@ const routes = [
 		menuName: 'Quotation',
 		component: QuotationPage,
 		navbar: {
-			itemId: 201,
+			itemId: 801,
 			firstLevel: true,
 			showBeforeLogin: true,
 			showAfterLogin: true
@@ -202,22 +233,7 @@ const routes = [
 		}
 	},
 	{
-		path: '/testPage',
-		exact: true,
-		menuName: 'Testing Zone',
-		component: TestPage,
-		navbar: {
-			itemId: 999,
-			firstLevel: true,
-			showBeforeLogin: true,
-			showAfterLogin: true
-		},
-		router: {
-			requireLogin: false
-		}
-	},
-	{
-		path: '/editUser',
+		path: "/editUser",
 		exact: true,
 		menuName: 'Edit User',
 		component: UserProfilePage,
@@ -250,12 +266,12 @@ const routes = [
 		}
 	},
 	{
-		path: '/ROList',
-		menuName: 'Box Rental Record',
+		path: "/ROList",
+		menuName: "Rental Record",
 		component: ROListPage,
 		navbar: {
-			itemId: 201,
-			parentId: 100,
+			itemId: 401,
+			parentId: 400,
 			firstLevel: false,
 			showBeforeLogin: false,
 			showAfterLogin: true
@@ -269,8 +285,8 @@ const routes = [
 		menuName: 'Box Rental Details',
 		component: RODetailsPage,
 		navbar: {
-			itemId: 202,
-			parentId: 100,
+			itemId: 402,
+			parentId: 400,
 			firstLevel: false,
 			showBeforeLogin: false,
 			showAfterLogin: false
@@ -284,8 +300,8 @@ const routes = [
 		menuName: 'Send Box To Wisekeep',
 		component: AddPickUpOrderPage,
 		navbar: {
-			itemId: 301,
-			parentId: 100,
+			itemId: 201,
+			parentId: 200,
 			firstLevel: false,
 			showBeforeLogin: false,
 			showAfterLogin: true
@@ -299,8 +315,8 @@ const routes = [
 		menuName: 'Get your stuff',
 		component: AddDeliveryOrderPage,
 		navbar: {
-			itemId: 302,
-			parentId: 100,
+			itemId: 202,
+			parentId: 200,
 			firstLevel: false,
 			showBeforeLogin: false,
 			showAfterLogin: true
@@ -310,12 +326,12 @@ const routes = [
 		}
 	},
 	{
-		path: '/PUODOList',
-		menuName: 'Box Movement Record',
+		path: "/PUODOList",
+		menuName: "Movement Record",
 		component: PUODOListPage,
 		navbar: {
-			itemId: 303,
-			parentId: 100,
+			itemId: 411,
+			parentId: 400,
 			firstLevel: false,
 			showBeforeLogin: false,
 			showAfterLogin: true
@@ -342,7 +358,7 @@ const routes = [
 		menuName: 'Box Movement Details (Pick Up)',
 		component: PUODetailsPage,
 		navbar: {
-			itemId: 304,
+			itemId: 412,
 			parentId: 100,
 			firstLevel: false,
 			showBeforeLogin: false,
@@ -357,7 +373,7 @@ const routes = [
 		menuName: 'Box Movement Details (Delivery)',
 		component: DODetailsPage,
 		navbar: {
-			itemId: 305,
+			itemId: 413,
 			parentId: 100,
 			firstLevel: false,
 			showBeforeLogin: false,
@@ -372,9 +388,8 @@ const routes = [
 		menuName: 'All your stuffs',
 		component: ContainerListPage,
 		navbar: {
-			itemId: 401,
-			parentId: 100,
-			firstLevel: false,
+			itemId: 501,
+			firstLevel: true,
 			showBeforeLogin: false,
 			showAfterLogin: true
 		},

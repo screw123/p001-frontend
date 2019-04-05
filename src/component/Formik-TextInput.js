@@ -16,7 +16,7 @@ export const InputRow = styled.div`
     display: flex
     box-sizing:border-box;
     border-radius: 2rem;
-    border: ${props => (props.disabled ? `0` : `0.1rem solid #999999`)};
+    //border: ${props => (props.disabled ? `0` : `0.1rem solid #999999`)};
     background: #F4F4F4;
     text-overflow: clip;
     padding: 0.8rem;
@@ -29,10 +29,16 @@ export const InputGroup = styled.div`
     text-overflow: wrap;
     padding: 0.5em;`
 
+const Remark = styled(ErrorLabel)`
+	color: #888;
+`
+
+
 export const TextField = ({
 	field: { name, placeholder, ...fields }, // { name, value, onChange, onBlur }
 	form: { touched }, //also values, handleXXXX, dirty, isValid, status, etc.
 	label,
+	remark,
 	rightIcon,
 	err,
 	hidden,
@@ -43,13 +49,14 @@ export const TextField = ({
 	else
 		return (
 			<FieldDiv>
-				<FieldLabel {...props}>
-					{label}
+				{/*<FieldLabel {...props}>*/}
+					{/*label*/}
 					<InputRow {...props}>
-						<Input name={name} placeholder={placeholder} {...fields} {...props} />
+						<Input name={name} placeholder={label + ' ' + placeholder||''} {...fields} {...props} />
 						{rightIcon && genRightIcon(rightIcon)}
 					</InputRow>
-				</FieldLabel>
+					{remark && <Remark>{remark}</Remark>}
+				{/*</FieldLabel>*/}
 				{(ignoreTouch || touched[name]) && err && <ErrorLabel>{err}</ErrorLabel>}
 			</FieldDiv>
 		)

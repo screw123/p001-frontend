@@ -7,6 +7,7 @@ import React from 'react';
 
 import moment from 'moment';
 import i18n from 'i18next';
+import Fetch from 'i18next-fetch-backend';
 import XHR from 'i18next-xhr-backend';
 import LngDetector from 'i18next-browser-languagedetector';
 import { reactI18nextModule } from 'react-i18next';
@@ -17,22 +18,28 @@ class LocaleContainer extends Container {
     constructor() {
         super()
         const i18next = i18n
-            .use(XHR)
+            .use(Fetch)
             .use(LngDetector)
             .use(reactI18nextModule)
             .init({
                 fallbackLng: 'en',
+                preload: ['en', 'zh-HK'],
                 ns: ['common'],
                 defaultNS: 'common',
                 backend: {
-                    loadPath: '/locales/{{lng}}.json',
+                    loadPath: (lngs, namespaces)=> {
+                        if (lngs==='en') return 'https://jsonblob.com/api/67291dc1-5452-11e9-83d2-5bca2b6c0895'
+                        else return 'https://jsonblob.com/api/3c809bbd-5457-11e9-83d2-c74ccd7fe1c3'
+
+                    }
+                    //loadPath: '/locales/{{lng}}.json',
                 },
                 interpolation: {
                     escapeValue: false // react already safes from xss
                 },
                 react: {
                 },
-                debug: true
+                debug: false
             })
 
         if (i18next.language === 'zh-HK') {
@@ -44,13 +51,14 @@ class LocaleContainer extends Container {
             defaultHeight: parseFloat(getComputedStyle(document.body).fontSize),
             width: 0,
             height: 0,
-            showMenuBar: false
+            scrollTop: 0,
         };
     }
 
-    updateWindowDimensions() {
-        this.setState({ width: window.innerWidth, height: window.innerHeight });
-    }
+    updateWindowDimensions() { this.setState({ width: window.innerWidth, height: window.innerHeight }) }
+    updateWindowPosition() { 
+        console.log(document.body.scrollTop || document.documentElement.scrollTop)
+        this.setState({ scrollTop: document.body.scrollTop || document.documentElement.scrollTop }) }
 
     t = (...props) => {
         return this.state.i18n.t(...props);
@@ -69,10 +77,6 @@ class LocaleContainer extends Container {
     getCurrentLangForGql() {
         return this.state.i18n.language === 'en' ? 'en' : 'zhHK';
     }
-    
-	toggleMenuBar() {
-		this.setState({showMenuBar: !this.state.showMenuBar})
-	}
 }
 
 const LocaleApi = new LocaleContainer();

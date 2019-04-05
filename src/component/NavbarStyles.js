@@ -1,76 +1,82 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Link } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAlignJustify } from '@fortawesome/free-solid-svg-icons'
+import React from "react"
+import styled from "styled-components"
+import { Link } from "react-router-dom"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faAlignJustify, faTimes } from "@fortawesome/free-solid-svg-icons"
 
 export const StickyDiv = styled.div`
-	${props => (props.nonStick ? '' : 'position: sticky;')}
+	position: sticky;
 	top: 0;
 	margin: 0;
-	// same for every component
-	// keep right/left padding same as Background of BasicComponents.js
-	padding: 1rem 6rem;
-	background: ${({background})=>background};
-	grid-row: ${props => (props.section ? props.section : 'navbar / navbar2')};
-	display: grid;
-	grid-template-rows: auto;
-	grid-column-gap: 0.75rem;
-	// box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
-	grid-template-columns: 10rem auto;
+	grid-row: start / navbar;
+	display: block;
 	@media (max-width: 1024px) {
-		padding: 0.75rem 2rem;
-	}
-	@media (max-width: 768px) {
-		// same for every component
-		padding: 0.75rem 1rem;
 		height: 4rem;
+	}
+`
+
+export const PrimaryMenuDiv = styled.div`
+	background: linear-gradient(180deg, #f43ea6 0%, #f5576c 100%);
+	${({mobileMenuExpand})=>mobileMenuExpand? 'height: 100vh;': ''}
+	display: grid;
+	padding: 1rem 1rem 1rem 7rem;
+	grid-template-columns: 10rem auto;
+	grid-template-rows: auto auto;
+	grid-column-gap: 0.75rem;
+	@media (max-width: 1024px) {
+		padding: 0.75rem 1rem;
+		grid-template-rows: 3rem auto;
 		grid-template-columns: 7.75rem auto;
 	}
-	z-index: 5;
+	overflow: ${({mobileMenuExpand})=>mobileMenuExpand? 'auto': 'hidden'};
 `
+
+
+
 export const Logo = styled(Link)`
+	align-self: center;
+	justify-self: center;
 	display: block;
 	height: 4rem;
 	width: 9rem;
-	background-image: url('/Logo_white.svg');
+	grid-row: 1;
+	grid-column: 1;
+	background-image: url("/Logo_white.svg");
 	background-size: 100% 100%;
-	@media (max-width: 768px) {
+	@media (max-width: 1024px) {
 		height: 3rem;
 		width: 6.75rem;
 	}
 `
 
-export const LeftContainer = styled.div`
-	align-self: center;
-	justify-self: self-start;
-`
-
-//Middle not used anymore, only keey as reference
-export const MiddleContainer = styled.div`
-	display: grid;
-	grid-template-rows: auto;
-	grid-template-columns: ${props => (props.isLogined ? '1fr 1fr 1fr' : '1fr 2fr')};
-	justify-self: center;
-	align-self: center;
-`
-
 export const RightContainer = styled.div`
+	display: flex;
+	flex-flow: row wrap;
+	align-self: center;
+	align-items: center;
+	justify-content: center;
+`
+
+export const DashMenuContainer = styled.div`
 	justify-self: self-end;
 	display: flex;
 	flex-flow: row wrap;
 	justify-content: center;
 	align-items: center;
+	background: #EEE;
 `
 
 export const FirstLevelContainer = styled.div`
 	display: inline-block;
 	padding: 0.3rem 1rem;
-	color: white;
 	position: relative;
+	font-weight: 500;
+	font-size: 1.2rem;
+	cursor: pointer;
+	white-space: nowrap;
 `
 
-export const FirstLevelText = styled(({ displayText, key, ...props }) => (
+export const FirstLevelText = styled(({ displayText, key, color, ...props }) => (
 	<div>
 		<span key1={key} {...props}>
 			{displayText}
@@ -78,40 +84,27 @@ export const FirstLevelText = styled(({ displayText, key, ...props }) => (
 		{props.children}
 	</div>
 ))`
-	white-space: nowrap;
-	font-size: 1.2rem;
-	font-weight: 500;
-	cursor: pointer;
-	color: white;
-
-	${props => (props.children ? '&:after { content: "▾";' : '')}
+	${({color})=>color? 'color:'+color : ''}
+	${props => (props.children ? '&:after { content: "▾";' : "")}
 `
 
-export const FirstLevelLink = styled(({ children, ...props }) => (
+export const FirstLevelLink = styled(({children, color, ...props})=>(
 	<Link {...props}>
 		{children}
 		<FirstLevelHover />
 	</Link>
 ))`
 	display: inline-block;
-	white-space: nowrap;
-	font-size: 1.2rem;
-	font-weight: 500;
-	cursor: pointer;
-	color: white;
+	${({color})=>color? 'color:'+color : ''}
 `
 
 export const FirstLevelLoginLink = styled(Link)`
 	display: inline-block;
-	white-space: nowrap;
-	cursor: pointer;
-	color: white;
-	font-size: 1.2rem;
-	font-weight: 500;
 	line-height: 2rem;
 	padding: 0.5rem 3rem;
 	border-radius: 3rem;
 	background-color: rgba(216, 216, 216, 0.5);
+	color: White;
 `
 
 const FirstLevelHover = styled.div`
@@ -120,7 +113,7 @@ const FirstLevelHover = styled.div`
 	width: 0rem;
 	opacity: 0;
 	transition: opacity 0s, width 0.1s;
-	${FirstLevelLink}:hover & {
+	${FirstLevelLink}:hover & { 
 		opacity: 1;
 		width: 2.5rem;
 	}
@@ -141,21 +134,23 @@ export const RightSideIcon = styled(({ icon, haveMenu, ...props }) => (
 	}
 	justify-self: center;
 	align-self: center;
-	${haveMenu => (haveMenu ? '&:after { content: "▾"; }' : '')}
+	${haveMenu => (haveMenu ? '&:after { content: "▾"; }' : "")}
 `
 
 export const LangSelector = styled.span`
-	font-size: ${props => (props.fontsize ? props.fontsize : 1.5)}rem;
+	font-size: 1.2rem;
+	font-weight: 500;
+	padding: 0.3rem 1rem;
 	display: inline-block;
 	justify-self: center;
-	align-self: center;
+	//align-self: center;
 	cursor: pointer;
 	color: white;
 `
 
 export const Menu = styled.div`
 	display: none;
-	padding: 0.3rem;
+	padding: 0.5rem;
 	position: absolute;
 	right: 0;
 	min-width: 150px;
@@ -168,16 +163,6 @@ export const Menu = styled.div`
 	}
 `
 
-export const RightMenu = styled(Menu)``
-
-export const MenuText = styled.div`
-	padding: 0.3rem 0.1rem;
-	font-size: 1rem;
-	cursor: default;
-	user-select: none;
-	color: Black;
-`
-
 export const Separator = styled.hr`
 	border-top: 1px solid #8c8b8b;
 	padding: 0;
@@ -187,14 +172,12 @@ export const MenuFunction = styled.div`
 	font-size: 0.9rem;
 	cursor: pointer;
 	padding: 0.3rem 0.1rem;
-	color: #555;
 `
 
 export const MenuLink = styled(Link)`
-	font-size: 0.9rem;
+	font-size: 1rem;
 	cursor: pointer;
-	padding: 0.3rem 0.1rem;
-	color: #555;
+	padding: 0.5rem 0.2rem;
 	display: block;
 `
 
@@ -202,26 +185,78 @@ export const MobileMenuWrapper = styled.div`
 	color: white;
 	cursor: pointer;
 	font-size: 1.25rem;
+	align-self: center;
+	justify-self: right;
 `
 
-export const MobileMenu = styled(({ ...props }) => <FontAwesomeIcon icon={faAlignJustify} />)``
+export const MobileMenuButton = styled(({isMenuOpen,  ...props }) => <FontAwesomeIcon icon={isMenuOpen? faTimes: faAlignJustify} />)``
 
+export const MobileMenu = styled.div`
+	grid-column: 1 / span 2;
+	margin: 2rem 0;
+	display: grid;
+	grid-template-rows: auto
+	
+`
+
+export const MobileMenuItem = styled.div`
+	font-size: ${({secondLevel})=>secondLevel? '1rem': '1.1rem'};
+	padding: 0.2rem ${({secondLevel})=>secondLevel? '1rem': '0'};
+	${({color})=>color? 'color:'+color : ''}
+	font-weight: 500;
+	display: block;
+`
+
+export const MobileMenuLink = styled(({children, color, ...props})=>(
+	<Link {...props}>
+		{children}
+	</Link>
+
+))`
+display: block;
+	${({color})=>color? 'color:'+color : ''}
+	font-size: ${({secondLevel})=>secondLevel? '1rem': '1.2rem'};
+	padding: 0.2rem ${({secondLevel})=>secondLevel? '1rem': '0'};
+`
+
+export const MobilePrimaryWrapper = styled.div`
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+	grid-gap: 0.25rem 0.25rem;
+`
+
+export const MobileSectionDiv = styled.div`
+	display: block;
+`
+
+export const MobileSecondaryWrapper = styled.div`
+	display: flex;
+	flex-flow: column wrap;
+	align-content: center;
+`
+
+
+/*
 export const MobileMenuBar = styled.div`
-  position: fixed;
-  display: flex;
-  flex-direction: column;
-  background: linear-gradient(180deg, #f43ea6 0%, #f5576c 100%);
-  color: white;
-  height: 90vh;
-  margin-top: 5.5rem;
+	position: fixed;
+	display: flex;
+	flex-direction: column;
+	background: linear-gradient(180deg, #f43ea6 0%, #f5576c 100%);
+	color: white;
+	height: 90vh;
+	margin-top: 5.5rem;
 	padding: 1rem;
 	right:  ${props => (props.show ? '0px' : '-22rem')}
 	-webkit-transition: right 0.25s ease;
-  -moz-transition: right 0.25s ease;
-  -ms-transition: right 0.25s ease;
-  -o-transition: right 0.25s ease;
-  transition: right 0.25s ease;
-  @media (min-width: 769px) {
-    display: none;
-  }
+	-moz-transition: right 0.25s ease;
+	-ms-transition: right 0.25s ease;
+	-o-transition: right 0.25s ease;
+	transition: right 0.25s ease;
+	@media (min-width: 769px) {
+		display: none;
+	}
 `
+
+
+
+*/

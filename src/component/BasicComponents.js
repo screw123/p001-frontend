@@ -5,24 +5,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 //Background and Cards
 
 const BG = styled.div`
-	background: ${({color})=> color? color:'White'};
+	background: ${props => (props.color ? props.color : '#fff')};
 	box-sizing: border-box;
 	min-height: 100vh;
+	grid-row: ${props => (props.section ? props.section : 'body / end')};
 `
 
 const BG2 = styled.div`
-	// @media (max-width: 1366px) {
-	//     width: 100%
-	// }
-
-	// @media (min-width: 1367px) {
-	//     width: 1366px
-	//     margin: auto
-	// }
-
-	// New
 	padding: 3rem 6rem;
-
 	margin: auto;
 	@media (max-width: 1024px) {
 		padding: 2rem;
@@ -34,17 +24,14 @@ const BG2 = styled.div`
 
 export const Background = ({ children, color }) => (
 	<BG color={color}>
-		<BG2>
-			{children}
-		</BG2>
+		<BG2>{children}</BG2>
 	</BG>
 )
 
 export const Card = styled.div`
 	border-radius: 1rem;
 	background: #fff;
-	${({noShadow})=>noShadow? '' : 'box-shadow: 0px 6px 12px 3px rgba(0, 0, 0, 0.4);'}
-
+	${({ noShadow }) => (noShadow ? '' : 'box-shadow: 0px 6px 12px 3px rgba(0, 0, 0, 0.4);')}
 `
 
 export const BigCard = styled(Card)`
@@ -82,33 +69,45 @@ export const TwinCardChild = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	align-items: center;
 `
 
 export const AccentedTwinCardChild = styled(TwinCardChild)`
 	background: linear-gradient(180deg, #f43ea6 0%, #f5576c 100%);
 `
 
-
-
-
 //Text and Headers
 
 export const Text = styled.div`
+	max-width: 60rem;
 	font-size: 1rem;
 	line-height: 1.5rem;
-	color: ${props => props.color? props.color: '#888'};
+	color: ${props => (props.color ? props.color : '#888')};
 	text-align: ${props => props.align};
+	font-weight: ${props => (props.fontWeight ? props.fontWeight : '400')};
+	@media (max-width: 1024px) {
+		font-size: 0.9rem;
+		line-height: 1.25rem;
+	}
 	@media (max-width: 768px) {
 		font-size: 0.85rem;
 		line-height: 1.1rem;
 	}
+	${({ z }) => (z ? 'z-index: ' + z : '')}
 `
 
-export const Header = styled(Text)`
+export const Header = styled.div`
 	margin: 0 0 1rem 0;
 	font-size: 3rem;
 	font-weight: 600;
 	line-height: 3.75rem;
+	color: ${props => (props.color ? props.color : '#888')};
+	text-align: ${props => props.align};
+	${({ z }) => (z ? 'z-index: ' + z : '')}
+	@media (max-width: 1024px) {
+		font-size: 2.5rem;
+		line-height: 2.5rem;
+	}
 	@media (max-width: 768px) {
 		font-size: 2rem;
 		line-height: 1.75rem;
@@ -125,6 +124,21 @@ export const Header2 = styled(Text)`
 	}
 `
 
+export const HeaderWithBar = styled(Header)`
+	position: relative;
+	padding: 1rem 0;
+	&:before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 0;
+		height: 0.3rem;
+		width: 5rem;
+		background-color: ${props => (props.color ? props.color : '#fff')};
+		border-radius: 0.3rem;
+	}
+`
+
 export const ClickableText = styled.span`
 	font-weight: 600;
 	cursor: pointer;
@@ -138,7 +152,6 @@ export const ClickableText = styled.span`
 	}
 `
 
-
 export const HeaderCards = styled(Text)`
 	border-bottom: 1px solid #E8E8E8;
 	color: #787F84;
@@ -149,21 +162,22 @@ export const HeaderCards = styled(Text)`
 
 
 //Buttons
-
 export const Button = styled.button`
 	cursor: pointer;
 	border: none;
 	font-size: 1.25rem;
 	font-weight: 600;
 	border-radius: 3rem;
-	margin: 0.5rem 1rem;
+	margin: 0.5rem 0rem;
 	padding: 0.5rem 2rem;
 	min-width: 10rem;
-	background: ${props => !props.disabled ? '#E61D6E': 'rgba(128, 128, 128, 0.2)'};
-	color: ${props => (!props.disabled ?  'white': '#888')};
+	background: ${props => (!props.disabled ? 'rgba(128, 128, 128, 0.2)' : '#E61D6E')};
+	color: ${props => (!props.disabled ? '#888' : ' white')};
+	${({ z }) => (z ? 'z-index: ' + z : '')}
 `
 
 export const CTAButton = styled(Button)`
+	margin: 3rem 0;
 	padding: 0.75rem 2.5rem;
 	font-size: 1.5rem;
 	min-width: 12rem;
@@ -184,23 +198,21 @@ export const FunctionButton = styled.button`
 	margin: 0.5rem 1rem;
 	padding: 0.5rem 2rem;
 	min-width: 8rem;
-	background: ${props => !props.disabled ? 'transparent': 'rgba(128, 128, 128, 0.2)'};
-	color: ${props => (props.disabled ?  'white' : '#888')};
+	background: ${props => (!props.disabled ? 'transparent' : 'rgba(128, 128, 128, 0.2)')};
+	color: ${props => (props.disabled ? 'white' : '#888')};
 `
 
 export const ContrastFunctionButton = styled.button`
 	cursor: pointer;
-	border: 1px solid #D00;
+	border: 1px solid #d00;
 	font-size: 1rem;
 	border-radius: 3rem;
 	margin: 0.5rem 1rem;
 	padding: 0.5rem 2rem;
 	min-width: 8rem;
-	background: ${props => !props.disabled ? 'transparent': 'rgba(128, 128, 128, 0.2)'};
-	color: ${props => (props.disabled ?  'white' : '#D00')};
+	background: ${props => (!props.disabled ? 'transparent' : 'rgba(128, 128, 128, 0.2)')};
+	color: ${props => (props.disabled ? 'white' : '#D00')};
 `
-
-
 
 //Special Text and Icon
 
@@ -314,7 +326,6 @@ const HeaderIconRight = styled.div`
 
 const SectionContent = styled.div`
 	display: flex;
-	> 
 `
 
 export const Section = props => {

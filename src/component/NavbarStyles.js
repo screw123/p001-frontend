@@ -93,7 +93,6 @@ export const FirstLevelLink = styled(({children, color, ...props})=>(
 		{children}
 		<FirstLevelHover />
 	</Link>
-
 ))`
 	display: inline-block;
 	${({color})=>color? 'color:'+color : ''}
@@ -247,7 +246,7 @@ export const MobileMenuBar = styled.div`
 	height: 90vh;
 	margin-top: 5.5rem;
 	padding: 1rem;
-	right:  ${props => (props.show ? "0px" : "-22rem")}
+	right:  ${props => (props.show ? '0px' : '-22rem')}
 	-webkit-transition: right 0.25s ease;
 	-moz-transition: right 0.25s ease;
 	-ms-transition: right 0.25s ease;

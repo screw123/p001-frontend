@@ -117,15 +117,15 @@ const gen2ndLevel = ({ parentId, c, g, routes, isFrontMenu }) => {
 	return <Menu>{menu}</Menu>
 }
 
-const langSelector = ({c, changeEng, changeChn}) => (
+const langSelector = ({c, changeEng, changeChn, padding}) => (
 	<>
 		{!(c.state.i18n.language === "en") && (
-			<LangSelector onClick={() => c.changeLanguage("en")} key='lang-en'>
+			<LangSelector onClick={() => c.changeLanguage("en")} key='lang-en' padding={padding}>
 				{changeEng}
 			</LangSelector>
 		)}
 		{c.state.i18n.language === "en" && (
-			<LangSelector onClick={() => c.changeLanguage("zh-HK")} key='lang-zh'>
+			<LangSelector onClick={() => c.changeLanguage("zh-HK")} key='lang-zh' padding={padding}>
 				{changeChn}
 			</LangSelector>
 		)}
@@ -147,6 +147,39 @@ const genMobileMenu = ({g, c, routes, setMenuClose}) => {
 		const n = firstLevelNode.filter(v => v.navbar.showBeforeLogin)
 		secondaryMenu = fillMobileMenu({g:g, c:c, nodes: n, allNodes: routes, setMenuClose: setMenuClose})
 	}
+	secondaryMenu.push(langSelector({c:c, changeEng: 'To English', changeChn: '轉成中文', padding: '0'}))
+	secondaryMenu.push( g.state.isLogined ? 
+		<MobileMenuItem
+			key='login'
+			color='#fff'
+			onClick={()=>{
+				g.logout()
+				setMenuClose()
+			}}
+		>
+			{c.t("Logout")}
+		</MobileMenuItem>
+		:
+		<MobileMenuLink
+			key='login'
+			color='#fff'
+			onClick={setMenuClose}
+			to={"/login"}
+		>
+			{c.t('Login')}
+		</MobileMenuLink>
+	)
+	/*	if (!g.state.isLogined) {
+			menu.push(<FirstLevelLoginLink to={"/login"}>
+			{c.t("Login")}
+		</FirstLevelLoginLink>)
+		}
+		else {
+			menu.push(<FirstLevelContainer key='link-logout'>
+				<FirstLevelText color='#fff' displayText={c.t('Logout')} onClick={() => g.logout()} />
+			</FirstLevelContainer>)
+		}*/
+
 
 	return <><MobilePrimaryWrapper>{primaryMenu}</MobilePrimaryWrapper><MobileSecondaryWrapper>{secondaryMenu}</MobileSecondaryWrapper></>
 
@@ -238,6 +271,7 @@ const Navbar = ({routes, g, c}) => {
 						</MobileMenuWrapper>
 						{showMobileMenu && <MobileMenu>
 							{genMobileMenu({g: g, c: c, routes: routes, setMenuClose: setMenuClose})}
+
 						</MobileMenu>}
 					</PrimaryMenuDiv>
 				</>

@@ -141,7 +141,7 @@ export const RightSideIcon = styled(({ icon, haveMenu, ...props }) => (
 export const LangSelector = styled.span`
 	font-size: 1.2rem;
 	font-weight: 500;
-	padding: 0.3rem 1rem;
+	padding: ${({padding})=>padding? padding : '0.3rem 1rem'};
 	display: inline-block;
 	justify-self: center;
 	//align-self: center;

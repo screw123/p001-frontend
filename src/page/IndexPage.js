@@ -34,9 +34,7 @@ class IndexPage extends React.Component {
 				<Background color='#f3f3f3'>
 					<Styles.Section top={true}>
 						<HeaderWithBar color='#787F84'>{c.t('How It Works')}</HeaderWithBar>
-						<Text color='#787F84'>
-							{c.t('Infinite space in 4 steps')}
-						</Text>
+						<Text color='#787F84'>{c.t('Infinite space in 4 steps')}</Text>
 						<Styles.CardsRow>
 							<Styles.Card>
 								<Styles.CardImage image='/images/ico-boxLine.svg' />
@@ -206,7 +204,6 @@ class IndexPage extends React.Component {
 						</Styles.CardsThreeRow>
 
 						<Styles.PlanFooter>
-							{/* Put checkbox here */}
 							<Styles.Condition>
 								<Styles.CheckBox type='checkbox' />
 								<Text color='#787F84' align='left'>
@@ -214,7 +211,7 @@ class IndexPage extends React.Component {
 								</Text>
 							</Styles.Condition>
 							<Styles.NextButton>
-								<CTAButton disabled={true}>{c.t('Next')}</CTAButton>
+								<CTAButton>{c.t('Next')}</CTAButton>
 							</Styles.NextButton>
 						</Styles.PlanFooter>
 					</Styles.PlanContent>
@@ -314,7 +311,7 @@ class IndexPage extends React.Component {
 
 						<Styles.InputBox>
 							<Styles.Email placeholder='Email' />
-							<CTAButton disabled={true}>{c.t('Send')}</CTAButton>
+							<CTAButton>{c.t('Send')}</CTAButton>
 						</Styles.InputBox>
 					</Styles.SubscribeBox>
 

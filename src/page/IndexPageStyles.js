@@ -78,6 +78,7 @@ export const Card = styled.div`
 	transition: all 0.25s ease-in-out;
 	background: #fff;
 	border-radius: 0.5rem;
+	overflow: hidden;
 	&:hover {
 		transform: scale(1.1);
 		box-shadow: 0.4rem 0.8rem 0.8rem 0 rgba(230, 29, 110, 0.25);
@@ -108,8 +109,8 @@ export const CardImage = styled.div`
 `
 
 export const CardContent = styled.div`
-	flex: 0 0 25%;
-	max-height: 25%;
+	flex: 0 0 30%;
+	max-height: 30%;
 	padding: 0.5rem 1rem;
 	@media (min-width: 1025px) and (max-width: 1200px) {
 		flex: 0 0 35%;
@@ -118,10 +119,11 @@ export const CardContent = styled.div`
 `
 
 export const CardFooter = styled.div`
-	flex: 0 0 15%;
+	flex: 0 0 10%;
 	padding: 0.4rem;
 	display: flex;
 	justify-content: center;
+	align-items: center;
 	background-color: rgba(0, 0, 0, 0.03);
 	visibility: hidden;
 	${Card}:hover & {
@@ -191,6 +193,7 @@ export const TextBig = styled.div`
 
 export const PlanSection = styled.div`
 	display: flex;
+	background: #fff;
 `
 
 export const PlanImage = styled.div`

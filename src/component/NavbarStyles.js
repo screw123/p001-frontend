@@ -13,6 +13,7 @@ export const StickyDiv = styled.div`
 	@media (max-width: 1024px) {
 		height: 4rem;
 	}
+	z-index: 5;
 `
 
 export const PrimaryMenuDiv = styled.div`

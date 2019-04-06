@@ -82,10 +82,27 @@ class UserDashboardPage extends React.Component {
 					</ClickableText>
 				</Styles.Card>
 
-				<Styles.Card>
+				<Styles.Card justify='flex-start'>
 					<Styles.Text size='1.5rem' weight='600'>
 						{t('My Accounts')}
 					</Styles.Text>
+					<Styles.CardGap />
+					<Styles.Account>
+						<Styles.Text size='1.5rem'>{t('Default')}</Styles.Text>
+						<Styles.EditIcon image='/images/ico-edit.svg' />
+					</Styles.Account>
+					<Styles.Account>
+						<Styles.Text size='1.5rem'>{t('Default')}</Styles.Text>
+						<Styles.EditIcon image='/images/ico-edit.svg' />
+					</Styles.Account>
+					<Styles.Account>
+						<Styles.Text size='1.5rem'>{t('Default')}</Styles.Text>
+						<Styles.EditIcon image='/images/ico-edit.svg' />
+					</Styles.Account>
+					<Styles.CardGap />
+					<ClickableText color='#E61D6E' align='center'>
+						Create New
+					</ClickableText>
 				</Styles.Card>
 			</Styles.CardsRow>
 

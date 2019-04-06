@@ -50,25 +50,54 @@ export const CardsRow = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	@media (max-width: 768px) {
+		flex-direction: column;
+	}
 `
 export const Card = styled.div`
 	width: 30%;
+	height: 22rem;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	justify-content: ${props => (props.justify ? props.justify : 'center')};
 	margin: 3rem 0;
 	padding: 2rem;
 	border-radius: 1rem;
 	background-color: #fff;
 	box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.5);
+	@media (max-width: 1024px) {
+		width: 32%;
+		padding: 2rem 0.5rem;
+	}
+	@media (max-width: 768px) {
+		width: 100%;
+		padding: 2rem;
+		margin: 1rem 0;
+	}
 `
 export const CardGap = styled.div`
 	height: 1rem;
 `
 export const CardImage = styled.div`
-	height: 10rem;
-	width: 10rem;
+	min-height: 10rem;
+	min-width: 10rem;
 	background: ${props => `url(${props.image}) no-repeat center`};
 	background-size: 100% 100%;
 	margin-bottom: 1rem;
+`
+export const Account = styled.div`
+	display: flex;
+	width: 100%;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0.5rem 0;
+	border-bottom: 1px solid #e8e8e8;
+`
+export const EditIcon = styled.div`
+	height: 1.5rem;
+	width: 1.5rem;
+	cursor: pointer;
+	background: ${props => `url(${props.image}) no-repeat center`};
+	background-size: 100% 100%;
 `

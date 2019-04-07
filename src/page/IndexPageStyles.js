@@ -99,7 +99,7 @@ export const Card = styled.div`
 export const CardImage = styled.div`
 	flex: 0 0 60%;
 	background: ${props => `url(${props.image}) no-repeat center`};
-	background-size: 50% 50%;
+	background-size: ${({bgsize='50%'})=>bgsize} auto;
 	background-color: #f44d80;
 	border-bottom-left-radius: 50% 10%;
 	border-bottom-right-radius: 50% 10%;
@@ -170,7 +170,7 @@ export const CardTwoImage = styled.div`
 	width: 8rem;
 	height: 8rem;
 	background: ${props => `url(${props.image}) no-repeat center`};
-	background-size: 80% 80%;
+	background-size: ${({bgsize='80%'})=>bgsize} auto;
 	@media (min-width: 1101px) {
 		background-color: white;
 		border-radius: 1rem;

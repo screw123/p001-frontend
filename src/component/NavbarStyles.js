@@ -29,7 +29,7 @@ export const PrimaryMenuDiv = styled.div`
 		grid-template-rows: 3rem auto;
 		grid-template-columns: 7.75rem auto;
 	}
-	overflow: ${({mobileMenuExpand})=>mobileMenuExpand? 'auto': 'hidden'};
+	${({mobileMenuExpand})=>mobileMenuExpand? 'overflow:auto': ''};
 `
 
 
@@ -158,7 +158,7 @@ export const Menu = styled.div`
 	background-color: White;
 	border-radius: 0.25rem;
 	box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
-	z-index: 1;
+	z-index: 6;
 	${FirstLevelContainer}:hover & {
 		display: block;
 	}

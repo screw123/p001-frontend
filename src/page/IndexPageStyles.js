@@ -221,7 +221,7 @@ export const ProgressImage = styled.div`
 	width: 100%;
 	height: 2.15rem;
 	background: ${props => `url(${props.image}) no-repeat center`};
-	background-size: 100% 100%;
+	background-size: 100% auto;
 `
 export const PlanContent = styled.div`
 	flex-grow: 1;

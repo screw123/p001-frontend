@@ -1,7 +1,7 @@
 import React from "react"
 import { I18n } from 'react-i18next'
 import styled from 'styled-components'
-import CheckBox from './CheckBox'
+import {StaticCheckBox} from './CheckBox.js'
 import Radio from './Radio'
 
 import Toggle from './Toggle'
@@ -170,26 +170,21 @@ class PricingTable extends React.Component {
 					</TableRow>
 					<TableRow>
 						<label>
-		           <CheckBox
-		            checked={this.state.checked}
-		            onChange={this.handleCheckboxChange}
+		           <StaticCheckBox
+		            checked
 		         	 />
 		        </label>
 					</TableRow>
 					<TableRow>
 						<label>
-		           <CheckBox
-		            checked={this.state.checked}
-		            onChange={this.handleCheckboxChange}
+		           <StaticCheckBox
+		            checked
 		         	 />
 		        </label>
 					</TableRow>
 					<TableRow>
 						<label>
-		           <CheckBox
-		            checked={this.state.checked}
-		            onChange={this.handleCheckboxChange}
-		         	 />
+		           <StaticCheckBox checked />
 		        </label>
 					</TableRow>
 				</Table>
@@ -199,26 +194,17 @@ class PricingTable extends React.Component {
 					</TableRow>
 					<TableRow>
 						<label>
-		           <CheckBox
-		            checked={this.state.checked}
-		            onChange={this.handleCheckboxChange}
-		         	 />
+						<StaticCheckBox checked />
 		        </label>
 					</TableRow>
 					<TableRow>
 						<label>
-		           <CheckBox
-		            checked={this.state.checked}
-		            onChange={this.handleCheckboxChange}
-		         	 />
+						<StaticCheckBox checked />
 		        </label>
 					</TableRow>
 					<TableRow>
 						<label>
-		           <CheckBox
-		            checked={this.state.checked}
-		            onChange={this.handleCheckboxChange}
-		         	 />
+							<StaticCheckBox checked />
 		        </label>
 					</TableRow>
 				</Table>
@@ -228,26 +214,17 @@ class PricingTable extends React.Component {
 					</TableRow>
 					<TableRow>
 						<label>
-		           <CheckBox
-		            checked={this.state.checked}
-		            onChange={this.handleCheckboxChange}
-		         	 />
+							<StaticCheckBox checked />
 		        </label>
 					</TableRow>
 					<TableRow>
 						<label>
-		           <CheckBox
-		            checked={this.state.checked}
-		            onChange={this.handleCheckboxChange}
-		         	 />
+							<StaticCheckBox checked />
 		        </label>
 					</TableRow>
 					<TableRow>
 						<label>
-		           <CheckBox
-		            checked={this.state.checked}
-		            onChange={this.handleCheckboxChange}
-		         	 />
+							<StaticCheckBox checked />
 		        </label>
 					</TableRow>
 				</Table>

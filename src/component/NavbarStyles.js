@@ -13,6 +13,7 @@ export const StickyDiv = styled.div`
 	@media (max-width: 1024px) {
 		height: 4rem;
 	}
+	z-index: 5;
 `
 
 export const PrimaryMenuDiv = styled.div`
@@ -28,7 +29,7 @@ export const PrimaryMenuDiv = styled.div`
 		grid-template-rows: 3rem auto;
 		grid-template-columns: 7.75rem auto;
 	}
-	overflow: ${({mobileMenuExpand})=>mobileMenuExpand? 'auto': 'hidden'};
+	${({mobileMenuExpand})=>mobileMenuExpand? 'overflow:auto': ''};
 `
 
 
@@ -140,7 +141,7 @@ export const RightSideIcon = styled(({ icon, haveMenu, ...props }) => (
 export const LangSelector = styled.span`
 	font-size: 1.2rem;
 	font-weight: 500;
-	padding: 0.3rem 1rem;
+	padding: ${({padding})=>padding? padding : '0.3rem 1rem'};
 	display: inline-block;
 	justify-self: center;
 	//align-self: center;
@@ -157,7 +158,7 @@ export const Menu = styled.div`
 	background-color: White;
 	border-radius: 0.25rem;
 	box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
-	z-index: 1;
+	z-index: 6;
 	${FirstLevelContainer}:hover & {
 		display: block;
 	}

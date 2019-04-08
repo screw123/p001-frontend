@@ -15,7 +15,7 @@ class IndexPage extends React.Component {
 	render = () => {
 		const c = this.props.i18n
 		return (
-			<div>
+			<>
 				<Styles.TopSection>
 					<HeaderWithBar color='#fff' z={1}>
 						{c.t('Wisekeep is your storage service at fingertips')}
@@ -34,9 +34,7 @@ class IndexPage extends React.Component {
 				<Background color='#f3f3f3'>
 					<Styles.Section top={true}>
 						<HeaderWithBar color='#787F84'>{c.t('How It Works')}</HeaderWithBar>
-						<Text color='#787F84'>
-							{c.t('Infinite space in 4 steps')}
-						</Text>
+						<Text color='#787F84'>{c.t('Infinite space in 4 steps')}</Text>
 						<Styles.CardsRow>
 							<Styles.Card>
 								<Styles.CardImage image='/images/ico-boxLine.svg' />
@@ -56,7 +54,7 @@ class IndexPage extends React.Component {
 							</Styles.Card>
 
 							<Styles.Card>
-								<Styles.CardImage image='/images/ico-pickUp.svg' />
+								<Styles.CardImage image='/images/ico-pickUp.svg' bgsize='60%' />
 								<Styles.CardContent>
 									<Text color='#787F84' align='center'>
 										{c.t('We store both physical and digital stuff')}
@@ -73,7 +71,7 @@ class IndexPage extends React.Component {
 							</Styles.Card>
 
 							<Styles.Card>
-								<Styles.CardImage image='/images/ico-phone.svg' />
+								<Styles.CardImage image='/images/ico-phone.svg' bgsize='40%' />
 								<Styles.CardContent>
 									<Text color='#787F84' align='center'>
 										{c.t('We send you your stuff when you need it')}
@@ -118,7 +116,7 @@ class IndexPage extends React.Component {
 
 						<Styles.CardsTwoRow>
 							<Styles.CardTwo>
-								<Styles.CardTwoImage image='/images/ico-couch.svg' />
+								<Styles.CardTwoImage image='/images/ico-couch.svg'/>
 								<Styles.CardTwoContent>
 									<Styles.TextBig>{c.t('Save Space')}</Styles.TextBig>
 									<Text color='#787F84' align='left'>
@@ -133,7 +131,7 @@ class IndexPage extends React.Component {
 							</Styles.CardTwo>
 
 							<Styles.CardTwo>
-								<Styles.CardTwoImage image='/images/ico-lock.svg' />
+								<Styles.CardTwoImage image='/images/ico-lock.svg' bgsize='60%' />
 								<Styles.CardTwoContent>
 									<Styles.TextBig>{c.t('Security')}</Styles.TextBig>
 									<Text color='#787F84' align='left'>
@@ -148,7 +146,7 @@ class IndexPage extends React.Component {
 							</Styles.CardTwo>
 
 							<Styles.CardTwo>
-								<Styles.CardTwoImage image='/images/ico-temp.svg' />
+								<Styles.CardTwoImage image='/images/ico-temp.svg' bgsize='35%' />
 								<Styles.CardTwoContent>
 									<Styles.TextBig>{c.t('Climate Control')}</Styles.TextBig>
 									<Text color='#787F84' align='left'>
@@ -206,7 +204,6 @@ class IndexPage extends React.Component {
 						</Styles.CardsThreeRow>
 
 						<Styles.PlanFooter>
-							{/* Put checkbox here */}
 							<Styles.Condition>
 								<Styles.CheckBox type='checkbox' />
 								<Text color='#787F84' align='left'>
@@ -214,7 +211,7 @@ class IndexPage extends React.Component {
 								</Text>
 							</Styles.Condition>
 							<Styles.NextButton>
-								<CTAButton disabled={true}>{c.t('Next')}</CTAButton>
+								<CTAButton>{c.t('Next')}</CTAButton>
 							</Styles.NextButton>
 						</Styles.PlanFooter>
 					</Styles.PlanContent>
@@ -306,7 +303,7 @@ class IndexPage extends React.Component {
 				</Styles.ReviewSection>
 
 				{/* Subscribe Section */}
-				<Styles.SubscribeSection image='/images/city.png'>
+				{/*<Styles.SubscribeSection image='/images/city.png'>
 					<Styles.SubscribeBox>
 						<Styles.TextSubscribe>
 							{c.t('Subscribe and get the latest news')}
@@ -314,12 +311,12 @@ class IndexPage extends React.Component {
 
 						<Styles.InputBox>
 							<Styles.Email placeholder='Email' />
-							<CTAButton disabled={true}>{c.t('Send')}</CTAButton>
+							<CTAButton>{c.t('Send')}</CTAButton>
 						</Styles.InputBox>
 					</Styles.SubscribeBox>
 
 					<Styles.TextDirection>{c.t('Get Directions')}</Styles.TextDirection>
-				</Styles.SubscribeSection>
+				</Styles.SubscribeSection>*/}
 
 				{/* Footer Section */}
 				<Styles.FooterSection>
@@ -327,7 +324,7 @@ class IndexPage extends React.Component {
 						{c.t('Wisekeep© 2019 All Rights Reserved.')}
 					</Styles.TextFooter>
 				</Styles.FooterSection>
-			</div>
+			</>
 		)
 	}
 }

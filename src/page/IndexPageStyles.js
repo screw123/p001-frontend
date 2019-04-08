@@ -78,6 +78,7 @@ export const Card = styled.div`
 	transition: all 0.25s ease-in-out;
 	background: #fff;
 	border-radius: 0.5rem;
+	overflow: hidden;
 	&:hover {
 		transform: scale(1.1);
 		box-shadow: 0.4rem 0.8rem 0.8rem 0 rgba(230, 29, 110, 0.25);
@@ -98,7 +99,7 @@ export const Card = styled.div`
 export const CardImage = styled.div`
 	flex: 0 0 60%;
 	background: ${props => `url(${props.image}) no-repeat center`};
-	background-size: 50% 50%;
+	background-size: ${({bgsize='50%'})=>bgsize} auto;
 	background-color: #f44d80;
 	border-bottom-left-radius: 50% 10%;
 	border-bottom-right-radius: 50% 10%;
@@ -108,8 +109,8 @@ export const CardImage = styled.div`
 `
 
 export const CardContent = styled.div`
-	flex: 0 0 25%;
-	max-height: 25%;
+	flex: 0 0 30%;
+	max-height: 30%;
 	padding: 0.5rem 1rem;
 	@media (min-width: 1025px) and (max-width: 1200px) {
 		flex: 0 0 35%;
@@ -118,10 +119,11 @@ export const CardContent = styled.div`
 `
 
 export const CardFooter = styled.div`
-	flex: 0 0 15%;
+	flex: 0 0 10%;
 	padding: 0.4rem;
 	display: flex;
 	justify-content: center;
+	align-items: center;
 	background-color: rgba(0, 0, 0, 0.03);
 	visibility: hidden;
 	${Card}:hover & {
@@ -168,7 +170,7 @@ export const CardTwoImage = styled.div`
 	width: 8rem;
 	height: 8rem;
 	background: ${props => `url(${props.image}) no-repeat center`};
-	background-size: 80% 80%;
+	background-size: ${({bgsize='80%'})=>bgsize} auto;
 	@media (min-width: 1101px) {
 		background-color: white;
 		border-radius: 1rem;
@@ -191,6 +193,7 @@ export const TextBig = styled.div`
 
 export const PlanSection = styled.div`
 	display: flex;
+	background: #fff;
 `
 
 export const PlanImage = styled.div`
@@ -218,7 +221,7 @@ export const ProgressImage = styled.div`
 	width: 100%;
 	height: 2.15rem;
 	background: ${props => `url(${props.image}) no-repeat center`};
-	background-size: 100% 100%;
+	background-size: 100% auto;
 `
 export const PlanContent = styled.div`
 	flex-grow: 1;

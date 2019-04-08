@@ -77,16 +77,16 @@ class UserDashboardPage extends React.Component {
 					<Styles.WelcomeRight />
 				</Styles.WelcomeSection>
 
-				<Styles.CardsRow>
-					<Styles.Card>
+				<CardsRow>
+					<Card>
 						<Styles.CardImage image='/images/ico-house.svg' />
 						<Header3>{c.t('0 items at my location')}</Header3>
 						<ClickableText color='#E61D6E' align='center'>
 							View List
 						</ClickableText>
-					</Styles.Card>
+					</Card>
 
-					<Styles.Card>
+					<Card>
 						<Styles.CardImage image='/images/ico-warehouse.svg' />
 						<Header3 align='center' size='1.5rem' weight='600'>
 							{c.t('0 items at storage')}
@@ -94,9 +94,9 @@ class UserDashboardPage extends React.Component {
 						<ClickableText color='#E61D6E' align='center'>
 							View List
 						</ClickableText>
-					</Styles.Card>
+					</Card>
 
-					<Styles.Card justify='flex-start' align='stretch'>
+					<Card justify='flex-start' align='stretch'>
 						<Header3>{c.t('My Accounts')}</Header3>
 						<AutoSizer>
 						{({width, height})=>(
@@ -109,8 +109,8 @@ class UserDashboardPage extends React.Component {
 							/>
 						)}
 						</AutoSizer>
-					</Styles.Card>
-				</Styles.CardsRow>
+					</Card>
+				</CardsRow>
 			</Background>
 		)
 	}
@@ -135,4 +135,30 @@ const AccountLineDiv = styled(Text)`
 const EditSpan = styled(IconSpan)`
     font-weight: 600;
     color: #E61D6E;
+`
+
+const CardsRow = styled.div`
+	display: grid;
+	margin: 2rem 0;
+	grid-gap: 2rem;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-rows: 100%;
+	place-items: center / center;
+	justify-content: space-between;
+	@media (max-width: 768px) {
+		grid-template-columns: 100%;
+		grid-template-rows: 1fr 1fr 1fr;
+	}
+`
+
+export const Card = styled.div`
+	width: 100%;
+	min-height: 22rem;
+	display: flex;
+	flex-direction: column;
+	align-items: ${({align='center'}) => align};
+	justify-content: ${({justify='center'}) => justify};
+	padding: 2rem;
+	border-radius: 1rem;
+	background-color: #fff;
 `

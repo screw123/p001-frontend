@@ -34,6 +34,8 @@ export const Card = styled.div`
 	${({ noShadow }) => (noShadow ? '' : 'box-shadow: 0px 6px 12px 3px rgba(0, 0, 0, 0.4);')}
 `
 
+
+
 export const BigCard = styled(Card)`
 	display: flex;
 	min-height: 70vh;

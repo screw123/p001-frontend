@@ -56,11 +56,11 @@ export const CardsRow = styled.div`
 `
 export const Card = styled.div`
 	width: 30%;
-	height: 22rem;
+	min-height: 22rem;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	justify-content: ${props => (props.justify ? props.justify : 'center')};
+	align-items: ${({align='center'}) => align};
+	justify-content: ${({justify='center'}) => justify};
 	margin: 3rem 0;
 	padding: 2rem;
 	border-radius: 1rem;

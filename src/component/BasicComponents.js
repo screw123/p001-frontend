@@ -124,6 +124,16 @@ export const Header2 = styled(Text)`
 	}
 `
 
+export const Header3 = styled(Text)`
+	font-size: 1.5rem;
+	font-weight: 600;
+	line-height: 2.5rem;
+	@media (max-width: 768px) {
+		font-size: 1.3rem;
+		line-height: 1.5rem;
+	}
+`
+
 export const HeaderWithBar = styled(Header)`
 	position: relative;
 	padding: 1rem 0;
@@ -272,7 +282,7 @@ const ToolTipText = styled.span`
 	}
 `
 
-const IconSpan = styled.span`
+export const IconSpan = styled.span`
 	align-self: center;
 	cursor: pointer;
 	${({ float }) => (float ? 'float:' + float : '')}
@@ -302,7 +312,8 @@ const Div2 = styled.div`
 
 const SectionHeader = styled.div`
 	font-weight: 600;
-	font-size: 1.75rem;
+	color: #888;
+	font-size: 1.5rem;
 	box-sizing: border-box;
 	display: grid;
 	padding: 1rem 0;

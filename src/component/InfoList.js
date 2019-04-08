@@ -27,9 +27,9 @@ const ContentDiv = styled.div`
     cursor: pointer;
 `
 
-export const InfoListStandardLine = ({key1, style, content, contentOnClick, occupyFullRow, showBottomBorder, ...props}) => {
+export const InfoListStandardLine = ({key1, style, content, contentOnClick, occupyFullRow, ...props}) => {
     return(<OuterWrapper key={key1} style={style} {...props}>
-        <ContentDiv key={key1} onClick={contentOnClick} occupyFullRow={occupyFullRow} showBottomBorder={showBottomBorder}>
+        <ContentDiv key={key1} onClick={contentOnClick} occupyFullRow={occupyFullRow}>
             {content}
         </ContentDiv>
     </OuterWrapper>)
@@ -47,7 +47,7 @@ selected
 
     render() {
         return (
-            <div>
+            <>
                 <Section {...this.props}/>
                 <AutoSizer disableHeight>
                 {({ width }) => (
@@ -64,7 +64,7 @@ selected
                     </WindowScroller>
                 )}
                 </AutoSizer>
-            </div>
+            </>
         )
     }
 

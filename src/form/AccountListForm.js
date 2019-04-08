@@ -1,8 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import InfoList, {InfoListStandardLine} from '../component/InfoList.js'
+import {AutoSizer, List} from 'react-virtualized'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {Tag, ToolTip} from '../component/BasicComponents.js'
+import {Text, Tag, IconSpan, Header3} from '../component/BasicComponents.js'
 import { Redirect } from "react-router-dom"
 
 import { ApolloProvider, Mutation } from 'react-apollo'
@@ -77,7 +78,7 @@ export default class AccountListForm extends React.Component {
         
         if (this.state.account_id) {return(<Redirect push to={{pathname: '/editAccount/'+ this.state.account_id+'/'+this.state.type}} />)}
 
-        return(<div>
+        return(<>
             <InfoList 
                 rowHeightCalc={()=>40}
                 headerText={<div><FontAwesomeIcon icon={['far', 'address-card']}/> {c.t('My Accounts')}</div>}
@@ -96,7 +97,8 @@ export default class AccountListForm extends React.Component {
                 data={myself.accountView_id || []}
                 listComponent={this.accountLineView}    
             />}
-        </div>)
+        </>)
     }
 
 }
+

@@ -56,9 +56,7 @@ class LocaleContainer extends Container {
     }
 
     updateWindowDimensions() { this.setState({ width: window.innerWidth, height: window.innerHeight }) }
-    updateWindowPosition() { 
-        console.log(document.body.scrollTop || document.documentElement.scrollTop)
-        this.setState({ scrollTop: document.body.scrollTop || document.documentElement.scrollTop }) }
+    updateWindowPosition() { this.setState({ scrollTop: document.body.scrollTop || document.documentElement.scrollTop }) }
 
     t = (...props) => {
         return this.state.i18n.t(...props);

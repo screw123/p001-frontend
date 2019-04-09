@@ -34,6 +34,8 @@ export const Card = styled.div`
 	${({ noShadow }) => (noShadow ? '' : 'box-shadow: 0px 6px 12px 3px rgba(0, 0, 0, 0.4);')}
 `
 
+
+
 export const BigCard = styled(Card)`
 	display: flex;
 	min-height: 70vh;
@@ -121,6 +123,16 @@ export const Header2 = styled(Text)`
 	@media (max-width: 768px) {
 		font-size: 1.75rem;
 		line-height: 1.75rem;
+	}
+`
+
+export const Header3 = styled(Text)`
+	font-size: 1.5rem;
+	font-weight: 600;
+	line-height: 2.5rem;
+	@media (max-width: 768px) {
+		font-size: 1.3rem;
+		line-height: 1.5rem;
 	}
 `
 
@@ -272,7 +284,7 @@ const ToolTipText = styled.span`
 	}
 `
 
-const IconSpan = styled.span`
+export const IconSpan = styled.span`
 	align-self: center;
 	cursor: pointer;
 	${({ float }) => (float ? 'float:' + float : '')}
@@ -302,7 +314,8 @@ const Div2 = styled.div`
 
 const SectionHeader = styled.div`
 	font-weight: 600;
-	font-size: 1.75rem;
+	color: #888;
+	font-size: 1.5rem;
 	box-sizing: border-box;
 	display: grid;
 	padding: 1rem 0;

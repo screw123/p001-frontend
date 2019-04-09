@@ -363,10 +363,6 @@ export const CardFour = styled.div`
 	background-color: white;
 	border-radius: 1rem;
 	transition: box-shadow 0.5s ease;
-	&:hover {
-		box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.5);
-		cursor: pointer;
-	}
 `
 
 export const Stars = styled.div`

@@ -1,5 +1,5 @@
 import IndexPage from "./page/IndexPage.js"
-import WhyUsPage from "./page/WhyUsPage.js"
+import FeaturesPage from "./page/FeaturesPage.js"
 import PricingPage from "./page/PricingPage.js"
 import OurClientsPage from "./page/OurClientsPage.js"
 import LoginPage from "./page/LoginPage.js"
@@ -143,10 +143,10 @@ const routes = [
 		}
 	},
 	{
-		path: '/whyus',
+		path: '/features',
 		exact: true,
-		menuName: 'Why Us',
-		component: WhyUsPage,
+		menuName: 'Features',
+		component: FeaturesPage,
 		navbar: {
 			itemId: 2,
 			firstLevel: true,

@@ -100,3 +100,5 @@ class App extends React.Component {
 }
 
 export default App
+
+//Use anchor https://stackoverflow.com/questions/40280369/use-anchors-with-react-router

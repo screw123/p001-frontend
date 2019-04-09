@@ -48,7 +48,7 @@ const Cube = styled.div`
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: Orange;
+        background-color: #E61D6E;
         animation: ${skFoldCubeAngle} 2.4s infinite linear both;
         transform-origin: 100% 100%;
     }

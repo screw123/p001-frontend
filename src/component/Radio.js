@@ -16,16 +16,19 @@ const HiddenRadio = styled.input.attrs({ type: 'radio' })`
 
 const FilterPrice= styled.div`
 	padding: 1em;
-	background-image: linear-gradient(-180deg, #F43EA6 0%, #F5576C 100%);
+
+
+  background: ${props => (props.checked ? 'linear-gradient(180deg,#f43ea6 0%,#f5576c 100%)' : 'white')};
+	
 	border-radius: 16px;
 	color: ${props => (props.checked ? 'white' : '#A6A6A6')};
 `
 
-const Radio = ({name,text,checked, ...props }) => (
+const Radio = ({name,text,checked, value, ...props }) => (
   <React.Fragment>
 		<FilterPrice checked={checked}>
 	    <label>
-				<HiddenRadio checked={checked} type="radio" {...props} name="filter"/>
+				<HiddenRadio type="radio" {...props} name="filter" value={value}/>
 	      <span checked={checked} style={{ marginLeft: 8 }}>{text}</span>
 	    </label>
 		</FilterPrice>

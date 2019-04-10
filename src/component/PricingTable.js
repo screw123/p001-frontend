@@ -62,16 +62,12 @@ const FilterDate = styled(TableRow)`
 `
 
 class PricingTable extends React.Component {
-  state = { checked: false }
+  state = { checked: 'day' }
 
   handleCheckboxChange = event => {
     this.setState({ checked: event.target.checked })
   }
 
-
-	handleRadioChange = event => {
-    this.setState({ checked: event.target.checked })
-  }
 
 	render = () => (
 		<React.Fragment>
@@ -80,21 +76,24 @@ class PricingTable extends React.Component {
 
 					<TableRowFilters>
 						<FilterDate>
-		           <Radio
-            		checked={this.state.checked}
-		            onChange={this.handleRadioChange}
-	             	text = {'By Day'}
-		         	 />
- 		           <Radio
-		            checked={this.state.checked}
-		            onChange={this.handleRadioChange}
-	             	text = {'By Month'}
-		         	 />
- 		           <Radio
-		            checked={this.state.checked}
-		            onChange={this.handleRadioChange}
-	             	text = {'By Year'}
-		         	 />
+				           <Radio
+		            		checked={this.state.checked === 'day'}
+		            		value={'day'}
+				            onChange={(e) => this.setState({ checked: e.target.value })}
+			             	text = {'By Day'}
+				         	 />
+		 		           <Radio
+				            checked={this.state.checked === 'month'}
+				            value={'month'}
+				            onChange={(e) => this.setState({ checked: e.target.value })}
+			             	text = {'By Month'}
+				         	 />
+		 		           <Radio
+				            checked={this.state.checked === 'year'}
+				            value={'year'}
+				            onChange={(e) => this.setState({ checked: e.target.value })}
+			             	text = {'By Year'}
+				         	 />
 						</FilterDate>
 					</TableRowFilters>
 					<TableRowFilters>

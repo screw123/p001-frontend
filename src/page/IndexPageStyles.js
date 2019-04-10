@@ -13,11 +13,11 @@ export const TopSection = styled.div`
 	padding: 3rem 45% 0 6rem;
 	background: linear-gradient(180deg, #f43ea6 0%, #f5576c 100%);
 	@media (max-width: 1024px) {
-		padding: 0 45% 0 2rem;
+		padding: 3rem 45% 0 2rem;
 		min-height: 20rem;
 	}
 	@media (max-width: 768px) {
-		padding: 0 45% 0 1rem;
+		padding: 3rem 45% 0 1rem;
 		height: 40vh;
 	}
 `

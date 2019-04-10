@@ -13,6 +13,8 @@ import LngDetector from 'i18next-browser-languagedetector';
 import { reactI18nextModule } from 'react-i18next';
 import 'moment/locale/zh-hk';
 import { Provider, Subscribe, Container } from 'unstated';
+import en from './en.json'
+import zhHK from './zh-HK.json'
 
 class LocaleContainer extends Container {
     constructor() {
@@ -22,6 +24,11 @@ class LocaleContainer extends Container {
             .use(LngDetector)
             .use(reactI18nextModule)
             .init({
+                //init launch for force preload translation file
+                /*resources: {
+                    en: { common: en },
+                    "zh-HK": { common: zhHK }
+                },*/
                 fallbackLng: 'en',
                 preload: ['en', 'zh-HK'],
                 ns: ['common'],

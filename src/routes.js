@@ -2,6 +2,7 @@ import IndexPage from "./page/IndexPage.js"
 import FeaturesPage from "./page/FeaturesPage.js"
 import PricingPage from "./page/PricingPage.js"
 import OurClientsPage from "./page/OurClientsPage.js"
+import AboutUsPage from "./page/AboutUsPage.js"
 import LoginPage from "./page/LoginPage.js"
 
 import UserDashboardPage from "./page/UserDashboardPage.js"
@@ -179,6 +180,21 @@ const routes = [
 		component: OurClientsPage,
 		navbar: {
 			itemId: 4,
+			firstLevel: true,
+			showBeforeLogin: true,
+			showAfterLogin: false
+		},
+		router: {
+			requireLogin: false
+		}
+	},
+	{
+		path: "/aboutus",
+		exact: true,
+		menuName: "About Us",
+		component: AboutUsPage,
+		navbar: {
+			itemId: 5,
 			firstLevel: true,
 			showBeforeLogin: true,
 			showAfterLogin: false

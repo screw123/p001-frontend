@@ -24,7 +24,7 @@ const IndexPage = (props) => {
 
 			<Styles.TopSection>
 				<HeaderWithBar color='#fff' z={1}>
-					{c.t('Wisekeep is your storage service at fingertips')}
+					{c.t('When storage is rare we guard it with care')}
 				</HeaderWithBar>
 				<Text color='#fff' z={1}>
 					{c.t('short description of our service')}
@@ -115,7 +115,11 @@ const IndexPage = (props) => {
 				<Styles.Section top={false}>
 					<HeaderWithBar color='#787F84'>{c.t('Why Choose Wisekeep')}</HeaderWithBar>
 					<Text color='#787F84' align='center'>
-						{c.t('Wisekeep has a lot of nice features')}
+						{c.t('Wisekeep has a lot of nice features1')}
+					</Text>
+					<Text><br /></Text>
+					<Text color='#787F84' align='center'>
+						{c.t('Wisekeep has a lot of nice features2')}
 					</Text>
 
 					<Styles.CardsTwoRow>

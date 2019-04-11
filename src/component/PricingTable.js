@@ -3,8 +3,7 @@ import { I18n } from 'react-i18next'
 import styled from 'styled-components'
 import {StaticCheckBox} from './CheckBox.js'
 import Radio from './Radio'
-
-import Toggle from './Toggle'
+import PricingTableFilters from './PricingTableFilters'
 import {TableHeader} from './TableHeaderStyles'
 
 const TableContainer = styled.div`
@@ -14,15 +13,6 @@ const TableContainer = styled.div`
   border-radius: 16px;
   margin: 5% 10%;
 `
-const ItemContainerTitle = styled.h3`
-	color: #787F84;
-	padding-top: 5%;
-	margin-bottom: 1%;
-`
-const ItemContainerLink = styled.a`
-	color: #E61D6E; 	
-	font-weight: bold;
-`
 const Table = styled.div`
   display: flex;
   flex-flow: row wrap;
@@ -30,91 +20,39 @@ const Table = styled.div`
 `
 const TableRow = styled.div`
 	border-right: 1px solid #CDCDCD;
-  color: #787F84;
-  font-size: 18px;
-  text-align: ${props => (props.left ? 'left' : 'center')};
-  padding: 1.5em 3em;
-  width: calc(100% / 4);
+	color: #787F84;
+	font-size: 18px;
+	text-align: ${props => (props.left ? 'left' : 'center')};
+	padding: 1.5em 3em;
+	width: calc(100% / 4);
 
-  position:relative;
+  	position:relative;
 
-	@media all and (max-width: 740px) {
-    width: calc(100% / 2);
-    img {
-    	display: none;
-    }
+  	@media all and (max-width: 1280px) {
+		padding: 1.5em 2em;
 	}
-`
 
-const TableRowFilters = styled(TableRow)`
-	@media all and (max-width: 740px) {
-		border-bottom: 2px solid #F0F0F0;
-    width: calc(100%);
+	@media all and (max-width: 950px) {
+	    width: calc(100% / 2);
+	    img {
+	    	display: none;
+	    }
 	}
-`
-
-
-const FilterDate = styled(TableRow)`
-	border: 2px solid #F0F0F0;
-  border-radius: 16px;
-  padding: 0;
-  width: 100%;
 `
 
 class PricingTable extends React.Component {
-  state = { checked: 'day' }
+  state = { 
+  	checked: 'day'
+  }
 
   handleCheckboxChange = event => {
     this.setState({ checked: event.target.checked })
+    this.setState2({ showData: event.target.showData })
   }
-
-
 	render = () => (
 		<React.Fragment>
 			<TableContainer>
-				<Table>
-
-					<TableRowFilters>
-						<FilterDate>
-				           <Radio
-		            		checked={this.state.checked === 'day'}
-		            		value={'day'}
-				            onChange={(e) => this.setState({ checked: e.target.value })}
-			             	text = {'By Day'}
-				         	 />
-		 		           <Radio
-				            checked={this.state.checked === 'month'}
-				            value={'month'}
-				            onChange={(e) => this.setState({ checked: e.target.value })}
-			             	text = {'By Month'}
-				         	 />
-		 		           <Radio
-				            checked={this.state.checked === 'year'}
-				            value={'year'}
-				            onChange={(e) => this.setState({ checked: e.target.value })}
-			             	text = {'By Year'}
-				         	 />
-						</FilterDate>
-					</TableRowFilters>
-					<TableRowFilters>
-						<img src="/images/ico-box.svg" alt=""/>
-						<ItemContainerTitle>Document Box</ItemContainerTitle>
-						<ItemContainerLink>View details</ItemContainerLink>
-						<Toggle></Toggle>
-					</TableRowFilters>
-					<TableRowFilters>
-						<img src="/images/ico-box.svg" alt=""/>
-						<ItemContainerTitle>Document Box</ItemContainerTitle>
-						<ItemContainerLink>View details</ItemContainerLink>
-						<Toggle></Toggle>
-					</TableRowFilters>
-					<TableRowFilters>
-						<img src="/images/ico-box.svg" alt=""/>
-						<ItemContainerTitle>Document Box</ItemContainerTitle>
-						<ItemContainerLink>View details</ItemContainerLink>
-						<Toggle></Toggle>
-					</TableRowFilters>
-				</Table>
+				<PricingTableFilters/>
 				<TableHeader>
 					Pricing
 				</TableHeader>

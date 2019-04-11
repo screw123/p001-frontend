@@ -18,6 +18,8 @@ import {BigLoadingScreen } from './component/Loading.js'
 import GqlApi, { GqlApiProvider, DummyPassHistory, GqlApiSubscriber } from './stateContainer/GqlApi.js'
 import LocaleApi, {LocaleApiProvider, LocaleApiSubscriber} from './stateContainer/LocaleApi.js'
 
+import {Helmet} from "react-helmet";
+
 const MainContainer = styled.div`
     display: grid;
     grid-template-rows: [start] auto [navbar] auto [body] auto [end];
@@ -82,6 +84,9 @@ class App extends React.Component {
                 <LocaleApiProvider><LocaleApiSubscriber>
                 {(c) =>(
                     <React.Fragment>
+                        <Helmet>
+                            <script src={'https://embed.tawk.to/5ca7579853f1e453fb8c4b1a/' + (c.state.i18n.language==='en'? '1d85f36us': 'default')} async={true} charset='UTF-8' crossorigin='*'></script>
+                        </Helmet>
                         {((g.state.isLogined===true)||(g.state.isLogined===false)) && <MainContainer>
                             <DummyPassHistory />  {/*Load this to add the history obj into GqpApi state */}
                             {this.genItems({routes: routes, stateContainer: {login: g, i18n: c}})}  {/* Put routes.js all into react-router */}

@@ -2,7 +2,6 @@ import IndexPage from "./page/IndexPage.js"
 import FeaturesPage from "./page/FeaturesPage.js"
 import PricingPage from "./page/PricingPage.js"
 import OurClientsPage from "./page/OurClientsPage.js"
-import AboutUsPage from "./page/AboutUsPage.js"
 import LoginPage from "./page/LoginPage.js"
 
 import UserDashboardPage from "./page/UserDashboardPage.js"
@@ -29,7 +28,7 @@ export {NotFoundPage as NotFound} from "./page/NotFoundPage.js"
 
 const routes = [
 	{
-		path: '/login', //this should be removed as Login should be a right side icon item
+		path: '/login',
 		menuName: 'Login',
 		component: LoginPage,
 		navbar: {
@@ -181,22 +180,7 @@ const routes = [
 		navbar: {
 			itemId: 4,
 			firstLevel: true,
-			showBeforeLogin: true,
-			showAfterLogin: false
-		},
-		router: {
-			requireLogin: false
-		}
-	},
-	{
-		path: "/aboutus",
-		exact: true,
-		menuName: "About Us",
-		component: AboutUsPage,
-		navbar: {
-			itemId: 5,
-			firstLevel: true,
-			showBeforeLogin: true,
+			showBeforeLogin: false,
 			showAfterLogin: false
 		},
 		router: {
@@ -226,8 +210,8 @@ const routes = [
 		navbar: {
 			itemId: 801,
 			firstLevel: true,
-			showBeforeLogin: true,
-			showAfterLogin: true
+			showBeforeLogin: false,
+			showAfterLogin: false
 		},
 		router: {
 			requireLogin: false

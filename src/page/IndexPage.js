@@ -127,10 +127,7 @@ const IndexPage = (props) => {
 							<Styles.CardTwoImage image='/images/ico-couch.svg'/>
 							<Styles.CardTwoContent>
 								<Styles.TextBig>{c.t('Feature1')}</Styles.TextBig>
-								<Text color='#787F84' align='left'>
-									{c.t('Feature Description1')}
-								</Text>
-								<ClickableText color='#787F84' align='left'>
+								<ClickableText color='#787F84' align='left' onClick={()=>setRedirectPath('/features')}>
 									{c.t('Learn More')}
 								</ClickableText>
 							</Styles.CardTwoContent>
@@ -140,10 +137,7 @@ const IndexPage = (props) => {
 							<Styles.CardTwoImage image='/images/ico-lock.svg' bgsize='60%' />
 							<Styles.CardTwoContent>
 								<Styles.TextBig>{c.t('Feature2')}</Styles.TextBig>
-								<Text color='#787F84' align='left'>
-								{c.t('Feature Description2')}
-								</Text>
-								<ClickableText color='#787F84' align='left'>
+								<ClickableText color='#787F84' align='left' onClick={()=>setRedirectPath('/features')}>
 									{c.t('Learn More')}
 								</ClickableText>
 							</Styles.CardTwoContent>
@@ -153,10 +147,7 @@ const IndexPage = (props) => {
 							<Styles.CardTwoImage image='/images/ico-temp.svg' bgsize='35%' />
 							<Styles.CardTwoContent>
 								<Styles.TextBig>{c.t('Feature3')}</Styles.TextBig>
-								<Text color='#787F84' align='left'>
-								{c.t('Feature Description3')}
-								</Text>
-								<ClickableText color='#787F84' align='left'>
+								<ClickableText color='#787F84' align='left' onClick={()=>setRedirectPath('/features')}>
 									{c.t('Learn More')}
 								</ClickableText>
 							</Styles.CardTwoContent>

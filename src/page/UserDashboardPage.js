@@ -143,7 +143,7 @@ const CardsRow = styled.div`
 	grid-gap: 2rem;
 	grid-template-columns: 1fr 1fr 1fr;
 	grid-template-rows: 100%;
-	place-items: center / center;
+	place-items: center center;
 	justify-content: space-between;
 	@media (max-width: 768px) {
 		grid-template-columns: 100%;

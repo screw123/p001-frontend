@@ -94,7 +94,7 @@ const LoadingTextContainer = styled.div`
     display: grid;
     grid: 4fr 1fr 2fr / 1fr 20fr 1fr;
     min-height: 100vh;
-    place-items: center / center;
+    place-items: center center;
 `
 
 const LoadingText = styled.p`

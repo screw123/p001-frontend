@@ -21,9 +21,10 @@ const ModalBG = styled.div`
 
 const ModalBody = styled.div`
 	background-color: white;
-	margin: 3% auto;
+	margin: 2% auto;
 	padding: 2rem;
-	width: 95%;
+	// added a max-width
+	max-width: 42rem;
 	box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.4), 0 0.3rem 1.2rem 0 rgba(0, 0, 0, 0.2);
 	border-radius: ${roundRadiusREM}rem;
 `

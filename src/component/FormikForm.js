@@ -31,6 +31,7 @@ const FormikForm = styled(Form)`
 	display: flex;
 	box-sizing: border-box;
 	// justify-content: space-between;
+	align-items: ${props => (props.align ? props.align : 'flex-start')};
 	flex-flow: column wrap;
 	flex: 0 0 auto;
 

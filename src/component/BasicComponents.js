@@ -186,7 +186,10 @@ export const Button = styled.button`
 	min-width: 10rem;
 	background: ${props => (!props.disabled ? 'rgba(128, 128, 128, 0.2)' : '#E61D6E')};
 	color: ${props => (!props.disabled ? '#888' : ' white')};
-	${({ z }) => (z ? 'z-index: ' + z : '')}
+	${({ z }) => (z ? 'z-index: ' + z : '')};
+	&:focus {
+		outline: none;
+	}
 `
 
 export const CTAButton = styled(Button)`

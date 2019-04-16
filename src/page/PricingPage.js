@@ -7,145 +7,56 @@ import {TableHeader} from '../component/TableHeaderStyles'
 import { Header } from "../component/HeaderStyles"
 
 
-class PricingPage extends React.Component {
-    
-    render = () => (
-        <React.Fragment>
-            <Header Pricing>
-							Pricing
-            </Header>
-            <TableContainer>
+const PricingPage = (props) => {
+	const g = props.login
+	const c = props.i18n
+
+	return (
+		<>
+			<Header Pricing>{c.t('Pricing')}</Header>
+			<TableContainer>
 				<PricingTableFilters/>
-				<TableHeader>
-					Pricing
-				</TableHeader>
+				<TableHeader>{c.t('Box Features')}</TableHeader>
 				<Table>
-					<TableRow left>
-						Lorem ipsum
-					</TableRow>
-					<TableRow>
-						$0
-					</TableRow>
-					<TableRow>
-						$0
-					</TableRow>
-					<TableRow>
-						$0
-					</TableRow>
+					<TableRow>{c.t('Size')}</TableRow>
+					<TableRow>40cm x 36cm x 30cm</TableRow> <TableRow>60cm x 40cm x 36cm</TableRow><TableRow>60cm x 40cm x 36cm</TableRow>
 				</Table>
 				<Table>
-					<TableRow left>
-						Lorem ipsum
-					</TableRow>
-					<TableRow>
-						$0
-					</TableRow>
-					<TableRow>
-						$0
-					</TableRow>
-					<TableRow>
-						$0
-					</TableRow>
+					<TableRow>{c.t('Insured Value')}</TableRow>
+					<TableRow>/</TableRow> <TableRow>HK$1500</TableRow><TableRow>HK$5000</TableRow>
 				</Table>
 				<Table>
-					<TableRow left>
-						Lorem ipsum
-					</TableRow>
-					<TableRow>
-						$0
-					</TableRow>
-					<TableRow>
-						$0
-					</TableRow>
-					<TableRow>
-						$0
-					</TableRow>
+					<TableRow>{c.t('Temp and Humidity Control')}</TableRow>
+					<TableRow><StaticCheckBox checked /></TableRow> <TableRow><StaticCheckBox checked /></TableRow><TableRow><StaticCheckBox checked /></TableRow>
 				</Table>
-				<TableHeader>
-					Features
-				</TableHeader>
+				<TableHeader>{c.t('Pricing')}</TableHeader>
 				<Table>
-					<TableRow left>
-						Lorem ipsum
-					</TableRow>
-					<TableRow>
-						<label>
-		           <StaticCheckBox
-		            checked
-		         	 />
-		        </label>
-					</TableRow>
-					<TableRow>
-						<label>
-		           <StaticCheckBox
-		            checked
-		         	 />
-		        </label>
-					</TableRow>
-					<TableRow>
-						<label>
-		           <StaticCheckBox checked />
-		        </label>
-					</TableRow>
+					<TableRow>{c.t('By Day')}</TableRow>
+					<TableRow>/</TableRow> <TableRow>HK$ 5</TableRow><TableRow>HK$ 10</TableRow>
 				</Table>
 				<Table>
-					<TableRow left>
-						Lorem ipsum
-					</TableRow>
-					<TableRow>
-						<label>
-						<StaticCheckBox checked />
-		        </label>
-					</TableRow>
-					<TableRow>
-						<label>
-						<StaticCheckBox checked />
-		        </label>
-					</TableRow>
-					<TableRow>
-						<label>
-							<StaticCheckBox checked />
-		        </label>
-					</TableRow>
+					<TableRow>{c.t('By Month')}</TableRow>
+					<TableRow>HK$ 29</TableRow> <TableRow>HK$ 39</TableRow><TableRow>HK$ 79</TableRow>
 				</Table>
 				<Table>
-					<TableRow left>
-						Lorem ipsum
-					</TableRow>
-					<TableRow>
-						<label>
-							<StaticCheckBox checked />
-		        </label>
-					</TableRow>
-					<TableRow>
-						<label>
-							<StaticCheckBox checked />
-		        </label>
-					</TableRow>
-					<TableRow>
-						<label>
-							<StaticCheckBox checked />
-		        </label>
-					</TableRow>
+					<TableRow>{c.t('By Year')}</TableRow>
+					<TableRow>HK$ 290</TableRow> <TableRow>HK$ 390</TableRow><TableRow>HK$ 790</TableRow>
 				</Table>
-				<TableHeader>
-					Total Amount
-				</TableHeader>
 			</TableContainer>						
-        </React.Fragment>
-    )
+		</>
+	)
 }
 
 const TableContainer = styled.div`
 	background-color: white;
 
-  box-shadow: 0 6px 12px 0 rgba(0,0,0,0.5);
-  border-radius: 16px;
-  margin: 5% 10%;
+	box-shadow: 0 6px 12px 0 rgba(0,0,0,0.5);
+	border-radius: 16px;
+	margin: 5% 10%;
 `
 const Table = styled.div`
-  display: flex;
-  flex-flow: row wrap;
+	display: flex;
+	flex-flow: row wrap;
 	border-bottom: 1px solid #CDCDCD;
 `
 const TableRow = styled.div`
@@ -156,17 +67,17 @@ const TableRow = styled.div`
 	padding: 1.5em 3em;
 	width: calc(100% / 4);
 
-  	position:relative;
+		position:relative;
 
-  	@media all and (max-width: 1280px) {
+		@media all and (max-width: 1280px) {
 		padding: 1.5em 2em;
 	}
 
 	@media all and (max-width: 950px) {
-	    width: calc(100% / 2);
-	    img {
-	    	display: none;
-	    }
+			width: calc(100% / 2);
+			img {
+				display: none;
+			}
 	}
 `
 

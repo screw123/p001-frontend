@@ -17,6 +17,7 @@ const IndexPage = (props) => {
 
 	const [redirectPath, setRedirectPath] = useState(undefined)
 	const [passOnState, setPassOnState] = useState(undefined)
+	const tawk = window.Tawk_API || {}
 
 	return (
 		<>
@@ -31,7 +32,10 @@ const IndexPage = (props) => {
 				</Text>
 				<br />
 				{c.state.width > 768 && (
-					<ContrastedCTAButton z={1} onClick={()=>setRedirectPath('/login')}> {c.t('Start Now')}</ContrastedCTAButton>
+					<ContrastedCTAButton z={1} onClick={
+						//()=>setRedirectPath('/login')}
+						()=>tawk.toggle()}
+					> {c.t('Start Now')}</ContrastedCTAButton>
 				)}
 				<Styles.Banner />
 			</Styles.TopSection>
@@ -157,7 +161,7 @@ const IndexPage = (props) => {
 			</Background>
 
 			{/* Plan Section */}
-			<Styles.PlanSection>
+			{/*<Styles.PlanSection>
 				<Styles.PlanImage />
 				<Styles.PlanContent>
 					<HeaderWithBar color='#787F84'>{c.t('Choose Your Plan')}</HeaderWithBar>
@@ -200,13 +204,13 @@ const IndexPage = (props) => {
 							<Text color='#787F84' align='left'>
 								{c.t('I agree with the terms and conditions')}
 							</Text>
-						</Styles.Condition>*/}
+						</Styles.Condition>
 						<Styles.NextButton>
 							<CTAButton onClick={()=>setRedirectPath('/quotation')}>{c.t('Next')}</CTAButton>
 						</Styles.NextButton>
 					</Styles.PlanFooter>
 				</Styles.PlanContent>
-			</Styles.PlanSection>
+			</Styles.PlanSection>*/}
 
 			{/* Review Section */}
 			<Styles.ReviewSection>
@@ -221,18 +225,11 @@ const IndexPage = (props) => {
 								<Styles.StarIcon />
 							))}
 						</Styles.Stars>
-						<Text>
-							{c.t(
-								'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate, nisl commodo sagittis'
-							)}
-						</Text>
+						<Text>{'"FAST, EASY, RELIABLE"\nHad the pleasure of dealing with this lovely company today. Staff are friendly, helpful & caring! Fast, easy and reliable. Would definitely use thie service again. Thank you!! '}</Text>
 						<Styles.CardFourContent>
 							<Styles.Avatar image='/images/img-avatar.png' />
 							<Styles.AvatarDescription>
-								<Styles.TextName>{c.t('Nicolas Smit')}</Styles.TextName>
-								<Styles.TextDesignation>
-									{c.t('Individual User')}
-								</Styles.TextDesignation>
+								<Styles.TextName>Eliza K.</Styles.TextName>
 							</Styles.AvatarDescription>
 						</Styles.CardFourContent>
 					</Styles.CardFour>
@@ -243,18 +240,11 @@ const IndexPage = (props) => {
 								<Styles.StarIcon />
 							))}
 						</Styles.Stars>
-						<Text>
-							{c.t(
-								'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate, nisl commodo sagittis'
-							)}
-						</Text>
+						<Text>{'本人多野又怕煩，研究左幾間迷你倉，都多條款挷實，試左Wisekeep, 佢將d大膠箱送上門, pack完野call佢地 就幫你送去倉 要返d野嘅時候佢地就送返上門 ，都幾方便， 每月收$30幾蚊個大箱，app記錄都好方便，like!'}</Text>
 						<Styles.CardFourContent>
 							<Styles.Avatar image='/images/img-avatar.png' />
 							<Styles.AvatarDescription>
-								<Styles.TextName>{c.t('Nicolas Smit')}</Styles.TextName>
-								<Styles.TextDesignation>
-									{c.t('Individual User')}
-								</Styles.TextDesignation>
+								<Styles.TextName>Kenny L.</Styles.TextName>
 							</Styles.AvatarDescription>
 						</Styles.CardFourContent>
 					</Styles.CardFour>
@@ -265,24 +255,20 @@ const IndexPage = (props) => {
 								<Styles.StarIcon />
 							))}
 						</Styles.Stars>
-						<Text>
-							{c.t(
-								'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate, nisl commodo sagittis'
-							)}
-						</Text>
+						<Text>{'Very satisfied with the services. On time, easy to schedule, clean new cases, and very courteous crew. Thank you Wisekeep team!'}</Text>
 						<Styles.CardFourContent>
 							<Styles.Avatar image='/images/img-avatar.png' />
 							<Styles.AvatarDescription>
-								<Styles.TextName>{c.t('Nicolas Smit')}</Styles.TextName>
+								<Styles.TextName>Lianne W.</Styles.TextName>
 								<Styles.TextDesignation>
-									{c.t('Individual User')}
+
 								</Styles.TextDesignation>
 							</Styles.AvatarDescription>
 						</Styles.CardFourContent>
 					</Styles.CardFour>
 				</Styles.CardsFourRow>
-
-				<Styles.BrandRow>
+`			
+				{/*<Styles.BrandRow>
 					<Styles.BrandWrapper>
 						<Styles.BrandImage image='/images/logo.png' />
 						<Styles.BrandImage image='/images/logo.png' />
@@ -290,7 +276,7 @@ const IndexPage = (props) => {
 					</Styles.BrandWrapper>
 
 					<Styles.BrandText>{c.t('Brands that trust us')}</Styles.BrandText>
-				</Styles.BrandRow>
+				</Styles.BrandRow>*/}
 			</Styles.ReviewSection>
 
 			{/* Subscribe Section */}

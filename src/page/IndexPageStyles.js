@@ -345,9 +345,8 @@ export const CardsFourRow = styled.div`
 	margin: 2rem 0;
 	width: 100%;
 	display: flex;
+	align-items: flex-start;
 	flex-flow: row wrap;
-	justify-content: center;
-	align-items: center;
 	@media (max-width: 1100px) {
 		margin: 1rem 0;
 		flex-direction: column;

@@ -84,16 +84,17 @@ export const Text = styled.div`
 	max-width: 60rem;
 	font-size: 1rem;
 	line-height: 1.5rem;
+	white-space: pre-line;
 	color: ${props => (props.color ? props.color : '#888')};
 	text-align: ${props => props.align};
 	font-weight: ${props => (props.fontWeight ? props.fontWeight : '400')};
 	@media (max-width: 1024px) {
-		font-size: 0.9rem;
-		line-height: 1.25rem;
+		font-size: 0.95rem;
+		line-height: 1.3rem;
 	}
 	@media (max-width: 768px) {
-		font-size: 0.85rem;
-		line-height: 1.1rem;
+		font-size: 0.9rem;
+		line-height: 1.2rem;
 	}
 	${({ z }) => (z ? 'z-index: ' + z : '')}
 `

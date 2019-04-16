@@ -5,8 +5,8 @@ import Radio from './Radio'
 import ToggleBox from './ToggleBox'
 
 const Table = styled.div`
-  display: flex;
-  flex-flow: row wrap;
+	display: flex;
+	flex-flow: row wrap;
 	border-bottom: 1px solid #CDCDCD;
 `
 const TableRow = styled.div`
@@ -30,7 +30,7 @@ const TableRow = styled.div`
 const TableRowFilters = styled(TableRow)`
 	@media all and (max-width: 740px) {
 		border-bottom: 2px solid #F0F0F0;
-    width: calc(100%);
+    	width: calc(100%);
 	}
 `
 const TableRowFiltersBydate = styled(TableRowFilters)`
@@ -39,10 +39,10 @@ const TableRowFiltersBydate = styled(TableRowFilters)`
     justify-content: center;
 `
 const FilterDate = styled(TableRow)`
-	border: 2px solid #F0F0F0;
-  border-radius: 16px;
-  padding: 0;
-  width: 100%;
+	//border: 2px solid #F0F0F0;
+	border-radius: 16px;
+	padding: 0;
+	width: 100%;
 `
 
 class PricingTableFilters extends Component {
@@ -50,26 +50,27 @@ class PricingTableFilters extends Component {
   constructor(props) {
   	super(props)
 	    this.state = {
-	      days: [
-	        {id: 1, value: "day", text:"By Day", isChecked: true},
-	        {id: 2, value: "month", text:"By Month", isChecked: false},
-	        {id: 3, value: "year", text:"By Year", isChecked: false}
-	      ],
+			days: [
+				{id: 1, value: "day", text:"By Day", isChecked: true},
+				{id: 2, value: "month", text:"By Month", isChecked: false},
+				{id: 3, value: "year", text:"By Year", isChecked: false}
+			],
 
-	      boxes:[
-	        {id: 1, value: "box1", name:"box1", isChecked: true},
-	        {id: 2, value: "box2", name:"box2", isChecked: false},
-	        {id: 3, value: "box3", name:"box3", isChecked: false}
-	      ]
+			boxes:[
+				{id: 1, value: "box1", name:"Document Box", isChecked: true, picURL: '/images/ico-box.svg'},
+				{id: 2, value: "box2", name:"Standard Box", isChecked: true, picURL: '/images/ico-box.svg'},
+				{id: 3, value: "box3", name:"Premium Box", isChecked: true, picURL: '/images/ico-box.svg'}
+	      	]
 	    }
   }
 
   handleCheckChieldElement = (event) => {
     let boxes = this.state.boxes
     boxes.forEach(box => {
-       if (box.value === event.target.value)
-          box.isChecked =  event.target.checked
-    })
+       	if (box.value === event.target.value)
+          	box.isChecked =  event.target.checked
+		}
+	)
     this.setState({boxes: boxes})
   }
 
@@ -77,37 +78,37 @@ class PricingTableFilters extends Component {
     let days = this.state.days
     days.forEach(day => {
        if (day.value === event.target.value)
-          day.isChecked =  event.target.checked
+          	day.isChecked =  event.target.checked
         else
       		day.isChecked =  false
     })
     this.setState({days: days})
   }
 
-  render() {
-    return (
+  	render() {
+		return (
 
-		<React.Fragment>
-		<Table>
+			<React.Fragment>
+			<Table>
 
 				<TableRowFiltersBydate>
 					<FilterDate>
-		        {
-		          this.state.days.map((day) => {
-		            return (<Radio handleCheckChieldElementDays={this.handleCheckChieldElementDays} {...day} />)
-		          })
-		        }
+					{/*
+						this.state.days.map((day) => {
+						return (<Radio handleCheckChieldElementDays={this.handleCheckChieldElementDays} {...day} />)
+						})
+					*/}
 					</FilterDate>
 				</TableRowFiltersBydate>
-        {
-          this.state.boxes.map((box) => {
-            return (<TableRowFilters><ToggleBox handleCheckChieldElement={this.handleCheckChieldElement} {...box} /></TableRowFilters>)
-          })
-        }
-        </Table>
-    </React.Fragment>
-    );
-  }
+				{
+				this.state.boxes.map((box) => {
+					return (<TableRowFilters><ToggleBox handleCheckChieldElement={this.handleCheckChieldElement} {...box} /></TableRowFilters>)
+				})
+				}
+			</Table>
+		</React.Fragment>
+		)
+  	}
 }
 
 export default PricingTableFilters

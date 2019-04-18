@@ -227,7 +227,7 @@ const IndexPage = (props) => {
 						</Styles.Stars>
 						<Text>{'"FAST, EASY, RELIABLE"\nHad the pleasure of dealing with this lovely company today. Staff are friendly, helpful & caring! Fast, easy and reliable. Would definitely use thie service again. Thank you!! '}</Text>
 						<Styles.CardFourContent>
-							<Styles.Avatar image='/images/img-avatar.png' />
+							{/*<Styles.Avatar image='/images/img-avatar.png' />*/}
 							<Styles.AvatarDescription>
 								<Styles.TextName>Eliza K.</Styles.TextName>
 							</Styles.AvatarDescription>
@@ -242,7 +242,7 @@ const IndexPage = (props) => {
 						</Styles.Stars>
 						<Text>{'本人多野又怕煩，研究左幾間迷你倉，都多條款挷實，試左Wisekeep, 佢將d大膠箱送上門, pack完野call佢地 就幫你送去倉 要返d野嘅時候佢地就送返上門 ，都幾方便， 每月收$30幾蚊個大箱，app記錄都好方便，like!'}</Text>
 						<Styles.CardFourContent>
-							<Styles.Avatar image='/images/img-avatar.png' />
+							{/*<Styles.Avatar image='/images/img-avatar.png' />*/}
 							<Styles.AvatarDescription>
 								<Styles.TextName>Kenny L.</Styles.TextName>
 							</Styles.AvatarDescription>
@@ -257,7 +257,7 @@ const IndexPage = (props) => {
 						</Styles.Stars>
 						<Text>{'Very satisfied with the services. On time, easy to schedule, clean new cases, and very courteous crew. Thank you Wisekeep team!'}</Text>
 						<Styles.CardFourContent>
-							<Styles.Avatar image='/images/img-avatar.png' />
+							{/*<Styles.Avatar image='/images/img-avatar.png' />*/}
 							<Styles.AvatarDescription>
 								<Styles.TextName>Lianne W.</Styles.TextName>
 								<Styles.TextDesignation>

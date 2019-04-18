@@ -98,16 +98,16 @@ const ToggleBox = props => (
 	{c=>
 		<>
 			<label key={props.id}>
-			<ActiveBox checked={props.isChecked}>
-				<img src={props.picURL} alt=""/>
-				<ItemContainerTitle>{c.t(props.name)}</ItemContainerTitle>
-				<ItemContainerLink>{c.t('Details')}</ItemContainerLink>
-				<ToggleStyle>
-					<input className="check" onClick={props.handleCheckChieldElement} type="checkbox" name={props.name} checked={props.isChecked} value={props.value}/>
-					<b className="b switch"></b>
-					<b className="b track"></b>
-				</ToggleStyle>
-			</ActiveBox>
+				<ActiveBox checked={props.isChecked}>
+					<img src={props.picURL} alt=""/>
+					<ItemContainerTitle>{c.t(props.name)}</ItemContainerTitle>
+					<ItemContainerLink>{c.t('Details')}</ItemContainerLink>
+					<ToggleStyle>
+						<input className="check" onClick={props.handleCheckChieldElement} type="checkbox" name={props.name} checked={props.isChecked} value={props.value}/>
+						<b className="b switch"></b>
+						<b className="b track"></b>
+					</ToggleStyle>
+				</ActiveBox>
 			</label>
 		</>
 	}

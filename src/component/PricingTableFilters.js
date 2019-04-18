@@ -60,7 +60,7 @@ class PricingTableFilters extends Component {
 				{id: 1, value: "box1", name:"Document Box", isChecked: true, picURL: '/images/ico-box.svg'},
 				{id: 2, value: "box2", name:"Standard Box", isChecked: true, picURL: '/images/ico-box.svg'},
 				{id: 3, value: "box3", name:"Premium Box", isChecked: true, picURL: '/images/ico-box.svg'}
-	      	]
+			]
 	    }
   }
 

@@ -139,8 +139,8 @@ export const Header3 = styled(Text)`
 
 export const HeaderWithBar = styled(Header)`
 	position: relative;
-	padding: 1rem 0;
 	${({color})=>'color:'+color}
+	padding: ${props => (props.padding ? props.padding : '1rem 0')};
 	&:before {
 		content: '';
 		position: absolute;

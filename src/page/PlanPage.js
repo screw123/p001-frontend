@@ -5,9 +5,7 @@ import { I18n } from 'react-i18next'
 import styled from 'styled-components'
 import Wizard from '../component/Wizard'
 import WizardStep from '../component/WizardStep'
-import CheckBox from '../component/CheckBox.js'
-import { Formik, Field } from 'formik'
-import FormikForm, { TextField, FormButton, FormErr, FormIcon, CheckBox2, MultiSelect } from '../component/FormikForm.js'
+import CheckBox from '../component/SimpleCheckBox.js'
 
 
 import {
@@ -107,13 +105,11 @@ export default class PlanPage extends React.Component {
 		super(props);
 		this.state = {
 			currentStep: 1,
-			setDefaultBilling: null,
-			errors: {
-				setDefaultBilling: null
-			}
+			isChecked: true
 		}
 		this._next = this._next.bind(this);
 		this._prev = this._prev.bind(this);
+		this.handleChange = this.handleChange.bind(this);
 	}
 
 	_next() {
@@ -158,6 +154,10 @@ export default class PlanPage extends React.Component {
 		return null
 	}
 
+	handleChange () {
+        this.setState({isChecked: !this.state.isChecked}, () => console.log(this.state.isChecked));
+    };
+
 	render() {
 		// const [redirectPath, setRedirectPath] = useState(undefined)
 
@@ -196,8 +196,14 @@ export default class PlanPage extends React.Component {
 								</CardTwo>
 							</CardsTwoRow>
 
-							<input type="checkbox" />
-							{c.t("I agree with terms and conditions")}
+							<p>
+								<CheckBox
+									name="termsAndConditions"
+									onChange={this.handleChange}
+									isChecked={this.setState.isChecked}
+									label="I agree with terms and conditions"
+								/>
+							</p>
 						</WizardStep>
 
 						<WizardStep currentStep={this.state.currentStep} step={2}>
@@ -230,56 +236,3 @@ export default class PlanPage extends React.Component {
 		)
 	}
 }
-
-
-// import React from "react"
-// import styled from 'styled-components'
-// import { I18n } from 'react-i18next'
-// import Wizard from '../component/Wizard'
-
-// import {
-// 	Background,
-// 	ContrastedCTAButton,
-// 	HeaderWithBar,
-// 	Text,
-// 	ClickableText,
-// 	CTAButton
-// } from '../component/BasicComponents.js'
-
-// const ContainerBox = styled.div`
-//     background-color: white;
-//     border-radius: 16px;
-//     margin: 3% 10%;
-//     padding: 4rem 3rem;
-//     // z-index: -2;
-// `
-
-// class PlanPage extends React.Component {
-
-// 	constructor(props) {
-// 		super(props)
-// 		this.test = this.test.bind(this)
-// 	}
-
-// 	test() {
-// 		console.log('ghere');
-// 	}
-
-// 	render() {
-// 		const g = this.props.login
-// 		const c = this.props.i18n
-
-// 		return (
-// 			<ContainerBox>
-// 				<HeaderWithBar color='#787F84' padding='1rem 0 0'>{c.t('Choose Your Plan')}</HeaderWithBar>
-// 				<Text color='#787F84' align='left'>
-// 					{c.t('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate')}
-// 				</Text>
-// 				<CTAButton onClick={this.test}>{c.t('Next')}</CTAButton>
-
-// 			</ContainerBox>
-// 		)
-// 	}
-// }
-
-// export default PlanPage

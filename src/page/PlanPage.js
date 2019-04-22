@@ -4,6 +4,7 @@ import isUndefined from 'lodash/isUndefined'
 import { I18n } from 'react-i18next'
 import styled from 'styled-components'
 import Wizard from '../component/Wizard'
+import WizardStep from '../component/WizardStep'
 import CheckBox from '../component/CheckBox.js'
 import { Formik, Field } from 'formik'
 import FormikForm, { TextField, FormButton, FormErr, FormIcon, CheckBox2, MultiSelect } from '../component/FormikForm.js'
@@ -104,7 +105,7 @@ export default class PlanPage extends React.Component {
 
 		this.test = this.test.bind(this);
 		this._next = this._next.bind(this);
-        this._prev = this._prev.bind(this);
+		this._prev = this._prev.bind(this);
 	}
 
 	test() {
@@ -112,46 +113,46 @@ export default class PlanPage extends React.Component {
 	}
 
 	_next() {
-        let currentStep = this.state.currentStep;
-        currentStep = currentStep >= totalSteps ? (totalSteps + 1) : (currentStep + 1);
-        this.setState({
-            currentStep: currentStep
-        })
-    }
+		let currentStep = this.state.currentStep;
+		currentStep = currentStep >= totalSteps ? (totalSteps + 1) : (currentStep + 1);
+		this.setState({
+			currentStep: currentStep
+		})
+	}
 
-    _prev() {
-        let currentStep = this.state.currentStep;
-        currentStep = currentStep <= 1 ? 1 : currentStep - 1;
-        this.setState({
-            currentStep: currentStep
-        })
-    }
+	_prev() {
+		let currentStep = this.state.currentStep;
+		currentStep = currentStep <= 1 ? 1 : currentStep - 1;
+		this.setState({
+			currentStep: currentStep
+		})
+	}
 
-    get previousButton() {
-        let currentStep = this.state.currentStep;
-        if (currentStep >= 2) {
-            return (
+	get previousButton() {
+		let currentStep = this.state.currentStep;
+		if (currentStep >= 2) {
+			return (
 				<BackButton>
 					<CTAButton onClick={this._prev}>BACK</CTAButton>
 				</BackButton>
-            )
-        }
+			)
+		}
 
-        return null
-    }
+		return null
+	}
 
-    get nextButton() {
+	get nextButton() {
 		let currentStep = this.state.currentStep;
-        if (currentStep < totalSteps) {
-            return (
+		if (currentStep < totalSteps) {
+			return (
 				<NextButton>
 					<CTAButton onClick={this._next}>Next</CTAButton>
 				</NextButton>
-            )
+			)
 		}
 
-        return null
-    }
+		return null
+	}
 
 	render() {
 		// const [redirectPath, setRedirectPath] = useState(undefined)
@@ -166,23 +167,30 @@ export default class PlanPage extends React.Component {
 					<Text color='#787F84' align='left'>
 						{c.t('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate')}
 					</Text>
-					<Wizard totalSteps={5} />
-					<CardsTwoRow>
-						<CardTwo>
-							<CardTwoImage image='/images/ico-calendarDay.svg' />
-						</CardTwo>
+					<Wizard totalSteps={5} currentStep={this.state.currentStep}>
+						<WizardStep currentStep={this.state.currentStep} step={1}>
+							<CardsTwoRow>
+								<CardTwo>
+									<CardTwoImage image='/images/ico-calendarDay.svg' />
+								</CardTwo>
 
-						<CardTwo>
-							<CardTwoImage image='/images/ico-calendarMonth.svg' />
-						</CardTwo>
+								<CardTwo>
+									<CardTwoImage image='/images/ico-calendarMonth.svg' />
+								</CardTwo>
 
-						<CardTwo>
-							<CardTwoImage image='/images/ico-calendarYear.svg' />
-						</CardTwo>
-					</CardsTwoRow>
+								<CardTwo>
+									<CardTwoImage image='/images/ico-calendarYear.svg' />
+								</CardTwo>
+							</CardsTwoRow>
 
-					<input type="checkbox"  />
-					{c.t("I agree with terms and conditions")}
+							<input type="checkbox" />
+							{c.t("I agree with terms and conditions")}
+						</WizardStep>
+
+						<WizardStep currentStep={this.state.currentStep} step={2}>
+							<h2>BUUUU!!!!</h2>
+						</WizardStep>
+					</Wizard>
 
 					<div>
 						{this.nextButton}

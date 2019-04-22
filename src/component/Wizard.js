@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import ProgressBar from './ProgressBar'
 
 export const Container = styled.div`
-    padding: 2rem 0;
+    padding: 2rem 0 0;
 `
 
 export default class Wizard extends React.Component {

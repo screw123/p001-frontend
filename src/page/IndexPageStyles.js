@@ -146,7 +146,7 @@ export const CardsTwoRow = styled.div`
 	flex-flow: row wrap;
 	justify-content: center;
 	align-items: center;
-	@media (max-width: 1100px) {
+	@media (max-width: 768px) {
 		margin: 1rem 0;
 		flex-direction: column;
 	}
@@ -155,8 +155,9 @@ export const CardsTwoRow = styled.div`
 export const CardTwo = styled.div`
 	display: flex;
 	margin: 1rem 0;
-	flex: 1;
-	@media (max-width: 1100px) {
+	width: 100%;
+	max-width: 22rem;
+	@media (max-width: 768px) {
 		background-color: white;
 		border-radius: 1rem;
 		box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.5);
@@ -179,8 +180,11 @@ export const CardTwoImage = styled.div`
 `
 
 export const CardTwoContent = styled.div`
-	margin: auto;
 	padding: 0rem 1rem;
+	display:flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
 `
 
 export const TextBig = styled.div`

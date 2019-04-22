@@ -20,27 +20,27 @@ class LocaleContainer extends Container {
     constructor() {
         super()
         const i18next = i18n
-            .use(Fetch)
+            //.use(Fetch)
             .use(LngDetector)
             .use(reactI18nextModule)
             .init({
                 //init launch for force preload translation file
-                /*resources: {
+                resources: {
                     en: { common: en },
                     "zh-HK": { common: zhHK }
-                },*/
+                },
                 fallbackLng: 'en',
                 preload: ['en', 'zh-HK'],
                 ns: ['common'],
                 defaultNS: 'common',
-                backend: {
+                /*backend: {
                     loadPath: (lngs, namespaces)=> {
                         if (lngs==='en') return 'https://jsonblob.com/api/67291dc1-5452-11e9-83d2-5bca2b6c0895'
                         else return 'https://jsonblob.com/api/3c809bbd-5457-11e9-83d2-c74ccd7fe1c3'
 
                     }
                     //loadPath: '/locales/{{lng}}.json',
-                },
+                },*/
                 interpolation: {
                     escapeValue: false // react already safes from xss
                 },

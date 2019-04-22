@@ -177,7 +177,7 @@ export const HeaderCards = styled(Text)`
 
 //Buttons
 export const Button = styled.button`
-	cursor: pointer;
+	cursor: pointer !important;
 	border: none;
 	font-size: 1.25rem;
 	font-weight: 600;

@@ -79,8 +79,6 @@ export default class Progress extends React.Component {
         super(props);
     }
 
-    
-
     render() {
         const steps = this.props.steps;
         const currentStep = this.props.currentStep;
@@ -101,8 +99,6 @@ export default class Progress extends React.Component {
                 <ProgressBar>
                     {renderSteps(steps)}
                 </ProgressBar>
-
-                <ButtonNext>HEllo!!!</ButtonNext>
             </BarContainer>
         )
     }

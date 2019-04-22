@@ -50,10 +50,21 @@ export const CardTwoImage = styled.div`
 	align-self: center;
 	min-width: 8rem;
 	min-height: 8rem;
-	width: 8rem;
-	height: 8rem;
-	background: ${props => `url(${props.image}) no-repeat center`};
-	background-size: ${({ bgsize = '80%' }) => bgsize} auto;
+	padding: 1rem 2rem;
+	
+	img {
+		display: block;
+		margin-bottom: 1.5rem;
+	}
+	
+	p {
+		color: #787F84;
+		display: block;
+		font-weight: bold;
+		margin: 0;
+		text-align: center;
+	}
+
 	@media (min-width: 1101px) {
 		background-color: white;
 		border-radius: 1rem;
@@ -164,15 +175,24 @@ export default class PlanPage extends React.Component {
 						<WizardStep currentStep={this.state.currentStep} step={1}>
 							<CardsTwoRow>
 								<CardTwo>
-									<CardTwoImage image='/images/ico-calendarDay.svg' />
+									<CardTwoImage>
+										<img src="images/ico-calendarDay.svg" alt=""/>
+										<p>Daily</p>
+									</CardTwoImage>
 								</CardTwo>
 
 								<CardTwo>
-									<CardTwoImage image='/images/ico-calendarMonth.svg' />
+									<CardTwoImage>
+										<img src="images/ico-calendarMonth.svg" alt=""/>
+										<p>Monthly</p>
+									</CardTwoImage>
 								</CardTwo>
 
 								<CardTwo>
-									<CardTwoImage image='/images/ico-calendarYear.svg' />
+									<CardTwoImage>
+										<img src="images/ico-calendarYear.svg" alt=""/>
+										<p>Yeary</p>
+									</CardTwoImage>
 								</CardTwo>
 							</CardsTwoRow>
 
@@ -181,7 +201,19 @@ export default class PlanPage extends React.Component {
 						</WizardStep>
 
 						<WizardStep currentStep={this.state.currentStep} step={2}>
-							<h2>BUUUU!!!!</h2>
+							<h2>Step 2</h2>
+						</WizardStep>
+
+						<WizardStep currentStep={this.state.currentStep} step={3}>
+							<h2>Step 3 </h2>
+						</WizardStep>
+
+						<WizardStep currentStep={this.state.currentStep} step={4}>
+							<h2>Step 4 </h2>
+						</WizardStep>
+
+						<WizardStep currentStep={this.state.currentStep} step={5}>
+							<h2>Step 5 </h2>
 						</WizardStep>
 					</Wizard>
 

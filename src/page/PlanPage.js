@@ -75,6 +75,7 @@ export const Section = styled.div`
 `
 
 export const NextButton = styled.div`
+	float: right;
 	align-self: flex-end;
 	padding: 1rem 0;
 	@media (max-width: 950px) {
@@ -82,10 +83,12 @@ export const NextButton = styled.div`
 	}
 `
 
-export const ButtonContainer = styled.div`
-	align-items: center;
-	display: flex;
-	justify-content: space-between;
+export const BackButton = styled.div`
+	align-self: flex-end;
+	padding: 1rem 0;
+	@media (max-width: 950px) {
+		align-self: center;
+	}
 `
 
 export default class PlanPage extends React.Component {
@@ -128,18 +131,12 @@ export default class PlanPage extends React.Component {
         let currentStep = this.state.currentStep;
         if (currentStep >= 2) {
             return (
-				<NextButton>
+				<BackButton>
 					<CTAButton onClick={this._prev}>BACK</CTAButton>
-				</NextButton>
+				</BackButton>
             )
         }
-        if (currentStep === 1) {
-            return (
-				<NextButton>
-					<CTAButton onClick={this._prev} disabled>BACK</CTAButton>
-				</NextButton>
-            )
-        }
+
         return null
     }
 
@@ -187,10 +184,10 @@ export default class PlanPage extends React.Component {
 					<input type="checkbox"  />
 					{c.t("I agree with terms and conditions")}
 
-					<ButtonContainer>
-						{this.previousButton}
+					<div>
 						{this.nextButton}
-					</ButtonContainer>
+						{this.previousButton}
+					</div>
 				</ContainerBox>
 
 				<Section>

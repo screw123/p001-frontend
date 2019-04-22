@@ -66,13 +66,12 @@ const ContainerBox = styled.div`
     border-radius: 16px;
     margin: 3% 10%;
     padding: 4rem 3rem;
-    // z-index: -2;
+    z-index: 1;
 `
 
 export const Section = styled.div`
 	margin: 0 10%;
 	padding: 4rem 0;
-	// z-index: -2;
 `
 
 export const NextButton = styled.div`
@@ -102,14 +101,8 @@ export default class PlanPage extends React.Component {
 				setDefaultBilling: null
 			}
 		}
-
-		this.test = this.test.bind(this);
 		this._next = this._next.bind(this);
 		this._prev = this._prev.bind(this);
-	}
-
-	test() {
-		console.log('hello');
 	}
 
 	_next() {

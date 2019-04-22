@@ -66,6 +66,13 @@ const ProgressStep = styled.li`
     // }
 `
 
+const ButtonNext = styled.button`
+    position:relative;
+    cursor: pointer;
+    background-color: red;
+    z-index: 10000;
+`
+
 
 export default class Progress extends React.Component {
     constructor(props) {
@@ -94,6 +101,8 @@ export default class Progress extends React.Component {
                 <ProgressBar>
                     {renderSteps(steps)}
                 </ProgressBar>
+
+                <ButtonNext>HEllo!!!</ButtonNext>
             </BarContainer>
         )
     }

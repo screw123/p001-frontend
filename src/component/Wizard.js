@@ -76,7 +76,6 @@ export default class Wizard extends React.Component {
 		return(
 			<div>
 				<ProgressBar steps={this.props.totalSteps} currentStep={this.state.currentStep}/>
-				<button onClick={this.test}>TEST!!!!!</button>
 			</div>
 		)
 	}

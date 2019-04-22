@@ -17,9 +17,15 @@ import {
 const ContainerBox = styled.div`
     background-color: white;
     border-radius: 16px;
-    margin: 5% 10%;
+    margin: 3% 10%;
     padding: 4rem 3rem;
     z-index: -2;
+`
+
+export const Section = styled.div`
+	margin: 0 10%;
+	padding: 4rem 0;
+	z-index: -2;
 `
 
 const PlanPage = (props) => {
@@ -32,27 +38,32 @@ const PlanPage = (props) => {
 		console.log('here!!')
 	}
 	return (
-        <ContainerBox>
-            <HeaderWithBar color='#787F84' padding='1rem 0 0'>{c.t('Choose Your Plan')}</HeaderWithBar>
-            <Text color='#787F84' align='left'>
-                {c.t('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate')}
-            </Text>
-            <Wizard totalSteps={5}/>
-            <Styles.CardsTwoRow>
-                <Styles.CardTwo>
-                    <Styles.CardTwoImage image='/images/ico-couch.svg'/>
-                </Styles.CardTwo>
+		<React.Fragment>
+			<ContainerBox>
+				<HeaderWithBar color='#787F84' padding='1rem 0 0'>{c.t('Choose Your Plan')}</HeaderWithBar>
+				<Text color='#787F84' align='left'>
+					{c.t('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate')}
+				</Text>
+				<Wizard totalSteps={5}/>
+				<Styles.CardsTwoRow>
+					<Styles.CardTwo>
+						<Styles.CardTwoImage image='/images/ico-couch.svg'/>
+					</Styles.CardTwo>
 
-                <Styles.CardTwo>
-                    <Styles.CardTwoImage image='/images/ico-lock.svg' bgsize='60%' />
-                </Styles.CardTwo>
+					<Styles.CardTwo>
+						<Styles.CardTwoImage image='/images/ico-lock.svg' bgsize='60%' />
+					</Styles.CardTwo>
 
-                <Styles.CardTwo>
-                    <Styles.CardTwoImage image='/images/ico-temp.svg' bgsize='35%' />
-                </Styles.CardTwo>
-            </Styles.CardsTwoRow>
-			<button onClick={() => test()}>Heloo!!!</button>
-        </ContainerBox>
+					<Styles.CardTwo>
+						<Styles.CardTwoImage image='/images/ico-temp.svg' bgsize='35%' />
+					</Styles.CardTwo>
+				</Styles.CardsTwoRow>
+			</ContainerBox>
+
+			<Section>
+				<HeaderWithBar color='#787F84' padding='1rem 0 0'>{c.t('Frequently Asked Questions')}</HeaderWithBar>
+			</Section>
+		</React.Fragment>
 	)
 }
 

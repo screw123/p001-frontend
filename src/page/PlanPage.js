@@ -1,6 +1,4 @@
-import React, { useState } from 'react'
-import omitBy from 'lodash/omitBy'
-import isUndefined from 'lodash/isUndefined'
+import React from 'react'
 import { I18n } from 'react-i18next'
 import styled from 'styled-components'
 import Wizard from '../component/Wizard'
@@ -9,11 +7,8 @@ import CheckBox from '../component/SimpleCheckBox.js'
 import FAQs from '../component/FAQs'
 
 import {
-	Background,
-	ContrastedCTAButton,
 	HeaderWithBar,
 	Text,
-	ClickableText,
 	CTAButton
 } from '../component/BasicComponents.js'
 
@@ -21,7 +16,7 @@ const totalSteps = 5;
 
 //CardTwo
 export const CardsTwoRow = styled.div`
-	margin: 2rem 0;
+	margin: ${props => (props.margin ? props.margin : '1rem 0')};
 	width: 100%;
 	display: flex;
 	flex-flow: row wrap;
@@ -52,7 +47,7 @@ export const CardTwoImage = styled.div`
 	
 	img {
 		display: block;
-		margin-bottom: 1.5rem;
+		margin: 0 auto 1.5rem;
 	}
 	
 	p {
@@ -67,6 +62,19 @@ export const CardTwoImage = styled.div`
 		background-color: white;
 		border-radius: 1rem;
 		box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.5);
+	}
+`
+
+export const CardBox = styled(CardTwo)`
+	max-width: 20.8rem;
+`
+
+export const CardBoxImage = styled(CardTwoImage)`
+	padding: 1.5rem 2rem;
+
+	img {
+		height: 175px;
+		margin-bottom: 1rem;
 	}
 `
 
@@ -98,6 +106,11 @@ export const BackButton = styled.div`
 	@media (max-width: 950px) {
 		align-self: center;
 	}
+`
+const ServiceTitle = styled.h3`
+	color: #787F84;
+	margin: 1rem 0 0;
+	text-align: center;
 `
 
 export default class PlanPage extends React.Component {
@@ -207,7 +220,22 @@ export default class PlanPage extends React.Component {
 						</WizardStep>
 
 						<WizardStep currentStep={this.state.currentStep} step={2}>
-							<h2>Step 2</h2>
+							<Text color='#787F84' align='center' width="100%">
+								{c.t('Select a Service')}
+							</Text>
+							<CardsTwoRow margin="0">
+								<CardBox>
+									<CardBoxImage>
+										<img src="images/ico-box.svg" alt =""/>
+										<Text color='#787F84' align='center'>
+											{c.t('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut pretium pretium tempor.')}
+										</Text>
+										<ServiceTitle>
+											{c.t('BY BOX')}
+										</ServiceTitle>
+									</CardBoxImage>
+								</CardBox>
+							</CardsTwoRow>
 						</WizardStep>
 
 						<WizardStep currentStep={this.state.currentStep} step={3}>

@@ -89,7 +89,7 @@ export default class Progress extends React.Component {
 
             for (let index = 0; index < steps; index++) {
                 counter = index + 1;
-                stepsArray.push(<ProgressStep className={counter === currentStep ? 'active' : ''} key={index}/>)
+                stepsArray.push(<ProgressStep className={counter <= currentStep ? 'active' : ''} key={index}/>)
             }
             return stepsArray;
         };

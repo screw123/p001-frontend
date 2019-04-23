@@ -155,11 +155,13 @@ export const HeaderWithBar = styled(Header)`
 `
 
 export const ClickableText = styled.span`
+	display: ${props => props.display ? props.display : ''};
 	font-weight: 600;
 	cursor: pointer;
 	font-size: 1rem;
 	line-height: 1.5rem;
 	padding: 0 0.2rem 0 0.2rem;
+	text-align: ${props => props.align ? props.align : 'left'};
 	color: ${props => props.color? props.color: '#888'};
 	@media (max-width: 768px) {
 		font-size: 0.85rem;

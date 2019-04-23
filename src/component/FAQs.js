@@ -28,10 +28,19 @@ class FAQs extends Component {
   handleCheckChieldElement = (event) => {
     let FAQs = this.state.FAQs
     FAQs.forEach(FAQ => {
-       if (FAQ.className === 'open') FAQ.className =  'close'
+      if (FAQ.className === 'close') {
+        event.target.parentElement.nextSibling.classList.remove("close");
+        event.target.parentElement.nextSibling.classList.add = 'open';
+      }
+      else {
+        event.target.parentElement.nextSibling.classList.remove("open");
+        event.target.parentElement.nextSibling.classList.add = 'close';
 
+      }
     })
-    this.setState({FAQs: FAQs})
+    this.setState({
+      FAQs: FAQs
+    })
   }
 
 

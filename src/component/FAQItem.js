@@ -34,6 +34,13 @@ export const FaqItem = styled.div`
   }
 `
 
+export const FaqText = styled.p`
+  color: #787F84;
+  font-size: 18px;
+  line-height: 22px;
+  margin-left: 5.5rem;
+  padding-bottom: 2rem;
+`
 
 const FAQItem = props => (
   <FaqItem>
@@ -45,9 +52,9 @@ const FAQItem = props => (
               {props.title}
            </h4>
       </a>
-      <div className={props.className + ' text'} id={`collapse${props.id}`}>
+      <FaqText className={props.className} id={`collapse${props.id}`}>
           {props.content}
-      </div>
+      </FaqText>
   </FaqItem>
 )
 export default FAQItem

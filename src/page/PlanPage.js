@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import Wizard from '../component/Wizard'
 import WizardStep from '../component/WizardStep'
 import CheckBox from '../component/SimpleCheckBox.js'
-
+import FAQs from '../component/FAQs'
 
 import {
 	Background,
@@ -231,6 +231,7 @@ export default class PlanPage extends React.Component {
 
 				<Section>
 					<HeaderWithBar color='#787F84' padding='1rem 0 0'>{c.t('Frequently Asked Questions')}</HeaderWithBar>
+					<FAQs></FAQs>
 				</Section>
 			</React.Fragment>
 		)

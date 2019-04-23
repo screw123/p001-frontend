@@ -12,6 +12,7 @@ export const FaqItem = styled.div`
 
   a{
     display: inline-flex;
+    cursor: pointer;
   }
 
   .text {
@@ -20,27 +21,33 @@ export const FaqItem = styled.div`
     line-height: 22px;
     margin-left: 5.5rem;
     padding-bottom: 2rem;
+  }
 
+  .open {
+    visibility: visible;
+    height: auto;
+  }
+
+  .close {
+    visibility: hidden;
+    height: 0;
   }
 `
 
-function FAQItem ({id, title, content}) {
-    console.log(id,title,content);
-    return (
-        <FaqItem>
-            <a>
-                <span>
-                    <img src="/images/ico-faq.svg" alt="FAQ icon"/>
-                </span>
-                 <h4>
-                    {title}
-                 </h4>
-            </a>
-            <div className="text" id={`collapse${id}`}>
-                {content}
-            </div>
-        </FaqItem>
-    );
-}
 
-export default FAQItem;
+const FAQItem = props => (
+  <FaqItem>
+      <a onClick={props.handleCheckChieldElement}>
+          <span>
+              <img src="/images/ico-faq.svg" alt="FAQ icon"/>
+          </span>
+           <h4>
+              {props.title}
+           </h4>
+      </a>
+      <div className={props.className + ' text'} id={`collapse${props.id}`}>
+          {props.content}
+      </div>
+  </FaqItem>
+)
+export default FAQItem

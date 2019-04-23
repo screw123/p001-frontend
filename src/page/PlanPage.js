@@ -5,6 +5,7 @@ import Wizard from '../component/Wizard'
 import WizardStep from '../component/WizardStep'
 import CheckBox from '../component/SimpleCheckBox.js'
 import FAQs from '../component/FAQs'
+import PowerModal from '../component/PowerModal'
 
 import {
 	HeaderWithBar,
@@ -120,6 +121,7 @@ export default class PlanPage extends React.Component {
 		this.state = {
 			currentStep: 1,
 			isChecked: true,
+			isShowing: false,
 			generalFaqs: [
 				{title: "Lorem ipsum dolor sit amet?", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut pretium pretium tempor. Ut eget imperdiet neque. In volutpat ante semper diam molestie, et aliquam erat laoreet. Sed sit amet arcu aliquet, molestie justo at, auctor nunc. Phasellus ligula ipsum, volutpat eget semper id, viverra eget nibh. Suspendisse luctus mattis cursus. Nam consectetur ante at nisl hendrerit gravida."},
 				{title: "Lorem ipsum dolor sit amet?", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut pretium pretium tempor. Ut eget imperdiet neque. In volutpat ante semper diam molestie, et aliquam erat laoreet. Sed sit amet arcu aliquet, molestie justo at, auctor nunc. Phasellus ligula ipsum, volutpat eget semper id, viverra eget nibh. Suspendisse luctus mattis cursus. Nam consectetur ante at nisl hendrerit gravida."},
@@ -134,6 +136,18 @@ export default class PlanPage extends React.Component {
 		this._next = this._next.bind(this);
 		this._prev = this._prev.bind(this);
 		this.handleChange = this.handleChange.bind(this);
+	}
+
+	openModalHandler = () => {
+		this.setState({
+			isShowing: true
+		});
+	}
+
+	closeModalHandler = () => {
+		this.setState({
+			isShowing: false
+		});
 	}
 
 	_next() {
@@ -251,6 +265,20 @@ export default class PlanPage extends React.Component {
 
 						<WizardStep currentStep={this.state.currentStep} step={3}>
 							<h2>Step 3 </h2>
+
+							{ this.state.isShowing ? <div onClick={this.closeModalHandler} className="back-drop"></div> : null }
+							<button className="open-modal-btn" onClick={this.openModalHandler}>Open Modal</button>
+							<PowerModal
+								className="modal"
+								show={this.state.isShowing}
+								close={this.closeModalHandler}
+								header={'Modal'}
+								>
+									<img src="images/ico-info.svg" alt=""/>
+									<p>Your monthly bill is</p>
+							</PowerModal>
+
+
 						</WizardStep>
 
 						<WizardStep currentStep={this.state.currentStep} step={4}>

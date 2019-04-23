@@ -6,13 +6,25 @@ import {
 
 
 const Modal = styled.div`
+  .overlay {
+      position: fixed;
+      background: rgba(0,0,0,0.4);
+      height: 100vh;
+      width: 100%;
+      top: 0;
+      left: 0;
+  }
   .modal-wrapper {
       background: white;
       border: 1px solid #d0cccc;
       box-shadow: 0 5px 8px 0 rgba(0,0,0,0.2), 0 7px 20px 0 rgba(0,0,0,0.17);
-      margin: 100px auto 0;
       transition: all .8s;
       width: 60%;
+      position: fixed;
+      top: 25%;  
+      left: 20%; 
+      transform: translate(-50%, -50%);
+      border-radius: 25px;
   }
 
   .modal-header {
@@ -21,6 +33,7 @@ const Modal = styled.div`
       line-height: 40px;
       padding: 5px 20px;
       text-align: center;
+      border-radius: 25px;
   }
 
   .modal-header h3 {
@@ -35,43 +48,24 @@ const Modal = styled.div`
       text-align: center;
   }
 
-  .modal-footer {
-      background: #263238;
-      height: 35px;
-      padding: 15px;
-  }
-
   .close-modal-btn {
-      color: white;
+      color: black;
       cursor: pointer;
       float: right;
       font-size: 30px;
       margin: 0;
   }
 
-  .close-modal-btn:hover {
-      color: black;
-  }
-
-  .btn-cancel, .btn-continue {
-      background: coral;
-      border: none;
-      color: white;
-      cursor: pointer;
-      font-weight: bold;
-      outline: none;
-      padding: 10px;
-  }
-
   .btn-cancel {
-      background-color: #b71c1c;
-      float: left;
+    display: block;
+    background: transparent;
+    border: none;
+    color: #E61D6E; 
+    font-size: 24px;
+    margin: 0 auto;
+    padding-bottom: 1rem;
   }
 
-  .btn-continue {
-      background-color: #1b5e20;
-      float: right;
-  }
 
   .back-drop {
       background-color: rgba(48, 49, 48, 0.42);
@@ -93,10 +87,16 @@ const Modal = styled.div`
 const PowerModal = (props) => {
     return (
         <Modal>
+            <div className="overlay"                 
+                style={{
+                    display: props.show ? 'block' : 'none'
+                }}>
+                </div> 
             <div className="modal-wrapper"
                 style={{
                     transform: props.show ? 'translateY(0vh)' : 'translateY(-100vh)',
-                    opacity: props.show ? '1' : '0'
+                    opacity: props.show ? '1' : '0',
+                    display: props.show ? 'block' : 'none'
                 }}>
                 <div className="modal-header">
                     <h3>{props.header}</h3>
@@ -104,10 +104,10 @@ const PowerModal = (props) => {
                 </div>
                 <div className="modal-body">
                   {props.children}
-                </div>
-                <div className="modal-footer">
-                    <CTAButton >CONTINUE</CTAButton>
-                    <button className="btn-cancel" onClick={props.close}>CLOSE</button>
+                  <div>
+                    <CTAButton onClick={props.Action}>{props.BtnConfirm}</CTAButton>
+                    <button className="btn-cancel" onClick={props.close}>{props.BtnClose}</button>
+                  </div>
                 </div>
             </div>
         </Modal>

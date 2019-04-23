@@ -6,6 +6,7 @@ import WizardStep from '../component/WizardStep'
 import CheckBox from '../component/SimpleCheckBox.js'
 import FAQs from '../component/FAQs'
 import PowerModal from '../component/PowerModal'
+import AddControl from '../component/AddProductControl'
 
 import {
 	HeaderWithBar,
@@ -68,10 +69,12 @@ export const CardTwoImage = styled.div`
 `
 
 export const CardBox = styled(CardTwo)`
+	min-width: 20.8rem;
 	max-width: 20.8rem;
 `
 
 export const CardBoxImage = styled(CardTwoImage)`
+	min-width: 100%;
 	padding: 1.5rem 2rem;
 
 	img {
@@ -109,10 +112,88 @@ export const BackButton = styled.div`
 		align-self: center;
 	}
 `
-const ServiceTitle = styled.h3`
-	color: #787F84;
+export const ServiceTitle = styled.h3`
+	color: ${props => (props.color ? props.color : '787F84')};
 	margin: 1rem 0 0;
 	text-align: center;
+`
+
+export const ClickableText = styled.span`
+	display: block;
+	font-weight: 600;
+	cursor: pointer;
+	font-size: 1rem;
+	line-height: 1.5rem;
+	padding: 0 0.2rem 0 0.2rem;
+	margin: 0.3rem 0 0.5rem;
+	text-align: center;
+	color: #E61D6E;
+	@media (max-width: 768px) {
+		line-height: 1.1rem;
+	}
+`
+
+export const PromoContainer = styled.div`
+	margin: 2rem 0;
+	padding-left: 1.5rem;
+	padding-right: 1.5rem;
+	p {
+		color: #787F84;	
+		font-size: 1rem;
+		font-weight: bold;
+		line-height: 23px;
+	}
+`
+
+export const PromoInput = styled.input`
+	background-color: #F4F4F4;
+	border: none;
+	border-radius: 28.5px;
+	font-size: 1rem;
+	height: 57px;
+	padding: 0 2rem;
+	width: 100%;	
+
+	&:focus {
+		border: none;
+		box-shadow: none;
+		outline: none;
+	}
+`
+
+export const CostContainer = styled.div`
+	border-top: 2px solid #E61D6E;
+	border-bottom: 2px solid #E61D6E;
+	padding-left: 1.5rem;
+	padding-right: 1.5rem;
+
+	div {
+		align-items: center;
+		display: flex;
+		justify-content: space-between;
+		padding: 1rem 0;
+	}
+
+	h3 {
+		color: #787F84;
+		margin: 0;
+	}
+`
+
+export const Cost = styled.h3`
+	color: #E61D6E !important;
+	font-size: 1.5rem;
+	font-weight: bold;
+`
+
+const ModalTitle = styled.p`
+	color: #787F84;
+	font-size: 48px;
+	font-weight: 500;
+`
+const ModalDetails= styled.span`
+	color: #787F84;
+	font-size: 18px;
 `
 
 export default class PlanPage extends React.Component {
@@ -131,7 +212,15 @@ export default class PlanPage extends React.Component {
 				{title: "Lorem ipsum dolor sit amet?", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut pretium pretium tempor. Ut eget imperdiet neque. In volutpat ante semper diam molestie, et aliquam erat laoreet. Sed sit amet arcu aliquet, molestie justo at, auctor nunc. Phasellus ligula ipsum, volutpat eget semper id, viverra eget nibh. Suspendisse luctus mattis cursus. Nam consectetur ante at nisl hendrerit gravida."},
 				{title: "Lorem ipsum dolor sit amet?", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut pretium pretium tempor. Ut eget imperdiet neque. In volutpat ante semper diam molestie, et aliquam erat laoreet. Sed sit amet arcu aliquet, molestie justo at, auctor nunc. Phasellus ligula ipsum, volutpat eget semper id, viverra eget nibh. Suspendisse luctus mattis cursus. Nam consectetur ante at nisl hendrerit gravida."},
 				{title: "Lorem ipsum dolor sit amet?", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut pretium pretium tempor. Ut eget imperdiet neque. In volutpat ante semper diam molestie, et aliquam erat laoreet. Sed sit amet arcu aliquet, molestie justo at, auctor nunc. Phasellus ligula ipsum, volutpat eget semper id, viverra eget nibh. Suspendisse luctus mattis cursus. Nam consectetur ante at nisl hendrerit gravida."},
-			]
+			],
+			products: {
+				documentBox: 0,
+				documentBoxSecond: 0,
+				documentBox3: 0
+			},
+			form:{
+				promoCode: ''
+			}
 		}
 		this._next = this._next.bind(this);
 		this._prev = this._prev.bind(this);
@@ -182,6 +271,13 @@ export default class PlanPage extends React.Component {
 	get nextButton() {
 		let currentStep = this.state.currentStep;
 		if (currentStep < totalSteps) {
+			if (this.state.currentStep === 3) {
+				return (
+					<NextButton>
+						<CTAButton onClick={this.openModalHandler}>Next</CTAButton>
+					</NextButton>
+				)
+			}
 			return (
 				<NextButton>
 					<CTAButton onClick={this._next}>Next</CTAButton>
@@ -192,9 +288,40 @@ export default class PlanPage extends React.Component {
 		return null
 	}
 
+	addControlFnc(action, product) {
+		if(action === 'add') {
+			this.setState({
+				products: Object.assign({}, this.state.products, {
+					[product]: this.state.products[product] + 1
+				})
+			})
+		}
+
+		if(action === 'subs') {
+			if(this.state.products[product] > 0) {
+				this.setState({
+					products: Object.assign({}, this.state.products, {
+						[product]: this.state.products[product] - 1
+					})
+				})
+			} else return false
+		}
+	} 
+
 	handleChange () {
-        this.setState({isChecked: !this.state.isChecked}, () => console.log(this.state.isChecked));
-    };
+        this.setState({isChecked: !this.state.isChecked});
+	};
+	
+	handleInputChange(event) {
+		const target = event.target;
+		const value = target.value;
+		const name = target.name;
+		this.setState({
+			form: Object.assign({}, this.state.form, {
+				[name]: value
+			})
+		});
+	}
 
 	render() {
 		// const [redirectPath, setRedirectPath] = useState(undefined)
@@ -264,18 +391,91 @@ export default class PlanPage extends React.Component {
 						</WizardStep>
 
 						<WizardStep currentStep={this.state.currentStep} step={3}>
-							<h2>Step 3 </h2>
+							<Text color='#787F84' align='center' width="100%">
+								{c.t('Select a Product')}
+							</Text>
+							<CardsTwoRow margin="0">
+								<CardBox>
+									<CardBoxImage>
+										<img src="images/ico-box.svg" alt =""/>
+										<p>Document Box</p>
+										<Text color='#787F84' align='center'>
+											{c.t('$0 box/month')}
+										</Text>
+										<ClickableText color="#E61D6E" align="center" display="block">
+											{c.t('View details')}
+										</ClickableText>
+										<AddControl
+											total={this.state.products.documentBox}
+											clickAdd={() => this.addControlFnc('add', 'documentBox')}
+											clickSubs={() => this.addControlFnc('subs', 'documentBox')}
+										/>
+									</CardBoxImage>
+								</CardBox>
+
+								<CardBox>
+									<CardBoxImage>
+										<img src="images/ico-box.svg" alt =""/>
+										<p>Document Box</p>
+										<Text color='#787F84' align='center'>
+											{c.t('$0 box/month')}
+										</Text>
+										<ClickableText color="#E61D6E" align="center" display="block">
+											{c.t('View details')}
+										</ClickableText>
+										<AddControl
+											total={this.state.products.documentBoxSecond}
+											clickAdd={() => this.addControlFnc('add', 'documentBoxSecond')}
+											clickSubs={() => this.addControlFnc('subs', 'documentBoxSecond')}
+										/>
+									</CardBoxImage>
+								</CardBox>
+
+								<CardBox>
+									<CardBoxImage>
+										<img src="images/ico-box.svg" alt =""/>
+										<p>Document Box</p>
+										<Text color='#787F84' align='center'>
+											{c.t('$0 box/month')}
+										</Text>
+										<ClickableText color="#E61D6E" align="center" display="block">
+											{c.t('View details')}
+										</ClickableText>
+										<AddControl
+											total={this.state.products.documentBox3}
+											clickAdd={() => this.addControlFnc('add', 'documentBox3')}
+											clickSubs={() => this.addControlFnc('subs', 'documentBox3')}
+										/>
+									</CardBoxImage>
+								</CardBox>
+							</CardsTwoRow>
+							<PromoContainer>
+								<p>Do you have a Promo Code?</p>
+								<PromoInput type="text" placeholder="Promo Code" value={this.state.form.promoCode} name="promoCode" onChange={(e)=>this.handleInputChange(e)} />
+							</PromoContainer> 
+							<CostContainer>
+								<div>
+									<h3>Monthly Cost Estimate</h3>
+
+									<Cost>
+										$0
+									</Cost>
+								</div>
+							</CostContainer>
 
 							{ this.state.isShowing ? <div onClick={this.closeModalHandler} className="back-drop"></div> : null }
-							<button className="open-modal-btn" onClick={this.openModalHandler}>Open Modal</button>
 							<PowerModal
 								className="modal"
 								show={this.state.isShowing}
 								close={this.closeModalHandler}
 								header={'Modal'}
+								BtnConfirm={'Confirm'}
+								BtnClose={'Add more Items'}
+							 	Action = {this._next}
 								>
 									<img src="images/ico-info.svg" alt=""/>
-									<p>Your monthly bill is</p>
+									<ModalTitle>Your monthly bill is $0</ModalTitle>
+									<ModalDetails>(minimum spend applies).</ModalDetails>
 							</PowerModal>
 
 

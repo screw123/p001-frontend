@@ -81,7 +81,7 @@ export const AccentedTwinCardChild = styled(TwinCardChild)`
 //Text and Headers
 
 export const Text = styled.div`
-	max-width: 60rem;
+	max-width: ${props => (props.width ? props.width : '60rem')};
 	font-size: 1rem;
 	line-height: 1.5rem;
 	white-space: pre-line;
@@ -131,6 +131,7 @@ export const Header3 = styled(Text)`
 	font-size: 1.5rem;
 	font-weight: 600;
 	line-height: 2.5rem;
+	margin: ${props => (props.margin ? props.margin : 'inherit')};
 	@media (max-width: 768px) {
 		font-size: 1.3rem;
 		line-height: 1.5rem;

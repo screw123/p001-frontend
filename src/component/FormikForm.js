@@ -53,6 +53,30 @@ const FormikForm = styled(Form)`
 
 	//New
 	width: 100%;
+
+	.select-container {
+		background-color: #F3F3F3;
+		border-radius: 2rem;
+		margin: 1rem 0;
+		padding: 0.8rem;
+	}
+
+	.custom-select {
+		display: flex;
+		color: #777;
+		box-sizing: border-box;
+		border: none;
+		background: transparent;
+		font-weight: normal;
+		text-overflow: clip;
+		font-size: 1rem;
+		width: 100%;
+
+		&:focus {
+			border: none;
+			outline: none;
+		}
+	}
 `
 
 const RBGroup = styled.div`
@@ -203,9 +227,16 @@ export const DropDown = ({
 	rightIcon,
 	err,
 	hidden,
+	change,
 	...props
 }) => {
-	return <select {...props}>{valueList.map(v => DD(v.value, v.name))}</select>
+	return 	(
+		<div className="select-container">
+			<select {...props} className="custom-select">
+				{valueList.map(v => DD(v.value, v.name))}
+			</select>
+		</div>
+	)
 }
 
 const DD = (value, name) => {

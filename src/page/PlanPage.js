@@ -7,6 +7,7 @@ import CheckBox from '../component/SimpleCheckBox.js'
 import FAQs from '../component/FAQs'
 import PowerModal from '../component/PowerModal'
 import AddControl from '../component/AddProductControl'
+import OrderBoxForm from '../form/OrderBoxForm';
 
 import {
 	HeaderWithBar,
@@ -196,11 +197,70 @@ const ModalDetails= styled.span`
 	font-size: 18px;
 `
 
+const GridContainer = styled.div`
+	display: flex;
+	justify-content: space-between;
+	padding-top: 2rem;
+
+	@media screen and (min-width: 1024px) {
+		margin: 0 auto;
+		width: 75%;
+	}
+`
+
+const GridColumn = styled.div`
+	width: 100%;
+
+	@media screen and (min-width: 768px) {
+		width: calc(50% - 0.8rem);
+	}
+`
+
+const OrderCard = styled(CardTwoImage)`
+	@media screen and (min-width: 768px) {
+		margin: 0 auto;
+		max-width: 359px;
+	}
+`
+
+const OrderCardRow = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin: ${props => props.margin ? props.margin : '0 0 1rem'};
+
+	&.divider {
+		border-bottom: 1px solid #979797;
+		padding-bottom: 1.5rem;
+	}
+
+	small {
+		font-size: 16px;
+	}
+
+	small.disclaimer {
+		font-size: 0.7rem;
+	}
+`
+
+const EditCard = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	img {
+		height: 21px;
+		margin: -2px 0 0 10px;
+		width: 20px
+	}
+	
+`
+
 export default class PlanPage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			currentStep: 1,
+			currentStep: 4,
 			isChecked: true,
 			isShowing: false,
 			generalFaqs: [
@@ -243,8 +303,21 @@ export default class PlanPage extends React.Component {
 		let currentStep = this.state.currentStep;
 		currentStep = currentStep >= totalSteps ? (totalSteps + 1) : (currentStep + 1);
 		this.setState({
-			currentStep: currentStep
+			currentStep: currentStep,
 		})
+
+		if(this.state.isShowing) {
+			this.setState({
+				currentStep: currentStep,
+				isShowing: false
+			})
+		}
+		else {
+			this.setState({
+				currentStep: currentStep,
+			})
+		}
+		
 	}
 
 	_prev() {
@@ -482,7 +555,53 @@ export default class PlanPage extends React.Component {
 						</WizardStep>
 
 						<WizardStep currentStep={this.state.currentStep} step={4}>
-							<h2>Step 4 </h2>
+							<Text color='#787F84' align='center' width="100%">
+								{c.t('Select a Booking')}
+							</Text>
+							<GridContainer>
+								<GridColumn>
+									<OrderBoxForm />
+								</GridColumn>
+								<GridColumn>
+									<OrderCard>
+										<OrderCardRow margin='0 0 1.3rem'>
+											<Text color='#787F84' align='left' fontWeight='bold'>
+												<small>{c.t('Your Order')}</small>
+											</Text>
+											<EditCard>
+												<Text color='#787F84' align='left'>
+													<small>{c.t('Edit')}</small>
+												</Text>
+												<img src="images/ico-edit.svg" alt=""/>
+											</EditCard>
+										</OrderCardRow>
+
+										<OrderCardRow >
+											<Text color='#787F84' align='left' fontWeight='bold'>
+												<small>{c.t('1 x Document Box')}</small>
+											</Text>
+											<Text color='#E61D6E' align='left' fontWeight='bold'>
+												<small>{c.t('$0')}</small>
+											</Text>
+										</OrderCardRow>
+
+										<OrderCardRow className="divider">
+											<Text color='#787F84' align='left'>
+												<small>{c.t('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate')}</small>
+											</Text>
+										</OrderCardRow>
+
+										<OrderCardRow >
+											<Text color='#787F84' align='left'>
+												<small className="disclaimer">{c.t('Lorem Ipsum dolor sit amet, consectetur')}</small>
+											</Text>
+											<Text color='#E61D6E' align='left' fontWeight='bold'>
+												<small>{c.t('$0')}</small>
+											</Text>
+										</OrderCardRow>
+									</OrderCard>
+								</GridColumn>
+							</GridContainer>
 						</WizardStep>
 
 						<WizardStep currentStep={this.state.currentStep} step={5}>

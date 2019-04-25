@@ -62,19 +62,35 @@ const FormikForm = styled(Form)`
 	}
 
 	.custom-select {
-		display: flex;
-		color: #777;
+		background-image: url(http://www.stackoverflow.com/favicon.ico);
+		background-repeat: no-repeat;
+		background-position: center right;
 		box-sizing: border-box;
 		border: none;
-		background: transparent;
+		color: #777;
+		display: flex;
 		font-weight: normal;
+		height: 34px;
 		text-overflow: clip;
 		font-size: 1rem;
 		width: 100%;
+		-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
 
 		&:focus {
 			border: none;
 			outline: none;
+		}
+		
+		&::-ms-expand { 
+			display: none; /* remove default arrow in IE 10 and 11 */
+		}
+		
+		/* target Internet Explorer 9 to undo the custom arrow */
+		@media screen and (min-width:0\0) {
+			background:none\9;
+			padding: 5px\9;
 		}
 	}
 `

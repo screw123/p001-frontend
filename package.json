@@ -37,6 +37,7 @@
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.8",
     "react-select": "^2.0.0",
+    "react-simple-timefield": "^2.0.3",
     "react-stripe-elements": "^2.0.1",
     "react-virtualized": "^9.20.1",
     "source-map-explorer": "^1.7.0",

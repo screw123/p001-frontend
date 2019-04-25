@@ -209,6 +209,7 @@ class SignUpForm extends React.Component {
                                     value={values.district}
                                     err={errors.district}
                                     valueList={this.state.districts}
+                                    rightIcon={'images/ico-box.svg'}
                                 />
                             }
 

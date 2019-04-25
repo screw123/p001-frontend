@@ -3,10 +3,6 @@ import styled, {css} from 'styled-components'
 import moment from "moment";
 import TimeField from "react-simple-timefield";
 
-// import WeekRow from "./WeekRow";
-// import Modal from "react-responsive-modal";
-// import TextInput from "./TextInput";
-
 const days = [
   "Sun",
   "Mon",
@@ -16,6 +12,108 @@ const days = [
   "Fri",
   "Sat",
 ];
+
+export const DayContainer = styled.div`
+    border: none;
+    font-size: 1.3rem;
+    padding: 1rem 0;
+    overflow-y: auto;
+    width: calc(18% - .8rem);
+
+    .day-number {
+        color: #424242;
+        cursor: pointer;
+    }
+  
+    &.disabled {
+        
+        .day-number {
+            color: #979797;
+        }
+    }
+    
+    &.current-day {
+        .day-number {
+            border-radius: 100%;
+            background-color: #E61D6E;
+            color: white;
+            padding: 12px;
+        }
+    }
+    
+    .price {
+        display: block;
+        font-size: 0.8rem;
+        padding-top: 12px;
+    }
+`
+
+export class Day extends React.Component {
+  render() {
+    const {
+      day,
+      day: { date, isCurrentMonth, isToday, number },
+      selectFnc,
+      selected,
+    } = this.props;
+
+    console.log(selected)
+    return (
+        <DayContainer
+            id={number}
+            onClick={() => selectFnc(day)}
+            className={"day-container" + (isToday ? " current-day" : "") + (isCurrentMonth ? "" : " disabled")}
+        >
+            <span
+                key={date.toString()}
+                className='day-number'
+            >
+                {number}
+            </span>
+
+            {isCurrentMonth && <span className="price">$0</span>}
+        </DayContainer>
+    );
+  }
+}
+
+export const Week = styled.div`
+    display: flex;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    text-align: center;
+`
+
+
+export class WeekRow extends React.Component {
+  render() {
+    let days = [];
+    let { date, month, datePicked, selectFnc } = this.props;
+
+    for (var i = 0; i < 7; i++) {
+      let day = {
+        name: date.format("dd").substring(0, 1),
+        number: date.date(),
+        isCurrentMonth: date.month() === month.month(),
+        isToday: date.isSame(new Date(), "day"),
+        date: date
+      };
+      
+    
+      days.push(<Day day={day} selected={datePicked} selectFnc={selectFnc} key={i}/>);
+
+      date = date.clone();
+      date.add(1, "day");
+    }
+
+    return (
+        <Week>
+            {days}
+        </Week>
+    );
+  }
+}
+
 
 class CustomDatePicker extends React.Component {
   constructor(props) {
@@ -63,30 +161,30 @@ class CustomDatePicker extends React.Component {
     this.setState({ month: month });
   }
 
-//   weeks() {
-// 	// const events = this.props.events;
-//     let startDate = this.state.month
-//       .clone()
-//       .startOf("month")
-//       .day("Sunday");
-//     let rows = [];
+  weeks() {
+	// const events = this.props.events;
+    let startDate = this.state.month
+      .clone()
+      .startOf("month")
+      .day("Sunday");
+    let rows = [];
 
-//     for (let index = 0; index < 5; index++) {
-//       rows.push(
-//         <WeekRow
-//           key={startDate}
-//           date={startDate.clone()}
-//           month={this.state.month}
-//           selectFnc={day => this.select(day)}
-// 		  selected={this.state.selected}
-// 		  events={this.props}
-//         />
-//       );
+    for (let index = 0; index < 5; index++) {
+      rows.push(
+        <WeekRow
+          key={startDate}
+          date={startDate.clone()}
+          month={this.state.month}
+          selectFnc={day => this.select(day)}
+		      selected={this.state.datePicked}
+		      events={this.props}
+        />
+      );
 
-//       startDate.add(1, "w");
-//     }
-//     return rows;
-//   }
+      startDate.add(1, "w");
+    }
+    return rows;
+  }
 
   addEvent(event) {
 	const newEvent = event;
@@ -179,7 +277,8 @@ class CustomDatePicker extends React.Component {
               ))}
             </DayList>
           </DatePickerHeader>
-          {/* {this.weeks()} */}
+          {/* <WeekRow /> */}
+          {this.weeks()}
         </DatePicker>
       </React.Fragment>
     );

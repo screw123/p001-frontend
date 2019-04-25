@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="15px" viewBox="0 0 30 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
+    <title>down-arrow copy</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Dashboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Edit-account" transform="translate(-665.000000, -610.000000)" fill="#E61D6E">
+            <g id="down-arrow-copy" transform="translate(666.000000, 610.000000)">
+                <path d="M28.0062379,0.289855072 C27.6122877,-0.0966183575 26.9721185,-0.0966183575 26.5781683,0.289855072 L14.0210044,12.6328502 L1.43921858,0.289855072 C1.04526834,-0.0966183575 0.405099195,-0.0966183575 0.0111489547,0.289855072 C-0.382801286,0.676328502 -0.382801286,1.30434783 0.0111489547,1.69082126 L13.2823477,14.7101449 C13.4793228,14.9033816 13.7255417,15 13.9963825,15 C14.2426014,15 14.5134422,14.9033816 14.7104173,14.7101449 L27.981616,1.69082126 C28.4001881,1.30434783 28.4001881,0.676328502 28.0062379,0.289855072 Z" id="Path"></path>
+            </g>
+        </g>
+    </g>
+</svg>

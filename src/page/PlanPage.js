@@ -560,7 +560,7 @@ export default class PlanPage extends React.Component {
 							</Text>
 							<GridContainer>
 								<GridColumn>
-									<OrderBoxForm />
+									<OrderBoxForm c={c}/>
 								</GridColumn>
 								<GridColumn>
 									<OrderCard>

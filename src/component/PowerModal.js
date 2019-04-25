@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {
-  CTAButton
+    CTAButton
 } from '../component/BasicComponents.js'
 
 
@@ -25,6 +25,10 @@ const Modal = styled.div`
       left: 20%; 
       transform: translate(-50%, -50%);
       border-radius: 25px;
+
+      &.-datepicker {
+        width: 40%;
+      }
   }
 
   .modal-header {
@@ -87,12 +91,12 @@ const Modal = styled.div`
 const PowerModal = (props) => {
     return (
         <Modal>
-            <div className="overlay"                 
+            <div className="overlay"
                 style={{
                     display: props.show ? 'block' : 'none'
                 }}>
-                </div> 
-            <div className="modal-wrapper"
+            </div>
+            <div className={props.className ? "modal-wrapper " + props.className : "modal-wrapper"}
                 style={{
                     transform: props.show ? 'translateY(0vh)' : 'translateY(-100vh)',
                     opacity: props.show ? '1' : '0',
@@ -103,11 +107,11 @@ const PowerModal = (props) => {
                     <span className="close-modal-btn" onClick={props.close}>×</span>
                 </div>
                 <div className="modal-body">
-                  {props.children}
-                  <div>
-                    <CTAButton onClick={props.Action}>{props.BtnConfirm}</CTAButton>
-                    <button className="btn-cancel" onClick={props.close}>{props.BtnClose}</button>
-                  </div>
+                    {props.children}
+                    <div>
+                        <CTAButton onClick={props.Action}>{props.BtnConfirm}</CTAButton>
+                        <button className="btn-cancel" onClick={props.close}>{props.BtnClose}</button>
+                    </div>
                 </div>
             </div>
         </Modal>

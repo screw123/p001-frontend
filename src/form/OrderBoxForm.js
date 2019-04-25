@@ -5,6 +5,7 @@ import isMobilePhone from 'validator/lib/isMobilePhone'
 import FormikForm, { TextField, FormButton, FormErr, FormIcon, CheckBox2, MultiSelect, DropDown} from '../component/FormikForm.js'
 import omitBy from 'lodash/omitBy'
 import isUndefined from 'lodash/isUndefined'
+import DatePicker from '../component/CustomDatePicker';
 
 import {
 	Text,
@@ -250,6 +251,9 @@ class SignUpForm extends React.Component {
                         </FormikForm>
                     )}}
                     </Formik>
+
+                   
+                    <DatePicker />
                 </div>
                 // )}
             //     </Mutation>

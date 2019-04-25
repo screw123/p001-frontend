@@ -545,6 +545,8 @@ export default class PlanPage extends React.Component {
 								BtnConfirm={'Confirm'}
 								BtnClose={'Add more Items'}
 							 	Action = {this._next}
+							 	Btn = {true}
+							 	SmSize = {false} 
 								>
 									<img src="images/ico-info.svg" alt=""/>
 									<ModalTitle>Your monthly bill is $0</ModalTitle>

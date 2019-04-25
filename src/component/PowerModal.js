@@ -25,11 +25,13 @@ const Modal = styled.div`
       left: 20%; 
       transform: translate(-50%, -50%);
       border-radius: 25px;
-
-      &.-datepicker {
-        width: 40%;
-      }
   }
+
+  .modal-datepicker {
+    width: 40%;
+    left: 30%;
+    top: 20%
+  } 
 
   .modal-header {
       background: #fff;
@@ -96,7 +98,7 @@ const PowerModal = (props) => {
                     display: props.show ? 'block' : 'none'
                 }}>
             </div>
-            <div className={props.className ? "modal-wrapper " + props.className : "modal-wrapper"}
+            <div className={"modal-wrapper " + props.className }
                 style={{
                     transform: props.show ? 'translateY(0vh)' : 'translateY(-100vh)',
                     opacity: props.show ? '1' : '0',
@@ -108,7 +110,10 @@ const PowerModal = (props) => {
                 </div>
                 <div className="modal-body">
                     {props.children}
-                    <div>
+
+                    <div style={{
+                      display: props.Btn ? 'block' : 'none'
+                    }}>
                         <CTAButton onClick={props.Action}>{props.BtnConfirm}</CTAButton>
                         <button className="btn-cancel" onClick={props.close}>{props.BtnClose}</button>
                     </div>

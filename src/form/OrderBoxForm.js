@@ -6,6 +6,7 @@ import FormikForm, { TextField, FormButton, FormErr, FormIcon, CheckBox2, MultiS
 import omitBy from 'lodash/omitBy'
 import isUndefined from 'lodash/isUndefined'
 import DatePicker from '../component/CustomDatePicker';
+import PowerModal from '../component/PowerModal'
 
 import {
 	Text,
@@ -94,6 +95,18 @@ class SignUpForm extends React.Component {
         this.validate = this.validate.bind(this)
         this.addNewAddress = this.addNewAddress.bind(this);
     }
+
+    openModalHandler = () => {
+        this.setState({
+            isShowing: true
+        });
+    }
+
+    closeModalHandler = () => {
+        this.setState({
+            isShowing: false
+        });
+    }
     
     toggleShowPw() {
         if (this.state.showPw===false) { this.setState({showPw: true}) }
@@ -119,8 +132,8 @@ class SignUpForm extends React.Component {
         let err = {}
         for (let i=0; i<keyArr.length; i++) {
             const f = keyArr[i]
-            const e = validateFunc[keyArr[i]](v)
-            err[f] = e
+           // const e = validateFunc[keyArr[i]](v)
+            //err[f] = e
         }
         return omitBy(err, isUndefined)
     }
@@ -145,6 +158,7 @@ class SignUpForm extends React.Component {
                             fullName: '',
                             address: '',
                             dropOffDate: '',
+                            date: '',
                             specialInstructionss: '',
                             region: '',
                             district: ''
@@ -234,6 +248,21 @@ class SignUpForm extends React.Component {
                             />
 
                             <Text color='#787F84' align='left' width="100%" fontWeight="bold">
+                                Pick-up of boxes for storage
+                            </Text>
+                            <Field
+                                name="date"
+                                type="text"
+                                component={TextField}
+                                label={'Choose a Date and Time'}
+                                value={values.date}
+                                err={errors.date}
+                                placeholder={'Choose a Date and Time'}
+
+                                onClick={this.openModalHandler}
+                            />
+
+                            <Text color='#787F84' align='left' width="100%" fontWeight="bold">
                                 Special Instructions
                             </Text>
                             <Field
@@ -251,9 +280,23 @@ class SignUpForm extends React.Component {
                         </FormikForm>
                     )}}
                     </Formik>
+                    { this.state.isShowing ? <div onClick={this.closeModalHandler} className="back-drop"></div> : null }
+                    <PowerModal
+                        className="modal-datepicker"
+                        show={this.state.isShowing}
+                        close={this.closeModalHandler}
+                        header={'Modal'}
+                        BtnConfirm={'Confirm'}
+                        BtnClose={'Add more Items'}
+                        Action = {this._next}
+                        Btn = {false}
+                        SmSize = {true}
+                        >
+                            <DatePicker />
+                    </PowerModal>
 
                    
-                    <DatePicker />
+
                 </div>
                 // )}
             //     </Mutation>

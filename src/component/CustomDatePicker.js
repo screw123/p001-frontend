@@ -1,8 +1,9 @@
 import React from "react";
 import styled, {css} from 'styled-components'
 import moment from "moment";
-import TimeField from "react-simple-timefield";
 import { RadioSelect } from "./RadioSelect.js"
+
+import TimePicker from 'react-time-picker'
 
 const days = [
   "Sun",
@@ -100,7 +101,6 @@ class CustomDatePicker extends React.Component {
 	};
 	
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.onTimeChange = this.onTimeChange.bind(this);
     this.previous = this.previous.bind(this)
     this.next = this.next.bind(this)
     this.changeTimeSlot = this.changeTimeSlot.bind(this)
@@ -169,14 +169,6 @@ class CustomDatePicker extends React.Component {
     });
   }
 
-  onTimeChange(value) {
-    this.setState({
-      form: Object.assign({}, this.state.form, {
-        eventTime: value
-      })
-    });
-  }
-
   changeTimeSlot = (e, i) => {
 		e.preventDefault()
     this.setState({ selectedTimeSlotIndex: i, hourSelected: this.props.timeslot[i].value })
@@ -194,6 +186,9 @@ class CustomDatePicker extends React.Component {
     }
   }
 
+
+  onChangeTime = time => this.setState({ customTme: time })
+
   componentDidMount() {
     this.props.setDeliveryDateForm(this.state.deliveryDate, this.props.id)
   }
@@ -201,42 +196,6 @@ class CustomDatePicker extends React.Component {
   render() {
     return (
       <React.Fragment>
-        {/* <Modal open={this.state.openModal} onClose={this.onCloseModal} center>
-          <h2>Add new event</h2>
-          <form action="" id="eventform">
-            <div className="input-item">
-              <h3>
-                <label htmlFor="eventName">Event Name</label>
-              </h3>
-              <TextInput
-                className={"form-control__default d-block w-100"}
-                name={"eventName"}
-                type={"text"}
-                placeholder={"Event Name"}
-                value={this.state.form.eventName}
-                change={this.handleInputChange}
-                blur={this.validationHandle}
-                maxLength={"20"}
-              />
-            </div>
-
-            <div className="input-item input-time">
-              <h3>
-                <label htmlFor="eventTime">Event Time</label>
-              </h3>
-              <div>
-                <TimeField
-                  value={this.state.form.eventTime}
-                  onChange={this.onTimeChange}
-                />
-              </div>
-            </div>
-          </form>
-          <button className={this.state.form.eventName === '' || this.state.form.eventTime === '' ? 'btn btn-add disabled' : "btn btn-add"} onClick={() => this.addEvent(this.state.form)} disabled={this.state.form.eventName === '' || this.state.form.eventTime === '' ? true : false}>
-            Add Event
-          </button>
-        </Modal> */}
-
         <DatePicker>
           <DatePickerHeader>
             <div className="title">
@@ -276,11 +235,13 @@ class CustomDatePicker extends React.Component {
         }
         
         {this.state.showCustomTime &&
-          // <TimeField
-          //   value={this.state.customTme}
-          //   onChange={this.onTimeChange}
-          // />
-          <h1>customPicker Here</h1>
+          <TimePicker
+            onChange={this.onChangeTime}
+            value={this.state.time}
+            clockIcon={null}
+            clearIcon={null}
+            disableClock={true}
+          />
         }
        
       </React.Fragment>

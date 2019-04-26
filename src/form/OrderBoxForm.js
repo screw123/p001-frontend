@@ -1,4 +1,5 @@
 import React from "react"
+import moment from "moment";
 import styled from 'styled-components'
 import { Formik, Field } from 'formik'
 import isMobilePhone from 'validator/lib/isMobilePhone'
@@ -90,12 +91,14 @@ class SignUpForm extends React.Component {
                     value: 'District3'
                 }
             ],
-            isShowing: true
+            isShowing: false,
+            deliveryDate: ''
         }
         this.toggleShowPw = this.toggleShowPw.bind(this)
         this.toggleShowTC = this.toggleShowTC.bind(this)
         this.validate = this.validate.bind(this)
         this.addNewAddress = this.addNewAddress.bind(this);
+        this.setDelivery = this.setDelivery.bind(this);
     }
 
     openModalHandler = () => {
@@ -144,10 +147,16 @@ class SignUpForm extends React.Component {
         this.setState({newAddress: true})
     }
     
+    setDelivery(value) {
+        this.setState({deliveryDate: value})
+    }
     
     render() {
+        console.log(this.state)
         const g = this.props.login
         const c = this.props.i18n
+        const delivery = moment(this.state.deliveryDate).format("YYYY-MM-DD HH:mm");
+
         return(
             // <ApolloProvider client={g.getGqlClientPublic()}>
             //     <Mutation mutation={addUser} errorPolicy="all">
@@ -163,7 +172,8 @@ class SignUpForm extends React.Component {
                             date: '',
                             specialInstructionss: '',
                             region: '',
-                            district: ''
+                            district: '',
+                            deliveryDate: ''
                         }}
                         validate={this.validate}
                         onSubmit={()=> {console.log('submit')}}
@@ -260,7 +270,7 @@ class SignUpForm extends React.Component {
                                 label={'Choose a Date and Time'}
                                 value={values.date}
                                 err={errors.date}
-                                placeholder={'Choose a Date and Time'}
+                                placeholder={this.state.deliveryDate ? delivery : 'Choose a Date and Time'}
 
                                 onClick={this.openModalHandler}
                             />
@@ -296,6 +306,7 @@ class SignUpForm extends React.Component {
                         SmSize = {true}
                     >
                         <DatePicker
+                            setDeliveryDateForm={this.setDelivery}
                             showTimeslot={true}
                             timeslot={[
                                 { label: "Morning: 9am-1pm", value: 9 },

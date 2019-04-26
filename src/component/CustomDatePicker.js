@@ -64,9 +64,6 @@ export class WeekRow extends React.Component {
         date: date,
         month: date.month()
       };
-
-      console.log(day);
-      
     
       days.push(<Day day={day} selected={selected.number === day.number && selected.month === day.month ? true : false} selectFnc={selectFnc} key={i}/>);
 
@@ -90,13 +87,14 @@ class CustomDatePicker extends React.Component {
       month: moment(),
       openModal: false,
       datePicked: "",
+      hourSelected: 9,
       form: {
         eventName: "",
         date: this.datePicked,
         eventTime: ""
       },
       selectedTimeSlotIndex: this.props.showTimeslot ? 0 : undefined,
-      deliveryDate: moment().add(1, 'd').startOf('hour').hour(9),
+      deliveryDate: moment(new Date(), "day").startOf('hour').hour(9),
 	};
 	
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -115,7 +113,9 @@ class CustomDatePicker extends React.Component {
   };
 
   select(day) {
-    this.setState({ datePicked: day});
+    this.setState({ datePicked: day, deliveryDate: moment(day.date).startOf("day").add(this.state.hourSelected, 'h')}, () => {
+      this.props.setDeliveryDateForm(this.state.deliveryDate)
+    });
     this.onOpenModal();
   }
 
@@ -156,15 +156,6 @@ class CustomDatePicker extends React.Component {
     return rows;
   }
 
-  addEvent(event) {
-	const newEvent = event;
-	newEvent.date = this.state.datePicked;
-
-	// this.props.addEvent(event);
-	
-	this.setState({ openModal: false})
-  }
-
   handleInputChange(event) {
     const target = event.target;
     const { name, value } = target;
@@ -185,20 +176,20 @@ class CustomDatePicker extends React.Component {
   }
 
   changeTimeSlot = (e, i) => {
-    e.preventDefault()
-    
-		this.setState({ selectedTimeSlotIndex: i }, () => {
-      moment(this.state.datePicked)
-
-      .add(this.props.timeslot[i].value, "hours")
-
+		e.preventDefault()
+    this.setState({ selectedTimeSlotIndex: i, hourSelected: this.props.timeslot[i].value })
+    const time = this.state.datePicked;
+    this.setState({
+      deliveryDate: moment(time.date).startOf("day").add(this.props.timeslot[i].value, 'h')
+    }, () => {
+      this.props.setDeliveryDateForm(this.state.deliveryDate)
     })
-		// this.props.onChange(
-      console.log(this.props.timeslot[i])
-		// )
   }
-  
+  // componentDidMount() {
+  //   this.props.setDeliveryDateForm(this.state.deliveryDate)
+  // }
   render() {
+    console.log(this.state.deliveryDate)
     return (
       <React.Fragment>
         {/* <Modal open={this.state.openModal} onClose={this.onCloseModal} center>

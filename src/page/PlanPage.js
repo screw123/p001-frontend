@@ -8,6 +8,7 @@ import FAQs from '../component/FAQs'
 import PowerModal from '../component/PowerModal'
 import AddControl from '../component/AddProductControl'
 import OrderBoxForm from '../form/OrderBoxForm';
+import ConfirmOrderForm from '../form/ConfirmOrderForm';
 
 import {
 	HeaderWithBar,
@@ -210,13 +211,15 @@ const GridContainer = styled.div`
 
 const GridColumn = styled.div`
 	width: 100%;
-
+	margin: ${props => props.margin ? props.margin : '0'};
 	@media screen and (min-width: 768px) {
 		width: calc(50% - 0.8rem);
 	}
 `
 
 const OrderCard = styled(CardTwoImage)`
+	box-shadow: ${props => props.shadow ? props.shadow : '0 0 1rem rgba(0, 0, 0, 0.5);'};
+    border: ${props => props.Border ? props.Border : 'none;'};
 	@media screen and (min-width: 768px) {
 		margin: 0 auto;
 		max-width: 359px;
@@ -260,7 +263,7 @@ export default class PlanPage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			currentStep: 4,
+			currentStep: 5,
 			isChecked: true,
 			isShowing: false,
 			generalFaqs: [
@@ -546,7 +549,6 @@ export default class PlanPage extends React.Component {
 								BtnClose={'Add more Items'}
 							 	Action = {this._next}
 							 	Btn = {true}
-							 	SmSize = {false} 
 								>
 									<img src="images/ico-info.svg" alt=""/>
 									<ModalTitle>Your monthly bill is $0</ModalTitle>
@@ -607,7 +609,129 @@ export default class PlanPage extends React.Component {
 						</WizardStep>
 
 						<WizardStep currentStep={this.state.currentStep} step={5}>
-							<h2>Step 5 </h2>
+							<Text color='#787F84' align='center' width="100%">
+								{c.t('Secure Payment')}
+
+							<GridContainer>
+								<GridColumn>
+									<ConfirmOrderForm c={c}/>
+								</GridColumn>
+								<GridColumn>
+									<OrderCard>
+										<OrderCardRow margin='0 0 1.3rem'>
+											<Text color='#787F84' align='left' fontWeight='bold'>
+												<small>{c.t('Your Order')}</small>
+											</Text>
+											<EditCard>
+												<Text color='#787F84' align='left'>
+													<small>{c.t('Edit')}</small>
+												</Text>
+												<img src="images/ico-edit.svg" alt=""/>
+											</EditCard>
+										</OrderCardRow>
+
+										<OrderCardRow >
+											<Text color='#787F84' align='left' fontWeight='bold'>
+												<small>{c.t('1 x Document Box')}</small>
+											</Text>
+											<Text color='#E61D6E' align='left' fontWeight='bold'>
+												<small>{c.t('$0')}</small>
+											</Text>
+										</OrderCardRow>
+
+										<OrderCardRow className="divider">
+											<Text color='#787F84' align='left'>
+												<small>{c.t('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate')}</small>
+											</Text>
+										</OrderCardRow>
+
+										<OrderCardRow >
+											<Text color='#787F84' align='left'>
+												<small className="disclaimer">{c.t('Lorem Ipsum dolor sit amet, consectetur')}</small>
+											</Text>
+											<Text color='#E61D6E' align='left' fontWeight='bold'>
+												<small>{c.t('$0')}</small>
+											</Text>
+										</OrderCardRow>
+									</OrderCard>
+								</GridColumn>
+							</GridContainer>
+
+							<GridContainer>
+								<GridColumn margin='0 1%'>
+									<OrderCard Border='1px solid #DFDFDF' shadow='none'>
+										<OrderCardRow margin='0 0 1.3rem' className="divider">
+											<Text color='#787F84' align='left' fontWeight='bold'>
+												<small>{c.t('Appointment Address')}</small>
+											</Text>
+											<EditCard>
+												<Text color='#787F84' align='left'>
+													<small>{c.t('Edit')}</small>
+												</Text>
+												<img src="images/ico-edit.svg" alt=""/>
+											</EditCard>
+										</OrderCardRow>
+										<OrderCardRow margin='0'>
+											<Text color='#787F84' align='left'>
+												<small>{c.t('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate')}</small>
+											</Text>
+										</OrderCardRow>
+										<OrderCardRow margin='0'>
+											<Text fontWeight='600' color='#787F84' align='left'>
+												<small>{c.t('Big Wave Bay, Hong Kong Island')}</small>
+											</Text>
+										</OrderCardRow>
+										<OrderCardRow margin='0'>
+											<Text size='0.8rem' color='#787F84' align='left'>
+												{c.t('Big Wave Bay, Hong Kong Island')}
+											</Text>
+										</OrderCardRow>
+									</OrderCard>
+								</GridColumn>
+								<GridColumn margin='0 1%'>
+									<OrderCard Border='1px solid #DFDFDF' shadow='none'>
+										<OrderCardRow margin='0 0 1.3rem' className="divider">
+											<Text color='#787F84' align='left' fontWeight='bold'>
+												<small>{c.t('Drop-off of boxes')}</small>
+											</Text>
+											<EditCard>
+												<Text color='#787F84' align='left'>
+													<small>{c.t('Edit')}</small>
+												</Text>
+												<img src="images/ico-edit.svg" alt=""/>
+											</EditCard>
+										</OrderCardRow>
+										<OrderCardRow>
+											<Text color='#787F84' align='left'>
+												<small>{c.t('Friday, 8 March, 2019 18 00 - 21 00')}</small>
+											</Text>
+										</OrderCardRow>
+									</OrderCard>
+								</GridColumn>
+								<GridColumn margin='0 1%'>
+									<OrderCard Border='1px solid #DFDFDF' shadow='none'>
+										<OrderCardRow margin='0 0 1.3rem' className="divider">
+											<Text color='#787F84' align='left' fontWeight='bold'>
+												<small>{c.t('Pick-up for storage')}</small>
+											</Text>
+											<EditCard>
+												<Text color='#787F84' align='left'>
+													<small>{c.t('Edit')}</small>
+												</Text>
+												<img src="images/ico-edit.svg" alt=""/>
+											</EditCard>
+										</OrderCardRow>
+										<OrderCardRow>
+											<Text color='#787F84' align='left'>
+												<small>{c.t('Friday, 8 March, 2019 18 00 - 21 00')}</small>
+											</Text>
+										</OrderCardRow>
+									</OrderCard>
+								</GridColumn>
+							</GridContainer>
+
+
+							</Text>
 						</WizardStep>
 					</Wizard>
 

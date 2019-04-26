@@ -95,6 +95,8 @@ class CustomDatePicker extends React.Component {
       },
       selectedTimeSlotIndex: this.props.showTimeslot ? 0 : undefined,
       deliveryDate: moment(new Date(), "day").startOf('hour').hour(9),
+      showCustomTime: false,
+      customTme: ''
 	};
 	
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -184,7 +186,14 @@ class CustomDatePicker extends React.Component {
     }, () => {
       this.props.setDeliveryDateForm(this.state.deliveryDate, this.props.id)
     })
+
+    if(this.props.timeslot[i].label == 'Custom Time') {
+      this.setState({showCustomTime: true})
+    } else {
+      this.setState({showCustomTime: false})
+    }
   }
+
   componentDidMount() {
     this.props.setDeliveryDateForm(this.state.deliveryDate, this.props.id)
   }
@@ -228,7 +237,6 @@ class CustomDatePicker extends React.Component {
           </button>
         </Modal> */}
 
-
         <DatePicker>
           <DatePickerHeader>
             <div className="title">
@@ -262,16 +270,18 @@ class CustomDatePicker extends React.Component {
             value={this.state.selectedTimeSlotIndex}
             onChange={this.changeTimeSlot}
             options={this.props.timeslot}
+
           />
         </TimeSlotWrapper>
         }
         
-        {/* <Timespot>
-          <TimeField
-          value={this.state.form.eventTime}
-          onChange={this.onTimeChange}
-          />
-        </Timespot> */}
+        {this.state.showCustomTime &&
+          // <TimeField
+          //   value={this.state.customTme}
+          //   onChange={this.onTimeChange}
+          // />
+          <h1>customPicker Here</h1>
+        }
        
       </React.Fragment>
     );

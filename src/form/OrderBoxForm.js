@@ -96,13 +96,15 @@ class SignUpForm extends React.Component {
             deliveryDate: {
                 drop: '',
                 pick: ''
-            }
+            },
+            customTime: ''
         }
         this.toggleShowPw = this.toggleShowPw.bind(this)
         this.toggleShowTC = this.toggleShowTC.bind(this)
         this.validate = this.validate.bind(this)
         this.addNewAddress = this.addNewAddress.bind(this);
         this.setDelivery = this.setDelivery.bind(this);
+        this.setCustomTime = this.setCustomTime.bind(this);
     }
 
     openModalHandler(id) {
@@ -173,6 +175,10 @@ class SignUpForm extends React.Component {
                 [id]: value
             })
         })
+    }
+
+    setCustomTime(value) {
+        this.setState({customTime: 'asda'})
     }
     
     render() {
@@ -340,10 +346,12 @@ class SignUpForm extends React.Component {
                                 id='drop'
                                 setDeliveryDateForm={this.setDelivery}
                                 showTimeslot={true}
+                                setCustomTime={this.state.setCustomTime}
                                 timeslot={[
                                     { label: "Morning: 9am-1pm", value: 9 },
                                     { label: "Afternoon: 1pm-6pm", value: 13 },
-                                    { label: "Night: 6pm-10pm", value: 18 }
+                                    { label: "Night: 6pm-10pm", value: 18 },
+                                    { label: "Custom Time", value: this.state.customTime }
                                 ]}
                             />
                         </PowerModal>

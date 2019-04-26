@@ -8,6 +8,7 @@ import isUndefined from 'lodash/isUndefined'
 import DatePicker from '../component/CustomDatePicker';
 import PowerModal from '../component/PowerModal'
 
+
 import {
 	Text,
 } from '../component/BasicComponents.js'
@@ -251,6 +252,7 @@ class SignUpForm extends React.Component {
                             <Text color='#787F84' align='left' width="100%" fontWeight="bold">
                                 Pick-up of boxes for storage
                             </Text>
+
                             <Field
                                 name="date"
                                 type="text"

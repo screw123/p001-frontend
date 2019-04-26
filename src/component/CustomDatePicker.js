@@ -2,6 +2,7 @@ import React from "react";
 import styled, {css} from 'styled-components'
 import moment from "moment";
 import TimeField from "react-simple-timefield";
+import { RadioSelect } from "./RadioSelect.js"
 
 const days = [
   "Sun",
@@ -87,20 +88,22 @@ class CustomDatePicker extends React.Component {
     super(props);
     this.state = {
       month: moment(),
-      selected: "",
       openModal: false,
       datePicked: "",
       form: {
         eventName: "",
         date: this.datePicked,
         eventTime: ""
-      }
+      },
+      selectedTimeSlotIndex: this.props.showTimeslot ? 0 : undefined,
+      deliveryDate: moment().add(1, 'd').startOf('hour').hour(9),
 	};
 	
     this.handleInputChange = this.handleInputChange.bind(this);
     this.onTimeChange = this.onTimeChange.bind(this);
     this.previous = this.previous.bind(this)
     this.next = this.next.bind(this)
+    this.changeTimeSlot = this.changeTimeSlot.bind(this)
   }
 
   onOpenModal = () => {
@@ -181,6 +184,20 @@ class CustomDatePicker extends React.Component {
     });
   }
 
+  changeTimeSlot = (e, i) => {
+    e.preventDefault()
+    
+		this.setState({ selectedTimeSlotIndex: i }, () => {
+      moment(this.state.datePicked)
+
+      .add(this.props.timeslot[i].value, "hours")
+
+    })
+		// this.props.onChange(
+      console.log(this.props.timeslot[i])
+		// )
+  }
+  
   render() {
     return (
       <React.Fragment>
@@ -248,12 +265,22 @@ class CustomDatePicker extends React.Component {
           {this.weeks()}
         </DatePicker>
 
-        <Timespot>
+        {!!this.props.showTimeslot && 
+        <TimeSlotWrapper>
+          <RadioSelect
+            value={this.state.selectedTimeSlotIndex}
+            onChange={this.changeTimeSlot}
+            options={this.props.timeslot}
+          />
+        </TimeSlotWrapper>
+        }
+        
+        {/* <Timespot>
           <TimeField
           value={this.state.form.eventTime}
           onChange={this.onTimeChange}
           />
-        </Timespot>
+        </Timespot> */}
        
       </React.Fragment>
     );
@@ -261,6 +288,10 @@ class CustomDatePicker extends React.Component {
 }
 
 export  default CustomDatePicker;
+
+const TimeSlotWrapper = styled.div`
+	margin: 0.5rem 0rem;
+`
 
 export const Text = styled.div`
 	max-width: ${props => (props.width ? props.width : '60rem')};

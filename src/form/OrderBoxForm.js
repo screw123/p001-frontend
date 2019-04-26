@@ -292,8 +292,15 @@ class SignUpForm extends React.Component {
                         Action = {this._next}
                         Btn = {false}
                         SmSize = {true}
-                        >
-                            <DatePicker />
+                    >
+                        <DatePicker
+                            showTimeslot={true}
+                            timeslot={[
+                                { label: "Morning: 9am-1pm", value: 9 },
+                                { label: "Afternoon: 1pm-6pm", value: 13 },
+                                { label: "Night: 6pm-10pm", value: 18 }
+                            ]}
+                        />
                     </PowerModal>
 
                    

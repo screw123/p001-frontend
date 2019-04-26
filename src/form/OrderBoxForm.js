@@ -88,7 +88,8 @@ class SignUpForm extends React.Component {
                     name: 'District 3',
                     value: 'District3'
                 }
-            ]
+            ],
+            isShowing: true
         }
         this.toggleShowPw = this.toggleShowPw.bind(this)
         this.toggleShowTC = this.toggleShowTC.bind(this)

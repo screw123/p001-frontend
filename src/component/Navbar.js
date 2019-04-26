@@ -70,7 +70,7 @@ const genMenu = ({g, c, routes, isFrontMenu, isPrimaryMenu}) => {
 
 		//re-enable later on
 
-		/*if (!g.state.isLogined) {
+		if (!g.state.isLogined) {
 			menu.push(<FirstLevelContainer key='link-login'>
 				<FirstLevelLoginLink to={"/login"}>
 					{c.t("Login")}
@@ -81,7 +81,7 @@ const genMenu = ({g, c, routes, isFrontMenu, isPrimaryMenu}) => {
 			menu.push(<FirstLevelContainer key='link-logout'>
 				<FirstLevelText color='#fff' displayText={c.t('Logout')} onClick={() => g.logout()} />
 			</FirstLevelContainer>)
-		}*/
+		}
 	}  
 	return menu
 }

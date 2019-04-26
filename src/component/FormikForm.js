@@ -62,7 +62,7 @@ const FormikForm = styled(Form)`
 	}
 
 	.custom-select {
-		background-image: url(http://www.stackoverflow.com/favicon.ico);
+		background-image: url(/images/ico-arrow-down.svg);
 		background-repeat: no-repeat;
 		background-position: center right;
 		box-sizing: border-box;

@@ -23,13 +23,20 @@ export const DayContainer = styled.div`
     .day-number {
         color: #424242;
         cursor: pointer;
+
+        width: 40px;
+    margin: 0 auto;
+    padding: 0.5rem;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     }
   
-    &.disabled {
-        
-        .day-number {
-            color: #979797;
-        }
+    &.disabled {  
+      .day-number {
+          color: #979797;
+      }
     }
     
     &.current-day {
@@ -39,6 +46,16 @@ export const DayContainer = styled.div`
             color: white;
             padding: 12px;
         }
+    }
+
+    &.selected {
+      .day-number {
+        background-color: transaparent;
+        border: 0.5px solid #C4C4C4;
+        border-radius: 100%;
+        color: #979797;
+        padding: 0.5rem 17px;
+      }
     }
     
     .price {
@@ -57,12 +74,11 @@ export class Day extends React.Component {
       selected,
     } = this.props;
 
-    console.log(selected)
     return (
         <DayContainer
             id={number}
             onClick={() => selectFnc(day)}
-            className={"day-container" + (isToday ? " current-day" : "") + (isCurrentMonth ? "" : " disabled")}
+            className={"day-container" + (isToday ? " current-day" : "") + (isCurrentMonth ? "" : " disabled") + (!isToday && selected ? ' selected' : '') }
         >
             <span
                 key={date.toString()}
@@ -88,7 +104,7 @@ export const Week = styled.div`
 export class WeekRow extends React.Component {
   render() {
     let days = [];
-    let { date, month, datePicked, selectFnc } = this.props;
+    let { date, month, selected, selectFnc } = this.props;
 
     for (var i = 0; i < 7; i++) {
       let day = {
@@ -96,11 +112,14 @@ export class WeekRow extends React.Component {
         number: date.date(),
         isCurrentMonth: date.month() === month.month(),
         isToday: date.isSame(new Date(), "day"),
-        date: date
+        date: date,
+        month: date.month()
       };
+
+      console.log(day);
       
     
-      days.push(<Day day={day} selected={datePicked} selectFnc={selectFnc} key={i}/>);
+      days.push(<Day day={day} selected={selected.number === day.number && selected.month === day.month ? true : false} selectFnc={selectFnc} key={i}/>);
 
       date = date.clone();
       date.add(1, "day");
@@ -145,7 +164,7 @@ class CustomDatePicker extends React.Component {
   };
 
   select(day) {
-    this.setState({ datePicked: day });
+    this.setState({ datePicked: day});
     this.onOpenModal();
   }
 

@@ -91,7 +91,8 @@ class SignUpForm extends React.Component {
                     value: 'District3'
                 }
             ],
-            isShowing: false,
+            showDropCalendar: false,
+            showPickCalendar: false,
             deliveryDate: {
                 drop: '',
                 pick: ''
@@ -104,16 +105,30 @@ class SignUpForm extends React.Component {
         this.setDelivery = this.setDelivery.bind(this);
     }
 
-    openModalHandler = () => {
-        this.setState({
-            isShowing: true
-        });
+    openModalHandler(id) {
+        if(id === 'drop') {
+            this.setState({
+                showDropCalendar: true
+            });
+        }
+        if(id === 'pick') {
+            this.setState({
+                showPickCalendar: true
+            });
+        }
     }
 
-    closeModalHandler = () => {
-        this.setState({
-            isShowing: false
-        });
+    closeModalHandler(id) {
+        if(id === 'drop') {
+            this.setState({
+                showDropCalendar: false
+            });
+        }
+        if(id === 'pick') {
+            this.setState({
+                showPickCalendar: false
+            })
+        }
     }
     
     toggleShowPw() {
@@ -165,7 +180,7 @@ class SignUpForm extends React.Component {
         const g = this.props.login
         const c = this.props.i18n
         const deliveryDrop = moment(this.state.deliveryDate.drop).format("YYYY-MM-DD HH:mm");
-        const deliveryPick = moment(this.state.deliveryDate.drop).format("YYYY-MM-DD HH:mm");
+        const deliveryPick = moment(this.state.deliveryDate.pick).format("YYYY-MM-DD HH:mm");
 
         return(
             // <ApolloProvider client={g.getGqlClientPublic()}>
@@ -269,7 +284,7 @@ class SignUpForm extends React.Component {
                                 err={errors.dropOffDate}
                                 placeholder={this.state.deliveryDate.drop ? deliveryDrop : 'Choose a Date and Time'}
 
-                                onClick={this.openModalHandler}
+                                onClick={() => this.openModalHandler('drop')}
                             />
 
                             <Text color='#787F84' align='left' width="100%" fontWeight="bold">
@@ -285,7 +300,7 @@ class SignUpForm extends React.Component {
                                 err={errors.pickUpfDate}
                                 placeholder={this.state.deliveryDate.pick ? deliveryPick : 'Choose a Date and Time'}
 
-                                onClick={this.openModalHandler}
+                                onClick={() => this.openModalHandler('pick')}
                             />
 
                             <Text color='#787F84' align='left' width="100%" fontWeight="bold">
@@ -306,14 +321,14 @@ class SignUpForm extends React.Component {
                         </FormikForm>
                     )}}
                     </Formik>
-                    { this.state.isShowing && 
-                        <div onClick={this.closeModalHandler} className="back-drop"></div> 
+                    { this.state.showDropCalendar && 
+                        <div onClick={() => this.closeModalHandler('drop')} className="back-drop"></div> 
                     }
-                    {this.state.isShowing &&
+                    {this.state.showDropCalendar &&
                         <PowerModal
                             className="modal-datepicker"
-                            show={this.state.isShowing}
-                            close={this.closeModalHandler}
+                            show={this.state.showDropCalendar}
+                            close={() => this.closeModalHandler('drop')}
                             header={'Modal'}
                             BtnConfirm={'Confirm'}
                             BtnClose={'Add more Items'}
@@ -333,6 +348,35 @@ class SignUpForm extends React.Component {
                             />
                         </PowerModal>
                     }
+
+                    { this.state.showPickCalendar && 
+                        <div onClick={() => this.closeModalHandler('pick')} className="back-drop"></div> 
+                    }
+                    {this.state.showPickCalendar &&
+                        <PowerModal
+                            className="modal-datepicker"
+                            show={this.state.showPickCalendar}
+                            close={() => this.closeModalHandler('pick')}
+                            header={'Modal'}
+                            BtnConfirm={'Confirm'}
+                            BtnClose={'Add more Items'}
+                            Action = {this._next}
+                            Btn = {false}
+                            SmSize = {true}
+                        >
+                            <DatePicker
+                                id='pick'
+                                setDeliveryDateForm={this.setDelivery}
+                                showTimeslot={true}
+                                timeslot={[
+                                    { label: "Morning: 9am-1pm", value: 9 },
+                                    { label: "Afternoon: 1pm-6pm", value: 13 },
+                                    { label: "Night: 6pm-10pm", value: 18 }
+                                ]}
+                            />
+                        </PowerModal>
+                    }
+                    
 
                 </div>
                 // )}

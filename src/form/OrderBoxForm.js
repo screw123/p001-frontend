@@ -92,7 +92,10 @@ class SignUpForm extends React.Component {
                 }
             ],
             isShowing: false,
-            deliveryDate: ''
+            deliveryDate: {
+                drop: '',
+                pick: ''
+            }
         }
         this.toggleShowPw = this.toggleShowPw.bind(this)
         this.toggleShowTC = this.toggleShowTC.bind(this)
@@ -147,15 +150,22 @@ class SignUpForm extends React.Component {
         this.setState({newAddress: true})
     }
     
-    setDelivery(value) {
-        this.setState({deliveryDate: value})
+    setDelivery(value, id) {
+        // this.setState({deliveryDate: value})
+
+        this.setState({
+            deliveryDate: Object.assign({}, this.state.deliveryDate, {
+                [id]: value
+            })
+        })
     }
     
     render() {
         console.log(this.state)
         const g = this.props.login
         const c = this.props.i18n
-        const delivery = moment(this.state.deliveryDate).format("YYYY-MM-DD HH:mm");
+        const deliveryDrop = moment(this.state.deliveryDate.drop).format("YYYY-MM-DD HH:mm");
+        const deliveryPick = moment(this.state.deliveryDate.drop).format("YYYY-MM-DD HH:mm");
 
         return(
             // <ApolloProvider client={g.getGqlClientPublic()}>
@@ -169,6 +179,7 @@ class SignUpForm extends React.Component {
                             fullName: '',
                             address: '',
                             dropOffDate: '',
+                            pickUpDate: '',
                             date: '',
                             specialInstructionss: '',
                             region: '',
@@ -250,13 +261,15 @@ class SignUpForm extends React.Component {
                             </Text>
 
                             <Field
-                                name="dropOffDate"
-                                component={DropDown}
-                                label={'Drop-off of boxes'}
+                                name="date"
+                                type="text"
+                                component={TextField}
+                                label={'Choose a Date and Time'}
                                 value={values.dropOffDate}
                                 err={errors.dropOffDate}
-                                valueList={[{value:'dasda', name:'test'}]}
-                                placeholder={'Choose'}
+                                placeholder={this.state.deliveryDate.drop ? deliveryDrop : 'Choose a Date and Time'}
+
+                                onClick={this.openModalHandler}
                             />
 
                             <Text color='#787F84' align='left' width="100%" fontWeight="bold">
@@ -268,9 +281,9 @@ class SignUpForm extends React.Component {
                                 type="text"
                                 component={TextField}
                                 label={'Choose a Date and Time'}
-                                value={values.date}
-                                err={errors.date}
-                                placeholder={this.state.deliveryDate ? delivery : 'Choose a Date and Time'}
+                                value={values.pickUpfDate}
+                                err={errors.pickUpfDate}
+                                placeholder={this.state.deliveryDate.pick ? deliveryPick : 'Choose a Date and Time'}
 
                                 onClick={this.openModalHandler}
                             />
@@ -293,30 +306,33 @@ class SignUpForm extends React.Component {
                         </FormikForm>
                     )}}
                     </Formik>
-                    { this.state.isShowing ? <div onClick={this.closeModalHandler} className="back-drop"></div> : null }
-                    <PowerModal
-                        className="modal-datepicker"
-                        show={this.state.isShowing}
-                        close={this.closeModalHandler}
-                        header={'Modal'}
-                        BtnConfirm={'Confirm'}
-                        BtnClose={'Add more Items'}
-                        Action = {this._next}
-                        Btn = {false}
-                        SmSize = {true}
-                    >
-                        <DatePicker
-                            setDeliveryDateForm={this.setDelivery}
-                            showTimeslot={true}
-                            timeslot={[
-                                { label: "Morning: 9am-1pm", value: 9 },
-                                { label: "Afternoon: 1pm-6pm", value: 13 },
-                                { label: "Night: 6pm-10pm", value: 18 }
-                            ]}
-                        />
-                    </PowerModal>
-
-                   
+                    { this.state.isShowing && 
+                        <div onClick={this.closeModalHandler} className="back-drop"></div> 
+                    }
+                    {this.state.isShowing &&
+                        <PowerModal
+                            className="modal-datepicker"
+                            show={this.state.isShowing}
+                            close={this.closeModalHandler}
+                            header={'Modal'}
+                            BtnConfirm={'Confirm'}
+                            BtnClose={'Add more Items'}
+                            Action = {this._next}
+                            Btn = {false}
+                            SmSize = {true}
+                        >
+                            <DatePicker
+                                id='drop'
+                                setDeliveryDateForm={this.setDelivery}
+                                showTimeslot={true}
+                                timeslot={[
+                                    { label: "Morning: 9am-1pm", value: 9 },
+                                    { label: "Afternoon: 1pm-6pm", value: 13 },
+                                    { label: "Night: 6pm-10pm", value: 18 }
+                                ]}
+                            />
+                        </PowerModal>
+                    }
 
                 </div>
                 // )}

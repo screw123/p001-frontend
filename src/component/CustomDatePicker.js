@@ -114,7 +114,7 @@ class CustomDatePicker extends React.Component {
 
   select(day) {
     this.setState({ datePicked: day, deliveryDate: moment(day.date).startOf("day").add(this.state.hourSelected, 'h')}, () => {
-      this.props.setDeliveryDateForm(this.state.deliveryDate)
+      this.props.setDeliveryDateForm(this.state.deliveryDate, this.props.id)
     });
     this.onOpenModal();
   }
@@ -182,14 +182,14 @@ class CustomDatePicker extends React.Component {
     this.setState({
       deliveryDate: moment(time.date).startOf("day").add(this.props.timeslot[i].value, 'h')
     }, () => {
-      this.props.setDeliveryDateForm(this.state.deliveryDate)
+      this.props.setDeliveryDateForm(this.state.deliveryDate, this.props.id)
     })
   }
-  // componentDidMount() {
-  //   this.props.setDeliveryDateForm(this.state.deliveryDate)
-  // }
+  componentDidMount() {
+    this.props.setDeliveryDateForm(this.state.deliveryDate, this.props.id)
+  }
+
   render() {
-    console.log(this.state.deliveryDate)
     return (
       <React.Fragment>
         {/* <Modal open={this.state.openModal} onClose={this.onCloseModal} center>

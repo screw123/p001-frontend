@@ -13,58 +13,6 @@ const days = [
   "Sat",
 ];
 
-export const DayContainer = styled.div`
-    border: none;
-    font-size: 1.3rem;
-    padding: 1rem 0;
-    overflow-y: auto;
-    width: calc(18% - .8rem);
-
-    .day-number {
-        color: #424242;
-        cursor: pointer;
-
-        width: 40px;
-    margin: 0 auto;
-    padding: 0.5rem;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    }
-  
-    &.disabled {  
-      .day-number {
-          color: #979797;
-      }
-    }
-    
-    &.current-day {
-        .day-number {
-            border-radius: 100%;
-            background-color: #E61D6E;
-            color: white;
-            padding: 12px;
-        }
-    }
-
-    &.selected {
-      .day-number {
-        background-color: transaparent;
-        border: 0.5px solid #C4C4C4;
-        border-radius: 100%;
-        color: #979797;
-        padding: 0.5rem 17px;
-      }
-    }
-    
-    .price {
-        display: block;
-        font-size: 0.8rem;
-        padding-top: 12px;
-    }
-`
-
 export class Day extends React.Component {
   render() {
     const {
@@ -299,6 +247,14 @@ class CustomDatePicker extends React.Component {
           {/* <WeekRow /> */}
           {this.weeks()}
         </DatePicker>
+
+        <Timespot>
+          <TimeField
+          value={this.state.form.eventTime}
+          onChange={this.onTimeChange}
+          />
+        </Timespot>
+       
       </React.Fragment>
     );
   }
@@ -322,52 +278,110 @@ export const Text = styled.div`
 		font-size: 0.9rem;
 		line-height: 1.2rem;
 	}
-    ${({ z }) => (z ? 'z-index: ' + z : '')}
-    
-    .month {
-        font-weight: bold;
-        margin-right: 20px;
-    }
+  ${({ z }) => (z ? 'z-index: ' + z : '')}
+  
+  .month {
+      font-weight: bold;
+      margin-right: 20px;
+  }
 `
 
 export const DatePicker = styled.section`
-    max-width: 100%;
-    margin: 0 auto;
-`
-
-export const DayList = styled.div`
-    color: #E61D6E;
-    display: flex;
-    justify-content: space-between;
-    text-align: center;
-    padding: 20px 0;
-
-    p {
-        font-weight: lighter;
-        margin: 0;
-    }
-
-    h5 {
-        font-size: 1rem;
-        font-weight: lighter;
-        width: calc(14.5% - .8rem);
-    }
-`
-
-export const ArrowButton = styled.div`
-    background: none;
-    border: none;
-    img {
-        height: 42.71px;
-        width: 24px;
-    }
+  border-bottom: 0.25px solid #9D9D9D;
+  max-width: 100%;
+  margin: 0 auto;
+  padding-bottom: 1.5rem;
 `
 
 export const DatePickerHeader = styled.div`
-    .title {
-        align-items: center;
-        display: flex;
-        justify-content: space-between;
-        font-weight: lighter;
+  .title {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    font-weight: lighter;
+  }
+`
+
+export const DayContainer = styled.div`
+  border: none;
+  font-size: 1.3rem;
+  padding: 1rem 0;
+  overflow-y: auto;
+  width: calc(18% - .8rem);
+
+  .day-number {
+      color: #424242;
+      cursor: pointer;
+
+      width: 40px;
+  margin: 0 auto;
+  padding: 0.5rem;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  }
+
+  &.disabled {  
+    .day-number {
+        color: #979797;
     }
+  }
+  
+  &.current-day {
+      .day-number {
+          border-radius: 100%;
+          background-color: #E61D6E;
+          color: white;
+          padding: 12px;
+      }
+  }
+
+  &.selected {
+    .day-number {
+      background-color: transaparent;
+      border: 0.5px solid #C4C4C4;
+      border-radius: 100%;
+      color: #979797;
+      padding: 0.5rem 17px;
+    }
+  }
+  
+  .price {
+      display: block;
+      font-size: 0.8rem;
+      padding-top: 12px;
+  }
+`
+
+
+export const DayList = styled.div`
+  color: #E61D6E;
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  padding: 20px 0;
+
+  p {
+      font-weight: lighter;
+      margin: 0;
+  }
+
+  h5 {
+      font-size: 1rem;
+      font-weight: lighter;
+      width: calc(14.5% - .8rem);
+  }
+`
+
+export const Timespot = styled.div`
+`
+
+export const ArrowButton = styled.div`
+  background: none;
+  border: none;
+  img {
+      height: 42.71px;
+      width: 24px;
+  }
 `

@@ -241,6 +241,7 @@ class CustomDatePicker extends React.Component {
   render() {
     return (
       <React.Fragment>
+        <Container>
         <DatePicker>
           <DatePickerHeader>
             <div className="title">
@@ -281,6 +282,7 @@ class CustomDatePicker extends React.Component {
         
         {this.state.showCustomTime &&
           <TimePicker
+            className="custom-timepicker"
             onChange={this.onChangeTime}
             value={this.props.id === 'drop' ? this.state.customTimeDrop : this.state.customTimePick} 
             clockIcon={null}
@@ -288,6 +290,7 @@ class CustomDatePicker extends React.Component {
             disableClock={true}
           />
         }
+        </Container>
        
       </React.Fragment>
     );
@@ -295,6 +298,26 @@ class CustomDatePicker extends React.Component {
 }
 
 export  default CustomDatePicker;
+
+const Container = styled.div`
+  .custom-timepicker {
+    .react-time-picker{
+      &__wrapper {
+        border: none !important;
+      }
+
+      &__inputGroup {
+        width: 100% !important;
+        text-align: center !important;
+        font-size: 1.5rem !important;
+      }
+
+      &__inputGroup__divider {
+        padding: 1px 1rem !important;
+      }
+    }
+  }
+`
 
 const TimeSlotWrapper = styled.div`
 	margin: 0.5rem 0rem;
@@ -329,6 +352,7 @@ export const DatePicker = styled.section`
   max-width: 100%;
   margin: 0 auto;
   padding-bottom: 1.5rem;
+
 `
 
 export const DatePickerHeader = styled.div`

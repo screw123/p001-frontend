@@ -263,7 +263,7 @@ export default class PlanPage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			currentStep: 5,
+			currentStep: 4,
 			isChecked: true,
 			isShowing: false,
 			generalFaqs: [

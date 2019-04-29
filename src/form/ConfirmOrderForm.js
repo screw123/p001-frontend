@@ -50,65 +50,11 @@ class SignUpForm extends React.Component {
             showPw: false,
             showTC: false,
             newAddress: false,
-            currentAddress: [
-                {
-                    name: 'Default Address',
-                    value: 0
-                },
-                {
-                    name: 'Simple Address 1',
-                    value: 'Address1'
-                },
-                {
-                    name: 'Simple Address 2',
-                    value: 'Address2'
-                },
-                {
-                    name: 'Simple Address 3',
-                    value: 'Address3'
-                }
-            ],
-            regions: [
-                {
-                    name: 'Select Region',
-                    value: 0
-                },
-                {
-                    name: 'Region 1',
-                    value: 'Region1'
-                },
-                {
-                    name: 'Region 2',
-                    value: 'Region2'
-                },
-                {
-                    name: 'Region 3',
-                    value: 'Region3'
-                }
-            ],
-            districts: [
-                {
-                    name: 'Select District',
-                    value: 0
-                },
-                {
-                    name: 'District 1',
-                    value: 'District1'
-                },
-                {
-                    name: 'District 2',
-                    value: 'District2'
-                },
-                {
-                    name: 'District 3',
-                    value: 'District3'
-                }
-            ]
+
         }
         this.toggleShowPw = this.toggleShowPw.bind(this)
         this.toggleShowTC = this.toggleShowTC.bind(this)
         this.validate = this.validate.bind(this)
-        this.addNewAddress = this.addNewAddress.bind(this);
     }
 
 
@@ -127,11 +73,6 @@ class SignUpForm extends React.Component {
         const validateFunc = {
             fullName: ({fullName}) => (fullName.length>0)? undefined : 'Please enter your Full Name',
             phoneNUmber: ({phoneNUmber}) => isMobilePhone(phoneNUmber, 'zh-HK')? undefined : 'Please enter Hong Kong mobile phone number',
-            address: ({address}) => (address.length>0)? undefined : 'Please enter your Full Name',
-            dropOffDate: ({dropOffDate}) => (dropOffDate.length>0)? undefined : 'Please enter your Full Name',
-            specialInstructionss: ({specialInstructionss}) => (specialInstructionss.length>0)? undefined : 'Please enter your Full Name',
-            region: ({region}) => (region.length>0)? undefined : 'Please enter region',
-            district: ({district}) => (district.length>0)? undefined : 'Please enter district',
         }
         const keyArr = Object.keys(v)
         let err = {}
@@ -169,6 +110,25 @@ class SignUpForm extends React.Component {
                     {({ errors, setValues, isSubmitting, values, status }) => {
                     return (
                         <FormikForm>
+
+                            <label>
+                              <input
+                                name="isGoing"
+                                type="checkbox"
+                                checked={this.state.isGoing}
+                                onChange={this.handleInputChange} />
+                                <img width="25%" src="images/visa.svg" alt=""/>
+                            </label>
+
+                            <label>
+                              <input
+                                name="isGoing"
+                                type="checkbox"
+                                checked={this.state.isGoing}
+                                onChange={this.handleInputChange} />
+                                <img width="25%" src="images/paypal.svg" alt=""/>
+                            </label>
+
                             <Field
                                 name="CardNumber"
                                 type="text"

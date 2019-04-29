@@ -29,6 +29,82 @@ export const ClickableText = styled.span`
 	}
 `
 
+const Toggle = styled.div`
+*,*:before,*:after {
+  transition:.25s ease-in-out;
+}
+
+.checkbox-label {
+  display:block;
+  background:#f3f3f3;
+  height:30px;
+  width:60px;
+  border-radius:50px;
+  margin:15px 0;
+  position:relative;
+  box-shadow:0 0 0 2px #dddddd;
+  .on {
+    display:block;
+    position:absolute;
+    z-index:0;
+    left:0;
+    opacity:1;
+    min-width:300px;
+    line-height:30px;
+    opacity:0;
+    color:$green;
+  }
+  .off {
+    display:block;
+    position:absolute;
+    z-index:0;
+    right:100px;
+    text-align:right;
+    opacity:1;
+    min-width:300px;
+    line-height:30px;
+    opacity:1;
+    color:#bbbbbb;
+  }
+  &:before {
+    content:'';
+    display:block;
+    position:absolute;
+    top:0;
+    left:0;
+    border-radius:50px;
+    height:30px;
+    width:30px;
+    background:white;
+    box-shadow:0 3px 3px rgba(0,0,0,.2),0 0 0 2px #dddddd;
+  }
+}
+
+.checkbox {
+  position:absolute;
+  left:-5000px;
+  &:checked {
+    + .checkbox-label {
+      background:rgba(19,191,17,1);
+      box-shadow:0 0 0 2px rgba(19,191,17,1);
+      .on {
+        left:75px;
+        opacity:1;
+      }
+      .off {
+        right:0px;
+        opacity:0;
+      }
+      &:before {
+        left:30px;
+        box-shadow:0 3px 3px rgba(0,0,0,.2),0 0 0 2px rgba(19,191,17,1);
+      }
+    }
+  }
+}
+
+`
+
 class SignUpForm extends React.Component {
     
     constructor(props) {
@@ -296,6 +372,13 @@ class SignUpForm extends React.Component {
                             <Text color='#787F84' align='left' width="100%" fontWeight="bold">
                                 Pick-up of boxes for storage
                             </Text>
+                            <Toggle>
+                                <input class="checkbox" id="checkbox1" type="checkbox"/>
+                                <label for="checkbox1" class="checkbox-label">
+                                  <span class="on">Pick-up Right Away</span>
+                                </label>
+                            </Toggle>
+
 
                             <Field
                                 name="date"

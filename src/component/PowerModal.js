@@ -30,7 +30,7 @@ const Modal = styled.div`
   .modal-datepicker {
     width: 40%;
     left: 30%;
-    top: -100%
+    top: 15%
   } 
 
   .modal-header {

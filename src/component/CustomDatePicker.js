@@ -297,8 +297,8 @@ export const DatePickerHeader = styled.div`
 
 export const DayContainer = styled.div`
   border: none;
-  font-size: 1.3rem;
-  padding: 1rem 0;
+  font-size: 1rem;
+  padding: 0.5rem 0;
   overflow-y: auto;
   width: calc(18% - .8rem);
 
@@ -343,7 +343,7 @@ export const DayContainer = styled.div`
   .price {
       display: block;
       font-size: 0.8rem;
-      padding-top: 12px;
+      padding-top: 5px;
   }
 `
 

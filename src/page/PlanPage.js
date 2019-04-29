@@ -263,7 +263,7 @@ export default class PlanPage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			currentStep: 4,
+			currentStep: 5,
 			isChecked: true,
 			isShowing: false,
 			generalFaqs: [
@@ -336,7 +336,7 @@ export default class PlanPage extends React.Component {
 		if (currentStep >= 2) {
 			return (
 				<BackButton>
-					<CTAButton onClick={this._prev}>BACK</CTAButton>
+					<CTAButton onClick={this._prev}>Back</CTAButton>
 				</BackButton>
 			)
 		}
@@ -346,21 +346,27 @@ export default class PlanPage extends React.Component {
 
 	get nextButton() {
 		let currentStep = this.state.currentStep;
-		if (currentStep < totalSteps) {
+		if (currentStep <= totalSteps) {
 			if (this.state.currentStep === 3) {
-				return (
-					<NextButton>
-						<CTAButton onClick={this.openModalHandler}>Next</CTAButton>
+	 				return (
+						<NextButton>
+							<CTAButton onClick={this.openModalHandler}>Next</CTAButton>
+						</NextButton>
+					)
+			} else if (this.state.currentStep === 5) {
+				return(
+	  				<NextButton>
+						<CTAButton>Order</CTAButton>
+					</NextButton>
+				)
+			} else {
+				return(
+	  				<NextButton>
+						<CTAButton onClick={this._next}>Next</CTAButton>
 					</NextButton>
 				)
 			}
-			return (
-				<NextButton>
-					<CTAButton onClick={this._next}>Next</CTAButton>
-				</NextButton>
-			)
 		}
-
 		return null
 	}
 

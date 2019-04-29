@@ -312,6 +312,13 @@ const Container = styled.div`
         font-size: 1.5rem !important;
       }
 
+      &__inputGroup__input {
+        &:focus {
+          border: none;
+          outline: none;
+        }
+      }
+
       &__inputGroup__divider {
         padding: 1px 1rem !important;
       }

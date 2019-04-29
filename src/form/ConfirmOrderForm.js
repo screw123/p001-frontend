@@ -38,8 +38,63 @@ const GridColumn = styled.div`
     }
 `
 
+const LabelCheckbox = styled.label`
+
+    display: block;
+    position: relative;
+    padding-left: ${props => props.padding ? props.padding : '35px'};
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    user-select: none;
+
+    input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+    }
+
+    .checkmark {
+      position: absolute;
+      top: 0;
+      left: ${props => props.left ? props.left : '0'};
+      height: 25px;
+      width: 25px;
+      background-color: transparent;
+      border-radius: 4px;
+      border: 2px solid #979797;
+    }
+    input:checked ~ .checkmark {
+      background-color: #E61D6E;
+      border: none;
+    }
+    .checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
+    input:checked ~ .checkmark:after {
+      display: block;
+    }
+    .checkmark:after {
+      left: 9px;
+      top: 3px;
+      width: 8px;
+      height: 15px;
+      border: solid white;
+      border-width: 0 3px 3px 0;
+      -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
+    }
+
+`
+
 const Col = styled.div`
     width: calc(100%);
+    text-align: ${props => props.direction ? props.direction : 'inherit'};
 `
 
 class SignUpForm extends React.Component {
@@ -111,23 +166,34 @@ class SignUpForm extends React.Component {
                     return (
                         <FormikForm>
 
-                            <label>
-                              <input
-                                name="isGoing"
-                                type="checkbox"
-                                checked={this.state.isGoing}
-                                onChange={this.handleInputChange} />
-                                <img width="25%" src="images/visa.svg" alt=""/>
-                            </label>
-
-                            <label>
-                              <input
-                                name="isGoing"
-                                type="checkbox"
-                                checked={this.state.isGoing}
-                                onChange={this.handleInputChange} />
-                                <img width="25%" src="images/paypal.svg" alt=""/>
-                            </label>
+                            <GridContainer>
+                                <GridColumn>
+                                    <Col direction='left'>
+                                        <LabelCheckbox>
+                                          <input
+                                            name="pay"
+                                            type="checkbox"
+                                            checked={this.state.isGoing}
+                                            onChange={this.handleInputChange} />
+                                            <span class="checkmark"></span>
+                                            <img width="50%" src="images/visa.svg" alt=""/>
+                                        </LabelCheckbox>
+                                    </Col>
+                                </GridColumn>
+                                <GridColumn>
+                                    <Col direction='right'>
+                                        <LabelCheckbox padding='0' left='30%'>
+                                          <input
+                                            name="pay"
+                                            type="checkbox"
+                                            checked={this.state.isGoing}
+                                            onChange={this.handleInputChange} />
+                                            <span class="checkmark"></span>
+                                            <img width="50%" src="images/paypal.svg" alt=""/>
+                                        </LabelCheckbox>
+                                    </Col>
+                                </GridColumn>
+                            </GridContainer>
 
                             <Field
                                 name="CardNumber"

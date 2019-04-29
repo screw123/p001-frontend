@@ -263,7 +263,7 @@ export default class PlanPage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			currentStep: 1,
+			currentStep: 5,
 			isChecked: true,
 			isShowing: false,
 			generalFaqs: [
@@ -335,8 +335,8 @@ export default class PlanPage extends React.Component {
 		let currentStep = this.state.currentStep;
 		if (currentStep >= 2) {
 			return (
-				<BackButton>
-					<CTAButton onClick={this._prev}>Back</CTAButton>
+				<BackButton >
+					<CTAButton color onClick={this._prev}>Back</CTAButton>
 				</BackButton>
 			)
 		}

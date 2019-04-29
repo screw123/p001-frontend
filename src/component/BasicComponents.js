@@ -198,7 +198,7 @@ export const CTAButton = styled(Button)`
 	padding: 0.75rem 2.5rem;
 	font-size: 1.5rem;
 	min-width: 12rem;
-	background: ${props => props.disabled ? `rgba(128, 128, 128, 0.2)` : `linear-gradient(180deg, #F43EA6 0%, #F5576C 100%)`};
+	background: ${props => props.color ? `rgba(128, 128, 128, 0.2)` : `linear-gradient(180deg, #F43EA6 0%, #F5576C 100%)`};
 	color: #fff;
 `
 

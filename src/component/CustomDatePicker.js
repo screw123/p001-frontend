@@ -97,7 +97,8 @@ class CustomDatePicker extends React.Component {
       selectedTimeSlotIndex: this.props.showTimeslot ? 0 : undefined,
       deliveryDate: moment(new Date(), "day").startOf('hour').hour(9),
       showCustomTime: false,
-      customTme: ''
+      customTimeDrop: '',
+      customTimePick: '',
 	};
 	
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -115,9 +116,32 @@ class CustomDatePicker extends React.Component {
   };
 
   select(day) {
-    this.setState({ datePicked: day, deliveryDate: moment(day.date).startOf("day").add(this.state.hourSelected, 'h')}, () => {
-      this.props.setDeliveryDateForm(this.state.deliveryDate, this.props.id)
-    });
+    if(this.state.showCustomTime) {
+      let values;
+      if(this.props.id === 'drop' && this.state.customTimeDrop) {
+        values = this.state.customTimeDrop.split(':');
+        this.setState({
+          datePicked: day,
+          deliveryDate: moment(day.date).startOf("day").add(values[0], 'h').add(values[1], 'm')
+        }, () => {
+          this.props.setDeliveryDateForm(this.state.deliveryDate, this.props.id)
+        });
+      }
+      if(this.props.id === 'pick' && this.state.customTimePick) {
+        values = this.state.customTimePick.split(':');
+        this.setState({
+          datePicked: day,
+          deliveryDate: moment(day.date).startOf("day").add(values[0], 'h').add(values[1], 'm')
+        }, () => {
+          this.props.setDeliveryDateForm(this.state.deliveryDate, this.props.id)
+        });
+      }
+    }
+    else  {
+      this.setState({ datePicked: day, deliveryDate: moment(day.date).startOf("day").add(this.state.hourSelected, 'h')}, () => {
+        this.props.setDeliveryDateForm(this.state.deliveryDate, this.props.id)
+      });  
+    }
     this.onOpenModal();
   }
 
@@ -186,8 +210,29 @@ class CustomDatePicker extends React.Component {
     }
   }
 
-
-  onChangeTime = time => this.setState({ customTme: time })
+  onChangeTime = time => {
+    let values;
+    if(this.props.id === 'drop' && this.state.showCustomTime) {
+      this.setState({ customTimeDrop: time }, () => {
+        values = this.state.customTimeDrop.split(':');
+        this.setState({
+          deliveryDate: moment(this.state.datePicked.date).startOf("day").add(values[0], 'h').add(values[1], 'm')
+        }, () => {
+          this.props.setDeliveryDateForm(this.state.deliveryDate, this.props.id)
+        })
+      })
+    }
+    if(this.props.id === 'pick' && this.state.showCustomTime) {
+      this.setState({ customTimePick: time }, () => {
+        values = this.state.customTimePick.split(':');
+        this.setState({
+          deliveryDate: moment(this.state.datePicked.date).startOf("day").add(values[0], 'h').add(values[1], 'm')
+        }, () => {
+          this.props.setDeliveryDateForm(this.state.deliveryDate, this.props.id)
+        })
+      })
+    }
+  }
 
   componentDidMount() {
     this.props.setDeliveryDateForm(this.state.deliveryDate, this.props.id)
@@ -237,7 +282,7 @@ class CustomDatePicker extends React.Component {
         {this.state.showCustomTime &&
           <TimePicker
             onChange={this.onChangeTime}
-            value={this.state.time}
+            value={this.props.id === 'drop' ? this.state.customTimeDrop : this.state.customTimePick} 
             clockIcon={null}
             clearIcon={null}
             disableClock={true}

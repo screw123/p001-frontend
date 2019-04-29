@@ -3,7 +3,7 @@ import moment from "moment";
 import styled from 'styled-components'
 import { Formik, Field } from 'formik'
 import isMobilePhone from 'validator/lib/isMobilePhone'
-import FormikForm, { TextField, FormButton, FormErr, FormIcon, CheckBox2, MultiSelect, DropDown} from '../component/FormikForm.js'
+import FormikForm, { TextField, FormErr, DropDown} from '../component/FormikForm.js'
 import omitBy from 'lodash/omitBy'
 import isUndefined from 'lodash/isUndefined'
 import DatePicker from '../component/CustomDatePicker';
@@ -180,7 +180,6 @@ class SignUpForm extends React.Component {
         this.validate = this.validate.bind(this)
         this.addNewAddress = this.addNewAddress.bind(this);
         this.setDelivery = this.setDelivery.bind(this);
-        this.setCustomTime = this.setCustomTime.bind(this);
     }
 
     openModalHandler(id) {
@@ -244,17 +243,11 @@ class SignUpForm extends React.Component {
     }
     
     setDelivery(value, id) {
-        // this.setState({deliveryDate: value})
-
         this.setState({
             deliveryDate: Object.assign({}, this.state.deliveryDate, {
                 [id]: value
             })
         })
-    }
-
-    setCustomTime(value) {
-        this.setState({customTime: 'asda'})
     }
     
     render() {
@@ -429,12 +422,12 @@ class SignUpForm extends React.Component {
                                 id='drop'
                                 setDeliveryDateForm={this.setDelivery}
                                 showTimeslot={true}
-                                setCustomTime={this.state.setCustomTime}
+                                // setCustomTime={this.state.setCustomTime}
                                 timeslot={[
                                     { label: "Morning: 9am-1pm", value: 9 },
                                     { label: "Afternoon: 1pm-6pm", value: 13 },
                                     { label: "Night: 6pm-10pm", value: 18 },
-                                    { label: "Custom Time", value: this.state.customTime }
+                                    { label: "Custom Time", value: '' }
                                 ]}
                             />
                         </PowerModal>
@@ -462,7 +455,8 @@ class SignUpForm extends React.Component {
                                 timeslot={[
                                     { label: "Morning: 9am-1pm", value: 9 },
                                     { label: "Afternoon: 1pm-6pm", value: 13 },
-                                    { label: "Night: 6pm-10pm", value: 18 }
+                                    { label: "Night: 6pm-10pm", value: 18 },
+                                    { label: "Custom Time", value: '' }
                                 ]}
                             />
                         </PowerModal>

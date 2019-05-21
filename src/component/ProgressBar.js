@@ -45,7 +45,6 @@ const ProgressStep = styled.li`
         background-color: #BFBCBD;
         top: 12px;
         left: -50%;
-        z-index: -1;
     }
 
     &:first-child:after {
@@ -54,10 +53,15 @@ const ProgressStep = styled.li`
 
     &.active {
         color: #E61D6E;
+        z-index:1;
         &:before {
             background-color: #E61D6E;
             border-color: #E61D6E;
             box-shadow: 0 0 6px 0 rgba(230,29,110,0.53);
+        }
+
+        &:after {
+            background-color: #E61D6E;
         }
     }
 

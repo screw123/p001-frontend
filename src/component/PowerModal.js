@@ -13,6 +13,7 @@ const Modal = styled.div`
       width: 100%;
       top: 0;
       left: 0;
+      z-index: 1;
   }
   .modal-wrapper {
       background: white;
@@ -25,12 +26,13 @@ const Modal = styled.div`
       left: 20%; 
       transform: translate(-50%, -50%);
       border-radius: 25px;
+      z-index: 2;
   }
 
   .modal-datepicker {
     width: 40%;
     left: 30%;
-    top: 15%
+    top: 10%
   } 
 
   .modal-header {

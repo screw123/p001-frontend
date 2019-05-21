@@ -39,7 +39,7 @@
     "react-select": "^2.0.0",
     "react-simple-timefield": "^2.0.3",
     "react-stripe-elements": "^2.0.1",
-    "react-time-picker": "^3.5.1",
+    "react-time-picker": "^3.5.2",
     "react-virtualized": "^9.20.1",
     "source-map-explorer": "^1.7.0",
     "styled-components": "^3.3.3",

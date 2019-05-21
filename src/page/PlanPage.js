@@ -90,7 +90,6 @@ const ContainerBox = styled.div`
     border-radius: 16px;
     margin: 3% 10%;
     padding: 4rem 3rem;
-    z-index: 1;
 `
 
 export const Section = styled.div`

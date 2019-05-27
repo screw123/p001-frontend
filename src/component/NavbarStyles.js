@@ -8,6 +8,7 @@ export const StickyDiv = styled.div`
 	position: fixed;
 	top: 0;
 	margin: 0;
+	z-index: 2000;
 	grid-row: start / navbar;
 	@media (max-width: 1024px) {
 		height: 4rem;

@@ -13,7 +13,7 @@ const Modal = styled.div`
     right: 0;
     height: 100%;
     width: 100%;
-    z-index: 1000;
+    z-index: 100;
 
     .overlay {
         position: absolute;
@@ -33,7 +33,7 @@ const Modal = styled.div`
         transition: all .8s;
         width: 85%;
         position: absolute;
-        top: 50%;  
+        top: 45%;  
         left: 50%; 
         transform: translate(-50%, -50%) !important;
         border-radius: 25px;
@@ -41,6 +41,10 @@ const Modal = styled.div`
 
         @media screen and (min-width: 768px) {
             width: 60%;
+        }
+
+        @media screen and (min-width: 1024px) {
+            top: 50%;  
         }
     }
 
@@ -50,7 +54,7 @@ const Modal = styled.div`
             max-width: 60%
         }
 
-        @media screen and (min-width: 1024px) {
+        @media screen and (min-width: 1200px) {
             max-width: 40%
         }
     } 

@@ -193,12 +193,30 @@ export const Cost = styled.h3`
 
 const ModalTitle = styled.p`
 	color: #787F84;
-	font-size: 48px;
+	font-size: 34px;
 	font-weight: 500;
+
+	@media screen and (min-width: 1200px) {
+		font-size: 48px;
+	} 
 `
 const ModalDetails= styled.span`
 	color: #787F84;
 	font-size: 18px;
+`
+
+const ModalImage = styled.div`
+	margin-bottom: 1rem;
+
+	img {
+		width: 120px;
+	}
+
+	@media screen and (min-width: 1024px) {
+		img {
+			width: initial;
+		}
+	}
 `
 
 const GridContainer = styled.div`
@@ -261,8 +279,7 @@ const EditCard = styled.div`
 		height: 21px;
 		margin: -2px 0 0 10px;
 		width: 20px
-	}
-	
+	}	
 `
 
 export default class PlanPage extends React.Component {
@@ -760,7 +777,9 @@ export default class PlanPage extends React.Component {
 						Action = {this._next}
 						Btn = {true}
 						>
-							<img src="images/ico-info.svg" alt=""/>
+							<ModalImage>
+								<img src="images/ico-info.svg" alt=""/>
+							</ModalImage>
 							<ModalTitle>Your monthly bill is $0</ModalTitle>
 							<ModalDetails>(minimum spend applies).</ModalDetails>
 					</PowerModal>

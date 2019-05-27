@@ -1,5 +1,5 @@
 import React from "react";
-import styled, {css} from 'styled-components'
+import styled, { css } from 'styled-components'
 import moment from "moment";
 import { RadioSelect } from "./RadioSelect.js"
 
@@ -25,20 +25,20 @@ export class Day extends React.Component {
     } = this.props;
 
     return (
-        <DayContainer
-            id={number}
-            onClick={() => selectFnc(day)}
-            className={"day-container" + (isToday ? " current-day" : "") + (isCurrentMonth ? "" : " disabled") + (!isToday && selected ? ' selected' : '') }
+      <DayContainer
+        id={number}
+        onClick={() => selectFnc(day)}
+        className={"day-container" + (isToday ? " current-day" : "") + (isCurrentMonth ? "" : " disabled") + (!isToday && selected ? ' selected' : '')}
+      >
+        <span
+          key={date.toString()}
+          className='day-number'
         >
-            <span
-                key={date.toString()}
-                className='day-number'
-            >
-                {number}
-            </span>
+          {number}
+        </span>
 
-            {isCurrentMonth && <span className="price">$0</span>}
-        </DayContainer>
+        {isCurrentMonth && <span className="price">$0</span>}
+      </DayContainer>
     );
   }
 }
@@ -65,17 +65,17 @@ export class WeekRow extends React.Component {
         date: date,
         month: date.month()
       };
-    
-      days.push(<Day day={day} selected={selected.number === day.number && selected.month === day.month ? true : false} selectFnc={selectFnc} key={i}/>);
+
+      days.push(<Day day={day} selected={selected.number === day.number && selected.month === day.month ? true : false} selectFnc={selectFnc} key={i} />);
 
       date = date.clone();
       date.add(1, "day");
     }
 
     return (
-        <Week>
-            {days}
-        </Week>
+      <Week>
+        {days}
+      </Week>
     );
   }
 }
@@ -99,8 +99,8 @@ class CustomDatePicker extends React.Component {
       showCustomTime: false,
       customTimeDrop: '',
       customTimePick: '',
-	};
-	
+    };
+
     this.handleInputChange = this.handleInputChange.bind(this);
     this.previous = this.previous.bind(this)
     this.next = this.next.bind(this)
@@ -116,9 +116,9 @@ class CustomDatePicker extends React.Component {
   };
 
   select(day) {
-    if(this.state.showCustomTime) {
+    if (this.state.showCustomTime) {
       let values;
-      if(this.props.id === 'drop' && this.state.customTimeDrop) {
+      if (this.props.id === 'drop' && this.state.customTimeDrop) {
         values = this.state.customTimeDrop.split(':');
         this.setState({
           datePicked: day,
@@ -127,7 +127,7 @@ class CustomDatePicker extends React.Component {
           this.props.setDeliveryDateForm(this.state.deliveryDate, this.props.id)
         });
       }
-      if(this.props.id === 'pick' && this.state.customTimePick) {
+      if (this.props.id === 'pick' && this.state.customTimePick) {
         values = this.state.customTimePick.split(':');
         this.setState({
           datePicked: day,
@@ -137,10 +137,10 @@ class CustomDatePicker extends React.Component {
         });
       }
     }
-    else  {
-      this.setState({ datePicked: day, deliveryDate: moment(day.date).startOf("day").add(this.state.hourSelected, 'h')}, () => {
+    else {
+      this.setState({ datePicked: day, deliveryDate: moment(day.date).startOf("day").add(this.state.hourSelected, 'h') }, () => {
         this.props.setDeliveryDateForm(this.state.deliveryDate, this.props.id)
-      });  
+      });
     }
     this.onOpenModal();
   }
@@ -158,7 +158,7 @@ class CustomDatePicker extends React.Component {
   }
 
   weeks() {
-	// const events = this.props.events;
+    // const events = this.props.events;
     let startDate = this.state.month
       .clone()
       .startOf("month")
@@ -172,8 +172,8 @@ class CustomDatePicker extends React.Component {
           date={startDate.clone()}
           month={this.state.month}
           selectFnc={day => this.select(day)}
-		      selected={this.state.datePicked}
-		      events={this.props}
+          selected={this.state.datePicked}
+          events={this.props}
         />
       );
 
@@ -194,7 +194,7 @@ class CustomDatePicker extends React.Component {
   }
 
   changeTimeSlot = (e, i) => {
-		e.preventDefault()
+    e.preventDefault()
     this.setState({ selectedTimeSlotIndex: i, hourSelected: this.props.timeslot[i].value })
     const time = this.state.datePicked;
     this.setState({
@@ -203,16 +203,16 @@ class CustomDatePicker extends React.Component {
       this.props.setDeliveryDateForm(this.state.deliveryDate, this.props.id)
     })
 
-    if(this.props.timeslot[i].label == 'Custom Time') {
-      this.setState({showCustomTime: true})
+    if (this.props.timeslot[i].label == 'Custom Time') {
+      this.setState({ showCustomTime: true })
     } else {
-      this.setState({showCustomTime: false})
+      this.setState({ showCustomTime: false })
     }
   }
 
   onChangeTime = time => {
     let values;
-    if(this.props.id === 'drop' && this.state.showCustomTime) {
+    if (this.props.id === 'drop' && this.state.showCustomTime) {
       this.setState({ customTimeDrop: time }, () => {
         values = this.state.customTimeDrop.split(':');
         this.setState({
@@ -222,7 +222,7 @@ class CustomDatePicker extends React.Component {
         })
       })
     }
-    if(this.props.id === 'pick' && this.state.showCustomTime) {
+    if (this.props.id === 'pick' && this.state.showCustomTime) {
       this.setState({ customTimePick: time }, () => {
         values = this.state.customTimePick.split(':');
         this.setState({
@@ -242,62 +242,62 @@ class CustomDatePicker extends React.Component {
     return (
       <React.Fragment>
         <Container>
-        <DatePicker>
-          <DatePickerHeader>
-            <div className="title">
+          <DatePicker>
+            <DatePickerHeader>
+              <div className="title">
                 <ArrowButton onClick={this.previous}>
-                    <img src="images/ico-left-arrow.svg" alt=""/>
+                  <img src="images/ico-left-arrow.svg" alt="" />
                 </ArrowButton>
 
                 <Text color="#E61D6E">
-                    <span className="month">{this.state.month.format("MMMM")}</span>
-                    <span>{this.state.month.format("YYYY")}</span>
+                  <span className="month">{this.state.month.format("MMMM")}</span>
+                  <span>{this.state.month.format("YYYY")}</span>
                 </Text>
-                
+
                 <ArrowButton onClick={this.next}>
-                    <img src="images/ico-right-arrow.svg" alt=""/>
+                  <img src="images/ico-right-arrow.svg" alt="" />
                 </ArrowButton>
-            </div>
-            
-            <DayList>
-              {days.map(day => (
-                <h5 key={day}> {day} </h5>
-              ))}
-            </DayList>
-          </DatePickerHeader>
-          {/* <WeekRow /> */}
-          {this.weeks()}
-        </DatePicker>
+              </div>
 
-        {!!this.props.showTimeslot && 
-        <TimeSlotWrapper>
-          <RadioSelect
-            value={this.state.selectedTimeSlotIndex}
-            onChange={this.changeTimeSlot}
-            options={this.props.timeslot}
+              <DayList>
+                {days.map(day => (
+                  <h5 key={day}> {day} </h5>
+                ))}
+              </DayList>
+            </DatePickerHeader>
+            {/* <WeekRow /> */}
+            {this.weeks()}
+          </DatePicker>
 
-          />
-        </TimeSlotWrapper>
-        }
-        
-        {this.state.showCustomTime &&
-          <TimePicker
-            className="custom-timepicker"
-            onChange={this.onChangeTime}
-            value={this.props.id === 'drop' ? this.state.customTimeDrop : this.state.customTimePick} 
-            clockIcon={null}
-            clearIcon={null}
-            disableClock={true}
-          />
-        }
+          {!!this.props.showTimeslot &&
+            <TimeSlotWrapper>
+              <RadioSelect
+                value={this.state.selectedTimeSlotIndex}
+                onChange={this.changeTimeSlot}
+                options={this.props.timeslot}
+
+              />
+            </TimeSlotWrapper>
+          }
+
+          {this.state.showCustomTime &&
+            <TimePicker
+              className="custom-timepicker"
+              onChange={this.onChangeTime}
+              value={this.props.id === 'drop' ? this.state.customTimeDrop : this.state.customTimePick}
+              clockIcon={null}
+              clearIcon={null}
+              disableClock={true}
+            />
+          }
         </Container>
-       
+
       </React.Fragment>
     );
   }
 }
 
-export  default CustomDatePicker;
+export default CustomDatePicker;
 
 const Container = styled.div`
   .custom-timepicker {
@@ -349,8 +349,8 @@ export const Text = styled.div`
   ${({ z }) => (z ? 'z-index: ' + z : '')}
   
   .month {
-      font-weight: bold;
-      margin-right: 20px;
+    font-weight: bold;
+    margin-right: 20px;
   }
 `
 
@@ -379,16 +379,15 @@ export const DayContainer = styled.div`
   width: calc(18% - .8rem);
 
   .day-number {
-      color: #424242;
-      cursor: pointer;
-
-      width: 40px;
-  margin: 0 auto;
-  padding: 0.5rem;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    color: #424242;
+    cursor: pointer;
+    width: 40px;
+    margin: 0 auto;
+    padding: 0.5rem;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   &.disabled {  
@@ -398,12 +397,12 @@ export const DayContainer = styled.div`
   }
   
   &.current-day {
-      .day-number {
-          border-radius: 100%;
-          background-color: #E61D6E;
-          color: white;
-          padding: 12px;
-      }
+    .day-number {
+        border-radius: 100%;
+        background-color: #E61D6E;
+        color: white;
+        padding: 12px;
+    }
   }
 
   &.selected {
@@ -417,9 +416,9 @@ export const DayContainer = styled.div`
   }
   
   .price {
-      display: block;
-      font-size: 0.8rem;
-      padding-top: 5px;
+    display: block;
+    font-size: 0.8rem;
+    padding-top: 5px;
   }
 `
 

@@ -403,12 +403,9 @@ class SignUpForm extends React.Component {
                         </FormikForm>
                     )}}
                     </Formik>
-                    { this.state.showDropCalendar && 
-                        <div onClick={() => this.closeModalHandler('drop')} className="back-drop"></div> 
-                    }
                     {this.state.showDropCalendar &&
                         <PowerModal
-                            className="modal-datepicker"
+                            className="modal modal-datepicker"
                             show={this.state.showDropCalendar}
                             close={() => this.closeModalHandler('drop')}
                             header={'Modal'}
@@ -433,12 +430,9 @@ class SignUpForm extends React.Component {
                         </PowerModal>
                     }
 
-                    { this.state.showPickCalendar && 
-                        <div onClick={() => this.closeModalHandler('pick')} className="back-drop"></div> 
-                    }
                     {this.state.showPickCalendar &&
                         <PowerModal
-                            className="modal-datepicker"
+                            className="modal modal-datepicker"
                             show={this.state.showPickCalendar}
                             close={() => this.closeModalHandler('pick')}
                             header={'Modal'}

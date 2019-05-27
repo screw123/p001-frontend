@@ -546,24 +546,6 @@ export default class PlanPage extends React.Component {
 									</Cost>
 								</div>
 							</CostContainer>
-
-							{ this.state.isShowing ? <div onClick={this.closeModalHandler} className="back-drop"></div> : null }
-							<PowerModal
-								className="modal"
-								show={this.state.isShowing}
-								close={this.closeModalHandler}
-								header={'Modal'}
-								BtnConfirm={'Confirm'}
-								BtnClose={'Add more Items'}
-							 	Action = {this._next}
-							 	Btn = {true}
-								>
-									<img src="images/ico-info.svg" alt=""/>
-									<ModalTitle>Your monthly bill is $0</ModalTitle>
-									<ModalDetails>(minimum spend applies).</ModalDetails>
-							</PowerModal>
-
-
 						</WizardStep>
 
 						<WizardStep currentStep={this.state.currentStep} step={4}>
@@ -762,6 +744,23 @@ export default class PlanPage extends React.Component {
 					</Header3>
 					<FAQs faqs={this.state.itemFaqs}></FAQs>
 				</Section>
+
+				{this.state.isShowing &&
+					<PowerModal
+						className="modal"
+						show={this.state.isShowing}
+						close={this.closeModalHandler}
+						header={'Modal'}
+						BtnConfirm={'Confirm'}
+						BtnClose={'Add more Items'}
+						Action = {this._next}
+						Btn = {true}
+						>
+							<img src="images/ico-info.svg" alt=""/>
+							<ModalTitle>Your monthly bill is $0</ModalTitle>
+							<ModalDetails>(minimum spend applies).</ModalDetails>
+					</PowerModal>
+				}
 			</React.Fragment>
 		)
 	}

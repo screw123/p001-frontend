@@ -88,8 +88,11 @@ export const CardBoxImage = styled(CardTwoImage)`
 const ContainerBox = styled.div`
     background-color: white;
     border-radius: 16px;
-    margin: 3% 10%;
-    padding: 4rem 3rem;
+	padding: 4rem 3rem;
+	
+	@media screen and (min-width: 768px) {
+		margin: 3% 10%;
+	}
 `
 
 export const Section = styled.div`
@@ -335,7 +338,7 @@ export default class PlanPage extends React.Component {
 		if (currentStep >= 2) {
 			return (
 				<BackButton >
-					<CTAButton color onClick={this._prev}>Back</CTAButton>
+					<CTAButton width={'auto'} color onClick={this._prev}>Back</CTAButton>
 				</BackButton>
 			)
 		}
@@ -349,7 +352,7 @@ export default class PlanPage extends React.Component {
 			if (this.state.currentStep === 3) {
 	 				return (
 						<NextButton>
-							<CTAButton onClick={this.openModalHandler}>Next</CTAButton>
+							<CTAButton width={'auto'} onClick={this.openModalHandler}>Next</CTAButton>
 						</NextButton>
 					)
 			} else if (this.state.currentStep === 5) {
@@ -361,7 +364,7 @@ export default class PlanPage extends React.Component {
 			} else {
 				return(
 	  				<NextButton>
-						<CTAButton onClick={this._next}>Next</CTAButton>
+						<CTAButton width={'auto'} onClick={this._next}>Next</CTAButton>
 					</NextButton>
 				)
 			}

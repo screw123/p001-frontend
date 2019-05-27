@@ -88,10 +88,11 @@ export const CardBoxImage = styled(CardTwoImage)`
 const ContainerBox = styled.div`
     background-color: white;
     border-radius: 16px;
-	padding: 4rem 3rem;
+	padding: 4rem 1rem;
 	
 	@media screen and (min-width: 768px) {
 		margin: 3% 10%;
+		padding: 4rem 3rem;
 	}
 `
 
@@ -201,9 +202,12 @@ const ModalDetails= styled.span`
 `
 
 const GridContainer = styled.div`
-	display: flex;
-	justify-content: space-between;
 	padding-top: 2rem;
+
+	@media screen and (min-width: 768px) {
+		display: flex;
+		justify-content: space-between;
+	}
 
 	@media screen and (min-width: 1024px) {
 		margin: 0 auto;
@@ -358,7 +362,7 @@ export default class PlanPage extends React.Component {
 			} else if (this.state.currentStep === 5) {
 				return(
 	  				<NextButton>
-						<CTAButton>Order</CTAButton>
+						<CTAButton width={'auto'}>Order</CTAButton>
 					</NextButton>
 				)
 			} else {
@@ -553,7 +557,7 @@ export default class PlanPage extends React.Component {
 								{c.t('Select a Booking')}
 							</Text>
 							<GridContainer>
-								<GridColumn>
+								<GridColumn margin="0 0 2rem">
 									<OrderBoxForm c={c}/>
 								</GridColumn>
 								<GridColumn>
@@ -603,10 +607,10 @@ export default class PlanPage extends React.Component {
 								{c.t('Secure Payment')}
 
 							<GridContainer>
-								<GridColumn>
+								<GridColumn margin="0 0 2rem">
 									<ConfirmOrderForm c={c}/>
 								</GridColumn>
-								<GridColumn>
+								<GridColumn margin="0 0 1rem">
 									<OrderCard>
 										<OrderCardRow margin='0 0 1.3rem'>
 											<Text color='#787F84' align='left' fontWeight='bold'>

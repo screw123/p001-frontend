@@ -4,7 +4,7 @@
     "builds": [
         { "src": "package.json", "use": "@now/static-build", "config": { "distDir": "build" } }
 	],
-	"alias": ["p001"],
+	"alias": ["p001.now.sh"],
     "routes": [
       { "src": "/static/(.*)", "headers": { "cache-control": "s-maxage=31536000,immutable" }, "dest": "/static/$1" },
       { "src": "/favicon.ico", "dest": "/favicon.ico" },

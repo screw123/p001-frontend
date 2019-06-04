@@ -68,8 +68,6 @@ const genMenu = ({g, c, routes, isFrontMenu, isPrimaryMenu}) => {
 	if (isPrimaryMenu) {
 		menu.push(langSelector({c: c, changeEng: 'EN', changeChn: '中'}) )
 
-		//re-enable later on
-
 		if (!g.state.isLogined) {
 			menu.push(<FirstLevelContainer key='link-login'>
 				<FirstLevelLoginLink to={"/login"}>
@@ -151,7 +149,7 @@ const genMobileMenu = ({g, c, routes, setMenuClose}) => {
 		secondaryMenu = fillMobileMenu({g:g, c:c, nodes: n, allNodes: routes, setMenuClose: setMenuClose})
 	}
 	secondaryMenu.push(langSelector({c:c, changeEng: 'To English', changeChn: '轉成中文', padding: '0'}))
-	/*secondaryMenu.push( g.state.isLogined ? 
+	secondaryMenu.push( g.state.isLogined ? 
 		<MobileMenuItem
 			key='login'
 			color='#fff'
@@ -171,17 +169,17 @@ const genMobileMenu = ({g, c, routes, setMenuClose}) => {
 		>
 			{c.t('Login')}
 		</MobileMenuLink>
-	)*/
-	/*	if (!g.state.isLogined) {
-			menu.push(<FirstLevelLoginLink to={"/login"}>
-			{c.t("Login")}
-		</FirstLevelLoginLink>)
-		}
-		else {
-			menu.push(<FirstLevelContainer key='link-logout'>
-				<FirstLevelText color='#fff' displayText={c.t('Logout')} onClick={() => g.logout()} />
-			</FirstLevelContainer>)
-		}*/
+	)
+	/*if (!g.state.isLogined) {
+		menu.push(<FirstLevelLoginLink to={"/login"}>
+		{c.t("Login")}
+	</FirstLevelLoginLink>)
+	}
+	else {
+		menu.push(<FirstLevelContainer key='link-logout'>
+			<FirstLevelText color='#fff' displayText={c.t('Logout')} onClick={() => g.logout()} />
+		</FirstLevelContainer>)
+	}*/
 
 
 	return <><MobilePrimaryWrapper>{primaryMenu}</MobilePrimaryWrapper><MobileSecondaryWrapper>{secondaryMenu}</MobileSecondaryWrapper></>

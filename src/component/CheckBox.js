@@ -51,7 +51,7 @@ const CheckBox = ({
 	return (
 		<CheckboxContainer className={className}>
 			<HiddenCheckbox checked={checked} {...props} {...field} />
-			<StyledCheckbox checked={checked} onClick={(e)=>change(e)}>
+			<StyledCheckbox checked={checked} {...props} onClick={(e)=>change(e)}>
 				<Icon viewBox="0 0 24 24">
 					<polyline points="20 6 9 17 4 12" />
 				</Icon>

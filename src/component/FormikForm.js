@@ -53,6 +53,46 @@ const FormikForm = styled(Form)`
 
 	//New
 	width: 100%;
+
+	.select-container {
+		background-color: #F3F3F3;
+		border-radius: 2rem;
+		margin: 1rem 0;
+		padding: 0.8rem;
+	}
+
+	.custom-select {
+		background-image: url(/images/ico-arrow-down.svg);
+		background-repeat: no-repeat;
+		background-position: center right;
+		box-sizing: border-box;
+		border: none;
+		color: #777;
+		display: flex;
+		font-weight: normal;
+		height: 34px;
+		text-overflow: clip;
+		font-size: 1rem;
+		width: 100%;
+		-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
+
+		&:focus {
+			border: none;
+			outline: none;
+		}
+		
+		&::-ms-expand { 
+			display: none; /* remove default arrow in IE 10 and 11 */
+		}
+		
+		/* target Internet Explorer 9 to undo the custom arrow */
+		@media screen and (min-width:0\0) {
+			background:none\9;
+			padding: 5px\9;
+		}
+	}
 `
 
 const RBGroup = styled.div`
@@ -203,9 +243,16 @@ export const DropDown = ({
 	rightIcon,
 	err,
 	hidden,
+	change,
 	...props
 }) => {
-	return <select {...props}>{valueList.map(v => DD(v.value, v.name))}</select>
+	return 	(
+		<div className="select-container">
+			<select {...props} className="custom-select">
+				{valueList.map(v => DD(v.value, v.name))}
+			</select>
+		</div>
+	)
 }
 
 const DD = (value, name) => {

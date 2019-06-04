@@ -67,6 +67,7 @@ const genMenu = ({g, c, routes, isFrontMenu, isPrimaryMenu}) => {
 	}
 	if (isPrimaryMenu) {
 		menu.push(langSelector({c: c, changeEng: 'EN', changeChn: '中'}) )
+
 		if (!g.state.isLogined) {
 			menu.push(<FirstLevelContainer key='link-login'>
 				<FirstLevelLoginLink to={"/login"}>

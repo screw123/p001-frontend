@@ -5,15 +5,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faAlignJustify, faTimes } from "@fortawesome/free-solid-svg-icons"
 
 export const StickyDiv = styled.div`
-	position: sticky;
+	position: fixed;
 	top: 0;
 	margin: 0;
+	z-index: 99;
 	grid-row: start / navbar;
-	display: block;
 	@media (max-width: 1024px) {
 		height: 4rem;
 	}
-	z-index: 5;
+	width: 100%;
 `
 
 export const PrimaryMenuDiv = styled.div`

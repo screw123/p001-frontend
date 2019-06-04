@@ -42,7 +42,7 @@ export const Logo = styled(Link)`
 	width: 9rem;
 	grid-row: 1;
 	grid-column: 1;
-	background-image: url("/Logo_white.svg");
+	background-image: url("/images/Logo_white.svg");
 	background-size: 100% 100%;
 	@media (max-width: 1024px) {
 		height: 3rem;

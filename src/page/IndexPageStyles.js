@@ -25,7 +25,7 @@ export const TopSection = styled.div`
 const BannerImage = styled.div`
 	width: 100%;
 	height: 100%;
-	background: url('wisekeep.svg') no-repeat;
+	background: url('/images/wisekeep.svg') no-repeat;
 	background-size: contain;
 	background-position: right bottom;
 `
@@ -203,7 +203,7 @@ export const PlanSection = styled.div`
 export const PlanImage = styled.div`
 	flex-basis: 30%;
 	min-height: 50rem;
-	background: url('img-wisekeep-box.png');
+	background: url('/images/img-wisekeep-box.png');
 	background-size: cover;
 	@media (max-width: 1250px) {
 		flex-basis: 25%;

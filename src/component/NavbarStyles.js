@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faAlignJustify, faTimes } from "@fortawesome/free-solid-svg-icons"
 
 export const StickyDiv = styled.div`
-	position: fixed;
+	position: sticky;
 	top: 0;
 	margin: 0;
 	z-index: 99;

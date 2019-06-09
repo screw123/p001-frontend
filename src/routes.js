@@ -1,7 +1,6 @@
 import IndexPage from "./page/IndexPage.js"
 import FeaturesPage from "./page/FeaturesPage.js"
 import PricingPage from "./page/PricingPage.js"
-import PlanPage from "./page/PlanPage.js"
 import OurClientsPage from "./page/OurClientsPage.js"
 import LoginPage from "./page/LoginPage.js"
 
@@ -412,22 +411,7 @@ const routes = [
 		router: {
 			requireLogin: true
 		}
-	},
-	{
-		path: '/plan',
-		exact: true,
-		menuName: 'Plan',
-		component: PlanPage,
-		navbar: {
-			itemId: '',
-			firstLevel: true,
-			showBeforeLogin: true,
-			showAfterLogin: false
-		},
-		router: {
-			requireLogin: false
-		}
-	},
+	}
 ]
 
 export default routes

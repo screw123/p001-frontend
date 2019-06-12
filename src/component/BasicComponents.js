@@ -175,10 +175,9 @@ export const HeaderCards = styled(Text)`
     padding-bottom: 2%;
 `
 
-
 //Buttons
 export const Button = styled.button`
-	cursor: pointer !important;
+	cursor: pointer;
 	border: none;
 	font-size: 1.25rem;
 	font-weight: 600;
@@ -188,6 +187,7 @@ export const Button = styled.button`
 	min-width: 10rem;
 	background: ${props => (!props.disabled ? 'rgba(128, 128, 128, 0.2)' : '#E61D6E')};
 	color: ${props => (!props.disabled ? '#888' : ' white')};
+	${({z})=> z? 'z-index:'+z : ''};
 `
 
 export const CTAButton = styled(Button)`
@@ -344,7 +344,7 @@ const HeaderIconRight = styled.div`
 `
 
 const SectionContent = styled.div`
-	display: flex;
+	display: ${({display='flex'})=>display};
 `
 
 export const Section = props => {
@@ -356,7 +356,7 @@ export const Section = props => {
 					<HeaderText {...props}>{props.headerText}</HeaderText>
 					<HeaderIconRight {...props}>{props.headerIconRight}</HeaderIconRight>
 				</SectionHeader>
-				<SectionContent>{props.children}</SectionContent>
+				<SectionContent {...props}>{props.children}</SectionContent>
 			</Div2>
 		</SectionDiv>
 	)

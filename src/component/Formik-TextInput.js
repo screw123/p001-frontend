@@ -35,9 +35,9 @@ const Remark = styled(ErrorLabel)`
 
 
 export const TextField = ({
-	field: { name, placeholder, ...fields }, // { name, value, onChange, onBlur }
-	form: { touched }, //also values, handleXXXX, dirty, isValid, status, etc.
-	label,
+	field: { name, placeholder='', ...fields }, // { name, value, onChange, onBlur }
+	form: { touched } = {touched: {}}, //also values, handleXXXX, dirty, isValid, status, etc.
+	label = '',
 	remark,
 	rightIcon,
 	err,

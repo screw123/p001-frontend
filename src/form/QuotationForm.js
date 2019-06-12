@@ -1,405 +1,608 @@
-import React from "react"
-import { getPriceListByAccount, getPriceListByCode, addQuotation } from '../gql/query.js'
+import union from "lodash/union"
+import React, { useState } from "react"
+import { Redirect } from "react-router-dom"
+import styled from "styled-components"
+import {
+	Background,
+	CTAButton,
+	Header3,
+	HeaderWithBar,
+	Text,
+	ClickableText,
+	Section
+} from "../component/BasicComponents.js"
+import {TextField} from '../component/FormikForm.js'
+import { MultiSelect } from "../component/FormikForm.js"
+import PowerModal from "../component/PowerModal"
+import CheckBox from "../component/SimpleCheckBox.js"
+import Wizard from "../component/Wizard"
+import WizardStep from "../component/WizardStep"
+import ConfirmOrderForm from "../form/ConfirmOrderForm"
+import OrderBoxForm from "../form/OrderBoxForm"
 
-import { Formik, Field, FieldArray } from 'formik'
-import FormikForm, { TextField, FormButton, FormErr, FieldRow } from '../component/FormikForm.js'
+import { CardsTwoRow, CardTwo } from "../page/IndexPageStyles.js"
 
-import { ApolloProvider, Query, Mutation } from "react-apollo"
-import {BigLoadingScreen} from '../component/Loading.js'
+const BigIcon = styled.div`
+	align-self: center;
+	min-width: 8rem;
+	min-height: 8rem;
+	padding: 1rem 2rem;
 
-import parseApolloErr from '../util/parseErr.js'
+	img {
+		display: block;
+		margin: 0 auto 1.5rem;
+	}
 
-import merge from 'lodash/merge'
-import omit from 'lodash/omit'
-import isEmpty from 'lodash/isEmpty'
-import pickBy from 'lodash/pickBy'
+	@media (min-width: 1101px) {
+		background-color: white;
+		border-radius: 1rem;
+		box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.5);
+	}
+`
 
-/*
-Prop list:
-account_id
-g = this.props.login
-c = this.props.i18n
-onAddQuotationSuccess = function after quote is created, return quotation object
-*/
+const CardBox = styled(CardTwo)`
+	min-width: 20.8rem;
+	max-width: 20.8rem;
+`
 
+const CardBoxImage = styled(BigIcon)`
+	min-width: 100%;
+	padding: 1.5rem 2rem;
 
-class Quotation extends React.Component {
-    constructor(props) {
-        super(props)
-        this.transformPriceList = this.transformPriceList.bind(this)
-        this.genQuotationFromPriceList = this.genQuotationFromPriceList.bind(this)
-        this.genPricingGrid = this.genPricingGrid.bind(this)
-        this.getPrice = this.getPrice.bind(this)
-        this.updateValues = this.updateValues.bind(this)
-        this.calcTotalAmt = this.calcTotalAmt.bind(this)
-        this.updateCouponCode = this.updateCouponCode.bind(this)
-        this.removeCouponCode = this.removeCouponCode.bind(this)
-        this.getCouponPriceList = this.getCouponPriceList.bind(this)
-        this.checkAccountChange = this.checkAccountChange.bind(this)
-        this.state = {
-            containerInitValue: {},
-            couponPriceList: {},
-            couponCode: '',
-            couponCodeEntry: '',
-            couponErr: undefined,
-            couponLoading: false,
-            currentAcct_id: this.props.account_id
-        }
-    }
-    
-    updateCouponCodeEntry = (e) => this.setState({couponCodeEntry: e.target.value.toUpperCase()})
-    updateCouponCode = () => this.setState({couponCode: this.state.couponCodeEntry})
-    removeCouponCode = () => this.setState({couponCode: ''})
+	img {
+		height: 175px;
+		margin-bottom: 1rem;
+	}
+`
 
-    checkAccountChange = () => {
-        if (this.state.currentAcct_id !== this.props.account_id) {
-            this.setState({currentAcct_id: this.props.account_id, couponCode: '', couponCodeEntry: ''})
-        }
-    }
+const PromoContainer = styled.div`
+	margin: 2rem 0;
+	padding-left: 1.5rem;
+	padding-right: 1.5rem;
+	p {
+		color: #787f84;
+		font-size: 1rem;
+		font-weight: bold;
+		line-height: 23px;
+	}
+`
 
-    getCouponPriceList = async (gqlClient, t) => {
-        this.setState({couponLoading: true})
-        try {
-            const d = await gqlClient.query({
-                query: getPriceListByCode,
-                variables: {account_id: this.props.account_id || '', code: this.state.couponCodeEntry}
-            })
-            const fullPriceList = this.transformPriceList(d.data)
-            this.setState({couponPriceList: fullPriceList, couponLoading: false, couponCode: this.state.couponCodeEntry, couponErr: undefined})
-        }
-        catch(e) {
-            const errStack = parseApolloErr(e, t)
-            for(let i=0;i<errStack.length;i++) {
-                if (errStack[i].type==='NOT_FOUND') {
-                    this.setState({couponErr: t('Coupon Code is invalid or expired'), couponLoading: false, couponCode: '', couponPriceList:{} })
-                }
-            }
-        }
-    }
+const PromoInput = styled.input`
+	background-color: #f4f4f4;
+	border: none;
+	border-radius: 28.5px;
+	font-size: 1rem;
+	height: 57px;
+	padding: 0 2rem;
+	width: 100%;
 
-    transformPriceList = (d) => { //to transform a single priceList
-        let p = d.getPriceListByAccount
-        if (p===undefined) { p = d.getPriceListByCode }
-        const result = {}
-        for(let i = 0; i<p.length;i++){
-            const itemCode = p[i].SKU_id.shortCode
-            const rentMode = p[i].rentMode
-            const duration = p[i].duration
-            let pricing = {}
-            pricing[itemCode] = merge({}, p[i].SKU_id)
-            pricing[itemCode]['mode'] = {}
-            pricing[itemCode]['mode'][rentMode] = {}
-            pricing[itemCode]['mode'][rentMode][duration] = omit(p[i], ['__typename', 'SKU_id', 'code', 'rentMode', 'duration'])
-            merge(result, pricing)
-        }
-        return result
-    }
-    
-    /*transformPriceListMulti = (p) => { //to transform a multiple priceList
-        console.log(p)
-        const result = {}
-        for(let i = 0; i<p.length;i++){
-            const priceList = p[i].code
-            const itemCode = p[i].SKU_id.shortCode
-            const rentMode = p[i].rentMode
-            const duration = p[i].duration
-            let pricing = {}
-            pricing[priceList] = {}
-            pricing[priceList][itemCode] = merge({}, p[i].SKU_id)
-            pricing[priceList][itemCode]['mode'] = {}
-            pricing[priceList][itemCode]['mode'][rentMode] = {}
-            pricing[priceList][itemCode]['mode'][rentMode][duration] = omit(p[i], ['__typename', 'SKU_id', 'code', 'rentMode', 'duration'])
-            merge(result, pricing)
-        }
-        return result
-    }*/
-    
-    genQuotationFromPriceList = (p, t) => { //p = priceList, t=translation object
-        const SKUList = Object.keys(p)
-        let SKUUIComponents = []
-        let initialValue = {}
-        
-        for (let i=0; i<SKUList.length; i++) {
-            const SKUObject = p[SKUList[i]] //SKUObject = {rentMode: {duration: rent}}
-            const rentModeList = Object.keys(SKUObject.mode)
-            let coms = []
-            for (let j=0; j<rentModeList.length; j++) {
-                
-                const {com, initValue} = this.genPricingGrid(SKUObject.mode[rentModeList[j]], t, rentModeList[j])
-                coms.push(com)
-                if (initialValue[SKUList[i]]===undefined) { initialValue[SKUList[i]] = {} } 
-                initialValue[SKUList[i]][rentModeList[j]] = initValue
-            }
-            SKUUIComponents.push(
-                <div key={SKUObject._id}>
-                    <h2>{t(SKUObject.name)}</h2>
-                    <img src={SKUObject.smallPicURL} alt={SKUObject.name}/>
-                    <div>{t(SKUObject.longDesc)}</div>
-                    {coms}
-                </div>
-            )
-            
-        }
-        return {coms: SKUUIComponents, initialValue: initialValue}
-    }
+	&:focus {
+		border: none;
+		box-shadow: none;
+		outline: none;
+	}
+`
 
-    genPricingGrid = (mode, t, rentMode) => {
-        //mode = {duration: {rent}}, t = translation function, rentMode = rentMode name ('MONTH', 'DAY', 'YEAR')
-        const modeList = Object.keys(mode)
-        let pricingGrid = []
-        let initValue = {}
-        
-        //get previous Quotation as long as it exists and matches current account id
-        let prevQuotation = undefined
-        if (typeof(Storage) !== "undefined") {
-            if (window.localStorage.Quotation!==undefined) {
-                prevQuotation = JSON.parse(window.localStorage.Quotation)
-                if ((prevQuotation.account_id._id===this.props.account_id)||(prevQuotation.account_id._id===null)) {}
-                else { prevQuotation=undefined }
-            }
-            
-        }
-        
-        
-        for (let i=0; i<modeList.length; i++) {
-            const m = mode[modeList[i]]
-            
-            //if prev Quotation exist + priceList_id matches, get the qty, else =0
-            if (prevQuotation!==undefined) { 
-                const v = prevQuotation.quotationDetails.find(v => m._id === v.priceList_id._id)
-                if (v) { initValue[modeList[i]] = v.qty }
-                else { initValue[modeList[i]] = 0}
-            }
-            else { initValue[modeList[i]] = 0 }
-            
-            pricingGrid.push(
-                <div key={m._id}>
-                    <h3>{modeList[i] + ' ' + t(rentMode)}</h3>
-                    <div><b>{t('Rent')}:</b>{m.rent}</div>
-                    <div>{t('Shipping you the empty box')}: {this.getPrice(m.ship_first_base, t)}({t('Basic')})/{this.getPrice(m.ship_first_perPiece, t)}({t('Per Piece')})</div>
-                    <div>{t('You send the box for archive')}: {this.getPrice(m.ship_in_base, t)}({t('Basic')})/{this.getPrice(m.ship_in_perPiece, t)}({t('Per Piece')})</div>
-                    <div>{t('Request box delivery')}: {this.getPrice(m.ship_out_base, t)}({t('Basic')})/{this.getPrice(m.ship_out_perPiece, t)}({t('Per Piece')})</div>
-                    <div>{t('Termination of service')}: {this.getPrice(m.ship_last_base, t)}({t('Basic')})/{this.getPrice(m.ship_last_perPiece, t)}({t('Per Piece')})</div>
-                </div>
-            )
-        }
-        return {com: pricingGrid, initValue: initValue}
-    }
+const CostContainer = styled.div`
+	border-top: 2px solid #e61d6e;
+	border-bottom: 2px solid #e61d6e;
+	padding-left: 1.5rem;
+	padding-right: 1.5rem;
 
-    getPrice = (p, t) => {
-        if (p===0) return t('FREE')
-        else return p
-    }
-    
-    updateValues = (priceList, values, fieldName, fieldValue, setFieldValue) => { //setFieldValue for container type and totalAmt
-        let totalAmt = 0
-        const qty = values.containers
-        setFieldValue(fieldName, fieldValue) //setFieldValue for container type first
-        
-        //Calculate total amt below
-        totalAmt = this.calcTotalAmt(qty, fieldName, fieldValue, priceList)
-        setFieldValue('totalAmt', totalAmt)
-    }
-    
-    calcTotalAmt = (qty, fieldName, fieldValue, priceList) => {
-        //qty=value.containers
-        //fieldName = fieldName from Formik.  If calc out of Formik, just give ''
-        //If calc out of Formik, just give 0
-        
-        let totalAmt = 0
-        const containerType = Object.keys(qty)
-        for (let i=0; i<containerType.length; i++) {
-            let rentMode = Object.keys(qty[containerType[i]])
-            for (let j=0; j<rentMode.length; j++) {
-                let duration = Object.keys(qty[containerType[i]][rentMode[j]])
-                for (let k=0; k<duration.length; k++) {
-                    
-                    //fieldName, by default, is 'containers.'+containerType[i]+'.'+rentMode[j] + '.'+duration[k]
-                    //because setFieldValue is async, we cannot use the values.containers in Formik immediately after setFieldValue
-                    //therefore we go around this, by compare fieldName vs path,
-                    //where path is how we are traversing the values.containers object structure
-                    
-                    const path = 'containers.'+containerType[i]+'.'+rentMode[j] + '.'+duration[k]
-                    let typeQty = qty[containerType[i]][rentMode[j]][duration[k]]
-    
-                    if (path===fieldName) { typeQty = fieldValue }
-                    
-                    if (typeQty>0) {
-                        totalAmt = totalAmt + (priceList[containerType[i]]['mode'][rentMode[j]][duration[k]].rent * typeQty)
-                    }
-                }
-            }
-        }
-        return totalAmt
-    }
-    
-    render(){ 
-        const g = this.props.login
-        const c = this.props.i18n
-        const gqlClient = (g.state.isLogined)? g.getGqlClient() : g.getGqlClientPublic()
-        this.checkAccountChange()
+	div {
+		align-items: center;
+		display: flex;
+		justify-content: space-between;
+		padding: 1rem 0;
+	}
 
-        return (
-            <ApolloProvider client={gqlClient}>
-                <Query query={getPriceListByAccount} variables={{account_id: this.props.account_id}}>
-                {({ loading: queryLoading, error: queryErr, data, refetch }) => {
-                    if (queryLoading || this.state.couponLoading) return( <BigLoadingScreen text={'Getting your best price...'}/> )
+	h3 {
+		color: #787f84;
+		margin: 0;
+	}
+`
 
-                    if (queryErr) {
-                        return (<p>Error :(</p>)
-                    }
-                    //Full price list converts what DB sends back into {priceList: {box: {rentMode: }}}
-                    //if couponCode is not available, use result from getPriceListByAcct
-                    //if couponCode is entered and accepted, coupon price list will be stored in state.  use price list in state
+const Cost = styled.h3`
+	color: #e61d6e !important;
+	font-size: 1.5rem;
+	font-weight: bold;
+`
 
-                    //Fixme change later that, if couponCode is accepted, do not load price list from server, use coupon pricelist directly
+const ControlContainer = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+`
 
-                    const fullPriceList = (this.state.couponCode==='') ? this.transformPriceList(data) : this.state.couponPriceList
-                    
-                    //coms is the list of components.  InitialValue is the structure for Formik
-                    const {coms, initialValue} = this.genQuotationFromPriceList(fullPriceList, c.t)
+const ControlButton = styled.button`
+	background: none;
+	border: none;
+	height: 42px;
 
-                    return(<div>
-                        {coms}
-                        <Mutation mutation={addQuotation} errorPolicy="all">
-                        {(mutate, {loading: mutateLoading, err: mutateErr})=>(
-                            <Formik
-                                enableReinitialize={true}
-                                initialValues={{
-                                    containers: initialValue,
-                                    totalAmt: 0
-                                }}
-                                validate={ (values)=>{
-                                    //need to charge minimum
-                                    return {}
-                                }}
-                                onSubmit={async (values, actions) => {
-                                    let quotation_lines = []
-                                    const containerType = Object.keys(values.containers)
-                                        
-                                    for (let i=0; i<containerType.length; i++) {
-                                    
-                                        //rentMode = 'DAY', 'MONTH', 'YEAR', ...
-                                        let rentMode = Object.keys(values.containers[containerType[i]])
-                                        
-                                        for (let j=0; j<rentMode.length; j++) {
-                                        
-                                            let duration = Object.keys(values.containers[containerType[i]][rentMode[j]])
-                                            
-                                            for (let k=0; k<duration.length; k++) {
-                                                if (values.containers[containerType[i]][rentMode[j]][duration[k]]>0) {
-                                                    quotation_lines.push({
-                                                        priceList_id: fullPriceList[containerType[i]]['mode'][rentMode[j]][duration[k]]._id,
-                                                        qty: values.containers[containerType[i]][rentMode[j]][duration[k]],
-                                                        remarks: ''
-                                                    })
-                                                }
-                                            }
-                                        }
-                                    }
-                                    console.log(quotation_lines)
-                                    try {
-                                        const d = await mutate({variables: {
-                                            account_id: this.props.account_id,
-                                            quotationLines: quotation_lines,
-                                            couponCode: (this.state.couponCode==='') ? undefined: this.state.couponCode
-                                        }})
-                                        if (this.props.onAddQuotationSuccess) { this.props.onAddQuotationSuccess(d.data.addQuotation)}
-                                    }
-                                    catch(e) { console.log(e) }
-                                    actions.setSubmitting(false)
-                                }}
-                            >
-                            {({ errors, isSubmitting, setFieldValue, dirty, touched, values, status }) => (
-                                <FormikForm>
-                                    <FieldArray name="orders" render={(arrayHelper)=> {
-                                        let r = []
-                                        
-                                        //containerType = 'STANDARD', 'HIGH VALUE', ...
-                                        const containerType = Object.keys(values.containers)
-                                        
-                                        for (let i=0; i<containerType.length; i++) {
-                                        
-                                            //rentMode = 'DAY', 'MONTH', 'YEAR', ...
-                                            let rentMode = Object.keys(values.containers[containerType[i]])
-                                            
-                                            for (let j=0; j<rentMode.length; j++) {
-                                            
-                                                let duration = Object.keys(values.containers[containerType[i]][rentMode[j]])
-                                                
-                                                for (let k=0; k<duration.length; k++) {
-                                                    
-                                                
-                                                    r.push(<Field
-                                                        name={'containers.' + containerType[i] + '.' + rentMode[j] + '.' + duration[k]}
-                                                        component={TextField}
-                                                        label={c.t(containerType[i]) + ', ' + duration[k] + ' ' + c.t(rentMode[j])}
-                                                        value={values.containers[containerType[i]][rentMode[j]][duration[k]]}
-                                                        key={containerType[i]+'.'+rentMode[j]+'.'+duration[k]}
-                                                        onChange={(e)=> {
-                                                            //if (+e.target.value!== +e.target.value) {//not a value
-                                                            if (!isNaN(parseInt(e.target.value|0, 10))) { this.updateValues(fullPriceList, values, e.target.name, Math.abs(parseInt(e.target.value|0, 10)), setFieldValue) }
-                                                        }}
-                                                    />)
-                                                }
-                                            }
-                                            
-                                        }
-                                        return r
-                                    }}
-                                    />
-                                    <p>Total amount: {values.totalAmt}</p>
-                                    <FormErr>{status}</FormErr>
-                                    <FieldRow>
-                                        <FormButton
-                                            type="submit"
-                                            disabled={isSubmitting || !isEmpty(pickBy(errors)) || (values.totalAmt <= 0) }
-                                        >
-                                            { c.t('Submit')}
-                                        </FormButton>
-                                        
-                                    </FieldRow>
-                                    
-                                </FormikForm>
-                            )}
-                            </Formik>
-                        )}
-                        </Mutation>
-                        <TextField 
-                            field={{
-                                name: 'couponCodeEntry',
-                                placeholder: 'Please enter coupon code...',
-                                value: this.state.couponCodeEntry
-                                }}
-                            form={{}} 
-                            ignoreTouch={true}
-                            label='Coupon Code'
-                            onChange={this.updateCouponCodeEntry}
-                            err={this.state.couponErr}
-                        />
-                        <FormButton onClick={()=>this.getCouponPriceList(gqlClient, c.t)}>{ c.t('Update')}</FormButton>
+	&:focus {
+		border: none;
+		outline: none;
+	}
+`
 
-                    </div>)
-                }}</Query>
-            </ApolloProvider>
-    )}
-                
-}
+const ControlButtonImage = styled.img`
+	height: 42px !important;
+	width: 42px;
+`
 
-export const OrderField = ({
-    field: { name, placeholder, ...fields }, // { name, value, onChange, onBlur }
-    form: { touched }, //also values, handleXXXX, dirty, isValid, status, etc.
-    classNames, label, rightIcon, err, hidden, DescCom, ...props }) => { return (
-        
-        <div>
-            <DescCom />
-            <input {...fields} {...props} name={name} />
-        </div>
-        
-        
-)}
+const GridContainer = styled.div`
+	padding-top: 2rem;
 
+	@media screen and (min-width: 768px) {
+		display: flex;
+		justify-content: space-between;
+	}
 
+	@media screen and (min-width: 1024px) {
+		margin: 0 auto;
+		width: 75%;
+	}
+`
 
+const GridColumn = styled.div`
+	width: 100%;
+	margin: ${props => (props.margin ? props.margin : "0")};
+	@media screen and (min-width: 768px) {
+		width: calc(50% - 0.8rem);
+	}
+`
 
-export default Quotation
+const OrderCard = styled(BigIcon)`
+	box-shadow: ${props =>
+		props.shadow ? props.shadow : "0 0 1rem rgba(0, 0, 0, 0.5);"};
+	border: ${props => (props.Border ? props.Border : "none;")};
+	@media screen and (min-width: 768px) {
+		margin: 0 auto;
+		max-width: 359px;
+	}
+`
+
+const OrderCardRow = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin: ${props => (props.margin ? props.margin : "0 0 1rem")};
+
+	&.divider {
+		border-bottom: 1px solid #979797;
+		padding-bottom: 1.5rem;
+	}
+
+	small {
+		font-size: 16px;
+	}
+
+	small.disclaimer {
+		font-size: 0.7rem;
+	}
+`
+
+const EditCard = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	img {
+		height: 21px;
+		margin: -2px 0 0 10px;
+		width: 20px;
+	}
+`
+
+export const WizardStep1 = ({ c, currentStep }) => (
+	<WizardStep currentStep={currentStep} step={1}>
+		<CardsTwoRow>
+			<CardTwo>
+				<BigIcon>
+					<img src="images/ico-calendarDay.svg" alt="" />
+					<Text align="center" fontWeight="600">
+						{c.t("Daily")}
+					</Text>
+				</BigIcon>
+			</CardTwo>
+
+			<CardTwo>
+				<BigIcon>
+					<img src="images/ico-calendarMonth.svg" alt="" />
+					<Text align="center" fontWeight="600">
+						{c.t("Monthly")}
+					</Text>
+				</BigIcon>
+			</CardTwo>
+
+			<CardTwo>
+				<BigIcon>
+					<img src="images/ico-calendarYear.svg" alt="" />
+					<Text align="center" fontWeight="600">
+						{c.t("Yearly")}
+					</Text>
+				</BigIcon>
+			</CardTwo>
+		</CardsTwoRow>
+		<Section display='block'>
+			<Text color='#787f84'>{c.t('Do you have a promo code')}</Text>
+			<TextField
+				field={{
+					placeholder: c.t('Promo Code'),
+					//value: {this.state.form.promoCode}
+					name: "promoCode",
+					onChange: e => this.handleInputChange(e)
+				}}
+			/>
+		</Section>
+		
+	</WizardStep>
+)
+
+export const WizardStep2_original = ({ c, currentStep }) => (
+	<WizardStep currentStep={currentStep} step={2}>
+		<Text color="#787F84" align="center" width="100%">
+			{c.t("Select a Service")}
+		</Text>
+		<CardsTwoRow margin="0">
+			<CardBox>
+				<CardBoxImage>
+					<img src="images/ico-box.svg" alt="" />
+					<Text color="#787F84" align="center">
+						{c.t(
+							"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut pretium pretium tempor."
+						)}
+					</Text>
+					<Text size="1.2rem" align="center">
+						{c.t("BY BOX")}
+					</Text>
+				</CardBoxImage>
+			</CardBox>
+		</CardsTwoRow>
+	</WizardStep>
+)
+
+const ProductQtyControl = props => (
+	<ControlContainer>
+		<ControlButton onClick={props.clickSubs}>
+			<ControlButtonImage src="images/ico-subs.svg" alt="" />
+		</ControlButton>
+		<Text color="#E61D6E" size="2rem">
+			{props.total}
+		</Text>
+		<ControlButton onClick={props.clickAdd}>
+			<ControlButtonImage src="images/ico-add.svg" alt="" />
+		</ControlButton>
+	</ControlContainer>
+)
+
+export const WizardStep2 = ({ c, currentStep }) => (
+	<WizardStep currentStep={currentStep} step={2}>
+		<Text color="#787F84" align="center" width="100%">
+			{c.t("Select a Product")}
+		</Text>
+		<CardsTwoRow margin="0">
+			<CardBox>
+				<CardBoxImage>
+					<img src="images/ico-box.svg" alt="" />
+					<p>Document Box</p>
+					<Text color="#787F84" align="center">
+						{c.t("$0 box/month")}
+					</Text>
+					<ClickableText
+						color="#E61D6E"
+						align="center"
+						display="block"
+					>
+						{c.t("View details")}
+					</ClickableText>
+					<ProductQtyControl
+						//total={this.state.products.documentBox}
+						clickAdd={() =>
+							this.addControlFnc("add", "documentBox")
+						}
+						clickSubs={() =>
+							this.addControlFnc("subs", "documentBox")
+						}
+					/>
+				</CardBoxImage>
+			</CardBox>
+
+			<CardBox>
+				<CardBoxImage>
+					<img src="images/ico-box.svg" alt="" />
+					<p>Document Box</p>
+					<Text color="#787F84" align="center">
+						{c.t("$0 box/month")}
+					</Text>
+					<ClickableText
+						color="#E61D6E"
+						align="center"
+						display="block"
+					>
+						{c.t("View details")}
+					</ClickableText>
+					<ProductQtyControl
+						//total={this.state.products.documentBoxSecond}
+						clickAdd={() =>
+							this.addControlFnc("add", "documentBoxSecond")
+						}
+						clickSubs={() =>
+							this.addControlFnc("subs", "documentBoxSecond")
+						}
+					/>
+				</CardBoxImage>
+			</CardBox>
+
+			<CardBox>
+				<CardBoxImage>
+					<img src="images/ico-box.svg" alt="" />
+					<p>Document Box</p>
+					<Text color="#787F84" align="center">
+						{c.t("$0 box/month")}
+					</Text>
+					<ClickableText
+						color="#E61D6E"
+						align="center"
+						display="block"
+					>
+						{c.t("View details")}
+					</ClickableText>
+					<ProductQtyControl
+						//total={this.state.products.documentBox3}
+						clickAdd={() =>
+							this.addControlFnc("add", "documentBox3")
+						}
+						clickSubs={() =>
+							this.addControlFnc("subs", "documentBox3")
+						}
+					/>
+				</CardBoxImage>
+			</CardBox>
+		</CardsTwoRow>
+		
+		<CostContainer>
+			<div>
+				<h3>Monthly Cost Estimate</h3>
+
+				<Cost>$0</Cost>
+			</div>
+		</CostContainer>
+	</WizardStep>
+)
+
+export const WizardStep3 = ({ currentStep, c }) => (
+	<WizardStep currentStep={currentStep} step={3}>
+		<Text color="#787F84" align="center" width="100%">
+			{c.t("Select a Booking")}
+		</Text>
+		<GridContainer>
+			<GridColumn margin="0 0 2rem">
+				<OrderBoxForm c={c} />
+			</GridColumn>
+			<GridColumn>
+				<OrderCard>
+					<OrderCardRow margin="0 0 1.3rem">
+						<Text color="#787F84" align="left" fontWeight="bold">
+							<small>{c.t("Your Order")}</small>
+						</Text>
+						<EditCard>
+							<Text color="#787F84" align="left">
+								<small>{c.t("Edit")}</small>
+							</Text>
+							<img src="images/ico-edit.svg" alt="" />
+						</EditCard>
+					</OrderCardRow>
+
+					<OrderCardRow>
+						<Text color="#787F84" align="left" fontWeight="bold">
+							<small>{c.t("1 x Document Box")}</small>
+						</Text>
+						<Text color="#E61D6E" align="left" fontWeight="bold">
+							<small>{c.t("$0")}</small>
+						</Text>
+					</OrderCardRow>
+
+					<OrderCardRow className="divider">
+						<Text color="#787F84" align="left">
+							<small>
+								{c.t(
+									"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate"
+								)}
+							</small>
+						</Text>
+					</OrderCardRow>
+
+					<OrderCardRow>
+						<Text color="#787F84" align="left">
+							<small className="disclaimer">
+								{c.t("Lorem Ipsum dolor sit amet, consectetur")}
+							</small>
+						</Text>
+						<Text color="#E61D6E" align="left" fontWeight="bold">
+							<small>{c.t("$0")}</small>
+						</Text>
+					</OrderCardRow>
+				</OrderCard>
+			</GridColumn>
+		</GridContainer>
+	</WizardStep>
+)
+
+export const WizardStep4 = ({ currentStep, c }) => (
+	<WizardStep currentStep={currentStep} step={4}>
+		<Text color="#787F84" align="center" width="100%">
+			{c.t("Secure Payment")}
+
+			<GridContainer>
+				<GridColumn margin="0 0 2rem">
+					<ConfirmOrderForm c={c} />
+				</GridColumn>
+				<GridColumn margin="0 0 1rem">
+					<OrderCard>
+						<OrderCardRow margin="0 0 1.3rem">
+							<Text
+								color="#787F84"
+								align="left"
+								fontWeight="bold"
+							>
+								<small>{c.t("Your Order")}</small>
+							</Text>
+							<EditCard>
+								<Text color="#787F84" align="left">
+									<small>{c.t("Edit")}</small>
+								</Text>
+								<img src="images/ico-edit.svg" alt="" />
+							</EditCard>
+						</OrderCardRow>
+
+						<OrderCardRow>
+							<Text
+								color="#787F84"
+								align="left"
+								fontWeight="bold"
+							>
+								<small>{c.t("1 x Document Box")}</small>
+							</Text>
+							<Text
+								color="#E61D6E"
+								align="left"
+								fontWeight="bold"
+							>
+								<small>{c.t("$0")}</small>
+							</Text>
+						</OrderCardRow>
+
+						<OrderCardRow className="divider">
+							<Text color="#787F84" align="left">
+								<small>
+									{c.t(
+										"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate"
+									)}
+								</small>
+							</Text>
+						</OrderCardRow>
+
+						<OrderCardRow>
+							<Text color="#787F84" align="left">
+								<small className="disclaimer">
+									{c.t(
+										"Lorem Ipsum dolor sit amet, consectetur"
+									)}
+								</small>
+							</Text>
+							<Text
+								color="#E61D6E"
+								align="left"
+								fontWeight="bold"
+							>
+								<small>{c.t("$0")}</small>
+							</Text>
+						</OrderCardRow>
+					</OrderCard>
+				</GridColumn>
+			</GridContainer>
+
+			<GridContainer>
+				<GridColumn margin="0 1%">
+					<OrderCard Border="1px solid #DFDFDF" shadow="none">
+						<OrderCardRow margin="0 0 1.3rem" className="divider">
+							<Text
+								color="#787F84"
+								align="left"
+								fontWeight="bold"
+							>
+								<small>{c.t("Appointment Address")}</small>
+							</Text>
+							<EditCard>
+								<Text color="#787F84" align="left">
+									<small>{c.t("Edit")}</small>
+								</Text>
+								<img src="images/ico-edit.svg" alt="" />
+							</EditCard>
+						</OrderCardRow>
+						<OrderCardRow margin="0">
+							<Text color="#787F84" align="left">
+								<small>
+									{c.t(
+										"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vulputate"
+									)}
+								</small>
+							</Text>
+						</OrderCardRow>
+						<OrderCardRow margin="0">
+							<Text fontWeight="600" color="#787F84" align="left">
+								<small>
+									{c.t("Big Wave Bay, Hong Kong Island")}
+								</small>
+							</Text>
+						</OrderCardRow>
+						<OrderCardRow margin="0">
+							<Text size="0.8rem" color="#787F84" align="left">
+								{c.t("Big Wave Bay, Hong Kong Island")}
+							</Text>
+						</OrderCardRow>
+					</OrderCard>
+				</GridColumn>
+				<GridColumn margin="0 1%">
+					<OrderCard Border="1px solid #DFDFDF" shadow="none">
+						<OrderCardRow margin="0 0 1.3rem" className="divider">
+							<Text
+								color="#787F84"
+								align="left"
+								fontWeight="bold"
+							>
+								<small>{c.t("Drop-off of boxes")}</small>
+							</Text>
+							<EditCard>
+								<Text color="#787F84" align="left">
+									<small>{c.t("Edit")}</small>
+								</Text>
+								<img src="images/ico-edit.svg" alt="" />
+							</EditCard>
+						</OrderCardRow>
+						<OrderCardRow>
+							<Text color="#787F84" align="left">
+								<small>
+									{c.t("Friday, 8 March, 2019 18 00 - 21 00")}
+								</small>
+							</Text>
+						</OrderCardRow>
+					</OrderCard>
+				</GridColumn>
+				<GridColumn margin="0 1%">
+					<OrderCard Border="1px solid #DFDFDF" shadow="none">
+						<OrderCardRow margin="0 0 1.3rem" className="divider">
+							<Text
+								color="#787F84"
+								align="left"
+								fontWeight="bold"
+							>
+								<small>{c.t("Pick-up for storage")}</small>
+							</Text>
+							<EditCard>
+								<Text color="#787F84" align="left">
+									<small>{c.t("Edit")}</small>
+								</Text>
+								<img src="images/ico-edit.svg" alt="" />
+							</EditCard>
+						</OrderCardRow>
+						<OrderCardRow>
+							<Text color="#787F84" align="left">
+								<small>
+									{c.t("Friday, 8 March, 2019 18 00 - 21 00")}
+								</small>
+							</Text>
+						</OrderCardRow>
+					</OrderCard>
+				</GridColumn>
+			</GridContainer>
+		</Text>
+		<CheckBox
+			name="termsAndConditions"
+			//onChange={this.handleChange}
+			//isChecked={this.state.isChecked}
+			label="I agree with terms and conditions"
+		/>
+	</WizardStep>
+)

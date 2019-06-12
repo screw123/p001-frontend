@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import { I18n } from 'react-i18next'
+import styled from "styled-components";
 import * as Styles from './IndexPageStyles'
 import { Redirect } from 'react-router-dom'
 
@@ -12,12 +13,15 @@ import {
 	CTAButton
 } from '../component/BasicComponents.js'
 
+const CardTwo_Index = styled(Styles.CardTwo)`
+	width: 100%;
+`
+
 const IndexPage = (props) => {
 	const c = props.i18n
 
 	const [redirectPath, setRedirectPath] = useState(undefined)
 	const [passOnState, setPassOnState] = useState(undefined)
-	const tawk = window.Tawk_API || {}
 
 	return (
 		<>
@@ -33,8 +37,7 @@ const IndexPage = (props) => {
 				<br />
 				{c.state.width > 768 && (
 					<ContrastedCTAButton z={1} onClick={
-						//()=>setRedirectPath('/login')}
-						()=>tawk.toggle()}
+						()=>setRedirectPath('/quotation')}
 					> {c.t('Start Now')}</ContrastedCTAButton>
 				)}
 				<Styles.Banner />
@@ -127,7 +130,7 @@ const IndexPage = (props) => {
 					</Text>
 
 					<Styles.CardsTwoRow>
-						<Styles.CardTwo>
+						<CardTwo_Index>
 							<Styles.CardTwoImage image='/images/ico-couch.svg'/>
 							<Styles.CardTwoContent>
 								<Styles.TextBig>{c.t('Feature1')}</Styles.TextBig>
@@ -135,9 +138,9 @@ const IndexPage = (props) => {
 									{c.t('Learn More')}
 								</ClickableText>
 							</Styles.CardTwoContent>
-						</Styles.CardTwo>
+						</CardTwo_Index>
 
-						<Styles.CardTwo>
+						<CardTwo_Index>
 							<Styles.CardTwoImage image='/images/ico-lock.svg' bgsize='60%' />
 							<Styles.CardTwoContent>
 								<Styles.TextBig>{c.t('Feature2')}</Styles.TextBig>
@@ -145,9 +148,9 @@ const IndexPage = (props) => {
 									{c.t('Learn More')}
 								</ClickableText>
 							</Styles.CardTwoContent>
-						</Styles.CardTwo>
+						</CardTwo_Index>
 
-						<Styles.CardTwo>
+						<CardTwo_Index>
 							<Styles.CardTwoImage image='/images/ico-temp.svg' bgsize='35%' />
 							<Styles.CardTwoContent>
 								<Styles.TextBig>{c.t('Feature3')}</Styles.TextBig>
@@ -155,7 +158,7 @@ const IndexPage = (props) => {
 									{c.t('Learn More')}
 								</ClickableText>
 							</Styles.CardTwoContent>
-						</Styles.CardTwo>
+						</CardTwo_Index>
 					</Styles.CardsTwoRow>
 				</Styles.Section>
 			</Background>

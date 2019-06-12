@@ -18,7 +18,7 @@ export const StickyDiv = styled.div`
 
 export const PrimaryMenuDiv = styled.div`
 	background: linear-gradient(180deg, #f43ea6 0%, #f5576c 100%);
-	${({mobileMenuExpand})=>mobileMenuExpand? 'height: 100vh;': ''}
+	${({ mobileMenuExpand }) => (mobileMenuExpand ? "height: 100vh;" : "")}
 	display: grid;
 	padding: 1rem 1rem 1rem 7rem;
 	grid-template-columns: 10rem auto;
@@ -29,10 +29,8 @@ export const PrimaryMenuDiv = styled.div`
 		grid-template-rows: 3rem auto;
 		grid-template-columns: 7.75rem auto;
 	}
-	${({mobileMenuExpand})=>mobileMenuExpand? 'overflow:auto': ''};
+	${({ mobileMenuExpand }) => (mobileMenuExpand ? "overflow:auto" : "")};
 `
-
-
 
 export const Logo = styled(Link)`
 	align-self: center;
@@ -64,7 +62,7 @@ export const DashMenuContainer = styled.div`
 	flex-flow: row wrap;
 	justify-content: center;
 	align-items: center;
-	background: #EEE;
+	background: #eee;
 `
 
 export const FirstLevelContainer = styled.div`
@@ -77,26 +75,28 @@ export const FirstLevelContainer = styled.div`
 	white-space: nowrap;
 `
 
-export const FirstLevelText = styled(({ displayText, key, color, ...props }) => (
-	<div>
-		<span key1={key} {...props}>
-			{displayText}
-		</span>
-		{props.children}
-	</div>
-))`
-	${({color})=>color? 'color:'+color : ''}
+export const FirstLevelText = styled(
+	({ displayText, key, color, ...props }) => (
+		<div>
+			<span key1={key} {...props}>
+				{displayText}
+			</span>
+			{props.children}
+		</div>
+	)
+)`
+	${({ color }) => (color ? "color:" + color : "")}
 	${props => (props.children ? '&:after { content: "▾";' : "")}
 `
 
-export const FirstLevelLink = styled(({children, color, ...props})=>(
+export const FirstLevelLink = styled(({ children, color, ...props }) => (
 	<Link {...props}>
 		{children}
 		<FirstLevelHover />
 	</Link>
 ))`
 	display: inline-block;
-	${({color})=>color? 'color:'+color : ''}
+	${({ color }) => (color ? "color:" + color : "")}
 `
 
 export const FirstLevelLoginLink = styled(Link)`
@@ -114,7 +114,7 @@ const FirstLevelHover = styled.div`
 	width: 0rem;
 	opacity: 0;
 	transition: opacity 0s, width 0.1s;
-	${FirstLevelLink}:hover & { 
+	${FirstLevelLink}:hover & {
 		opacity: 1;
 		width: 2.5rem;
 	}
@@ -141,7 +141,7 @@ export const RightSideIcon = styled(({ icon, haveMenu, ...props }) => (
 export const LangSelector = styled.span`
 	font-size: 1.2rem;
 	font-weight: 500;
-	padding: ${({padding})=>padding? padding : '0.3rem 1rem'};
+	padding: ${({ padding }) => (padding ? padding : "0.3rem 1rem")};
 	display: inline-block;
 	justify-self: center;
 	//align-self: center;
@@ -190,34 +190,32 @@ export const MobileMenuWrapper = styled.div`
 	justify-self: right;
 `
 
-export const MobileMenuButton = styled(({isMenuOpen,  ...props }) => <FontAwesomeIcon icon={isMenuOpen? faTimes: faAlignJustify} />)``
+export const MobileMenuButton = styled(({ isMenuOpen, ...props }) => (
+	<FontAwesomeIcon icon={isMenuOpen ? faTimes : faAlignJustify} />
+))``
 
 export const MobileMenu = styled.div`
 	grid-column: 1 / span 2;
 	margin: 2rem 0;
 	display: grid;
-	grid-template-rows: auto
-	
+	grid-template-rows: auto;
 `
 
 export const MobileMenuItem = styled.div`
-	font-size: ${({secondLevel})=>secondLevel? '1rem': '1.1rem'};
-	padding: 0.2rem ${({secondLevel})=>secondLevel? '1rem': '0'};
-	${({color})=>color? 'color:'+color : ''}
+	font-size: ${({ secondLevel }) => (secondLevel ? "1rem" : "1.1rem")};
+	padding: 0.2rem ${({ secondLevel }) => (secondLevel ? "1rem" : "0")};
+	${({ color }) => (color ? "color:" + color : "")}
 	font-weight: 500;
 	display: block;
 `
 
-export const MobileMenuLink = styled(({children, color, ...props})=>(
-	<Link {...props}>
-		{children}
-	</Link>
-
+export const MobileMenuLink = styled(({ children, color, ...props }) => (
+	<Link {...props}>{children}</Link>
 ))`
 display: block;
-	${({color})=>color? 'color:'+color : ''}
-	font-size: ${({secondLevel})=>secondLevel? '1rem': '1.2rem'};
-	padding: 0.2rem ${({secondLevel})=>secondLevel? '1rem': '0'};
+	${({ color }) => (color ? "color:" + color : "")}
+	font-size: ${({ secondLevel }) => (secondLevel ? "1rem" : "1.2rem")};
+	padding: 0.2rem ${({ secondLevel }) => (secondLevel ? "1rem" : "0")};
 `
 
 export const MobilePrimaryWrapper = styled.div`
@@ -235,7 +233,6 @@ export const MobileSecondaryWrapper = styled.div`
 	flex-flow: column wrap;
 	align-content: center;
 `
-
 
 /*
 export const MobileMenuBar = styled.div`

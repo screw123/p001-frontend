@@ -1,7 +1,7 @@
-import React from 'react'
-import styled from 'styled-components'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowRight, faStar } from '@fortawesome/free-solid-svg-icons'
+import React from "react"
+import styled from "styled-components"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faArrowRight, faStar } from "@fortawesome/free-solid-svg-icons"
 
 export const TopSection = styled.div`
 	position: relative;
@@ -25,7 +25,7 @@ export const TopSection = styled.div`
 const BannerImage = styled.div`
 	width: 100%;
 	height: 100%;
-	background: url('/images/wisekeep.svg') no-repeat;
+	background: url("/images/wisekeep.svg") no-repeat;
 	background-size: contain;
 	background-position: right bottom;
 `
@@ -45,16 +45,16 @@ export const Banner = () => (
 )
 
 export const Section = styled.div`
-	padding: ${props => (props.top ? '3rem  0' : '0 0 3rem')};
+	padding: ${props => (props.top ? "3rem  0" : "0 0 3rem")};
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	background: #f3f3f3;
 	@media (max-width: 1024px) {
-		padding: ${props => (props.top ? '2rem  0' : '0 0 2rem')};
+		padding: ${props => (props.top ? "2rem  0" : "0 0 2rem")};
 	}
 	@media (max-width: 768px) {
-		padding: ${props => (props.top ? '1rem  0' : '0 0 1rem')};
+		padding: ${props => (props.top ? "1rem  0" : "0 0 1rem")};
 	}
 `
 
@@ -99,7 +99,7 @@ export const Card = styled.div`
 export const CardImage = styled.div`
 	flex: 0 0 60%;
 	background: ${props => `url(${props.image}) no-repeat center`};
-	background-size: ${({bgsize='50%'})=>bgsize} auto;
+	background-size: ${({ bgsize = "50%" }) => bgsize} auto;
 	background-color: #f44d80;
 	border-bottom-left-radius: 50% 10%;
 	border-bottom-right-radius: 50% 10%;
@@ -136,15 +136,17 @@ export const RightIconWrapper = styled.div`
 	font-size: 1rem;
 	padding: 0.2rem 0.4rem;
 `
-export const RightIcon = styled(({ ...props }) => <FontAwesomeIcon icon={faArrowRight} />)``
+export const RightIcon = styled(({ ...props }) => (
+	<FontAwesomeIcon icon={faArrowRight} />
+))``
 
 //CardTwo
 export const CardsTwoRow = styled.div`
-	margin: 2rem 0;
+	margin: ${props => (props.margin ? props.margin : "2rem 0")};
 	width: 100%;
 	display: flex;
 	flex-flow: row wrap;
-	justify-content: center;
+	justify-content: space-around;
 	align-items: center;
 	@media (max-width: 768px) {
 		margin: 1rem 0;
@@ -155,7 +157,6 @@ export const CardsTwoRow = styled.div`
 export const CardTwo = styled.div`
 	display: flex;
 	margin: 1rem 0;
-	width: 100%;
 	max-width: 22rem;
 	@media (max-width: 768px) {
 		background-color: white;
@@ -171,7 +172,7 @@ export const CardTwoImage = styled.div`
 	width: 8rem;
 	height: 8rem;
 	background: ${props => `url(${props.image}) no-repeat center`};
-	background-size: ${({bgsize='80%'})=>bgsize} auto;
+	background-size: ${({ bgsize = "80%" }) => bgsize} auto;
 	@media (min-width: 1101px) {
 		background-color: white;
 		border-radius: 1rem;
@@ -181,7 +182,7 @@ export const CardTwoImage = styled.div`
 
 export const CardTwoContent = styled.div`
 	padding: 0rem 1rem;
-	display:flex;
+	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: flex-start;
@@ -203,7 +204,7 @@ export const PlanSection = styled.div`
 export const PlanImage = styled.div`
 	flex-basis: 30%;
 	min-height: 50rem;
-	background: url('/images/img-wisekeep-box.png');
+	background: url("/images/img-wisekeep-box.png");
 	background-size: cover;
 	@media (max-width: 1250px) {
 		flex-basis: 25%;
@@ -374,7 +375,9 @@ export const Stars = styled.div`
 	color: #ffda01;
 `
 
-export const StarIcon = styled(({ ...props }) => <FontAwesomeIcon icon={faStar} />)``
+export const StarIcon = styled(({ ...props }) => (
+	<FontAwesomeIcon icon={faStar} />
+))``
 
 export const CardFourContent = styled.div`
 	display: flex;
@@ -499,7 +502,7 @@ export const TextDirection = styled.div`
 	position: relative;
 	padding: 1rem 0;
 	&:before {
-		content: '';
+		content: "";
 		position: absolute;
 		left: 0;
 		bottom: 0;

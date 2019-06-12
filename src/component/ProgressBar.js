@@ -15,7 +15,7 @@ const ProgressBar = styled.ul`
 `
 
 const ProgressStep = styled.li`
-    width: 20%;
+    width: ${props => 100/props.steps}%;
     float: left;
     font-size: 12px;
     position: relative;
@@ -70,14 +70,6 @@ const ProgressStep = styled.li`
     // }
 `
 
-const ButtonNext = styled.button`
-    position:relative;
-    cursor: pointer;
-    background-color: red;
-    z-index: 10000;
-`
-
-
 export default class Progress extends React.Component {
     constructor(props) {
         super(props);
@@ -93,7 +85,7 @@ export default class Progress extends React.Component {
 
             for (let index = 0; index < steps; index++) {
                 counter = index + 1;
-                stepsArray.push(<ProgressStep className={counter <= currentStep ? 'active' : ''} key={index}/>)
+                stepsArray.push(<ProgressStep steps={steps} className={counter <= currentStep ? 'active' : ''} key={index}/>)
             }
             return stepsArray;
         };

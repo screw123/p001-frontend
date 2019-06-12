@@ -200,5 +200,11 @@
   "Box Features": "Features",
   "Size": "Size",
   "Insured Value": "Insured Value",
-  "Temp and Humidity Control": "Temp. & Humidity Control"
+  "Temp and Humidity Control": "Temp. & Humidity Control",
+  "Do you have a promo code": "Please enter your promo code (if you have any)",
+  "Promo Code": "Promo Code",
+  "Daily": "Daily",
+  "Monthly": "Monthly",
+  "Yearly": "Yearly"
+
 }

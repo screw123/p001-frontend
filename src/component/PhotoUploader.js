@@ -14,9 +14,7 @@ export const PhotoUploader = ({containerUserInfo_id, onUploadSuccess, c})=> {
 
 	const [success, setSuccess] = useState(true)
 
-	if (!containerUserInfo_id) {
-		return <SystemError message="Error: Container Info ID not present" />
-	}
+	
 
 	const onDropAccepted = useCallback(async f=> {
 
@@ -73,6 +71,10 @@ export const PhotoUploader = ({containerUserInfo_id, onUploadSuccess, c})=> {
 		onDropAccepted: onDropAccepted
 	})
 
+	if (!containerUserInfo_id) {
+		return <SystemError message="Error: Container Info ID not present" />
+	}
+	
 	return (
 		<DivWrapper {...getRootProps()}>
 

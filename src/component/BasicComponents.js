@@ -194,7 +194,7 @@ export const CTAButton = styled(Button)`
 	margin: 3rem 0;
 	padding: 0.75rem 2.5rem;
 	font-size: 1.5rem;
-	min-width: ${props => (!props.width ? '12rem' : props.width)};;
+	min-width: ${({width='12rem'}) => width};
 	background: ${props => props.color ? `rgba(128, 128, 128, 0.2)` : `linear-gradient(180deg, #F43EA6 0%, #F5576C 100%)`};
 	color: #fff;
 

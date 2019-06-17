@@ -190,34 +190,54 @@ const ModalImage = styled.div`
 class QuotationPage extends React.Component {
 	constructor(props) {
 		super(props)
+		this.changeAcct = this.changeAcct.bind(this)
+		this.quotationCreated = this.quotationCreated.bind(this)
+		const acctList = union(
+			this.props.login.state.myself.accountOwn_id === null
+				? []
+				: this.props.login.state.myself.accountOwn_id.map(v => {
+						return { value: v._id, label: v.name }
+				  }),
+			this.props.login.state.myself.accountManage_id === null
+				? []
+				: this.props.login.state.myself.accountManage_id.map(v => {
+						return { value: v._id, label: v.name }
+				  })
+		)
+
 		this.state = {
 			currentStep: 1,
-			isChecked: false,
-			isShowing: false,
-
+			promoCode: null,
+			account_id: null,
+			isAgreeTnC: false,
+			
+			
+			isShowConfirmModal: false,
+			acctList: acctList,
 			products: {
 				documentBox: 0,
 				documentBoxSecond: 0,
 				documentBox3: 0
 			},
-			form: {
-				promoCode: ""
-			}
+			
 		}
 		this._next = this._next.bind(this)
 		this._prev = this._prev.bind(this)
 		this.handleChange = this.handleChange.bind(this)
 	}
-
+	
+	changeAcct = (e, v) => this.setState({ account_id: v })
+	quotationCreated = q => this.setState({ quotation: q })
+	
 	openModalHandler = () => {
 		this.setState({
-			isShowing: true
+			isShowConfirmModal: true
 		})
 	}
 
 	closeModalHandler = () => {
 		this.setState({
-			isShowing: false
+			isShowConfirmModal: false
 		})
 	}
 
@@ -229,10 +249,10 @@ class QuotationPage extends React.Component {
 			currentStep: currentStep
 		})
 
-		if (this.state.isShowing) {
+		if (this.state.isShowConfirmModal) {
 			this.setState({
 				currentStep: currentStep,
-				isShowing: false
+				isShowConfirmModal: false
 			})
 		} else {
 			this.setState({
@@ -260,7 +280,6 @@ class QuotationPage extends React.Component {
 				</BackButton>
 			)
 		}
-
 		return null
 	}
 
@@ -340,6 +359,21 @@ class QuotationPage extends React.Component {
 
 		return (
 			<>
+			{g.state.isLogined && this.state.acctList.length > 1 && (
+				<MultiSelect
+					field={{
+						name: "acct",
+						value: this.state.selectedAcct
+					}}
+					form={{
+						setFieldValue: this.changeAcct
+					}}
+					multiSelect={false}
+					label={c.t("Please choose your account") + ":"}
+					options={this.state.acctList}
+				/>
+			)}
+			
 				<ContainerBox>
 					<HeaderWithBar color="#787F84" padding="1rem 0 0">
 						{c.t("Choose Your Plan")}
@@ -348,6 +382,8 @@ class QuotationPage extends React.Component {
 						<WizardStep1
 							currentStep={this.state.currentStep}
 							c={c}
+							promoCode={this.state.promoCode}
+
 						/>
 
 						<WizardStep2
@@ -374,10 +410,10 @@ class QuotationPage extends React.Component {
 
 				<FAQSection c={c} />
 
-				{this.state.isShowing && (
+				{this.state.isShowConfirmModal && (
 					<PowerModal
 						className="modal"
-						show={this.state.isShowing}
+						show={this.state.isShowConfirmModal}
 						close={this.closeModalHandler}
 						header={"Modal"}
 						BtnConfirm={"Confirm"}

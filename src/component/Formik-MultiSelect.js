@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { FieldDiv, FieldLabel, ErrorLabel } from './Formik-Basic.js'
 import { LoadingIcon } from '../component/Loading.js'
-import Select from 'react-select'
+import Select, {components} from 'react-select'
 
 /*
 MultiSelect is designed to minimize user's effort to interact with the app.
@@ -16,12 +16,7 @@ Currently we think we should use a dropdown box.
 
 const SelectStyled = styled(Select)`
 
-    ${SelectStyled} > div{
-      border-radius: 25px;
-      border: none;
-      color:#787F84;
-      background-color: #F4F4F4;
-    }
+
 
     ${SelectStyled} svg{
       fill: #E61D6E;
@@ -29,6 +24,33 @@ const SelectStyled = styled(Select)`
     }
 
 `
+/*
+    ${SelectStyled} > div{
+      border-radius: 25px;
+      border: none;
+      color:#787F84;
+      background-color: #F4F4F4;
+    }*/
+
+const OptionStyled = styled(components.Option)`
+    border-radius: 25px !important;
+    background-color: #000000;
+    border: none;
+    color:#780084;
+    backgroundColor: #00F4F4;
+
+    &:active {
+        background-color: #00F4F4;
+    }
+`
+
+const MenuListStyled = styled(components.MenuList)`
+    border-radius: 25px;
+    border: none;
+    color:#787F84;
+    background-color: #F4F4F4;
+`
+
 
 const RadioBlockGroup = styled.div`
     display: grid;
@@ -122,6 +144,28 @@ export const MultiSelect = ({
             <FieldLabel>{label}</FieldLabel>
             <SelectStyled
                 name={name}
+                styles={{
+                    control: (provided, state) => ({
+                        ...provided,
+                        borderRadius: '25px',
+                        boxShadow: 'none',
+                        border: 'none',
+                        color: '#787F84',
+                        backgroundColor: '#F4F4F4'
+                    }),
+                    menuList: (provided, state) => ({
+                        ...provided,
+                        borderRadius: '5px',
+                        backgroundColor: '#FFF'
+                    }),
+                    option: (provided, state) => {
+                        console.log(provided, state)
+                        return ({
+                            ...provided,
+                            backgroundColor: state.isFocused? '#ffe3ed': 'transparent'
+                        })
+                    }
+                }}
                 value={(multiSelect)? 
                     options.filter(v=> (value.find(u=>u===v.value)!==undefined) ) :
                     options.filter(v=> v.value===value)

@@ -201,10 +201,13 @@
   "Size": "Size",
   "Insured Value": "Insured Value",
   "Temp and Humidity Control": "Temp. & Humidity Control",
-  "Do you have a promo code": "Please enter your promo code (if you have any)",
+  "Please enter the promo code": "Please enter your promo code",
   "Promo Code": "Promo Code",
   "Daily": "Daily",
   "Monthly": "Monthly",
-  "Yearly": "Yearly"
+  "Yearly": "Yearly",
+  "Have promo code?": "Have promo code?",
+  "Please enter valid": "Please enter valid",
+  "promoCode": "Promo code"
 
 }

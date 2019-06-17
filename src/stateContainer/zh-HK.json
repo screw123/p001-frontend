@@ -201,9 +201,12 @@
   "Size": "尺寸",
   "Insured Value": "保額",
   "Temp and Humidity Control": "温濕度控制",
-  "Do you have a promo code": "請輸入優惠碼(如有)",
+  "Please enter the promo code": "請輸入優惠碼",
   "Promo Code": "優惠碼",
   "Daily": "日結",
   "Monthly": "月結",
-  "Yearly": "年結"
+  "Yearly": "年結",
+  "Have promo code?": "你有優惠碼嗎?",
+  "Please enter valid": "請輸入正確",
+  "promoCode": "優惠碼"
 }

@@ -1,19 +1,19 @@
 import union from "lodash/union"
 import React from "react"
 import { Redirect } from "react-router-dom"
+import { getPriceListByAccount, getPriceListByCode, addQuotation } from '../gql/query.js'
 import styled from "styled-components"
 import {
 	Background,
 	CTAButton,
-	Header3,
 	HeaderWithBar,
 	Text,
-	ClickableText
+	ClickableText,
+	Section
 } from "../component/BasicComponents.js"
 import FAQSection from "../component/FAQSection.js"
 import { MultiSelect } from "../component/FormikForm.js"
 import PowerModal from "../component/PowerModal"
-import CheckBox from "../component/SimpleCheckBox.js"
 import Wizard from "../component/Wizard"
 import WizardStep from "../component/WizardStep"
 import ConfirmOrderForm from "../form/ConfirmOrderForm"
@@ -23,10 +23,17 @@ import {
 	WizardStep1,
 	WizardStep2,
 	WizardStep3,
-	WizardStep4
+	WizardStep4,
+	PromoCodeForm
 } from "../form/QuotationForm.js"
-
 import { CardsTwoRow, CardTwo } from "./IndexPageStyles.js"
+
+import parseApolloErr from '../util/parseErr.js'
+
+import merge from 'lodash/merge'
+import omit from 'lodash/omit'
+import isEmpty from 'lodash/isEmpty'
+import pickBy from 'lodash/pickBy'
 
 class QuotationPage1 extends React.Component {
 	constructor(props) {
@@ -102,39 +109,6 @@ class QuotationPage1 extends React.Component {
 
 const totalSteps = 4
 
-const BigIcon = styled.div`
-	align-self: center;
-	min-width: 8rem;
-	min-height: 8rem;
-	padding: 1rem 2rem;
-
-	img {
-		display: block;
-		margin: 0 auto 1.5rem;
-	}
-
-	@media (min-width: 1101px) {
-		background-color: white;
-		border-radius: 1rem;
-		box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.5);
-	}
-`
-
-const CardBox = styled(CardTwo)`
-	min-width: 20.8rem;
-	max-width: 20.8rem;
-`
-
-const CardBoxImage = styled(BigIcon)`
-	min-width: 100%;
-	padding: 1.5rem 2rem;
-
-	img {
-		height: 175px;
-		margin-bottom: 1rem;
-	}
-`
-
 const ContainerBox = styled.div`
 	background-color: white;
 	border-radius: 16px;
@@ -190,8 +164,6 @@ const ModalImage = styled.div`
 class QuotationPage extends React.Component {
 	constructor(props) {
 		super(props)
-		this.changeAcct = this.changeAcct.bind(this)
-		this.quotationCreated = this.quotationCreated.bind(this)
 		const acctList = union(
 			this.props.login.state.myself.accountOwn_id === null
 				? []
@@ -210,36 +182,32 @@ class QuotationPage extends React.Component {
 			promoCode: null,
 			account_id: null,
 			isAgreeTnC: false,
-			
-			
+
 			isShowConfirmModal: false,
+			isHavePromo: false,
 			acctList: acctList,
+			loadingPriceList: false,
+			priceList: {},
+			promoCodeEntry: '',
 			products: {
 				documentBox: 0,
 				documentBoxSecond: 0,
 				documentBox3: 0
-			},
-			
+			}
 		}
+		this.changeAcct = this.changeAcct.bind(this)
+		this.quotationCreated = this.quotationCreated.bind(this)
 		this._next = this._next.bind(this)
 		this._prev = this._prev.bind(this)
 		this.handleChange = this.handleChange.bind(this)
-	}
-	
-	changeAcct = (e, v) => this.setState({ account_id: v })
-	quotationCreated = q => this.setState({ quotation: q })
-	
-	openModalHandler = () => {
-		this.setState({
-			isShowConfirmModal: true
-		})
+		this.toggleIsHavePromo = this.toggleIsHavePromo.bind(this)
 	}
 
-	closeModalHandler = () => {
-		this.setState({
-			isShowConfirmModal: false
-		})
-	}
+	changeAcct = (e, v) => this.setState({ account_id: v })
+	quotationCreated = q => this.setState({ quotation: q })
+	toggleIsHavePromo = () => this.setState({ isHavePromo: !this.state.isHavePromo })
+	openModalHandler = () => this.setState({isShowConfirmModal: true})
+	closeModalHandler = () => this.setState({isShowConfirmModal: false})
 
 	_next() {
 		let currentStep = this.state.currentStep
@@ -340,16 +308,43 @@ class QuotationPage extends React.Component {
 		this.setState({ isChecked: !this.state.isChecked })
 	}
 
-	handleInputChange(event) {
-		const target = event.target
-		const value = target.value
-		const name = target.name
-		this.setState({
-			form: Object.assign({}, this.state.form, {
-				[name]: value
-			})
-		})
+	getCouponPriceList = async (gqlClient, t) => {
+        this.setState({loadingPriceList: true})
+        try {
+            const d = await gqlClient.query({
+                query: getPriceListByCode,
+                variables: {account_id: this.props.account_id || '', code: this.state.promoCodeEntry}
+            })
+            const fullPriceList = this.transformPriceList(d.data)
+            this.setState({priceList: fullPriceList, loadingPriceList: false, promoCode: this.state.couponCodeEntry, couponErr: undefined})
+		}
+        catch(e) {
+            const errStack = parseApolloErr(e, t)
+            for(let i=0;i<errStack.length;i++) {
+                if (errStack[i].type==='NOT_FOUND') {
+                    this.setState({promoCodeError: t('Coupon Code is invalid or expired'), loadingPriceList: false, couponCode: ''})
+				}
+            }
+        }
 	}
+
+	transformPriceList = (d) => { //to transform a single priceList
+        let p = d.getPriceListByAccount
+        if (p===undefined) { p = d.getPriceListByCode }
+        const result = {}
+        for(let i = 0; i<p.length;i++){
+            const itemCode = p[i].SKU_id.shortCode
+            const rentMode = p[i].rentMode
+            const duration = p[i].duration
+            let pricing = {}
+            pricing[itemCode] = merge({}, p[i].SKU_id)
+            pricing[itemCode]['mode'] = {}
+            pricing[itemCode]['mode'][rentMode] = {}
+            pricing[itemCode]['mode'][rentMode][duration] = omit(p[i], ['__typename', 'SKU_id', 'code', 'rentMode', 'duration'])
+            merge(result, pricing)
+        }
+        return result
+    }
 
 	render() {
 		// const [redirectPath, setRedirectPath] = useState(undefined)
@@ -359,53 +354,69 @@ class QuotationPage extends React.Component {
 
 		return (
 			<>
-			{g.state.isLogined && this.state.acctList.length > 1 && (
-				<MultiSelect
-					field={{
-						name: "acct",
-						value: this.state.selectedAcct
-					}}
-					form={{
-						setFieldValue: this.changeAcct
-					}}
-					multiSelect={false}
-					label={c.t("Please choose your account") + ":"}
-					options={this.state.acctList}
-				/>
-			)}
-			
 				<ContainerBox>
-					<HeaderWithBar color="#787F84" padding="1rem 0 0">
-						{c.t("Choose Your Plan")}
-					</HeaderWithBar>
-					<Wizard totalSteps={4} currentStep={this.state.currentStep}>
-						<WizardStep1
-							currentStep={this.state.currentStep}
-							c={c}
-							promoCode={this.state.promoCode}
-
+					{g.state.isLogined && this.state.acctList.length > 1 && (
+						<MultiSelect
+							field={{
+								name: "acct",
+								value: this.state.selectedAcct
+							}}
+							form={{
+								setFieldValue: this.changeAcct
+							}}
+							multiSelect={false}
+							label={c.t("Please choose your account") + ":"}
+							options={this.state.acctList}
 						/>
+					)}
+					{this.state.isHavePromo && (
+						<PromoCodeForm c={c} g={g} />
+					)}
+					{!this.state.isHavePromo && (
+						<>
+							<HeaderWithBar color="#787F84" padding="1rem 0 0">
+								{c.t("Choose Your Plan")}
+								<ClickableText
+									color="#E61d6e"
+									float="right"
+									onClick={this.toggleIsHavePromo}
+								>
+									{c.t("Have promo code?")}
+								</ClickableText>
+							</HeaderWithBar>
 
-						<WizardStep2
-							currentStep={this.state.currentStep}
-							c={c}
-						/>
+							<Wizard
+								totalSteps={4}
+								currentStep={this.state.currentStep}
+							>
+								<WizardStep1
+									currentStep={this.state.currentStep}
+									c={c}
+									promoCode={this.state.promoCode}
+								/>
 
-						<WizardStep3
-							currentStep={this.state.currentStep}
-							c={c}
-						/>
+								<WizardStep2
+									currentStep={this.state.currentStep}
+									c={c}
+								/>
 
-						<WizardStep4
-							currentStep={this.state.currentStep}
-							c={c}
-						/>
-					</Wizard>
+								<WizardStep3
+									currentStep={this.state.currentStep}
+									c={c}
+								/>
 
-					<div>
-						{this.nextButton}
-						{this.previousButton}
-					</div>
+								<WizardStep4
+									currentStep={this.state.currentStep}
+									c={c}
+								/>
+							</Wizard>
+
+							<div>
+								{this.nextButton}
+								{this.previousButton}
+							</div>
+						</>
+					)}
 				</ContainerBox>
 
 				<FAQSection c={c} />

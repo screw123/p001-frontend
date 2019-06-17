@@ -11,7 +11,7 @@ import {
 	ClickableText,
 	Section
 } from "../component/BasicComponents.js"
-import {TextField} from '../component/FormikForm.js'
+
 import { MultiSelect } from "../component/FormikForm.js"
 import PowerModal from "../component/PowerModal"
 import CheckBox from "../component/SimpleCheckBox.js"
@@ -19,7 +19,8 @@ import Wizard from "../component/Wizard"
 import WizardStep from "../component/WizardStep"
 import ConfirmOrderForm from "../form/ConfirmOrderForm"
 import OrderBoxForm from "../form/OrderBoxForm"
-
+import { Formik, Field, FieldArray } from 'formik'
+import FormikForm, { TextField, FormButton, FormErr, FieldRow } from '../component/FormikForm.js'
 import { CardsTwoRow, CardTwo } from "../page/IndexPageStyles.js"
 
 const BigIcon = styled.div`
@@ -224,18 +225,6 @@ export const WizardStep1 = ({ c, currentStep }) => (
 				</BigIcon>
 			</CardTwo>
 		</CardsTwoRow>
-		<Section display='block'>
-			<Text color='#787f84'>{c.t('Do you have a promo code')}</Text>
-			<TextField
-				field={{
-					placeholder: c.t('Promo Code'),
-					//value: {this.state.form.promoCode}
-					name: "promoCode",
-					onChange: e => this.handleInputChange(e)
-				}}
-			/>
-		</Section>
-		
 	</WizardStep>
 )
 
@@ -360,7 +349,7 @@ export const WizardStep2 = ({ c, currentStep }) => (
 				</CardBoxImage>
 			</CardBox>
 		</CardsTwoRow>
-		
+
 		<CostContainer>
 			<div>
 				<h3>Monthly Cost Estimate</h3>
@@ -606,3 +595,126 @@ export const WizardStep4 = ({ currentStep, c }) => (
 		/>
 	</WizardStep>
 )
+
+export const PromoCodeForm = ({c, promoCode, ...props }) => (
+	<Section display="block">
+		<Formik
+				initialValues={{
+					promoCode: promoCode
+				}}
+				validate={values => {
+					const keyArr = Object.keys(validateForm)
+					let err = {}
+					for (let i = 0; i < keyArr.length; i++) {
+						const f = keyArr[i]
+						const e = validateForm[f](values)
+						if (e !== undefined) {
+							err[f] = e
+						}
+					}
+					return err
+				}}
+				onSubmit={async (values, actions) => {
+					actions.setStatus('')
+					const isLoginSuccess = await g.login({
+						user: values.user,
+						password: values.password
+					})
+					if (isLoginSuccess === true) {
+						if (this.props.onLoginSuccess) {
+							this.props.onLoginSuccess()
+						}
+					} else {
+						switch (isLoginSuccess) {
+							case 401:
+								actions.setFieldError(
+									'password',
+									c.t(
+										'Email/Phone or password error.  Please check and try again.'
+									)
+								)
+								break
+							case 500:
+							default:
+								actions.setStatus(
+									c.t(
+										'System is currently busy, please wait for 1 minute and try again'
+									)
+								)
+								break
+						}
+						actions.setSubmitting(false)
+					}
+				}}
+			>
+				{({ errors, isSubmitting, dirty, touched, values, status, initialValues }) => (
+					<FormikForm>
+						<Field
+							name='user'
+							type='text'
+							component={TextField}
+							placeholder={c.t('Email/Phone')}
+							value={values.user}
+							hidden={initialValues['user'] != ''}
+						/>
+						<Field
+							name='password'
+							type='password'
+							component={TextField}
+							placeholder={c.t('Password')}
+							value={values.password}
+						/>
+						<FormErr>{status}</FormErr>
+						{!this.state.showResetPassword && (
+							<ButtonsWrapper mobile={false}>
+								<FormButtonBasic onClick={this.showResetPasswordForm}>
+									{c.t('Forget Your Password?')}
+								</FormButtonBasic>
+							</ButtonsWrapper>
+						)}
+						<FieldRow>
+							<CTAButton
+								type='submit'
+								disabled={isSubmitting || !isEmpty(pickBy(errors)) || !dirty}
+							>
+								{c.t('Login')}
+							</CTAButton>
+						</FieldRow>
+						{!this.state.showResetPassword && (
+							<ButtonsWrapper mobile={true}>
+								<FormButtonBasic onClick={this.goToSignUpPage}>
+									{c.t('Sign Up')}
+								</FormButtonBasic>
+								<FormButtonBasic onClick={this.showResetPasswordForm}>
+									{c.t('Forget Your Password?')}
+								</FormButtonBasic>
+							</ButtonsWrapper>
+						)}
+					</FormikForm>
+				)}
+			</Formik>
+		<Text color="#787f84">{c.t("Please enter the promo code")}</Text>
+		<TextField
+			field={{
+				placeholder: c.t("Promo Code"),
+				//value: {this.state.form.promoCode}
+				name: "promoCode",
+				onChange: e => this.handleInputChange(e)
+			}}
+		/>
+		<NextButton>
+			<CTAButton
+				width={"auto"}
+				onClick={() => {
+					this.toggleIsHavePromo
+				}}
+			>
+				{c.t("Submit")}
+			</CTAButton>
+		</NextButton>
+	</Section>
+)
+
+const validateForm = {
+	promoCode: ({ promoCode }) => (promoCode.length > 3 ? undefined : 'Please enter valid')
+}

@@ -34,8 +34,6 @@ export const Card = styled.div`
 	${({ noShadow }) => (noShadow ? '' : 'box-shadow: 0px 6px 12px 3px rgba(0, 0, 0, 0.4);')}
 `
 
-
-
 export const BigCard = styled(Card)`
 	display: flex;
 	min-height: 70vh;
@@ -160,6 +158,7 @@ export const ClickableText = styled.span`
 	line-height: 1.5rem;
 	padding: 0 0.2rem 0 0.2rem;
 	text-align: ${props => props.align ? props.align : 'left'};
+	${({float})=>float?'float: '+float:''}
 	color: ${props => props.color? props.color: '#888'};
 	@media (max-width: 768px) {
 		font-size: 0.85rem;
